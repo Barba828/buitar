@@ -1,6 +1,6 @@
 import { name } from './test.js'
 
-const INTERVAL_LIST = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+const NOTE_LIST = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
 let rate = 2
 
@@ -24,11 +24,11 @@ const buttonList = []
  * @returns
  */
 const setBoardArr = (stringGrade = ['E', 'A', 'D', 'G', 'B', 'E']) => {
-  const stringIndex = stringGrade.map((item) => INTERVAL_LIST.indexOf(item))
+  const stringIndex = stringGrade.map((item) => NOTE_LIST.indexOf(item))
   const ans = stringGrade.map((item) => [item])
   for (let stringNums = 0; stringNums < STRING_NUMS; stringNums++) {
     for (let grade = 1; grade < GRADE_NUMS; grade++) {
-      ans[stringNums][grade] = INTERVAL_LIST[(stringIndex[stringNums] + grade) % INTERVAL_LIST.length]
+      ans[stringNums][grade] = NOTE_LIST[(stringIndex[stringNums] + grade) % NOTE_LIST.length]
     }
   }
   return ans

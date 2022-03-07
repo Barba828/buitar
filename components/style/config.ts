@@ -1,5 +1,5 @@
 export const Button = {
-  Default: '#bbb',
+  Default: '#ddd',
   Checked: '#4abdac',
   Focus: '#f7b733'
 }

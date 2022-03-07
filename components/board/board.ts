@@ -1,7 +1,7 @@
 import { transBoard, transChord } from '../../utils/guitar/tuning.js'
 import { BoardButton } from './board-button.js'
 import { BoardGrade } from './board-grade.js'
-import { PADDING, SINGLE_HEIGHT, SINGLE_WIDTH } from './config.js'
+import { Color, PADDING, SINGLE_HEIGHT, SINGLE_WIDTH } from './config.js'
 import { Drawable, DrawableOptions } from './drawable.js'
 
 interface BoardOptions extends DrawableOptions {
@@ -133,6 +133,15 @@ export class Board extends Drawable<any> implements BoardOptions {
       }
     })
   }
-}
 
-console.log(transChord(['C', 'E', 'G']))
+  drawSetOptions2 = (chord: Point[]) => {
+    const chordIndex = chord.map(point => point.index)
+    this.boardButtons.forEach((button) => {
+      const checked = chordIndex.includes(button.point.index)
+      const buttonColor = checked
+        ? Color.Button.Checked
+        : Color.Button.Default
+      button.setOptions({ buttonColor })
+    })
+  }
+}

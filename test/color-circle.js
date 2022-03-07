@@ -1,12 +1,3 @@
-// const INTERVAL_LIST = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-
-// const root = document.getElementById('freboard')
-// const freboard = document.createElement('canvas', { id: 'freboard' })
-
-// root.appendChild(freboard)
-
-// freboard.width = '200'
-// freboard.height = 150
 
 const cn = document.getElementById('canvas')
 const ctx = cn.getContext('2d')

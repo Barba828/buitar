@@ -1,4 +1,4 @@
-declare type Interval =
+declare type Note =
   | 'C'
   | 'C#'
   | 'D'
@@ -11,7 +11,7 @@ declare type Interval =
   | 'A'
   | 'A#'
   | 'B'
-declare type IntervalFalling =
+declare type NoteFalling =
   | 'C'
   | 'bD'
   | 'D'
@@ -24,7 +24,7 @@ declare type IntervalFalling =
   | 'A'
   | 'bB'
   | 'B'
-declare type Note =
+declare type Interval =
   | '1'
   | '1#'
   | '2'
@@ -37,7 +37,7 @@ declare type Note =
   | '6'
   | '6#'
   | '7'
-declare type NoteFalling =
+declare type IntervalFalling =
   | '1'
   | 'b2'
   | '2'
@@ -50,6 +50,7 @@ declare type NoteFalling =
   | '6'
   | 'b7'
   | '7'
+declare type ToneType = Note | NoteFalling | Interval | IntervalFalling
 declare type Pitch = number
 
 declare type Point = {
@@ -64,25 +65,25 @@ declare type Point = {
    */
   pitch: Pitch
   /**
-   * 音名
-   * Interval #
-   */
-  interval: Interval
-  /**
-   * 音名
-   * interval b
-   */
-  intervalFalling: IntervalFalling
-  /**
-   * 音名
+   * 音名 升调
    * Note #
    */
   note: Note
   /**
-   * 音民
-   * Note b
+   * 音名 降调
+   * interval b
    */
   noteFalling: NoteFalling
+  /**
+   * 音程 升调
+   * Interval #
+   */
+  interval: Interval
+  /**
+   * 音程 降调
+   * Interval b
+   */
+  intervalFalling: IntervalFalling
   /**
    * 弦位
    * string position
@@ -93,11 +94,54 @@ declare type Point = {
    * grade position
    */
   grade: number
+  /**
+   * 唯一下标
+   */
+  index: number
 }
 
 /**
  * Point标题类型
  */
-declare type PointType = 'interval' | 'intervalFalling' | 'note' | 'noteFalling'
+declare type PointType = 'note' | 'noteFalling' | 'interval' | 'intervalFalling'
 
-declare type Chord = {}
+declare type ChordType = {
+  /**
+   * 和弦标记
+   * dim|aug|...
+   */
+  tag: string
+  /**
+   * 和弦名称
+   * major triad|...
+   */
+  name: string
+  /**
+   * 和弦音名
+   * C|D|...
+   */
+  note?: Note
+}
+
+declare type DegreeTag = 'Ⅰ' | 'Ⅱ' | 'Ⅲ' | 'Ⅳ' | 'Ⅴ' | 'Ⅵ' | 'Ⅶ'
+declare type RollType = 'Do' | 'Re' | 'Mi' | 'Fa' | 'So' | 'La' | 'Ti'
+declare type DegreeType = {
+  /**
+   * 音程
+   * 距离I级和弦音程
+   */
+  interval: number
+  /**
+   * 级数
+   * 罗马数字标记
+   */
+  tag: DegreeTag
+  /**
+   * 级数类型
+   */
+  scale: string
+  /**
+   * 唱名
+   */
+  roll: RollType
+}

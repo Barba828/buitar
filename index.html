@@ -13,12 +13,21 @@
   <script type="module" src="./dist/index.js"></script>
   <div style="display: flex;">
     <canvas id="canvas"></canvas>
-    <div>
+    <div id="tools">
       <form>
         <input id="all-button-check" type="checkbox">All</input>
-        <input type="radio">#</input>
-        <input type="radio">b</input>
       </form>
+
+      <form>
+        <input name="is-note" type="radio" checked>C</input>
+        <input name="is-note" type="radio">1</input>
+      </form>
+
+      <form>
+        <input name="is-rising" type="radio" checked>#</input>
+        <input name="is-rising" type="radio">b</input>
+      </form>
+
     </div>
   </div>
 </body>
