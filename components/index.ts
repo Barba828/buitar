@@ -3,7 +3,7 @@ import { SINGLE_WIDTH, PADDING, SINGLE_HEIGHT } from './board/index.js'
 
 import { STRING_NUMS, GRADE_NUMS } from '../utils/guitar/config.js'
 import { typesChecker } from './widgets/types-checker.js'
-import { transChord } from '../utils/guitar/tuning.js'
+import { transChordTaps } from '../utils/guitar/tuning.js'
 import { chordsChecker } from './widgets/chords-checker.js'
 
 let allButton = false
@@ -38,7 +38,7 @@ const app = () => {
       })
     })
 
-    chordsChecker(transChord(['C', 'E', 'G']).chordList, (chord) => {
+    chordsChecker(transChordTaps(['C', 'E', 'G']).chordList, (chord) => {
       board.drawSetOptions2(chord)
     })
   }

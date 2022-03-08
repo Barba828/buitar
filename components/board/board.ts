@@ -1,4 +1,4 @@
-import { transBoard, transChord } from '../../utils/guitar/tuning.js'
+import { transBoard, transChordTaps } from '../../utils/guitar/tuning.js'
 import { BoardButton } from './board-button.js'
 import { BoardGrade } from './board-grade.js'
 import { Color, PADDING, SINGLE_HEIGHT, SINGLE_WIDTH } from './config.js'
