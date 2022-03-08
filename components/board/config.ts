@@ -1,28 +1,19 @@
-export * as Color from '../style/config.js'
+export * as Color from "../style/config.js";
 
-export let rate = 2
+export let rate = 2;
 /**
  * 指板高度
  */
-export const SINGLE_HEIGHT = 30 * rate
+export const SINGLE_HEIGHT = 30 * rate;
 /**
  * 指板宽度
  */
-export const SINGLE_WIDTH = 20 * rate
+export const SINGLE_WIDTH = 20 * rate;
 /**
  * 指板内边距（左右上下）
  */
-export const PADDING = SINGLE_WIDTH
+export const PADDING = SINGLE_WIDTH;
 /**
  * 品丝厚度
  */
-export const GRADE_LINE_WIDTH = 2 * rate
-
-// /**
-//  * 品柱数量
-//  */
-// export const GRADE_NUMS = 16
-// /**
-//  * 弦数量
-//  */
-// export const STRING_NUMS = 6
+export const GRADE_LINE_WIDTH = 2 * rate;

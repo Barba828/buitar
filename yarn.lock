@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+to-guitar@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npmmirror.com/to-guitar/-/to-guitar-0.0.2.tgz#8f2f5dd16fd7e9d6c6b6ee9b254d3bcbfaee2ddc"
+  integrity sha512-XxdusQH+/DUok0EK9Kt20TEQ9OXF3hVmfHpY8K8cQOE7jI9yih6tkJMTR4YJbaxXipDH2X80fvxPaYhSi99hVg==
+
 tsc@^2.0.4:
   version "2.0.4"
   resolved "https://registry.npmmirror.com/tsc/-/tsc-2.0.4.tgz#5f6499146abea5dca4420b451fa4f2f9345238f5"
