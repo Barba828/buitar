@@ -1,22 +1,39 @@
 {
-  "name": "buitar",
-  "version": "0.0.1",
-  "description": "Guitar canvas utils",
-  "main": "chords.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "dev": "tsc --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "tsc": "^2.0.4",
-    "typescript": "^4.6.2"
-  },
-  "dependencies": {
-    "to-guitar": "^0.0.2"
-  }
+	"name": "buitar",
+	"version": "0.0.1",
+	"description": "Guitar canvas utils",
+	"main": "index.js",
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"dev": "NODE_ENV=development webpack-dev-server --config ./webpack.config.js",
+		"build": "rm -rf ./dist && NODE_ENV=production webpack --config ./webpack.config.js",
+		"build:dev": "rm -rf ./dist && webpack --config ./webpack.config.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/react": "^17.0.40",
+		"@types/react-dom": "^17.0.13",
+		"css-loader": "^6.7.1",
+		"file-loader": "^6.2.0",
+		"html-webpack-plugin": "^5.5.0",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"sass-loader": "^12.6.0",
+		"style-loader": "^3.3.1",
+		"ts-loader": "^9.2.8",
+		"tsc": "^2.0.4",
+		"typescript": "^4.6.2",
+		"url-loader": "^4.1.1",
+		"webpack": "^5.70.0",
+		"webpack-cli": "^4.9.2",
+		"webpack-dev-server": "^4.7.4"
+	},
+	"dependencies": {
+		"to-guitar": "^0.0.5",
+		"tone": "^14.7.77"
+	}
 }

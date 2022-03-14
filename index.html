@@ -1,19 +1,13 @@
 <html>
+	<head>
+		<title>Buitar</title>
+		<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+		<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+	</head>
 
-<head>
-  <title>Canvas tutorial</title>
-  <style type="text/css">
-    #freboard {
-      border: 1px solid black;
-    }
-  </style>
-</head>
-
-<body>
-  <script type="module" src="./dist/index.js"></script>
-  <div style="display: flex;">
-    <canvas id="canvas"></canvas>
-    <div id="tools">
+	<body>
+		<div id="app">
+			<!-- <div id="tools">
       <form>
         <input id="all-button-check" type="checkbox">All</input>
       </form>
@@ -28,8 +22,8 @@
         <input name="is-rising" type="radio">b</input>
       </form>
 
-    </div>
-  </div>
-</body>
-
+    </div> -->
+		</div>
+		<canvas id="canvas" style="display: none"></canvas>
+	</body>
 </html>
