@@ -1,6 +1,6 @@
 import { Instrument } from './instrument.type'
 
-const toneConfig: {
+const instrumentConfig: {
 	[K in Instrument]: any
 } = {
 	'guitar-acoustic': {
@@ -97,4 +97,4 @@ const toneConfig: {
 	default: undefined,
 }
 
-export default toneConfig
+export { instrumentConfig }

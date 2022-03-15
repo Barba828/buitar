@@ -28,7 +28,8 @@ module.exports = {
 						loader: 'css-loader',
 						options: {
 							modules: {
-								localIdentName: '[path][local]--[hash:base64:6]',
+								// localIdentName: '[path][local]--[hash:base64:6]',
+								localIdentName: '[local]--[hash:base64:6]',
 							},
 						},
 					},
@@ -43,7 +44,7 @@ module.exports = {
 					},
 					{
 						loader: 'sass-resources-loader',
-						options: { resources: path.resolve(__dirname, 'style/app.module.scss') },
+						options: { resources: path.resolve(__dirname, 'style/app.scss') },
 					},
 				],
 			},
@@ -76,6 +77,7 @@ module.exports = {
 		extensions: ['.tsx', '.ts', '.js', 'json', 'sass'],
 		alias: {
 			'@': path.resolve(__dirname, 'src/'),
+			'~': path.resolve(__dirname, 'static/'),
 		},
 	},
 	output: {
@@ -99,4 +101,5 @@ module.exports = {
 			'Access-Control-Allow-Origin': '*',
 		},
 	},
+	devtool: 'source-map',
 }

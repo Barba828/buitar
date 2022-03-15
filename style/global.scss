@@ -1,0 +1,31 @@
+:global(.scroll-without-bar) {
+	overflow: scroll;
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE 10+ */
+	&::-webkit-scrollbar {
+		display: none; /* Chrome Safari */
+	}
+}
+
+:global(.buitar-primary-button) {
+	margin: 2px 2px;
+	border-radius: 2px;
+
+	width: 80px;
+	height: 40px;
+	background: $gray-primary;
+	transition: background-color 0.15s linear;
+	cursor: pointer;
+
+	&:hover {
+		background: $yellow-primary;
+	}
+}
+
+:global(.icon) {
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.15em;
+	fill: currentColor;
+	overflow: hidden;
+}

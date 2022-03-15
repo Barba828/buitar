@@ -1,0 +1,57 @@
+.container {
+	padding-left: 20%;
+	display: flex;
+}
+
+$controller-size: 80px;
+
+%controller-extend {
+	margin: 2px 2px !important;
+	width: $controller-size !important;
+}
+
+.board-controller {
+	display: flex;
+	flex-direction: row;
+	// > :first-child {
+	// 	@extend %controller-extend;
+	// }
+	.controller {
+		width: $controller-size;
+		height: $controller-size;
+		overflow: hidden;
+		&:hover {
+			opacity: 0.8;
+			background: $gray-primary;
+		}
+
+		.controller-inner {
+			display: flex;
+			flex-direction: column;
+			padding: 2px 6px;
+			:last-child {
+				margin-top: 10px;
+			}
+		}
+	}
+	.controller-extend {
+		@extend %controller-extend;
+	}
+	.controller-checked {
+		@extend %controller-extend;
+		background: $yellow-primary !important;
+	}
+}
+
+.board-controller-animation {
+	.controller {
+		width: 0px;
+		margin: 2px 0px;
+		transition: width 0.15s ease-in-out, margin 0.15s ease-in-out;
+	}
+	&:hover {
+		.controller {
+			@extend %controller-extend;
+		}
+	}
+}
