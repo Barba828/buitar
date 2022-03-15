@@ -1,0 +1,25 @@
+$gray-primary: rgb(94, 101, 105);
+$gray-second: rgba($gray-primary, 60%);
+$gray-01: rgb(63, 67, 69);
+$gray-02: rgb(59, 63, 65);
+$gray-03: rgb(23, 25, 26);
+
+$yellow-primary: rgb(199, 156, 15);
+$yellow-second: rgb(168, 131, 7);
+
+$white-01: rgb(232, 230, 227);
+
+@mixin flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@mixin scroll-without-bar {
+	overflow: scroll;
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE 10+ */
+	&::-webkit-scrollbar {
+		display: none; /* Chrome Safari */
+	}
+}

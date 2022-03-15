@@ -3,9 +3,6 @@
 	"version": "0.0.1",
 	"description": "Guitar canvas utils",
 	"main": "index.js",
-	"directories": {
-		"test": "test"
-	},
 	"scripts": {
 		"dev": "NODE_ENV=development webpack-dev-server --config ./webpack.config.js",
 		"build": "rm -rf ./dist && NODE_ENV=production webpack --config ./webpack.config.js",
@@ -15,14 +12,21 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
+		"@types/node-sass": "^4.11.2",
 		"@types/react": "^17.0.40",
 		"@types/react-dom": "^17.0.13",
+		"@types/webpack-env": "^1.16.3",
+		"classnames": "^2.3.1",
 		"css-loader": "^6.7.1",
 		"file-loader": "^6.2.0",
 		"html-webpack-plugin": "^5.5.0",
+		"node-sass": "^7.0.1",
+		"postcss-loader": "^6.2.1",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
+		"sass": "^1.49.9",
 		"sass-loader": "^12.6.0",
+		"sass-resources-loader": "^2.2.4",
 		"style-loader": "^3.3.1",
 		"ts-loader": "^9.2.8",
 		"tsc": "^2.0.4",
@@ -33,7 +37,7 @@
 		"webpack-dev-server": "^4.7.4"
 	},
 	"dependencies": {
-		"to-guitar": "^0.0.5",
+		"to-guitar": "^0.0.6",
 		"tone": "^14.7.77"
 	}
 }

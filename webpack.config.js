@@ -18,27 +18,43 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				use: ['style-loader', 'css-loader'],
+				use: ['style-loader', 'css-loader', 'postcss-loader'],
 			},
 			{
-				test: /\.sass$/,
+				test: /\.(sass|scss)$/,
 				use: [
+					'style-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							modules: {
+								localIdentName: '[path][local]--[hash:base64:6]',
+							},
+						},
+					},
+					{
+						loader: 'postcss-loader',
+					},
 					{
 						loader: 'sass-loader',
 						options: {
 							sourceMap: true,
 						},
 					},
+					{
+						loader: 'sass-resources-loader',
+						options: { resources: path.resolve(__dirname, 'style/app.module.scss') },
+					},
 				],
 			},
 			{
 				test: /\.(mp3|wav|ogg)$/,
-				loader: 'url-loader',
-				options: {
-					esModule: false,
-					limit: 5 * 1024,
-					publicPath: './samples/',
-					outputPath: 'samples/',
+				use: {
+					loader: 'file-loader',
+					options: {
+						name: '[path][name].[ext]',
+						outputPath: '',
+					},
 				},
 			},
 			{
@@ -57,7 +73,10 @@ module.exports = {
 		],
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js'],
+		extensions: ['.tsx', '.ts', '.js', 'json', 'sass'],
+		alias: {
+			'@': path.resolve(__dirname, 'src/'),
+		},
 	},
 	output: {
 		filename: '[name].[chunkhash:6].js',
@@ -76,5 +95,8 @@ module.exports = {
 	devServer: {
 		port: 8282, // 服务器端口号
 		proxy: {}, //
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+		},
 	},
 }

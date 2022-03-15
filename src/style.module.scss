@@ -1,0 +1,58 @@
+body {
+	background: $gray-01;
+	color: $white-01;
+	margin: 0px;
+}
+
+.app {
+	@include flex-center;
+	justify-content: flex-start;
+	width: 100%;
+	height: 100%;
+
+	.board {
+		@include flex-center;
+		@include scroll-without-bar;
+
+		padding-left: 20%;
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.strings {
+		@include flex-center;
+		margin: 0%;
+		padding: 0%;
+
+		:first-child {
+			width: 40px !important;
+			border-radius: 8px !important;
+			&:hover {
+				background: $yellow-second !important;
+			}
+		}
+
+		.point {
+			@include flex-center;
+			list-style-type: none;
+			margin: 2px 2px;
+			border-radius: 2px;
+
+			width: 80px;
+			height: 40px;
+			background: $gray-primary;
+			transition: background-color 0.15s linear;
+			cursor: pointer;
+
+			&:hover {
+				background: $yellow-primary;
+				font-size: 18px;
+			}
+		}
+
+		.empty-point {
+			background: $gray-second !important;
+			cursor: auto;
+		}
+	}
+}
