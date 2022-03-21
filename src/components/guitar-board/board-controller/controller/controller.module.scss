@@ -1,0 +1,66 @@
+$controller-size: $button-size * 2;
+$controller-margin: $button-margin;
+$controller-width: $controller-size + 2 * $controller-margin;
+$controller-nums: 4;
+
+%controller-extends {
+	margin: $controller-margin $controller-margin !important;
+	width: $controller-size !important;
+}
+
+%controller-not-extends {
+	width: 0px !important;
+	margin: $controller-margin 0px !important;
+}
+
+.board-controller {
+	display: flex;
+	flex-direction: row;
+	width: fit-content;
+
+	// > :first-child {
+	// 	@extend %controller-extend;
+	// }
+	.controller {
+		width: $controller-size;
+		height: $controller-size;
+		overflow: hidden;
+		&:hover {
+			opacity: 0.8;
+			background: $gray-primary;
+		}
+	}
+	.controller-extend {
+		@extend %controller-extends;
+	}
+	.controller-not-extend {
+		@extend %controller-not-extends;
+	}
+	.controller-checked {
+		@extend %controller-extends;
+		background: $yellow-primary !important;
+	}
+}
+
+.board-controller-animation {
+	transition: all 0.15s ease-in-out;
+
+	// 不能使用 !important，因为会覆盖原来度条件控制的样式
+	.controller {
+		width: 0px;
+		margin: $controller-margin 0px;
+		// transition: width 0.15s ease-in-out, margin 0.15s ease-in-out;
+	}
+	&:hover {
+		.controller {
+			margin: $controller-margin $controller-margin;
+			width: $controller-size;
+		}
+	}
+}
+
+.board-controller-wrap {
+	flex-wrap: wrap;
+	align-content: flex-start;
+	max-width: $controller-nums * $controller-width;
+}

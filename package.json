@@ -37,7 +37,7 @@
 		"webpack-dev-server": "^4.7.4"
 	},
 	"dependencies": {
-		"to-guitar": "^0.0.6",
+		"to-guitar": "0.0.9",
 		"tone": "^14.7.77"
 	}
 }

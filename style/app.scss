@@ -4,8 +4,9 @@ $gray-primary: rgb(94, 101, 105);
 $gray-second: rgba($gray-primary, 60%);
 $gray-checked: rgb(123, 141, 151);
 $gray-01: rgb(63, 67, 69);
-$gray-02: rgb(59, 63, 65);
-$gray-03: rgb(23, 25, 26);
+$gray-02: rgb(49, 53, 54);
+$gray-03: rgb(46, 49, 51);
+$gray-07: rgb(23, 25, 26);
 
 $yellow-primary: rgb(199, 156, 15);
 $yellow-second: rgb(168, 131, 7);
@@ -13,6 +14,9 @@ $yellow-second: rgb(168, 131, 7);
 $blue-primary: rgb(15, 145, 224);
 
 $white-01: rgb(232, 230, 227);
+
+$button-size: 40px;
+$button-margin: 2px;
 
 @mixin flex-center($direction: column) {
 	display: flex;

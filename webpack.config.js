@@ -39,7 +39,7 @@ module.exports = {
 					{
 						loader: 'sass-loader',
 						options: {
-							sourceMap: true,
+							// sourceMap: true,
 						},
 					},
 					{
@@ -92,6 +92,7 @@ module.exports = {
 	externals: isProduction
 		? {
 				react: 'React',
+				'react-dom': 'ReactDOM',
 		  }
 		: {},
 	devServer: {
@@ -103,3 +104,5 @@ module.exports = {
 	},
 	devtool: 'source-map',
 }
+// file:///Users/liningzhu/Desktop/BarbaGit/Buitar/dist/main.3de68b.js
+// file:///static/samples/guitar-acoustic/Fs3.ogg

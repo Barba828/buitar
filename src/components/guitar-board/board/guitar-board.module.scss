@@ -1,0 +1,112 @@
+.board {
+	display: flex;
+
+	.strings {
+		@include flex-center(row);
+		margin: 0%;
+		padding: 0%;
+		width: fit-content;
+	}
+
+	.board-base {
+		.point {
+			width: $button-size !important;
+			@media (any-hover: hover) {
+				&:hover {
+					background: $yellow-second !important;
+				}
+			}
+		}
+	}
+
+	.board-view {
+		display: flex;
+		flex-direction: row;
+		.frets-zero {
+			.point {
+				width: $button-size !important;
+				@media (any-hover: hover) {
+					&:hover {
+						background: $yellow-second !important;
+					}
+				}
+			}
+		}
+		.frets {
+			display: flex;
+			flex-direction: column;
+			margin: 0%;
+			padding: 0%;
+			height: fit-content;
+
+			.frets-dot {
+				font-size: 30px;
+				height: 20px;
+				width: $button-size * 2;
+				background: $gray-second;
+				line-height: 100%;
+				position: relative;
+				@include flex-center();
+				&:hover {
+					background: $gray-primary;
+					.frets-dot-text {
+						opacity: 0.6;
+						transform: translateX(-50%);
+					}
+				}
+
+				.frets-dot-text {
+					opacity: 0;
+					font-size: 12px;
+					font-weight: 700;
+					right: $button-margin * 2;
+					position: absolute;
+					transition: all 0.15s ease-in-out;
+				}
+			}
+
+			.frets-hidden {
+				height: 0px;
+				margin: 0px;
+			}
+		}
+	}
+}
+
+.point {
+	list-style-type: none;
+	width: $button-size * 2 !important;
+	@include flex-center(row);
+	@media (any-hover: hover) {
+		&:hover {
+			font-size: 18px;
+		}
+	}
+
+	.level {
+		opacity: 0.6;
+		font-size: 12px;
+		transform: translate(2px, 2px);
+	}
+
+	.level-dot {
+		line-height: 2px;
+	}
+
+	&.empty-point {
+		background: $gray-second !important;
+		cursor: auto;
+	}
+
+	&.interval-point {
+		flex-direction: column;
+	}
+
+	&.interval-point-reverse {
+		flex-direction: column-reverse;
+	}
+
+	&.tapped-point {
+		background: $blue-primary !important;
+	}
+}

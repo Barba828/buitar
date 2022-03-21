@@ -1,16 +1,18 @@
 import React from 'react'
-import { BoardController, GuitarBoard, SlideMenu } from '@/components'
-import { BoardProvider } from '@/components/guitar-board/board-provider'
+import { BoardContainer, MenuProvider, SlideMenu } from '@/components'
 import styles from './style.module.scss'
+import cx from 'classnames'
+import { FifthsCircle } from './components/fifths-circle'
 
 export const App = () => {
 	return (
 		<div className={styles.app}>
-			<BoardProvider>
-				<GuitarBoard />
-				<BoardController />
+			<MenuProvider>
 				<SlideMenu />
-			</BoardProvider>
+				<div className={cx(styles.board)}>
+					<BoardContainer />
+				</div>
+			</MenuProvider>
 		</div>
 	)
 }

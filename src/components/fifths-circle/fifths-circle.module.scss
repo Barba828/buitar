@@ -1,0 +1,7 @@
+.arc {
+	transition: stroke-dasharray 0.25s;
+	stroke: $gray-primary;
+	&:hover {
+		stroke: $yellow-primary;
+	}
+}

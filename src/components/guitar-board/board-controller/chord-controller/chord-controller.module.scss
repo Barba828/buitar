@@ -1,0 +1,52 @@
+%fill-center {
+	height: 100%;
+	@include flex-center;
+}
+
+.container {
+	display: flex;
+
+	.mode-item {
+		font-size: 24px;
+		text-transform: capitalize;
+		@extend %fill-center;
+
+		&::first-letter {
+			font-size: 32px;
+		}
+	}
+
+	.scale-item {
+		font-size: 36px;
+		@extend %fill-center;
+
+		.scale-item-mode {
+			font-size: 12px;
+			opacity: 0.8;
+			text-transform: capitalize;
+		}
+	}
+
+	.chord-item {
+		padding: 2px;
+		white-space: nowrap;
+		&-grade {
+			opacity: 0.8;
+			font-size: 12px;
+		}
+
+		&-note {
+			font-size: 22px;
+		}
+
+		&-tag {
+			font-size: 16px;
+		}
+
+		&-scale {
+			opacity: 0.8;
+			font-size: 10px;
+			white-space: nowrap;
+		}
+	}
+}

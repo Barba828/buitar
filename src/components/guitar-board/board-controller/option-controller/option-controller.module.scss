@@ -1,0 +1,28 @@
+.container {
+	display: flex;
+}
+
+.controller-inner {
+	white-space: nowrap;
+	display: flex;
+	flex-direction: column;
+	padding: 2px 6px;
+	:last-child {
+		margin-top: 10px;
+	}
+}
+
+.controller-inner-option {
+	.controller-inner-unchecked {
+		// font-size: 14px;
+		margin-top: 0px;
+		font-weight: 300;
+		transition: opacity 0.15s linear;
+		opacity: 0;
+	}
+	&:hover {
+		.controller-inner-unchecked {
+			opacity: 0.8;
+		}
+	}
+}

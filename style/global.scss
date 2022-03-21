@@ -8,18 +8,25 @@
 }
 
 :global(.buitar-primary-button) {
-	margin: 2px 2px;
-	border-radius: 2px;
+	margin: $button-margin;
+	border-radius: $button-margin;
 
-	width: 80px;
-	height: 40px;
+	width: $button-size;
+	height: $button-size;
 	background: $gray-primary;
-	transition: background-color 0.15s linear;
+	transition: all 0.15s linear;
+	overflow: hidden;
 	cursor: pointer;
 
-	&:hover {
-		background: $yellow-primary;
+	@media (any-hover: hover) {
+		&:hover {
+			background: $yellow-primary;
+		}
 	}
+}
+
+:global(.hidden) {
+	display: none;
 }
 
 :global(.icon) {

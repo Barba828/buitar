@@ -1,3 +1,4 @@
+import { Point } from 'to-guitar'
 import * as Tone from 'tone'
 import { PolySynth } from 'tone'
 import { Instrument } from './instrument.type'
@@ -16,8 +17,15 @@ export class TonePlayer {
 	private instrument: Instrument = 'default'
 	private duration: Tone.Unit.Time | Tone.Unit.Time[] = '2n'
 
-	constructor() {}
+	constructor(instrument?: Instrument) {
+		this.instrument = instrument || 'default'
+	}
 
+	/**
+	 * 设置乐器，会请求乐器音频文件
+	 * @param instrument
+	 * @returns
+	 */
 	public setInstrument(instrument: Instrument) {
 		this.instrument = instrument
 		if (instrument === 'default') {
@@ -26,7 +34,7 @@ export class TonePlayer {
 		}
 		this.sampler = new Tone.Sampler({
 			urls: instrumentConfig[instrument],
-			baseUrl: `${API_HOST}/static/samples/${instrument}/`,
+			baseUrl: `./static/samples/${instrument}/`,
 		}).toDestination()
 	}
 
@@ -54,5 +62,28 @@ export class TonePlayer {
 	 */
 	public triggerAttackRelease = (note: Parameters<typeof this.sampler.triggerAttackRelease>[0]) => {
 		this.sampler.triggerAttackRelease(note, this.duration)
+	}
+
+	/**
+	 * 播放to-guitar point 琶音
+	 * @param point
+	 */
+	public triggerPointArpeggio = (point: Point[]) => {
+		const notes = point.map(this.transPoint)
+		this.triggerAttackArpeggio(notes)
+	}
+
+	/**
+	 * 播放to-guitar point 音（1/2拍后自动释放）
+	 * @param point
+	 */
+	public triggerPointRelease = (point: Point | Point[]) => {
+		const tones = Array.isArray(point) ? point : [point]
+		const notes = tones.map(this.transPoint)
+		this.triggerAttackRelease(notes)
+	}
+
+	private transPoint = (point: Point): Tone.Unit.Frequency => {
+		return `${point.toneSchema.note}${point.toneSchema.level}`
 	}
 }
