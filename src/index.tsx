@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import { MenuProvider, SlideMenu } from '@/components'
 import { routeConfig } from '@/pages/router'
 import cx from 'classnames'
@@ -8,12 +8,12 @@ import styles from './style.module.scss'
 export const App = () => {
 	return (
 		<div className={styles.app}>
-			<BrowserRouter>
+			<HashRouter>
 				<MenuProvider>
 					<SlideMenu />
 					<Board />
 				</MenuProvider>
-			</BrowserRouter>
+			</HashRouter>
 		</div>
 	)
 }
