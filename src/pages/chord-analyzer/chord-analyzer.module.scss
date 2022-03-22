@@ -1,0 +1,23 @@
+.taped-container {
+	display: flex;
+	.svg-chord {
+		width: $button-size * 7 !important;
+		height: $button-size * 7 !important;
+		// background: $gray-second !important;
+	}
+
+	.fifth-circle {
+		width: $button-size * 7;
+		height: $button-size * 7;
+		// background: $gray-second !important;
+	}
+
+	.type-list {
+		display: flex;
+		flex-direction: column;
+		.type-item {
+			@include flex-center;
+			width: $button-size * 2;
+		}
+	}
+}

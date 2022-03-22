@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useMemo, useState } from 'react'
 import { Instrument } from '@/utils/tone-player/instrument.type'
 import { GuitarBoardOptions } from '../board-controller/controller.type'
-import { BoardOption, Point, Tone, transChordTaps } from 'to-guitar'
-import { Board } from 'to-guitar'
+import { Board, BoardOption, Point, Tone, transChordTaps } from 'to-guitar'
 import { TonePlayer } from '@/utils'
+import { useStore } from '@/utils/hooks/use-store'
+import { OPTIONS_KEY, INSTRUMENT_KEY } from '../board-controller'
 
 /**
  * 吉他指板默认配置
@@ -48,16 +49,16 @@ type BoardContextType = {
 	// 指板内容
 	guitarBoardOption: Partial<BoardOption>
 	boardOptions: GuitarBoardOptions // 显示设置
-	setBoardOptions: SetState<GuitarBoardOptions>
+	dispatchBoardOptions: Dispatch<GuitarBoardOptions>
 	instrument: Instrument // 乐器设置
-	setInstrument: SetState<Instrument>
+	dispatchInstrument: Dispatch<Instrument>
 
 	// 乐理内容
 	chord: Tone[] // 大调音阶和弦
 	setChord: SetState<Tone[]>
 	chordTaps: ReturnType<typeof transChordTaps> | null // 音阶和弦指位列表
 	setChordTaps: SetState<ReturnType<typeof transChordTaps> | null>
-	taps: Point[] // 指位点列表
+	taps: Point[] // 指板选中Point
 	setTaps: SetState<Point[]>
 }
 const BoardContext = React.createContext<BoardContextType>({} as any)
@@ -69,8 +70,11 @@ export const useBoardContext = () => React.useContext(BoardContext)
 
 export const BoardProvider: FC = (props) => {
 	const [guitarBoardOption, setGuitarBoardOption] = useState<Partial<BoardOption>>({})
-	const [boardOptions, setBoardOptions] = useState<GuitarBoardOptions>(defaultBoardOptions)
-	const [instrument, setInstrument] = useState<Instrument>(defaultInstrument)
+	const [boardOptions, dispatchBoardOptions] = useStore<GuitarBoardOptions>(
+		OPTIONS_KEY,
+		defaultBoardOptions
+	)
+	const [instrument, dispatchInstrument] = useStore<Instrument>(INSTRUMENT_KEY, defaultInstrument)
 	const [chord, setChord] = useState<Tone[]>([])
 	const [chordTaps, setChordTaps] = useState<ReturnType<typeof transChordTaps> | null>(null)
 	const [taps, setTaps] = useState<Point[]>([])
@@ -85,40 +89,25 @@ export const BoardProvider: FC = (props) => {
 		return _board
 	}, [setGuitarBoardOption])
 
-	// 指板更新：清除和弦指位列表
-	useEffect(() => {
-		setChordTaps(null)
-	}, [guitarBoardOption])
-
-	// 切换和弦：更新指板图列表
-	useEffect(() => {
-		setChordTaps(transChordTaps(chord))
-	}, [chord])
-
-	// 切换指板图：更新Taps指位
-	useEffect(() => {
-		setTaps([])
-	}, [chord, chordTaps])
-
 	// 切换乐器：加载乐器音源
 	useEffect(() => {
-		player.setInstrument(instrument)
+		player.dispatchInstrument(instrument)
 	}, [instrument])
 
 	const boardValue = {
+		player,
+		guitar,
 		guitarBoardOption,
 		boardOptions,
-		setBoardOptions,
+		dispatchBoardOptions,
 		instrument,
-		setInstrument,
+		dispatchInstrument,
 		chord,
 		setChord,
 		chordTaps,
 		setChordTaps,
 		taps,
 		setTaps,
-		player,
-		guitar,
 	}
 	return <BoardContext.Provider value={boardValue}>{props.children}</BoardContext.Provider>
 }

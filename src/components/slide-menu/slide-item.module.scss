@@ -39,10 +39,13 @@ $side-width: 60px;
 		}
 
 		&-item {
+			color: $white-01;
 			font-size: 18px;
 			font-weight: 300;
 			padding: 8px;
 			cursor: pointer;
+			text-decoration: none;
+			display: block;
 			transition: all 0.15s linear;
 			&:hover {
 				font-weight: 400;
@@ -51,9 +54,6 @@ $side-width: 60px;
 		}
 
 		&-item-checked {
-			border-left-color: $yellow-primary;
-			border-left-style: solid;
-			border-left-width: 5px;
 			background-color: $yellow-primary;
 		}
 	}

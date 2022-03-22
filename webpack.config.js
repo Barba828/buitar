@@ -101,6 +101,7 @@ module.exports = {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 		},
+		historyApiFallback: true,
 	},
 	devtool: 'source-map',
 }

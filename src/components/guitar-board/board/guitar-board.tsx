@@ -3,6 +3,7 @@ import type { Point, ToneSchema } from 'to-guitar'
 import { useBoardContext } from '../board-provider'
 import { getBoardOptionsTone } from '../utils'
 import { GuitarBoardOptions } from '../board-controller/controller.type'
+import { BoardController } from '@/components'
 import cx from 'classnames'
 import styles from './guitar-board.module.scss'
 
@@ -13,7 +14,7 @@ interface GuitarBoardProps {
 
 const FRET_DOT = [, , '·', , '·', , '·', , '·', , , '··', , , , '·']
 
-export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [0, 15], ...boardButtonProps }) => {
+export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 15], onClickPoint }) => {
 	const {
 		guitarBoardOption: { keyboard },
 		boardOptions: { hasTag },
@@ -23,21 +24,14 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [0, 15], ...boardBut
 		return null
 	}
 
-	const board: Point[][] = []
-	keyboard.forEach((string, stringIndex) => {
-		string.forEach((point, fretIndex) => {
-			if (board[fretIndex]) {
-				board[fretIndex][stringIndex] = point
-			} else {
-				board[fretIndex] = [point]
-			}
-		})
-	})
+	const board = exchangeBoardArray(keyboard)
 
-	const boardView = board.slice(1).map((frets, fretIndex) => {
+	const boardView = board.slice(range[0], range[1]).map((frets, fretIndex) => {
 		const fretsView = frets
 			.reverse()
-			.map((point, stringIndex) => <BoardButton point={point} key={stringIndex} />)
+			.map((point, stringIndex) => (
+				<BoardButton key={stringIndex} point={point} onClickPoint={onClickPoint} />
+			))
 
 		const dotsView = (
 			<div
@@ -62,7 +56,9 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [0, 15], ...boardBut
 	const zeroView = board.slice(0, 1).map((frets, fretIndex) => {
 		const fretsView = frets
 			.reverse()
-			.map((point, stringIndex) => <BoardButton point={point} key={stringIndex} />)
+			.map((point, stringIndex) => (
+				<BoardButton key={stringIndex} point={point} onClickPoint={onClickPoint} />
+			))
 
 		return (
 			<ul className={cx(styles.frets, styles['frets-zero'])} key={fretIndex}>
@@ -72,13 +68,16 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [0, 15], ...boardBut
 	})
 
 	return (
-		<div className={cx(styles.board)}>
-			<div className={styles['board-view']}>{zeroView}</div>
+		<>
+			<div className={cx(styles.board)}>
+				<div className={styles['board-view']}>{zeroView}</div>
 
-			<div className={'scroll-without-bar'}>
-				<div className={styles['board-view']}>{boardView}</div>
+				<div className={'scroll-without-bar'}>
+					<div className={styles['board-view']}>{boardView}</div>
+				</div>
 			</div>
-		</div>
+			<BoardController />
+		</>
 	)
 }
 
@@ -96,6 +95,8 @@ const BoardButton = ({
 	const tone = getBoardOptionsTone(point.toneSchema, boardOptions, !tapped)
 	// 显示八度音高
 	const level = tone && getLevel(point.toneSchema, boardOptions)
+	// // 选中按钮
+	// const checked = checkedPoints.includes(point)
 
 	const cls = cx(
 		'buitar-primary-button',
@@ -113,7 +114,7 @@ const BoardButton = ({
 	const handleClick = () => {
 		player.triggerPointRelease(point)
 		onClickPoint?.(point)
-		console.info('[point]', point)
+		// console.info('[point]', point)
 	}
 
 	return (
@@ -140,4 +141,18 @@ const getLevel = (toneSchema: ToneSchema, boardOptions: GuitarBoardOptions) => {
 	return (
 		<span className={styles['level-dot']}>{new Array(Math.abs(level - 3)).fill('·').join('')}</span>
 	)
+}
+
+const exchangeBoardArray = (keyboard: Point[][]) => {
+	const board: Point[][] = []
+	keyboard.forEach((string, stringIndex) => {
+		string.forEach((point, fretIndex) => {
+			if (board[fretIndex]) {
+				board[fretIndex][stringIndex] = point
+			} else {
+				board[fretIndex] = [point]
+			}
+		})
+	})
+	return board
 }

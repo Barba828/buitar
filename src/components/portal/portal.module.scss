@@ -1,0 +1,37 @@
+.menu-container {
+	position: relative;
+	display: inline-flex;
+}
+
+.menu-portal {
+	position: absolute;
+	opacity: 0;
+	display: none;
+	transform: translateY(20px);
+	transition: 0.3s;
+}
+
+.show {
+	display: block;
+	animation: show 0.25s forwards;
+}
+
+.hide {
+	opacity: 1;
+	transform: translateY(0);
+	animation: hide 0.25s forwards;
+}
+@keyframes show {
+	to {
+		display: block;
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+@keyframes hide {
+	to {
+		display: none;
+		opacity: 0;
+		transform: translateY(20px);
+	}
+}

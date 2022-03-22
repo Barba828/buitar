@@ -12,6 +12,9 @@ export interface ControllerProps {
 	disableAnimation?: boolean
 }
 
+export const OPTIONS_KEY = 'options'
+export const INSTRUMENT_KEY = 'instrument'
+
 export const BoardController: FC<ControllerProps> = (props) => {
 	return (
 		<div className={styles['container']}>
@@ -27,10 +30,13 @@ export const BoardController: FC<ControllerProps> = (props) => {
  * @returns
  */
 export const BoardOptionsController: FC<ControllerProps> = (props) => {
-	const { boardOptions, setBoardOptions } = useBoardContext()
+	const { boardOptions, dispatchBoardOptions } = useBoardContext()
 
 	const handleClick = (option: keyof GuitarBoardOptions) => {
-		setBoardOptions({ ...boardOptions, [option]: !boardOptions[option] })
+		dispatchBoardOptions({
+			type: 'set',
+			payload: { ...boardOptions, [option]: !boardOptions[option] },
+		})
 	}
 
 	const renderOptionItem = (option: keyof GuitarBoardOptions) => {
@@ -71,7 +77,7 @@ export const BoardOptionsController: FC<ControllerProps> = (props) => {
  * @returns
  */
 export const BoardInstrumentController: FC<ControllerProps> = (props) => {
-	const { instrument, setInstrument } = useBoardContext()
+	const { instrument, dispatchInstrument } = useBoardContext()
 
 	const renderInstrumentItem = (instrument: Instrument) => {
 		return (
@@ -82,11 +88,15 @@ export const BoardInstrumentController: FC<ControllerProps> = (props) => {
 		)
 	}
 
+	const handleClick = (instrument: Instrument) => {
+		dispatchInstrument({ type: 'set', payload: instrument })
+	}
+
 	return (
 		<ControllerList
 			{...props}
 			list={Object.keys(instrumentConfig) as Instrument[]}
-			onClickItem={setInstrument}
+			onClickItem={handleClick}
 			checkedItem={(item) => item === instrument}
 			renderListItem={renderInstrumentItem}
 		/>

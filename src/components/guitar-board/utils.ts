@@ -34,6 +34,16 @@ export const getBoardOptionsTone = (
 }
 
 /**
+ * 根据指板设置获取 Note 值
+ * @param tone
+ * @param options
+ * @returns
+ */
+export const getBoardOptionsNote = (tone: ToneSchema, options: GuitarBoardOptions) => {
+	return options.isSharpSemitone ? tone.note : tone.noteFalling
+}
+
+/**
  * 根据指板设置获取 Tone 类型
  * @param options
  * @returns

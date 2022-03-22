@@ -20,7 +20,8 @@
 
 	@media (any-hover: hover) {
 		&:hover {
-			background: $yellow-primary;
+			// background: $yellow-primary;
+			background: $gray-second;
 		}
 	}
 }

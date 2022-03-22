@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
-import { Note, NOTE_LIST, transFifthsCircle } from 'to-guitar'
-import { useBoardContext } from '..'
-import { getBoardOptionsTone, getBoardOptionsToneType } from '../guitar-board/utils'
+import { transFifthsCircle } from 'to-guitar'
+import { getBoardOptionsToneType } from '../guitar-board/utils'
+import { useBoardContext } from '../index'
 
 import styles from './fifths-circle.module.scss'
 
@@ -22,7 +22,11 @@ const angle = [
 	(-Math.PI * 2) / 3,
 ]
 
-export const FifthsCircle: FC<{ size?: number; thin?: number }> = ({ size = 400, thin = 60 }) => {
+export const FifthsCircle: FC<{ size?: number; thin?: number; [x: string]: any }> = ({
+	size = 400,
+	thin = 60,
+	...props
+}) => {
 	const { boardOptions } = useBoardContext()
 	const toneType = getBoardOptionsToneType(boardOptions)
 	const cx = size >> 1
@@ -36,6 +40,7 @@ export const FifthsCircle: FC<{ size?: number; thin?: number }> = ({ size = 400,
 			width={size}
 			height={size}
 			viewBox={`0 0 ${size} ${size}`}
+			{...props}
 		>
 			<Arc cx={cx} cy={cy} cr={cr} thin={thin} className={styles.arc}></Arc>
 			<Arc cx={cx} cy={cy} cr={cr - thin - 2} thin={thin} className={styles.arc}></Arc>
@@ -45,7 +50,7 @@ export const FifthsCircle: FC<{ size?: number; thin?: number }> = ({ size = 400,
 				cr={cr - thin / 2}
 				list={outerCircle}
 				fill="#eeea"
-				style={{ fontSize: 30 }}
+				style={{ fontSize: size / 12 }}
 			/>
 
 			<Text
@@ -54,7 +59,7 @@ export const FifthsCircle: FC<{ size?: number; thin?: number }> = ({ size = 400,
 				cr={cr - (thin * 3) / 2}
 				list={innerCircle}
 				fill="#eee9"
-				style={{ fontSize: 24 }}
+				style={{ fontSize: size / 18 }}
 			/>
 		</svg>
 	)

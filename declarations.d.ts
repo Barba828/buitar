@@ -22,3 +22,8 @@ declare module '*.mp3'
 declare module '*.wav'
 
 declare type SetState<T> = React.Dispatch<React.SetStateAction<T>>
+
+declare type Dispatch<T> = React.Dispatch<{
+	type: 'set' | 'init' | 'reset'
+	payload: T
+}>
