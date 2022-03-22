@@ -34,7 +34,7 @@ export class TonePlayer {
 		}
 		this.sampler = new Tone.Sampler({
 			urls: instrumentConfig[instrument],
-			baseUrl: `./static/samples/${instrument}/`,
+			baseUrl: `static/samples/${instrument}/`,
 		}).toDestination()
 	}
 
