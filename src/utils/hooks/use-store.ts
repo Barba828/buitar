@@ -27,10 +27,10 @@ export const useStore = <T>(key: string, defaultValue: T) => {
 	) => {
 		switch (action.type) {
 			case 'set':
-				let value = defaultValue
+				let value = action.payload
 				if (Array.isArray(state)) {
 					value = new Object(action.payload) as T
-				} else {
+				} else if (typeof state === 'object') {
 					value = { ...state, ...action.payload }
 				}
 				storage.setItem(key, JSON.stringify(value))
@@ -40,7 +40,7 @@ export const useStore = <T>(key: string, defaultValue: T) => {
 			case 'reset':
 				return reset()
 			default:
-				return new Object(action.payload) as T
+				return action.payload
 		}
 	}
 

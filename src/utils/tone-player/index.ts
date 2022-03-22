@@ -26,7 +26,7 @@ export class TonePlayer {
 	 * @param instrument
 	 * @returns
 	 */
-	public setInstrument(instrument: Instrument) {
+	public dispatchInstrument(instrument: Instrument) {
 		this.instrument = instrument
 		if (instrument === 'default') {
 			this.sampler = new Tone.PolySynth(Tone.Synth).toDestination()
