@@ -11,18 +11,20 @@ export const SlideMenu = () => {
 	const { menus, dispatchMenus } = useMenuContext()
 	const { pathname } = useLocation()
 
-	const links = routeConfig.map((route) => (
-		<Link
-			to={route.path}
-			key={route.path}
-			className={cx(
-				styles['slide-menu-tab-item'],
-				pathname === route.path && styles['slide-menu-tab-item-checked']
-			)}
-		>
-			{route.name_zh}
-		</Link>
-	))
+	const links = routeConfig
+		.filter((route) => route.type === 'menu')
+		.map((route) => (
+			<Link
+				to={route.path}
+				key={route.path}
+				className={cx(
+					styles['slide-menu-tab-item'],
+					pathname === route.path && styles['slide-menu-tab-item-checked']
+				)}
+			>
+				{route.name_zh}
+			</Link>
+		))
 
 	const options = Object.keys(menus).map((title, index) => {
 		const value = typeof menus[title] === 'boolean' && menus[title]
@@ -42,13 +44,19 @@ export const SlideMenu = () => {
 		)
 	})
 
+	const header = (
+		<Link to="/" className={cx(styles['slide-menu-tab-title'])}>
+			Buitar
+		</Link>
+	)
+
 	return (
 		<div className={styles['slide-menu']}>
 			<div className={styles['slide-menu-bar']}>
 				<Icon name="icon-option" size={26} className={styles['slide-menu-bar-icon']} />
 			</div>
 			<div className={styles['slide-menu-tab']}>
-				<p className={styles['slide-menu-tab-title']}>Buitar</p>
+				{header}
 				{links}
 				{options}
 			</div>

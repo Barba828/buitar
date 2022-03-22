@@ -1,0 +1,51 @@
+.container {
+	padding-top: 80px;
+	padding-bottom: 120px;
+	.title {
+		font-size: 80px;
+		opacity: 0.9;
+		margin-bottom: 0px;
+	}
+
+	.subtitle {
+		font-size: 40px;
+		opacity: 0.7;
+		margin-top: 0px;
+	}
+
+	.links {
+		display: flex;
+
+		.links-button {
+			font-weight: 300;
+			font-size: 18px;
+			width: $button-size * 4;
+			height: $button-size * 1.5;
+			text-decoration: none;
+			color: $white-01;
+			@include flex-center;
+			&:hover {
+				background-color: $yellow-primary;
+			}
+		}
+	}
+
+	.intro {
+		font-size: 18px;
+		font-weight: 300;
+		letter-spacing: 0.5px;
+		opacity: 0.8;
+		span {
+			display: block;
+		}
+	}
+
+	.example {
+		font-size: 18px;
+		font-weight: 300;
+		letter-spacing: 0.5px;
+		margin-top: 120px;
+		margin-bottom: 20px;
+		opacity: 0.7;
+	}
+}

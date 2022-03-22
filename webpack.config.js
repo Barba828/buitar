@@ -1,8 +1,8 @@
 const path = require('path')
-
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
+const isDocs = process.env.NODE_OUT === 'docs'
 
 module.exports = {
 	mode: isProduction ? 'production' : 'development',
@@ -82,7 +82,7 @@ module.exports = {
 	},
 	output: {
 		filename: '[name].[chunkhash:6].js',
-		path: path.resolve(__dirname, 'docs'),
+		path: path.resolve(__dirname, isDocs ? 'docs' : 'dist'),
 	},
 	plugins: [
 		new HtmlWebpackPlugin({

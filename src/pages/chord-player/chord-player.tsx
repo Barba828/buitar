@@ -6,6 +6,7 @@ import {
 	ChordCard,
 	BoardProvider,
 	useBoardContext,
+	BoardController,
 } from '@/components/guitar-board'
 import { transChordTaps } from 'to-guitar'
 
@@ -39,6 +40,7 @@ const ChordPlayerInner = () => {
 			<ChordController />
 			<ChordTapsController />
 			<GuitarBoard />
+			<BoardController />
 			<ChordCard />
 		</>
 	)

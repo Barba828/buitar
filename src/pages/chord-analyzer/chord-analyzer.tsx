@@ -5,6 +5,7 @@ import {
 	BoardProvider,
 	useBoardContext,
 	getChordName,
+	BoardController,
 } from '@/components/guitar-board'
 import { FifthsCircle } from '@/components/fifths-circle'
 import cx from 'classnames'
@@ -16,6 +17,8 @@ export const ChordAnalyzer = () => {
 	return (
 		<BoardProvider>
 			<TapedGuitarBoard />
+			<BoardController />
+
 			<TapedChordCard />
 		</BoardProvider>
 	)

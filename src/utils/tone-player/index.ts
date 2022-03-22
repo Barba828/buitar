@@ -7,6 +7,7 @@ import { instrumentConfig } from './tone.config'
 require('~/samples/index')
 
 const API_HOST = 'http://localhost:8282'
+
 /**
  * 推断函数入参类型
  */

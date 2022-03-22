@@ -2,6 +2,7 @@
 import React, { FC } from 'react'
 import cx from 'classnames'
 
+require('./iconfont.js')
 interface IconProps {
 	name: string
 	size?: number

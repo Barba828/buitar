@@ -34,8 +34,10 @@ $side-width: 60px;
 		white-space: nowrap;
 
 		&-title {
-			font-size: 40px;
+			font-size: 40px !important;
 			margin: 6px 0px;
+			text-decoration: none;
+			color: $white-01;
 		}
 
 		&-item {

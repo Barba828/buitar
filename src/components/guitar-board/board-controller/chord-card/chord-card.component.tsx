@@ -10,10 +10,11 @@ import { ChordType } from 'to-guitar'
 import { GuitarBoardOptions } from '../controller.type'
 
 export const ChordCard: FC<{
+	title?: string
 	className?: string
 	size?: number
 	extra?: JSX.Element | JSX.Element[]
-}> = ({ className, size = 160, extra }) => {
+}> = ({ title, className, size = 160, extra }) => {
 	const { taps, player } = useBoardContext()
 
 	const cls = cx(
@@ -32,11 +33,12 @@ export const ChordCard: FC<{
 		player.triggerPointRelease(taps)
 	}
 
-	const title = useChordName(0)
+	const chordName = useChordName(0)
+	const chordTitle = title || chordName
 
 	const card = (
 		<div onClick={handleClick} className={cls}>
-			<SvgChord points={transToSvgPoints(taps)} size={size} title={title} />
+			<SvgChord points={transToSvgPoints(taps)} size={size} title={chordTitle} />
 			<div className={styles['chord-card-dot']} />
 			<div className={styles['chord-card-icons']}>
 				<div className={styles['chord-card-sounds']} onClick={handleSoundClick}>

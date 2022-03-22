@@ -76,7 +76,6 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 15], onClickPoin
 					<div className={styles['board-view']}>{boardView}</div>
 				</div>
 			</div>
-			<BoardController />
 		</>
 	)
 }
@@ -114,7 +113,7 @@ const BoardButton = ({
 	const handleClick = () => {
 		player.triggerPointRelease(point)
 		onClickPoint?.(point)
-		// console.info('[point]', point)
+		console.info('[point]', point)
 	}
 
 	return (
