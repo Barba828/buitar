@@ -70,10 +70,31 @@ export const useChordName = (index: number = 0) => {
 	}, [chordTaps?.chordType])
 }
 
-export const getChordName = (chordType: ChordType, boardOptions: GuitarBoardOptions) => {
+/**
+ * 根据 chordType 获取和弦名称
+ * @param chordType
+ * @param boardOptions
+ * @returns
+ */
+export const getChordName = (
+	chordType: ChordType,
+	boardOptions?: Pick<GuitarBoardOptions, 'isSharpSemitone'>
+) => {
+	// 自定义名称直接返回
+	if (chordType.tag === '*') {
+		return chordType.name
+	}
+
+	// 根据 tone 获取和弦名称
 	if (!chordType.tone) return ' '
-	const tone = getBoardOptionsNote(chordType.tone, boardOptions)
-	const over = chordType.over ? getBoardOptionsNote(chordType.over, boardOptions) : ''
+	const tone = boardOptions
+		? getBoardOptionsNote(chordType.tone, boardOptions)
+		: chordType.tone.note
+	const over = chordType.over
+		? boardOptions
+			? getBoardOptionsNote(chordType.over, boardOptions)
+			: chordType.over.note
+		: ''
 	const tag = chordType.tag
 	if (over === tone) {
 		return `${tone}${tag}`

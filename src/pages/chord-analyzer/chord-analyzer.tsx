@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import {
 	GuitarBoard,
 	ChordCard,
@@ -8,17 +8,17 @@ import {
 	BoardController,
 } from '@/components/guitar-board'
 import { FifthsCircle } from '@/components/fifths-circle'
+import { Point, Note, transChordType, ToneSchema, ChordType } from 'to-guitar'
 import cx from 'classnames'
 
 import styles from './chord-analyzer.module.scss'
-import { Point, Note, transChordType, ChordType } from 'to-guitar'
+import { Icon } from '@/components'
 
 export const ChordAnalyzer = () => {
 	return (
 		<BoardProvider>
 			<TapedGuitarBoard />
 			<BoardController />
-
 			<TapedChordCard />
 		</BoardProvider>
 	)
@@ -54,7 +54,8 @@ const TapedGuitarBoard = () => {
 }
 
 const TapedChordCard = () => {
-	const { chordTaps, setChordTaps, boardOptions } = useBoardContext()
+	const { taps, chordTaps, setChordTaps, boardOptions, setEmphasison, guitarBoardOption } =
+		useBoardContext()
 
 	const changeChordTapName = (index: number) => {
 		if (!chordTaps?.chordType) {
@@ -67,9 +68,31 @@ const TapedChordCard = () => {
 		setChordTaps({ ...chordTaps, chordType })
 	}
 
-	let extra
+	const addChordTapName = (name: string) => {
+		let type: ChordType = {
+			tag: '*',
+			name: name,
+			name_zh: '',
+		}
+		if (chordTaps?.chordType) {
+			type = { ...chordTaps.chordType[0], ...type }
+		} else if (taps) {
+			const tone = taps.sort((a, b) => a.index - b.index)[0].toneSchema
+			type.tone = tone
+		}
+
+		setChordTaps({
+			chordList: [],
+			chordType: chordTaps?.chordType ? [type, ...chordTaps?.chordType] : [type],
+		})
+	}
+
+	/**
+	 * 设置和弦多名称展示
+	 */
+	const extra: JSX.Element[] = []
 	if (chordTaps?.chordType && chordTaps.chordType.length > 1) {
-		extra = chordTaps.chordType.slice(1).map((chordType, index) => {
+		const names = chordTaps.chordType.slice(1).map((chordType, index) => {
 			return (
 				<div
 					onClick={() => {
@@ -82,25 +105,96 @@ const TapedChordCard = () => {
 				</div>
 			)
 		})
-		extra.push(
-			<div
-				key="self"
-				onClick={() => {}}
-				className={cx('buitar-primary-button', styles['type-item'])}
-			>
-				自定义
-			</div>
-		)
+		extra.push(...names)
 	}
+
+	extra.push(<AddTextInput key="add-text-input" onConfirm={addChordTapName} />)
+
+	/**
+	 * 根据五度圈，设置指板强调按钮
+	 * @param tone
+	 * @returns
+	 */
+	const handleClickFifths = ({ tone }: { tone: ToneSchema }) => {
+		if (!guitarBoardOption.keyboard) {
+			return
+		}
+		if (!tone) {
+			setEmphasison([])
+			return
+		}
+
+		const emphasison: Point[] = []
+		guitarBoardOption.keyboard.forEach((string) => {
+			string.forEach((point) => {
+				if (point.toneSchema.note === tone.note) {
+					emphasison.push(point)
+				}
+			})
+		})
+		setEmphasison(emphasison)
+	}
+
 	return (
 		<div className={styles['taped-container']}>
-			{/* <FifthsCircle
-				size={300}
-				thin={50}
+			<FifthsCircle
+				size={280}
+				thin={70}
+				minor={false}
+				onClick={handleClickFifths}
 				className={cx('buitar-primary-button', styles['fifth-circle'])}
-			/> */}
+			/>
 			<ChordCard size={200} className={styles['svg-chord']} />
 			<div className={styles['type-list']}>{extra}</div>
 		</div>
 	)
+}
+
+const AddTextInput: FC<{ onConfirm?: (text: string) => void }> = ({ onConfirm }) => {
+	const [isInput, setIsInput] = useState<boolean>(false)
+	const [name, setName] = useState<string>('')
+
+	const handleClick = () => {
+		setIsInput(!isInput)
+	}
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setName(e.target.value)
+	}
+
+	const handleConfirm = () => {
+		setIsInput(false)
+		onConfirm?.(name)
+	}
+
+	const add = (
+		<div onClick={handleClick} className={cx('buitar-primary-button', styles['type-item'])}>
+			<Icon name="icon-add" />
+		</div>
+	)
+
+	const input = (
+		<>
+			<input
+				placeholder="C..."
+				onChange={handleChange}
+				className={cx('buitar-primary-button', styles['type-input'])}
+			></input>
+			<div className={cx(styles['type-input-controller'])}>
+				<div
+					onClick={handleClick}
+					className={cx('buitar-primary-button', styles['type-input-item'])}
+				>
+					<Icon name="icon-back" size={12} />
+				</div>
+				<div
+					onClick={handleConfirm}
+					className={cx('buitar-primary-button', styles['type-input-item'])}
+				>
+					<Icon name="icon-confirm" size={14} />
+				</div>
+			</div>
+		</>
+	)
+	return isInput ? input : add
 }

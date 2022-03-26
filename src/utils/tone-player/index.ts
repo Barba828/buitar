@@ -5,13 +5,18 @@ import { Instrument } from './instrument.type'
 import { instrumentConfig } from './tone.config'
 
 require('~/samples/index')
+window.Tone = Tone
+/**
+ * time
+ * 1m: 一个小节
+ * 2n: 二分音符
+ * 4n: 八分音符
+ * 8t: 八分音符三连音
+ * Tone.Transport.bpm = 120 节拍
+ * Tone.Transport.timeSignature = 3 拍数（3/4拍）
+ */
 
 const API_HOST = 'http://localhost:8282'
-
-/**
- * 推断函数入参类型
- */
-type GetType<T> = T extends (arg: infer P) => void ? P : string
 
 export class TonePlayer {
 	private sampler: Tone.Sampler | PolySynth = new Tone.PolySynth(Tone.Synth).toDestination()
@@ -29,18 +34,25 @@ export class TonePlayer {
 	 */
 	public dispatchInstrument(instrument: Instrument) {
 		this.instrument = instrument
+		// 默认使用 复音合成器 播放
 		if (instrument === 'default') {
 			this.sampler = new Tone.PolySynth(Tone.Synth).toDestination()
-			return
+			return Promise.resolve()
 		}
+		// 选择乐器使用 取样器 播放
 		this.sampler = new Tone.Sampler({
 			urls: instrumentConfig[instrument],
 			baseUrl: `static/samples/${instrument}/`,
 		}).toDestination()
+		return Tone.loaded()
 	}
 
 	public getInstrument() {
 		return this.instrument
+	}
+
+	public getSampler() {
+		return this.sampler
 	}
 
 	/**
@@ -61,8 +73,12 @@ export class TonePlayer {
 	 * 播放声音，默认1/2拍后自动释放
 	 * @param note Tone音值 | Tone音值[]
 	 */
-	public triggerAttackRelease = (note: Parameters<typeof this.sampler.triggerAttackRelease>[0]) => {
-		this.sampler.triggerAttackRelease(note, this.duration)
+	public triggerAttackRelease = (
+		note: Parameters<typeof this.sampler.triggerAttackRelease>[0],
+		duration?: Parameters<typeof this.sampler.triggerAttackRelease>[1],
+		time?: Parameters<typeof this.sampler.triggerAttackRelease>[2]
+	) => {
+		this.sampler.triggerAttackRelease(note, duration || this.duration, time)
 	}
 
 	/**

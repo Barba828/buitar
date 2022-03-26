@@ -23,7 +23,7 @@ const Board = () => {
 		<Route key={route.path} path={route.path} element={<route.Component />} />
 	))
 	return (
-		<div className={cx(styles.board)}>
+		<div id="board" className={cx(styles.board)}>
 			<Routes>{routes}</Routes>
 		</div>
 	)

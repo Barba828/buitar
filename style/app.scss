@@ -12,15 +12,26 @@ $yellow-primary: rgb(199, 156, 15);
 $yellow-second: rgb(168, 131, 7);
 
 $blue-primary: rgb(15, 145, 224);
+$blue-second: rgb(62, 148, 202);
+$blue-third: rgb(47, 120, 165);
 
 $white-01: rgb(232, 230, 227);
 
-$button-size: 40px;
-$button-margin: 2px;
+$button-size: 40;
+$button-margin: 2;
 
 @mixin flex-center($direction: column) {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: $direction;
+}
+
+:export {
+	button_size: $button-size;
+	button_margin: $button-margin;
+
+	gray_primary: $gray-primary;
+	gray_second: $gray-second;
+	yellow_primary: $yellow-primary;
 }

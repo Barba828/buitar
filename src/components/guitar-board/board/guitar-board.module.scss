@@ -109,4 +109,8 @@
 	&.tapped-point {
 		background: $blue-primary !important;
 	}
+
+	&.emphasisoned-point {
+		background: $yellow-primary;
+	}
 }

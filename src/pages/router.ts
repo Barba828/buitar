@@ -1,5 +1,6 @@
 import { ChordAnalyzer } from './chord-analyzer'
 import { ChordPlayer } from './chord-player'
+import { ChordProgressions } from './chord-progressions'
 import { HomePage } from './home'
 
 export const routeConfig = [
@@ -24,7 +25,13 @@ export const routeConfig = [
 		type: 'menu',
 		Component: ChordAnalyzer,
 	},
+	{
+		name_zh: '和弦进行',
+		name_en: 'Chord Progressions',
+		path: '/progressions',
+		type: 'menu',
+		Component: ChordProgressions,
+	},
 	// 'Chord Analyzer': true, // 和弦编辑
-	// 'Chord Progressions': true, // 和弦进行
 	// 'Chord Collection': true, // 收藏
 ]

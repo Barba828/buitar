@@ -39,7 +39,10 @@ export const getBoardOptionsTone = (
  * @param options
  * @returns
  */
-export const getBoardOptionsNote = (tone: ToneSchema, options: GuitarBoardOptions) => {
+export const getBoardOptionsNote = (
+	tone: ToneSchema,
+	options: Pick<GuitarBoardOptions, 'isSharpSemitone'>
+) => {
 	return options.isSharpSemitone ? tone.note : tone.noteFalling
 }
 
@@ -48,7 +51,9 @@ export const getBoardOptionsNote = (tone: ToneSchema, options: GuitarBoardOption
  * @param options
  * @returns
  */
-export const getBoardOptionsToneType = (options: GuitarBoardOptions): ToneTypeName => {
+export const getBoardOptionsToneType = (
+	options: Pick<GuitarBoardOptions, 'isSharpSemitone' | 'isNote'>
+): ToneTypeName => {
 	const { isSharpSemitone, isNote } = options
 	return isSharpSemitone
 		? isNote
@@ -64,7 +69,10 @@ export const getBoardOptionsToneType = (options: GuitarBoardOptions): ToneTypeNa
  * @param options
  * @returns
  */
-export const getBoardOptionsList = (options: GuitarBoardOptions, mode: ModeType = 'major') => {
+export const getBoardOptionsList = (
+	options: Pick<GuitarBoardOptions, 'isSharpSemitone' | 'isNote'>,
+	mode: ModeType = 'major'
+) => {
 	const { isSharpSemitone, isNote } = options
 
 	const list = isSharpSemitone

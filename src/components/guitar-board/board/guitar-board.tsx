@@ -85,9 +85,11 @@ const BoardButton = ({
 	itemClassName,
 	onClickPoint,
 }: { point: Point; itemClassName?: string } & GuitarBoardProps) => {
-	const { player, boardOptions, taps } = useBoardContext()
+	const { player, boardOptions, taps, emphasison } = useBoardContext()
 	const { hasLevel, isNote } = boardOptions
 
+	// 强调的point
+	const emphasisoned = emphasison.findIndex((tap) => tap.index === point.index) !== -1
 	// 被点击的point
 	const tapped = taps.findIndex((tap) => tap.index === point.index) !== -1
 	// 显示音调文本
@@ -106,13 +108,14 @@ const BoardButton = ({
 				: styles['interval-point']
 			: null,
 		tapped && styles['tapped-point'], // 被点击的point
+		emphasisoned && styles['emphasisoned-point'], // 被强调的point
 		styles['point'],
 		itemClassName
 	)
 
 	const handleClick = () => {
-		player.triggerPointRelease(point)
 		onClickPoint?.(point)
+		player.triggerPointRelease(point)
 		console.info('[point]', point)
 	}
 

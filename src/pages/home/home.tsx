@@ -1,17 +1,10 @@
 import React, { useEffect } from 'react'
-import {
-	ChordController,
-	ChordTapsController,
-	GuitarBoard,
-	ChordCard,
-	BoardProvider,
-	useBoardContext,
-} from '@/components/guitar-board'
+import { GuitarBoard, ChordCard, BoardProvider, useBoardContext } from '@/components/guitar-board'
 import { Link } from 'react-router-dom'
 
 import cx from 'classnames'
 import styles from './home.module.scss'
-import { Point } from 'to-guitar'
+import { Point, transChordType } from 'to-guitar'
 
 export const HomePage = () => {
 	return (
@@ -52,27 +45,28 @@ export const HomePage = () => {
 const GIndex = [3, 18, 32, 48, 64, 83]
 
 const Example = () => {
-	const { setTaps, guitarBoardOption } = useBoardContext()
+	const { setTaps, guitarBoardOption, setChordTaps } = useBoardContext()
 
 	if (!guitarBoardOption.keyboard) return null
 
-	const GChords: Point[] = []
-
+	const GChords = transChordType(['G', 'B', 'D'])
+	const GChordTaps: Point[] = []
 	guitarBoardOption.keyboard.forEach((string) => {
 		string.forEach((point) => {
 			if (GIndex.includes(point.index)) {
-				GChords.push(point)
+				GChordTaps.push(point)
 			}
 		})
 	})
 
 	useEffect(() => {
-		setTaps(GChords)
+		setTaps(GChordTaps)
+		setChordTaps({ chordType: GChords, chordList: [] })
 	}, [])
 	return (
 		<>
 			<GuitarBoard />
-			<ChordCard title="G" />
+			<ChordCard />
 		</>
 	)
 }

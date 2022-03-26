@@ -1,4 +1,7 @@
 export * from './guitar-board'
+export * from './guitar-player'
+export * from './sound-board'
+export * from './sequencer'
 export * from './slide-menu'
 export * from './portal'
 export * from './icon'

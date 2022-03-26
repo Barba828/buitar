@@ -1,7 +1,7 @@
 {
 	"name": "buitar",
 	"version": "0.0.1",
-	"description": "Guitar canvas utils",
+	"description": "Learning Guitar Web",
 	"main": "index.js",
 	"scripts": {
 		"dev": "NODE_ENV=development webpack-dev-server --config ./webpack.config.js",
@@ -39,7 +39,7 @@
 	},
 	"dependencies": {
 		"react-router-dom": "^6.2.2",
-		"to-guitar": "0.0.9",
+		"to-guitar": "0.0.11",
 		"tone": "^14.7.77"
 	}
 }

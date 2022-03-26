@@ -2,7 +2,8 @@ body {
 	background: $gray-01;
 	color: $white-01;
 	margin: 0px;
-	font-family: sans-serif;
+	font-family: 'Futura PT', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	user-select: none;
 }
 
 .app {
@@ -15,5 +16,13 @@ body {
 		height: 100%;
 		overflow-y: scroll;
 		padding-left: 16%;
+
+		> :first-child {
+			padding-top: 120px;
+		}
+
+		> :last-child {
+			padding-bottom: 120px;
+		}
 	}
 }

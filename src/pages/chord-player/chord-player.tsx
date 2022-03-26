@@ -28,7 +28,7 @@ const ChordPlayerInner = () => {
 
 	// 切换和弦：更新指板图列表
 	useEffect(() => {
-		setChordTaps(transChordTaps(chord))
+		setChordTaps(transChordTaps(chord, guitarBoardOption.keyboard))
 	}, [chord])
 
 	// 切换指板图：更新Taps指位

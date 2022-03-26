@@ -8,11 +8,11 @@
 }
 
 :global(.buitar-primary-button) {
-	margin: $button-margin;
-	border-radius: $button-margin;
+	margin: $button-margin + px;
+	border-radius: $button-margin + px;
 
-	width: $button-size;
-	height: $button-size;
+	width: $button-size + px;
+	height: $button-size + px;
 	background: $gray-primary;
 	transition: all 0.15s linear;
 	overflow: hidden;
@@ -20,7 +20,6 @@
 
 	@media (any-hover: hover) {
 		&:hover {
-			// background: $yellow-primary;
 			background: $gray-second;
 		}
 	}

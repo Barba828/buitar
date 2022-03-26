@@ -1,23 +1,46 @@
 .taped-container {
 	display: flex;
 	.svg-chord {
-		width: $button-size * 7 !important;
-		height: $button-size * 7 !important;
+		width: $button-size * 6 !important;
+		height: $button-size * 6 !important;
 		// background: $gray-second !important;
 	}
 
 	.fifth-circle {
-		width: $button-size * 7;
-		height: $button-size * 7;
-		// background: $gray-second !important;
+		width: $button-size * 6;
+		height: $button-size * 6;
+		background: $gray-second !important;
 	}
 
 	.type-list {
 		display: flex;
 		flex-direction: column;
-		.type-item {
-			@include flex-center;
-			width: $button-size * 2;
-		}
+	}
+}
+
+.type-item {
+	@include flex-center;
+	width: $button-size * 2 !important;
+}
+.type-input {
+	@include flex-center;
+	font-size: 18px;
+	color: $white-01;
+	border: 0px;
+	outline: 0px;
+	background: none;
+	width: $button-size * 2 !important;
+	padding: 0px 10px;
+	&:focus {
+		width: $button-size * 3 !important;
+	}
+}
+.type-input-controller {
+	display: flex;
+
+	.type-input-item {
+		@include flex-center;
+		width: $button-size - $button-margin;
+		opacity: 0.8;
 	}
 }

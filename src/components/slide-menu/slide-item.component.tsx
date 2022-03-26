@@ -51,7 +51,7 @@ export const SlideMenu = () => {
 	)
 
 	return (
-		<div className={styles['slide-menu']}>
+		<div id="slide-menu" className={styles['slide-menu']}>
 			<div className={styles['slide-menu-bar']}>
 				<Icon name="icon-option" size={26} className={styles['slide-menu-bar-icon']} />
 			</div>

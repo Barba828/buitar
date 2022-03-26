@@ -1,0 +1,149 @@
+$sound-margin: 1;
+$sound-height: 30;
+
+:export {
+	sound_margin: $sound-margin;
+	sound_height: $sound-height;
+}
+
+.sound {
+	display: flex;
+
+	.sound-head {
+		@include flex-center;
+		font-size: 12px;
+		font-weight: 700;
+		opacity: 0.8;
+		letter-spacing: 1.5px;
+	}
+
+	.sound-list {
+		display: flex;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.sound-item {
+		height: $sound-height;
+		margin: $sound-margin !important;
+	}
+
+	.sound-item-active {
+		position: absolute;
+		background: $blue-second;
+		&:hover {
+			background: $blue-third;
+		}
+	}
+
+	.sound-item-handler {
+		position: absolute;
+		height: calc($sound-height / 2);
+		width: 20px;
+		height: 100%;
+		right: 0px;
+		opacity: 0.6;
+		cursor: ew-resize;
+		@include flex-center;
+		&-view {
+			pointer-events: none;
+			width: $sound-margin * 3;
+			height: $sound-height * 0.6;
+			border-radius: $sound-margin * 2px;
+			background-color: $white-01;
+			opacity: 0.6;
+		}
+	}
+
+	.sound-item-ghost {
+		position: absolute;
+		background: $yellow-primary;
+		pointer-events: none;
+	}
+}
+
+.sound-container {
+	position: relative;
+
+	.sound-line {
+		position: absolute;
+		height: 100%;
+		width: $sound-margin * 2 + px;
+		top: 0px;
+		z-index: -1;
+		background: #333;
+	}
+
+	.sound-time-line {
+		position: absolute;
+		height: 100%;
+		left: 42px;
+		width: $sound-margin * 2 + px;
+		top: 0px;
+		z-index: 1;
+		background: #eee8;
+		visibility: hidden;
+
+		&.sound-time-visible {
+			visibility: visible;
+		}
+	}
+}
+
+.player-controller {
+	display: flex;
+	flex-direction: row;
+
+	.player-icon {
+		opacity: 0.8;
+		margin: $sound-margin;
+		@include flex-center;
+	}
+
+	.player-range {
+		@include flex-center(row);
+		margin: $sound-margin;
+		padding: 0 8px;
+		justify-content: start;
+		.player-range-text {
+			font-size: 14px;
+			font-weight: 600;
+			opacity: 0.8;
+			width: 120px;
+			letter-spacing: 0.5px;
+		}
+		.player-range-bpm {
+			font-size: 16px;
+		}
+		input[type='range'] {
+			-webkit-appearance: none;
+			flex: 1;
+			height: 4px;
+			border-radius: 2px;
+			outline: none; /* 避免點選會有藍線或虛線 */
+			background: #eee4;
+		}
+
+		input[type='range']::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			width: 12px;
+			height: 12px;
+			background: #ccc;
+			border-radius: 50%;
+			transition: 0.2s; /* 點選放大時候的漸變時間 */
+		}
+
+		input[type='range']:active::-webkit-slider-thumb {
+			width: 16px;
+			height: 16px;
+		}
+	}
+}
+
+:global(.draggable-style) {
+	background: $white-01 !important;
+}
+
+:global(.overed-activity-style) {
+	opacity: 0.1;
+}

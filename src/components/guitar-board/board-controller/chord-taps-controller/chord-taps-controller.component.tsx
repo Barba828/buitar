@@ -7,13 +7,22 @@ import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
 import styles from './chord-taps-controller.module.scss'
 import { Point } from 'to-guitar'
 
-export const ChordTapsController: FC<ControllerProps> = (props) => {
+/**
+ * 选择指法列表中的指法
+ * @param props
+ * @returns
+ */
+export const ChordTapsController: FC<ControllerProps & { onClickTap?(points: Point[]): void }> = ({
+	onClickTap,
+	...props
+}) => {
 	const { chordTaps, player, taps, setTaps } = useBoardContext()
 
 	const handleClick = useCallback(
 		(points: Point[]) => {
-			player.triggerPointRelease(points)
 			setTaps(points)
+			onClickTap?.(points)
+			player.triggerPointRelease(points)
 		},
 		[setTaps]
 	)
