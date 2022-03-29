@@ -1,0 +1,67 @@
+.menu-container {
+  position: relative;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+.menu-portal {
+  position: absolute;
+  opacity: 0;
+  display: none;
+  -webkit-transform: translateY(20px);
+          transform: translateY(20px);
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.show {
+  display: block;
+  -webkit-animation: show 0.25s forwards;
+          animation: show 0.25s forwards;
+}
+
+.hide {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+  -webkit-animation: hide 0.25s forwards;
+          animation: hide 0.25s forwards;
+}
+
+@-webkit-keyframes show {
+  to {
+    display: block;
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+@keyframes show {
+  to {
+    display: block;
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes hide {
+  to {
+    display: none;
+    opacity: 0;
+    -webkit-transform: translateY(20px);
+            transform: translateY(20px);
+  }
+}
+
+@keyframes hide {
+  to {
+    display: none;
+    opacity: 0;
+    -webkit-transform: translateY(20px);
+            transform: translateY(20px);
+  }
+}
+/*# sourceMappingURL=portal.module.css.map */

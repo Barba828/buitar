@@ -19,6 +19,7 @@ export const FifthCircleController: FC<{ className?: string }> = (props) => {
 	return (
 		<FifthsCircle
 			{...props}
+			defaultIndex={0}
 			size={280}
 			thin={50}
 			onClick={handleClickFifths}

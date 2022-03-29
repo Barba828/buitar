@@ -14,6 +14,8 @@ import { useEditable } from './use-editable'
 import cx from 'classnames'
 
 import styles from './sequencer.module.scss'
+import { Switch } from '../switch'
+import { TonePlayer } from '@/utils'
 
 /**
  * 单序列active的音符
@@ -54,9 +56,7 @@ export interface SequencerProps {
 	/**
 	 * 播放器
 	 */
-	player: {
-		triggerAttackRelease: Tone.Sampler['triggerAttackRelease']
-	}
+	player: TonePlayer
 	/**
 	 * 可修改播放内容
 	 */
@@ -73,6 +73,7 @@ export const Sequencer: FC<SequencerProps> = ({
 	bpm = 60,
 }) => {
 	const [isPlaying, setIsPlaying] = useState(false)
+	const [editable, setEditable] = useState(true)
 	const [playerBpm, setPlayerBpm] = useState(bpm)
 	const sequencerList = useRef<SequencerListRefs>(null)
 
@@ -85,7 +86,7 @@ export const Sequencer: FC<SequencerProps> = ({
 			return 0
 		}
 		return (containerWidth * 0.8 * 0.9) / maxLength
-	}, [document.getElementById('board')?.getBoundingClientRect().width])
+	}, [document.getElementById('board')?.getBoundingClientRect().width, maxLength])
 
 	useEffect(() => {
 		Tone.Transport.bpm.value = playerBpm
@@ -103,7 +104,7 @@ export const Sequencer: FC<SequencerProps> = ({
 				blocks.forEach((block) => {
 					const start = block[0] * itemTime // 在一拍中的开始时间
 					const duration = 16 / (block[1] - block[0] + 1) + 'n' //在一拍中的持续时间
-					player.triggerAttackRelease(key, duration, time + start)
+					player.getContext().triggerAttackRelease(key, duration, time + start)
 				})
 			})
 			Tone.Draw.schedule(() => {
@@ -125,8 +126,12 @@ export const Sequencer: FC<SequencerProps> = ({
 		setIsPlaying(!isPlaying)
 	}, [isPlaying])
 
+	const handleEditable = useCallback((value: boolean) => {
+		setEditable(value)
+	}, [])
+
 	const handleChange = useCallback((sound: Sound) => {
-		player.triggerAttackRelease(sound.key, '2n')
+		player.getContext().triggerAttackRelease(sound.key, '2n')
 	}, [])
 
 	const start = useCallback(() => {
@@ -148,10 +153,10 @@ export const Sequencer: FC<SequencerProps> = ({
 				<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={handlePlay}>
 					<Icon size={24} name={isPlaying ? 'icon-stop' : 'icon-play'} />
 				</div>
-				<div
-					className={cx('buitar-primary-button', styles['player-range'])}
-					style={{ width: (itemWidth + 1) * 16 - 2 + 'px' }}
-				>
+				<div className={cx('buitar-primary-button', styles['player-icon'])}>
+					<Switch defaultValue={editable} onChange={handleEditable} />
+				</div>
+				<div className={cx('buitar-primary-button', styles['player-range'])}>
 					<span className={styles['player-range-text']}>
 						Tempo
 						<span className={styles['player-range-bpm']}> {playerBpm} </span>
@@ -171,7 +176,7 @@ export const Sequencer: FC<SequencerProps> = ({
 			</div>
 			<SequencerList
 				ref={sequencerList}
-				editable
+				editable={editable}
 				timelineVisible={isPlaying}
 				soundList={sounds}
 				maxLength={maxLength}
@@ -208,7 +213,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 		/**
 		 * 幽灵条设置 & 事件监听
 		 */
-		const { ghost, dispatch } = useEditable({
+		const { ghost, handler } = useEditable({
 			itemSize,
 			itemSizeY,
 			soundList,
@@ -223,7 +228,8 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 		 * @returns
 		 */
 		const spacingLine = () => {
-			return new Array(Math.round(maxLength / 4) - 1).fill(0).map((_, index) => {
+			const length = Math.round(maxLength / 4) - 1 > 0 ? Math.round(maxLength / 4) - 1 : 0
+			return new Array(length).fill(0).map((_, index) => {
 				return (
 					<div
 						key={index}
@@ -339,7 +345,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 		}
 
 		return (
-			<div ref={container} {...dispatch} className={styles['sound-container']}>
+			<div ref={container} {...handler} className={styles['sound-container']}>
 				{soundList.map((sound, keyIndex) => {
 					const { key, blocks } = sound
 					return (

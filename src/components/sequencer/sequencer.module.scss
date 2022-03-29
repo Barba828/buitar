@@ -14,6 +14,7 @@ $sound-height: 30;
 		font-size: 12px;
 		font-weight: 700;
 		opacity: 0.8;
+		width: $button-size !important;
 		letter-spacing: 1.5px;
 	}
 
@@ -39,7 +40,7 @@ $sound-height: 30;
 	.sound-item-handler {
 		position: absolute;
 		height: calc($sound-height / 2);
-		width: 20px;
+		width: 14px;
 		height: 100%;
 		right: 0px;
 		opacity: 0.6;
@@ -95,9 +96,11 @@ $sound-height: 30;
 	flex-direction: row;
 
 	.player-icon {
-		opacity: 0.8;
 		margin: $sound-margin;
 		@include flex-center;
+		:first-child {
+			opacity: 0.8;
+		}
 	}
 
 	.player-range {
@@ -105,6 +108,7 @@ $sound-height: 30;
 		margin: $sound-margin;
 		padding: 0 8px;
 		justify-content: start;
+		width: fit-content;
 		.player-range-text {
 			font-size: 14px;
 			font-weight: 600;
@@ -118,6 +122,7 @@ $sound-height: 30;
 		input[type='range'] {
 			-webkit-appearance: none;
 			flex: 1;
+			width: $button-size * 6;
 			height: 4px;
 			border-radius: 2px;
 			outline: none; /* 避免點選會有藍線或虛線 */

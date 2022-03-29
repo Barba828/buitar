@@ -6,6 +6,7 @@ import {
 	useBoardContext,
 	getChordName,
 	BoardController,
+	DetialCard,
 } from '@/components/guitar-board'
 import { FifthsCircle } from '@/components/fifths-circle'
 import { Point, Note, transChordType, ToneSchema, ChordType } from 'to-guitar'
@@ -36,7 +37,8 @@ const TapedGuitarBoard = () => {
 		setChordTaps({ chordType: chords, chordList: [] })
 	}, [taps])
 
-	const handleCheckedPoint = (point: Point) => {
+	const handleCheckedPoint = (points: Point[]) => {
+		const point = points[0]
 		const checkedIndex = taps.indexOf(point)
 		if (checkedIndex === -1) {
 			const stringIndex = taps.findIndex((tap) => tap.string === point.string)
@@ -50,11 +52,11 @@ const TapedGuitarBoard = () => {
 		}
 	}
 
-	return <GuitarBoard onClickPoint={handleCheckedPoint} />
+	return <GuitarBoard onCheckedPoints={handleCheckedPoint} />
 }
 
 const TapedChordCard = () => {
-	const { taps, chordTaps, setChordTaps, boardOptions, setEmphasison, guitarBoardOption } =
+	const { taps, chordTaps, setChordTaps, boardOptions, setEmphasis, guitarBoardOption } =
 		useBoardContext()
 
 	const changeChordTapName = (index: number) => {
@@ -120,19 +122,19 @@ const TapedChordCard = () => {
 			return
 		}
 		if (!tone) {
-			setEmphasison([])
+			setEmphasis([])
 			return
 		}
 
-		const emphasison: Point[] = []
+		const emphasis: string[] = []
 		guitarBoardOption.keyboard.forEach((string) => {
 			string.forEach((point) => {
 				if (point.toneSchema.note === tone.note) {
-					emphasison.push(point)
+					emphasis.push(String(point.index))
 				}
 			})
 		})
-		setEmphasison(emphasison)
+		setEmphasis(emphasis)
 	}
 
 	return (
@@ -144,8 +146,11 @@ const TapedChordCard = () => {
 				onClick={handleClickFifths}
 				className={cx('buitar-primary-button', styles['fifth-circle'])}
 			/>
-			<ChordCard size={200} className={styles['svg-chord']} />
-			<div className={styles['type-list']}>{extra}</div>
+			<ChordCard size={200} className={styles['svg-chord']} taps={taps} />
+			<div>
+				<DetialCard />
+				<div className={styles['type-list']}>{extra}</div>
+			</div>
 		</div>
 	)
 }

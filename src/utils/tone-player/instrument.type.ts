@@ -1,1 +1,7 @@
-export type Instrument = 'default' | 'guitar-acoustic' | 'guitar-electric' | 'guitar-nylon'
+export type Instrument =
+	| 'default'
+	| 'bass-electric'
+	| 'guitar-acoustic'
+	| 'guitar-electric'
+	| 'guitar-nylon'
+	| 'piano'

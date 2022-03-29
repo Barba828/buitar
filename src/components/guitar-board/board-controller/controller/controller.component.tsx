@@ -6,7 +6,7 @@ import styles from './controller.module.scss'
 interface ControllerListProps<T> extends ControllerProps {
 	list: T[]
 	className?: string
-	onClickItem: (item: T) => void
+	onClickItem: (item: T, index?: number) => void
 	renderListItem: (item: T) => JSX.Element
 
 	checkedItem?: (item: T) => boolean
@@ -28,7 +28,7 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 }) => {
 	const controllerView = list.map((item, index) => {
 		const handleClick = () => {
-			onClickItem(item)
+			onClickItem(item, index)
 		}
 
 		const cls = cx(

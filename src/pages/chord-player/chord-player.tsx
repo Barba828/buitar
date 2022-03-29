@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import {
 	ChordController,
-	ChordTapsController,
 	GuitarBoard,
 	ChordCard,
 	BoardProvider,
 	useBoardContext,
 	BoardController,
+	DetialCard,
 } from '@/components/guitar-board'
 import { transChordTaps } from 'to-guitar'
+import { PianoBoard } from '@/components/piano-board'
 
 export const ChordPlayer = () => {
 	return (
@@ -35,13 +36,37 @@ const ChordPlayerInner = () => {
 	useEffect(() => {
 		setTaps([])
 	}, [chord, chordTaps])
+
 	return (
 		<>
 			<ChordController />
-			<ChordTapsController />
+			<ChordDetail />
 			<GuitarBoard />
+			<ChordKeyboard />
 			<BoardController />
-			<ChordCard />
 		</>
+	)
+}
+
+const ChordDetail = () => {
+	const { taps } = useBoardContext()
+
+	return (
+		<div style={{ display: 'flex' }}>
+			<ChordCard taps={taps} />
+			<DetialCard />
+		</div>
+	)
+}
+
+const ChordKeyboard = () => {
+	const { taps, player, boardOptions } = useBoardContext()
+	const { isAllKey, isPianoKeyDown } = boardOptions
+	const levels = isAllKey ? [2, 3, 4, 5] : [3]
+	const notes = taps.map(
+		(point) => `${point.toneSchema.note}${isAllKey ? point.toneSchema.level : 3}`
+	)
+	return (
+		<PianoBoard player={player} checked={notes} levels={levels} disableKeydown={!isPianoKeyDown} />
 	)
 }

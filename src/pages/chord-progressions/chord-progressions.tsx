@@ -6,12 +6,15 @@ import {
 	DegreeController,
 	FifthCircleController,
 	DegreeChordController,
+	ChordCard,
+	ChordControllerInner,
 } from '@/components/guitar-board'
-import { transChordTaps } from 'to-guitar'
-import { PlayerProvider } from '@/components/guitar-player'
+import { Point, transChordTaps } from 'to-guitar'
+import { PlayerProvider, usePlayerContext } from '@/components/guitar-player'
 
 import styles from './chord-progressions.module.scss'
 import { SoundBoard } from '@/components/sound-board'
+import { degreeList } from './progressions.config'
 
 export const ChordProgressions = () => {
 	return (
@@ -19,6 +22,7 @@ export const ChordProgressions = () => {
 			<PlayerProvider>
 				<DegreeController />
 				<ChordPicker />
+				<TapsViewer />
 				<SoundBoard />
 			</PlayerProvider>
 		</BoardProvider>
@@ -26,7 +30,8 @@ export const ChordProgressions = () => {
 }
 
 const ChordPicker = () => {
-	const { guitarBoardOption, chord, setChordTaps } = useBoardContext()
+	const { guitarBoardOption, chord, guitar, setChordTaps } = useBoardContext()
+	const { soundList, progressionIndex, soundListIndex, setSoundList } = usePlayerContext()
 
 	// 切换和弦：更新指板图列表
 	useEffect(() => {
@@ -38,13 +43,45 @@ const ChordPicker = () => {
 		setChordTaps(null)
 	}, [guitarBoardOption])
 
+	useEffect(() => {
+		guitar.setOptions(guitar.board)
+	}, [progressionIndex])
+
+	const handleClickTaps = (taps: Point[]) => {
+		if (soundListIndex < 0) {
+			return
+		}
+		soundList[soundListIndex] = taps
+		setSoundList([...soundList])
+	}
+
 	return (
-		<div className={styles['chord-picker']}>
-			<FifthCircleController />
-			<div>
-				<DegreeChordController />
-				<ChordTapsController />
-			</div>
+		<ChordControllerInner>
+			<DegreeChordController />
+			<ChordTapsController onClickTap={handleClickTaps} />
+		</ChordControllerInner>
+	)
+}
+
+const TapsViewer = () => {
+	const { soundList, progressionIndex, progressions } = usePlayerContext()
+	const progression = progressions[progressionIndex]
+
+	return (
+		<div className={styles['taps-viewer']}>
+			{soundList.map((taps, index) => {
+				const grade = progression.procession[index]
+				const name = degreeList[grade.name - 1]
+				return (
+					<ChordCard
+						key={index}
+						className={styles['card-view']}
+						title={`${name}${grade.tag}`}
+						taps={taps}
+						size={120}
+					/>
+				)
+			})}
 		</div>
 	)
 }

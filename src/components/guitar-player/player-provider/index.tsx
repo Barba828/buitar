@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import {
 	PROGRESSIONS_KEY,
 	progressionsConfig,
@@ -14,6 +14,8 @@ type PlayerContextType = {
 	setProgressions: Dispatch<ProgressionsConfig[]>
 	soundList: Point[][]
 	setSoundList: SetState<Point[][]>
+	soundListIndex: number
+	setSoundListIndex: SetState<number>
 }
 
 const PlayerContext = React.createContext<PlayerContextType>({} as any)
@@ -29,6 +31,8 @@ export const PlayerProvider: FC = (props) => {
 		PROGRESSIONS_KEY,
 		progressionsConfig
 	)
+
+	const [soundListIndex, setSoundListIndex] = useState<number>(-1)
 	const [soundList, setSoundList] = useState<Point[][]>([])
 
 	const playerValue = {
@@ -38,6 +42,8 @@ export const PlayerProvider: FC = (props) => {
 		setProgressions,
 		soundList,
 		setSoundList,
+		soundListIndex,
+		setSoundListIndex,
 	}
 	return <PlayerContext.Provider value={playerValue}>{props.children}</PlayerContext.Provider>
 }

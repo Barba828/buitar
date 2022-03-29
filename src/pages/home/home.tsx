@@ -45,7 +45,7 @@ export const HomePage = () => {
 const GIndex = [3, 18, 32, 48, 64, 83]
 
 const Example = () => {
-	const { setTaps, guitarBoardOption, setChordTaps } = useBoardContext()
+	const { taps, guitarBoardOption, setTaps, setChordTaps } = useBoardContext()
 
 	if (!guitarBoardOption.keyboard) return null
 
@@ -66,7 +66,7 @@ const Example = () => {
 	return (
 		<>
 			<GuitarBoard />
-			<ChordCard />
+			<ChordCard taps={taps} />
 		</>
 	)
 }

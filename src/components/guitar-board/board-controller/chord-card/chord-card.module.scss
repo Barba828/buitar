@@ -49,4 +49,27 @@
 .chord-card-hidden {
 	width: 0 !important;
 	height: 0 !important;
+	margin: 0 !important;
+}
+
+.detail-card {
+	.detail-name {
+		width: fit-content;
+		height: max-content;
+		padding: 10px 20px 10px 5px;
+		text-transform: capitalize;
+
+		.detail-subname {
+			margin-top: 5px;
+			font-size: 12px;
+			opacity: 0.8;
+		}
+	}
+	.detail-chord {
+		display: flex;
+
+		> div {
+			@include flex-center;
+		}
+	}
 }

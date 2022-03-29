@@ -11,17 +11,13 @@ export const SoundBoard: FC = () => {
 
 	return (
 		<div>
-			<Sequencer player={player as any} sounds={pointsToSounds(soundList)} />
-
-			{/* <Sequencer
+			<Sequencer
 				player={player as any}
-				sounds={[
-					{ key: 'C3', blocks: [[0, 3]] },
-					{ key: 'D3', blocks: [[4, 7]] },
-					{ key: 'E3', blocks: [[8, 11]] },
-					{ key: 'F3', blocks: [[12, 15]] },
-				]}
-			/> */}
+				sounds={pointsToSounds(soundList)}
+				m={Math.round(soundList.length / 4)}
+			/>
+
+			{/* <Sequencer player={player as any} /> */}
 		</div>
 	)
 }

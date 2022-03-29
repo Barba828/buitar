@@ -30,6 +30,14 @@ const defaultBoardOptions: GuitarBoardOptions = {
 	 * 是否显示吉他品记
 	 */
 	hasTag: true,
+	/**
+	 * 是否全部展示键盘
+	 */
+	isAllKey: true,
+	/**
+	 * 键盘按压事件监听
+	 */
+	isPianoKeyDown: false,
 }
 /**
  * 吉他乐器默认配置
@@ -60,8 +68,8 @@ type BoardContextType = {
 	setChordTaps: SetState<ReturnType<typeof transChordTaps> | null>
 	taps: Point[] // 指板选中Point
 	setTaps: SetState<Point[]>
-	emphasison: Point[] // 指板强调Point
-	setEmphasison: SetState<Point[]>
+	emphasis: string[] // 指板强调Point
+	setEmphasis: SetState<string[]>
 }
 const BoardContext = React.createContext<BoardContextType>({} as any)
 
@@ -80,7 +88,7 @@ export const BoardProvider: FC = (props) => {
 	const [chord, setChord] = useState<Tone[]>([])
 	const [chordTaps, setChordTaps] = useState<ReturnType<typeof transChordTaps> | null>(null)
 	const [taps, setTaps] = useState<Point[]>([])
-	const [emphasison, setEmphasison] = useState<Point[]>([])
+	const [emphasis, setEmphasis] = useState<string[]>([])
 
 	// 吉他指板实例化对象
 	const guitar = useMemo(() => {
@@ -111,8 +119,8 @@ export const BoardProvider: FC = (props) => {
 		setChordTaps,
 		taps,
 		setTaps,
-		emphasison,
-		setEmphasison,
+		emphasis,
+		setEmphasis,
 	}
 	return <BoardContext.Provider value={boardValue}>{props.children}</BoardContext.Provider>
 }

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { ModeType, ToneSchema, transFifthsCircle } from 'to-guitar'
+import { ModeType, Tone, ToneSchema, transFifthsCircle } from 'to-guitar'
 import { getBoardOptionsToneType } from '../guitar-board/utils'
 import { useBoardContext } from '../index'
 import classnames from 'classnames'
@@ -39,11 +39,12 @@ export const FifthsCircle: FC<{
 	 * 是否展示小调五度圈
 	 */
 	minor?: boolean
+	defaultIndex?: number
 	onClick?: ({ tone, mode }: { tone: ToneSchema; mode: ModeType }) => void
 	[x: string]: any
-}> = ({ size = 400, thin = 60, minor = true, onClick, ...props }) => {
+}> = ({ size = 400, thin = 60, minor = true, defaultIndex = -1, onClick, ...props }) => {
 	const { boardOptions } = useBoardContext()
-	const [checked, setChecked] = useState<number>(-1)
+	const [checked, setChecked] = useState<number>(defaultIndex)
 	const toneType = getBoardOptionsToneType(boardOptions)
 	const cx = size >> 1
 	const cy = size >> 1

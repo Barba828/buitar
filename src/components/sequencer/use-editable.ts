@@ -31,13 +31,13 @@ export const useEditable = ({
 	const start = useRef<[number, number]>([0, 0]) // 音序图左上起始坐标
 	const offset = useRef<[number, number]>([0, 0]) // 拖拽时，鼠标锚点相对于音序条位置
 	const dragable = useRef<false | 'drag' | 'resize'>(false) // 拖拽触发类型
-	const preTargetData = useRef<[number, number, number]>([-1, 0, 0]) // mouseenter事件前音序条位置，判断点击之后之后位置有更改则更新，无更改则删除
+	const preTargetData = useRef<[number, number, number, number]>([-1, 0, 0, Date.now()]) // mouseenter事件前音序条位置，判断点击之后之后位置有更改则更新，无更改则删除
 
 	useEffect(() => {
 		if (!container.current) return
 		const { x, y } = container.current.getBoundingClientRect()
 		start.current = [x + Number(styles.button_size) + 2 * Number(styles.sound_margin), y]
-	}, [container.current])
+	}, [container.current, dragable.current])
 
 	useEffect(() => {
 		setSoundList(sounds)
@@ -50,7 +50,7 @@ export const useEditable = ({
 	const [ghost, setGhost] = useState<[number, number, number]>([-1, 0, 0])
 
 	if (!editable) {
-		return { dispatch: {}, ghost }
+		return { handler: {}, ghost }
 	}
 
 	/**
@@ -89,15 +89,21 @@ export const useEditable = ({
 	 * 更新UI添加sound
 	 */
 	const updateSoundList = () => {
+		if (ghost[0] < 0) {
+			return
+		}
 		const blocks = soundList[ghost[0]].blocks
 		const block: Block = [ghost[1], ghost[1] + ghost[2]] // 例 [2, 4]
 		block[0] < 0 && (block[0] = 0)
 		block[1] > maxLength - 1 && (block[1] = maxLength - 1)
 
-		// 和点击前 音序条 相同 => 删除
-		if (ghost.every((item, index) => item === preTargetData.current[index])) {
-			soundList[ghost[0]].blocks.splice(ghost[1], 1)
-			setSoundList([...soundList])
+		// 和点击前 音序条 相同，且相隔时间小于 300 ms，视为点击事件 => 删除
+		if (
+			ghost.every((item, index) => item === preTargetData.current[index]) &&
+			preTargetData.current[3] + 300 > Date.now()
+		) {
+			// 待删除 音序条 已经在mousedown转为幽灵条，不用再 splice 删除了
+			// 幽灵条会在 mouseup 时删除
 			return
 		}
 
@@ -159,7 +165,7 @@ export const useEditable = ({
 		if (type === 'active') {
 			// 音序条拖拽
 			dragable.current = 'drag'
-			preTargetData.current = [Number(keyIndex), block[0], block[1] - block[0]]
+			preTargetData.current = [Number(keyIndex), block[0], block[1] - block[0], Date.now()]
 
 			// 默认幽灵条属性
 			ghost[2] = block[1] - block[0]
@@ -167,6 +173,10 @@ export const useEditable = ({
 			// 获取点击音序条初始位置（相对offset）
 			const rect = (e.target as HTMLElement).getBoundingClientRect()
 			offset.current = [e.clientX - rect.x, e.clientY - rect.y]
+
+			// 移除原音序条（mouseup事件再将幽灵条还原为音序条）
+			soundList[Number(keyIndex)].blocks.splice(Number(index), 1)
+			setSoundList([...soundList])
 
 			// 以幽灵音序条代替
 			handleDragGhost(e)
@@ -176,28 +186,32 @@ export const useEditable = ({
 
 			// 默认幽灵条属性
 			ghost[0] = Number(keyIndex)
-			ghost[1] = block ? block[0] : Number(index)
+			ghost[1] = type === 'handler' ? block[0] : Number(index)
+
+			if (type === 'handler') {
+				// 移除原音序条（mouseup事件再将幽灵条还原为音序条）
+				soundList[Number(keyIndex)].blocks.splice(Number(index), 1)
+				setSoundList([...soundList])
+			}
 
 			// 以幽灵音序条代替
 			handleResizeGhost(e)
 		}
-		// 移除原音序条（mouseup事件再将幽灵条还原为音序条）
-		soundList[Number(keyIndex)].blocks.splice(Number(index), 1)
-		setSoundList([...soundList])
 	}
 	const onMouseUp = (e: React.MouseEvent) => {
 		if (dragable.current) {
 			updateSoundList()
 			setGhost([-1, 0, 0])
+			preTargetData.current = [-1, 0, 0, 0]
 		}
 		dragable.current = false
 	}
-	const dispatch = {
+	const handler = {
 		onMouseMove,
 		onMouseDown,
 		onMouseUp,
 		onMouseLeave: onMouseUp,
 	}
 
-	return { dispatch, ghost }
+	return { handler, ghost, dragable }
 }

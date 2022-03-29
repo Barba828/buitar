@@ -5,11 +5,15 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 	isShowSemitone: {
 		checked: {
 			name_zh: '半音',
-			name_en: 'All',
+			name_en: 'All Tone',
 		},
 		unchecked: {
 			name_zh: '全音',
-			name_en: 'only-what',
+			name_en: 'Whole Tone',
+		},
+		others: {
+			intro_zh: '吉他显示',
+			intro_en: 'Guitar display',
 		},
 	},
 	isSharpSemitone: {
@@ -21,6 +25,10 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 			name_zh: 'b',
 			name_en: 'b',
 		},
+		others: {
+			intro_zh: '',
+			intro_en: '',
+		},
 	},
 	isNote: {
 		checked: {
@@ -30,6 +38,10 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 		unchecked: {
 			name_zh: '唱名',
 			name_en: 'interval',
+		},
+		others: {
+			intro_zh: '',
+			intro_en: '',
 		},
 	},
 	hasLevel: {
@@ -41,6 +53,10 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 			name_zh: '隐藏',
 			name_en: 'hide',
 		},
+		others: {
+			intro_zh: '',
+			intro_en: '',
+		},
 	},
 	hasTag: {
 		checked: {
@@ -51,28 +67,70 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 			name_zh: '隐藏',
 			name_en: 'hide',
 		},
+		others: {
+			intro_zh: '',
+			intro_en: '',
+		},
+	},
+	isAllKey: {
+		checked: {
+			name_zh: '48键',
+			name_en: '48 key',
+		},
+		unchecked: {
+			name_zh: '12键',
+			name_en: '12 key',
+		},
+		others: {
+			intro_zh: '键盘显示',
+			intro_en: 'Keyboard display',
+		},
+	},
+	isPianoKeyDown: {
+		checked: {
+			name_zh: '键盘',
+			name_en: 'Keyboard',
+		},
+		unchecked: {
+			name_zh: '吉他',
+			name_en: 'Guitar',
+		},
+		others: {
+			intro_zh: '按键声音',
+			intro_en: 'Key sound',
+		},
 	},
 }
 
 export const instrumentUIConfig: { [K in Instrument]: any } = {
+	'bass-electric': {
+		name: 'Electric Bass',
+		name_zh: '贝斯',
+		icon: 'icon-bass',
+	},
 	'guitar-acoustic': {
-		name: 'Acoustic',
+		name: 'Acoustic Guitar',
 		name_zh: '木吉他',
 		icon: 'icon-acoustic-guitar',
 	},
 	'guitar-electric': {
-		name: 'Electric',
+		name: 'Electric Guitar',
 		name_zh: '电吉他',
 		icon: 'icon-electric-guitar',
 	},
 	'guitar-nylon': {
-		name: 'Nylon',
+		name: 'Nylon Guitar',
 		name_zh: '尼龙吉他',
 		icon: 'icon-nylon-guitar',
 	},
-	default: {
+	piano: {
 		name: 'Piano',
 		name_zh: '钢琴',
 		icon: 'icon-piano',
+	},
+	default: {
+		name: 'synth',
+		name_zh: '合成音',
+		icon: 'icon-synth',
 	},
 }

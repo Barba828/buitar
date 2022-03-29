@@ -18,13 +18,14 @@ window.Tone = Tone
 
 const API_HOST = 'http://localhost:8282'
 
-export class TonePlayer {
+export class TonePlayer extends Tone.Sampler {
 	private sampler: Tone.Sampler | PolySynth = new Tone.PolySynth(Tone.Synth).toDestination()
 	private instrument: Instrument = 'default'
 	private duration: Tone.Unit.Time | Tone.Unit.Time[] = '2n'
 
-	constructor(instrument?: Instrument) {
-		this.instrument = instrument || 'default'
+	constructor(instrument: Instrument = 'default') {
+		super()
+		this.dispatchInstrument(instrument)
 	}
 
 	/**
@@ -37,7 +38,7 @@ export class TonePlayer {
 		// 默认使用 复音合成器 播放
 		if (instrument === 'default') {
 			this.sampler = new Tone.PolySynth(Tone.Synth).toDestination()
-			return Promise.resolve()
+			return Promise.resolve(true)
 		}
 		// 选择乐器使用 取样器 播放
 		this.sampler = new Tone.Sampler({
@@ -47,11 +48,18 @@ export class TonePlayer {
 		return Tone.loaded()
 	}
 
+	public getLoad() {
+		if (this.instrument === 'default') {
+			return true
+		}
+		return (this.sampler as Tone.Sampler).loaded
+	}
+
 	public getInstrument() {
 		return this.instrument
 	}
 
-	public getSampler() {
+	public getContext() {
 		return this.sampler
 	}
 
@@ -70,18 +78,6 @@ export class TonePlayer {
 	}
 
 	/**
-	 * 播放声音，默认1/2拍后自动释放
-	 * @param note Tone音值 | Tone音值[]
-	 */
-	public triggerAttackRelease = (
-		note: Parameters<typeof this.sampler.triggerAttackRelease>[0],
-		duration?: Parameters<typeof this.sampler.triggerAttackRelease>[1],
-		time?: Parameters<typeof this.sampler.triggerAttackRelease>[2]
-	) => {
-		this.sampler.triggerAttackRelease(note, duration || this.duration, time)
-	}
-
-	/**
 	 * 播放to-guitar point 琶音
 	 * @param point
 	 */
@@ -96,8 +92,8 @@ export class TonePlayer {
 	 */
 	public triggerPointRelease = (point: Point | Point[]) => {
 		const tones = Array.isArray(point) ? point : [point]
-		const notes = tones.map(this.transPoint)
-		this.triggerAttackRelease(notes)
+		const notes = Array.from(new Set(tones.map(this.transPoint)))
+		this.sampler.triggerAttackRelease(notes, this.duration)
 	}
 
 	private transPoint = (point: Point): Tone.Unit.Frequency => {

@@ -4,18 +4,19 @@ import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
 import cx from 'classnames'
 import styles from './chord-card.module.scss'
 import { Icon } from '@/components/icon'
-import { getBoardOptionsNote, getBoardOptionsTone } from '@/components/guitar-board/utils'
+import { getBoardOptionsNote } from '@/components/guitar-board/utils'
 import { Portal } from '@/components'
-import { ChordType } from 'to-guitar'
+import { ChordType, Point } from 'to-guitar'
 import { GuitarBoardOptions } from '../controller.type'
 
 export const ChordCard: FC<{
+	taps: Point[]
 	title?: string
 	className?: string
 	size?: number
 	extra?: JSX.Element | JSX.Element[]
-}> = ({ title, className, size = 160, extra }) => {
-	const { taps, player } = useBoardContext()
+}> = ({ taps, title, className, size = 160, extra }) => {
+	const { player } = useBoardContext()
 
 	const cls = cx(
 		'buitar-primary-button',
@@ -101,4 +102,30 @@ export const getChordName = (
 	} else {
 		return `${over}${tag}/${tone}`
 	}
+}
+
+export const DetialCard: FC = () => {
+	const { chord, chordTaps } = useBoardContext()
+	const visible = !!chordTaps?.chordType[0]
+
+	if (!visible) {
+		return null
+	}
+	const title = chordTaps.chordType[0].name
+	const subTitle = chordTaps.chordType[0].tag !== '*' ? chordTaps.chordType[0].name_zh : '自定义'
+	return (
+		<div className={cx(styles['detail-card'])}>
+			<div className={cx('buitar-primary-button', styles['detail-name'])}>
+				{title}
+				<div className={styles['detail-subname']}>{subTitle}</div>
+			</div>
+			<div className={styles['detail-chord']}>
+				{chord.map((note, index) => (
+					<div key={index} className="buitar-primary-button">
+						{note}
+					</div>
+				))}
+			</div>
+		</div>
+	)
 }

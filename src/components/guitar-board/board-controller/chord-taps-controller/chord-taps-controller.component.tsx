@@ -24,7 +24,7 @@ export const ChordTapsController: FC<ControllerProps & { onClickTap?(points: Poi
 			onClickTap?.(points)
 			player.triggerPointRelease(points)
 		},
-		[setTaps]
+		[setTaps, onClickTap, player]
 	)
 
 	if (!chordTaps) {
@@ -33,16 +33,18 @@ export const ChordTapsController: FC<ControllerProps & { onClickTap?(points: Poi
 
 	const { chordList } = chordTaps
 	return (
-		<ControllerList
-			{...props}
-			list={chordList}
-			className={styles['chord-taps']}
-			onClickItem={handleClick}
-			renderListItem={(item) => {
-				return <SvgChord points={transToSvgPoints(item)} size={80} concise />
-			}}
-			checkedItem={(item) => item === taps}
-			visibleItem={() => true}
-		/>
+		<div className="scroll-without-bar">
+			<ControllerList
+				{...props}
+				list={chordList}
+				className={styles['chord-taps']}
+				onClickItem={handleClick}
+				renderListItem={(item) => {
+					return <SvgChord points={transToSvgPoints(item)} size={80} concise />
+				}}
+				checkedItem={(item) => item === taps}
+				visibleItem={() => true}
+			/>
+		</div>
 	)
 }

@@ -1,0 +1,59 @@
+$white-height: $button-size * 4;
+$black-height: $button-size * 3;
+
+.piano {
+	display: flex;
+	width: max-content;
+
+	.key {
+		width: $button-size;
+		border-radius: 0 0 $button-margin + px $button-margin + px;
+		margin: $button-margin;
+		transition: all 0.1s linear;
+
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+
+		font-size: 14px;
+		line-height: 24px;
+
+		&:hover {
+			box-shadow: inset 0px -3px 10px #2224;
+		}
+	}
+
+	.flat {
+		height: $white-height;
+		background: $white-01;
+		color: #4446;
+
+		&.touched {
+			background: $yellow-primary !important;
+		}
+
+		&.checked {
+			background: $blue-second;
+		}
+	}
+
+	.sharp {
+		height: $black-height;
+		background: #444;
+		margin-left: calc($button-size / (-2)) + px;
+		margin-right: calc($button-size / (-2)) + px;
+		z-index: 1;
+
+		color: #fff6;
+		font-size: 12px;
+		font-weight: 300;
+
+		&.touched {
+			background: $yellow-primary !important;
+		}
+
+		&.checked {
+			background: $blue-second;
+		}
+	}
+}

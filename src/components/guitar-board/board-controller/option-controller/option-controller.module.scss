@@ -14,7 +14,6 @@
 
 .controller-inner-option {
 	.controller-inner-unchecked {
-		// font-size: 14px;
 		margin-top: 0px;
 		font-weight: 300;
 		transition: opacity 0.15s linear;
@@ -24,5 +23,10 @@
 		.controller-inner-unchecked {
 			opacity: 0.8;
 		}
+	}
+
+	.controller-inner-intro {
+		font-size: 12px;
+		margin-top: 4px;
 	}
 }

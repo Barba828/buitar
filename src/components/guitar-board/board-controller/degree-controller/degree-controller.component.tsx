@@ -82,7 +82,7 @@ export const DegreeChordController: FC<ControllerProps> = () => {
 		setChord,
 		boardOptions: { isSharpSemitone },
 	} = useBoardContext()
-	const { progressions, progressionIndex, setSoundList } = usePlayerContext()
+	const { progressions, progressionIndex, setSoundList, setSoundListIndex } = usePlayerContext()
 
 	const tones = guitarBoardOption.chords?.map((chord) => chord.tone)
 	const chords = progressions[progressionIndex].procession.map((degree) => {
@@ -103,10 +103,11 @@ export const DegreeChordController: FC<ControllerProps> = () => {
 	}, [guitarBoardOption.chords])
 
 	const handleClick = useCallback(
-		(item) => {
+		(item, index) => {
 			setChord(item.chord)
+			setSoundListIndex(index)
 		},
-		[setChord]
+		[setChord, setSoundListIndex]
 	)
 
 	return (

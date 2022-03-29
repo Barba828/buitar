@@ -6,6 +6,7 @@ import { Instrument } from '@/utils/tone-player/instrument.type'
 import { Icon } from '@/components/icon'
 import { optionsUIConfig, instrumentUIConfig } from './controller.config'
 import { ControllerList } from '../controller'
+import cx from 'classnames'
 import styles from './option-controller.module.scss'
 
 export interface ControllerProps {
@@ -51,6 +52,9 @@ export const BoardOptionsController: FC<ControllerProps> = (props) => {
 			<div className={styles['controller-inner']}>
 				{checkedItem.name_zh}
 				<div className={styles['controller-inner-unchecked']}>{uncheckedItem.name_zh}</div>
+				<div className={cx(styles['controller-inner-unchecked'], styles['controller-inner-intro'])}>
+					{optionsUIConfig[option].others.intro_zh}
+				</div>
 			</div>
 		)
 	}

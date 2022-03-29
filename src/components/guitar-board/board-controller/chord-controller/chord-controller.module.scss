@@ -6,6 +6,17 @@
 .container {
 	display: flex;
 
+	.fifth-circle {
+		height: $button-size * 6 + $button-margin * 4 + px !important;
+		min-width: $button-size * 6 + $button-margin * 4 + px !important;
+	}
+
+	.chord-controllers {
+		// 适配子元素超出可滚动
+		width: 0;
+		flex: 1;
+	}
+
 	.mode-item {
 		font-size: 24px;
 		text-transform: capitalize;
@@ -37,6 +48,7 @@
 
 		&-note {
 			font-size: 22px;
+			line-height: 32px;
 		}
 
 		&-tag {

@@ -2,6 +2,7 @@ import { ChordAnalyzer } from './chord-analyzer'
 import { ChordPlayer } from './chord-player'
 import { ChordProgressions } from './chord-progressions'
 import { HomePage } from './home'
+import { InstrumentPlayer } from './instrument-player'
 
 export const routeConfig = [
 	{
@@ -31,6 +32,13 @@ export const routeConfig = [
 		path: '/progressions',
 		type: 'menu',
 		Component: ChordProgressions,
+	},
+	{
+		name_zh: '钢琴',
+		name_en: 'Piano',
+		path: '/piana',
+		type: 'menu',
+		Component: InstrumentPlayer,
 	},
 	// 'Chord Analyzer': true, // 和弦编辑
 	// 'Chord Collection': true, // 收藏

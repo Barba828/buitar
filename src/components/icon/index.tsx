@@ -8,6 +8,7 @@ interface IconProps {
 	size?: number
 	color?: string
 	className?: string
+	[x: string]: any
 }
 
 export const Icon: FC<IconProps> = ({ name, size, color, className, ...restProps }) => {

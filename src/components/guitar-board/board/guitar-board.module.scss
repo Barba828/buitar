@@ -77,6 +77,11 @@
 	list-style-type: none;
 	width: $button-size * 2 !important;
 	@include flex-center(row);
+
+	// &:active {
+	// 	background: $yellow-primary !important;
+	// }
+
 	@media (any-hover: hover) {
 		&:hover {
 			font-size: 18px;
@@ -107,10 +112,10 @@
 	}
 
 	&.tapped-point {
-		background: $blue-primary !important;
+		background: $blue-second !important;
 	}
 
-	&.emphasisoned-point {
-		background: $yellow-primary;
+	&.emphasised-point {
+		background: $yellow-primary !important;
 	}
 }

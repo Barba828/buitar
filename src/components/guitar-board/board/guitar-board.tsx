@@ -1,24 +1,51 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
 import type { Point, ToneSchema } from 'to-guitar'
 import { useBoardContext } from '../board-provider'
 import { getBoardOptionsTone } from '../utils'
 import { GuitarBoardOptions } from '../board-controller/controller.type'
-import { BoardController } from '@/components'
+import { useBoardTouch, useGuitarKeyDown } from '@/utils/hooks/use-board-event'
+import { useDebounce } from '@/utils/hooks/use-debouce'
 import cx from 'classnames'
 import styles from './guitar-board.module.scss'
 
 interface GuitarBoardProps {
 	range?: [number, number]
-	onClickPoint?: (point: Point) => void
+	onCheckedPoints?: (points: Point[]) => void
 }
 
 const FRET_DOT = [, , '·', , '·', , '·', , '·', , , '··', , , , '·']
 
-export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 15], onClickPoint }) => {
+export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 16], onCheckedPoints }) => {
 	const {
 		guitarBoardOption: { keyboard },
-		boardOptions: { hasTag },
+		boardOptions: { hasTag, isPianoKeyDown },
+		emphasis,
+		setEmphasis,
+		player,
 	} = useBoardContext()
+
+	// 鼠标事件监听
+	const { handler } = useBoardTouch(emphasis, setEmphasis)
+	// 键盘事件监听
+	const { part } = useGuitarKeyDown(emphasis, setEmphasis, !!isPianoKeyDown)
+
+	const boardList = useMemo(() => {
+		if (!keyboard) {
+			return null
+		}
+		return exchangeBoardList(keyboard)
+	}, [keyboard])
+
+	const debouceEmphasis = useDebounce(emphasis, 30)
+	useEffect(() => {
+		if (debouceEmphasis.length <= 0 || !boardList) {
+			return
+		}
+		const points = debouceEmphasis.map((index) => boardList[Number(index)])
+
+		player.triggerPointRelease(points)
+		onCheckedPoints?.(points)
+	}, [debouceEmphasis])
 
 	if (!keyboard) {
 		return null
@@ -29,9 +56,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 15], onClickPoin
 	const boardView = board.slice(range[0], range[1]).map((frets, fretIndex) => {
 		const fretsView = frets
 			.reverse()
-			.map((point, stringIndex) => (
-				<BoardButton key={stringIndex} point={point} onClickPoint={onClickPoint} />
-			))
+			.map((point, stringIndex) => <BoardButton key={stringIndex} point={point} />)
 
 		const dotsView = (
 			<div
@@ -56,9 +81,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 15], onClickPoin
 	const zeroView = board.slice(0, 1).map((frets, fretIndex) => {
 		const fretsView = frets
 			.reverse()
-			.map((point, stringIndex) => (
-				<BoardButton key={stringIndex} point={point} onClickPoint={onClickPoint} />
-			))
+			.map((point, stringIndex) => <BoardButton key={stringIndex} point={point} />)
 
 		return (
 			<ul className={cx(styles.frets, styles['frets-zero'])} key={fretIndex}>
@@ -68,36 +91,33 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 15], onClickPoin
 	})
 
 	return (
-		<>
-			<div className={cx(styles.board)}>
-				<div className={styles['board-view']}>{zeroView}</div>
-
-				<div className={'scroll-without-bar'}>
-					<div className={styles['board-view']}>{boardView}</div>
-				</div>
+		<div className={cx(styles.board)} {...handler}>
+			<div className={styles['board-view']}>{zeroView}</div>
+			<div className={'scroll-without-bar'}>
+				<div className={styles['board-view']}>{boardView}</div>
 			</div>
-		</>
+		</div>
 	)
 }
 
 const BoardButton = ({
 	point,
 	itemClassName,
-	onClickPoint,
-}: { point: Point; itemClassName?: string } & GuitarBoardProps) => {
-	const { player, boardOptions, taps, emphasison } = useBoardContext()
+	touched = [],
+}: { point: Point; itemClassName?: string; touched?: string[] } & GuitarBoardProps) => {
+	const { boardOptions, taps, emphasis } = useBoardContext()
 	const { hasLevel, isNote } = boardOptions
 
+	// key
+	const key = `${point.index}`
 	// 强调的point
-	const emphasisoned = emphasison.findIndex((tap) => tap.index === point.index) !== -1
+	const emphasised = emphasis.includes(key) || touched.includes(key)
 	// 被点击的point
 	const tapped = taps.findIndex((tap) => tap.index === point.index) !== -1
 	// 显示音调文本
 	const tone = getBoardOptionsTone(point.toneSchema, boardOptions, !tapped)
 	// 显示八度音高
 	const level = tone && getLevel(point.toneSchema, boardOptions)
-	// // 选中按钮
-	// const checked = checkedPoints.includes(point)
 
 	const cls = cx(
 		'buitar-primary-button',
@@ -107,20 +127,14 @@ const BoardButton = ({
 				? styles['interval-point-reverse']
 				: styles['interval-point']
 			: null,
+		emphasised && styles['emphasised-point'], // 被强调的point
 		tapped && styles['tapped-point'], // 被点击的point
-		emphasisoned && styles['emphasisoned-point'], // 被强调的point
 		styles['point'],
 		itemClassName
 	)
 
-	const handleClick = () => {
-		onClickPoint?.(point)
-		player.triggerPointRelease(point)
-		console.info('[point]', point)
-	}
-
 	return (
-		<li onClick={handleClick} className={cls} key={point.index}>
+		<li className={cls} key={key} data-key={key}>
 			{tone}
 			{level}
 		</li>
@@ -145,6 +159,10 @@ const getLevel = (toneSchema: ToneSchema, boardOptions: GuitarBoardOptions) => {
 	)
 }
 
+/**
+ * 二维数组纵横交换
+ * @returns
+ */
 const exchangeBoardArray = (keyboard: Point[][]) => {
 	const board: Point[][] = []
 	keyboard.forEach((string, stringIndex) => {
@@ -157,4 +175,12 @@ const exchangeBoardArray = (keyboard: Point[][]) => {
 		})
 	})
 	return board
+}
+
+const exchangeBoardList = (keyboard: Point[][]) => {
+	const list: Point[] = []
+	keyboard.forEach((string) => {
+		list.push(...string)
+	})
+	return list
 }

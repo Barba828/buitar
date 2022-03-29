@@ -10,19 +10,30 @@ import {
 	transNote,
 } from 'to-guitar'
 import { ControllerProps } from '../option-controller'
-import { useBoardContext, getBoardOptionsList } from '../../index'
+import { useBoardContext, getBoardOptionsList, ChordTapsController } from '../../index'
 import styles from './chord-controller.module.scss'
+import { FifthCircleController } from '../fifth-circle-controller'
 
 export const ChordController: FC<ControllerProps> = (props) => {
 	return (
+		<ChordControllerInner>
+			<ChordNumPickerController {...props} />
+			<ChordPickerController {...props} />
+			<ChordTapsController {...props} />
+		</ChordControllerInner>
+	)
+}
+
+/**
+ * 左侧五度圈的选择器
+ * @returns
+ */
+export const ChordControllerInner: FC<{ left?: JSX.Element }> = ({ left, children }) => {
+	return (
 		<>
 			<div className={styles['container']}>
-				<ModePickerController {...props} />
-				<ScalePickerController {...props} />
-				<ChordNumPickerController {...props} />
-			</div>
-			<div className={styles['container']}>
-				<ChordPickerController {...props} />
+				{left ? left : <FifthCircleController className={styles['fifth-circle']} />}
+				<div className={styles['chord-controllers']}>{children}</div>
 			</div>
 		</>
 	)
@@ -129,6 +140,7 @@ const ChordNumPickerController: FC<ControllerProps> = (props) => {
 				)
 			}}
 			checkedItem={checked}
+			visibleItem={() => true}
 		/>
 	)
 }
