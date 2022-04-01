@@ -1,5 +1,14 @@
-import { DegreeTag } from 'to-guitar'
+import { chordMap, DegreeTag } from 'to-guitar'
 
+export const tagList = Array.from(chordMap.values()).map((item) => item.tag)
+export const tagTypedList = Array.from(chordMap.values()).reduce((prev: string[][], curr) => {
+	const index = (curr.constitute?.length || 3) - 3
+	if (!prev[index]) {
+		prev[index] = []
+	}
+	prev[index].push(curr.tag)
+	return prev
+}, [])
 export const degreeList: DegreeTag[] = ['Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ', 'Ⅶ']
 export const PROGRESSIONS_KEY = 'progressions'
 export type ProgressionItem = {

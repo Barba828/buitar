@@ -1,6 +1,7 @@
 import React, {
 	FC,
 	forwardRef,
+	memo,
 	useCallback,
 	useEffect,
 	useImperativeHandle,
@@ -16,6 +17,8 @@ import cx from 'classnames'
 import styles from './sequencer.module.scss'
 import { Switch } from '../switch'
 import { TonePlayer } from '@/utils'
+import { useSequencerContext } from '.'
+import { InstrumentColor } from '@/components/guitar-board/board-controller/option-controller/controller.config'
 
 /**
  * 单序列active的音符
@@ -46,57 +49,31 @@ export interface SequencerProps {
 	 */
 	sounds?: Sound[]
 	/**
-	 * 播放拍数
-	 */
-	m?: number
-	/**
-	 * 默认节拍
-	 */
-	bpm?: number
-	/**
 	 * 播放器
 	 */
 	player: TonePlayer
 	/**
-	 * 可修改播放内容
+	 * 存在Controller
 	 */
-	editable?: boolean
+	controllable?: boolean
+
+	color?: InstrumentColor
 }
 
 /**
  * 音序机
  */
-export const Sequencer: FC<SequencerProps> = ({
-	sounds = defaultSounds,
-	player,
-	m = 1,
-	bpm = 60,
-}) => {
-	const [isPlaying, setIsPlaying] = useState(false)
-	const [editable, setEditable] = useState(true)
-	const [playerBpm, setPlayerBpm] = useState(bpm)
+export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, player, color }) => {
+	const { setIsPlaying, m, isPlaying } = useSequencerContext()
 	const sequencerList = useRef<SequencerListRefs>(null)
+	const scheduleId = useRef<number>()
 
-	const maxLength = 16 * m // 16分音符数量
-
-	// 十六分音符UI宽度
-	const itemWidth = useMemo(() => {
-		const containerWidth = document.getElementById('board')?.getBoundingClientRect().width
-		if (!containerWidth) {
-			return 0
+	useEffect(() => {
+		if (!isPlaying) {
+			return
 		}
-		return (containerWidth * 0.8 * 0.9) / maxLength
-	}, [document.getElementById('board')?.getBoundingClientRect().width, maxLength])
-
-	useEffect(() => {
-		Tone.Transport.bpm.value = playerBpm
-		// 1秒内bpm平滑变动到...
-		// Tone.Transport.bpm.rampTo(bpm, 1)
-	}, [playerBpm])
-
-	useEffect(() => {
-		Tone.Transport.cancel().stop()
-		Tone.Transport.scheduleRepeat((time) => {
+		scheduleId.current && Tone.Transport.clear(scheduleId.current)
+		scheduleId.current = Tone.Transport.scheduleRepeat((time) => {
 			// 十六分音符时间长度
 			const itemTime = Tone.Transport.toSeconds('16n')
 			sounds.forEach((sound) => {
@@ -107,92 +84,101 @@ export const Sequencer: FC<SequencerProps> = ({
 					player.getContext().triggerAttackRelease(key, duration, time + start)
 				})
 			})
+
+			console.log(player.getInstrument())
+
 			Tone.Draw.schedule(() => {
 				// 每次循环滚动时间线
+				setIsPlaying(true)
 				sequencerList.current?.playTimeline(Tone.Transport.toSeconds(`${m}m`))
 			}, time)
 		}, `${m}m`)
 		return () => {
 			Tone.Transport.cancel().stop()
 		}
-	}, [sounds])
-
-	const handlePlay = useCallback(() => {
-		if (isPlaying) {
-			stop()
-		} else {
-			start()
-		}
-		setIsPlaying(!isPlaying)
-	}, [isPlaying])
-
-	const handleEditable = useCallback((value: boolean) => {
-		setEditable(value)
-	}, [])
+	}, [sounds, m, isPlaying])
 
 	const handleChange = useCallback((sound: Sound) => {
 		player.getContext().triggerAttackRelease(sound.key, '2n')
 	}, [])
 
-	const start = useCallback(() => {
-		Tone.start()
-		Tone.Transport.start()
-	}, [])
+	return (
+		<SequencerList ref={sequencerList} soundList={sounds} onChange={handleChange} color={color} />
+	)
+})
 
-	const stop = useCallback(() => {
+/**
+ * 音序机控制器
+ */
+export const SequencerController: FC<{
+	editVisible?: boolean
+	mVisible?: boolean
+	onSave?(): void
+}> = ({ editVisible = true, mVisible = true, onSave }) => {
+	const { isPlaying, setIsPlaying, editable, setEditable, bpm, setBpm, m, setM } =
+		useSequencerContext()
+
+	const handlePlay = useCallback(() => {
+		Tone.Transport.toggle()
+		setIsPlaying(!isPlaying)
+	}, [isPlaying])
+
+	const handleChangeM = useCallback(() => {
+		const nextM = m === 1 ? 2 : m === 2 ? 4 : 1
 		Tone.Transport.stop()
-	}, [])
-
-	if (itemWidth === 0) {
-		return null
-	}
+		setIsPlaying(false)
+		setM(nextM)
+	}, [m])
 
 	return (
-		<div>
-			<div className={styles['player-controller']}>
-				<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={handlePlay}>
-					<Icon size={24} name={isPlaying ? 'icon-stop' : 'icon-play'} />
-				</div>
-				<div className={cx('buitar-primary-button', styles['player-icon'])}>
-					<Switch defaultValue={editable} onChange={handleEditable} />
-				</div>
-				<div className={cx('buitar-primary-button', styles['player-range'])}>
-					<span className={styles['player-range-text']}>
-						Tempo
-						<span className={styles['player-range-bpm']}> {playerBpm} </span>
-						bpm
-					</span>
-					<input
-						type="range"
-						onChange={(e) => {
-							setPlayerBpm(Number(e.target.value))
-						}}
-						min={30}
-						max={240}
-						step={1}
-						defaultValue={playerBpm}
-					/>
-				</div>
+		<div className={styles['player-controller']}>
+			<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={handlePlay}>
+				<Icon size={24} name={isPlaying ? 'icon-stop' : 'icon-play'} />
 			</div>
-			<SequencerList
-				ref={sequencerList}
-				editable={editable}
-				timelineVisible={isPlaying}
-				soundList={sounds}
-				maxLength={maxLength}
-				itemWidth={itemWidth}
-				onChange={handleChange}
-			/>
+
+			<div className={cx('buitar-primary-button', styles['player-range'])}>
+				<span className={styles['player-range-text']}>
+					Tempo
+					<span className={styles['player-range-bpm']}> {bpm} </span>
+					bpm
+				</span>
+				<input
+					type="range"
+					onChange={(e) => {
+						setBpm(Number(e.target.value))
+					}}
+					className="buitar-primary-range"
+					min={30}
+					max={240}
+					step={1}
+					defaultValue={bpm}
+				/>
+			</div>
+
+			{editVisible && (
+				<div className={cx('buitar-primary-button', styles['player-icon'])}>
+					<Switch defaultValue={editable} onChange={setEditable} />
+				</div>
+			)}
+
+			{mVisible && (
+				<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={handleChangeM}>
+					<span className={styles['player-m']}> {m}m </span>
+				</div>
+			)}
+
+			{onSave && (
+				<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={onSave}>
+					<Icon size={24} name="icon-save" />
+				</div>
+			)}
 		</div>
 	)
 }
 
 interface SequencerListProps {
 	soundList: Sound[]
-	maxLength: number
-	itemWidth: number
-	editable?: boolean
-	timelineVisible?: boolean
+	color?: InstrumentColor
 	onChange?: (sound: Sound) => void
 }
 
@@ -200,8 +186,13 @@ interface SequencerListRefs {
 	playTimeline: (time: number) => void
 }
 
+/**
+ * 音序条列表
+ */
 const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
-	({ soundList, maxLength, itemWidth, editable, timelineVisible, onChange }, ref) => {
+	({ soundList, color = 'yellow', onChange }, ref) => {
+		const { isPlaying: timelineVisible, editable, itemWidth, maxLength } = useSequencerContext()
+
 		const container = useRef<HTMLDivElement>(null)
 		const timeline = useRef<HTMLDivElement>(null)
 
@@ -283,7 +274,9 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 								className={cx(
 									'buitar-primary-button',
 									styles['sound-item'],
-									styles['sound-item-active']
+									styles['sound-item-active'],
+									`touch-${color}`
+									// `touch-yellow`
 								)}
 								style={{
 									transform: `translateX(${block[0] * itemSize}px)`,
@@ -332,6 +325,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 			if (!timeline.current) {
 				return
 			}
+
 			timeline.current.style.transition = ''
 			timeline.current.style.left = `${headSize}px`
 
@@ -342,6 +336,10 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 				timeline.current.style.transition = `left ${time}s linear`
 				timeline.current.style.left = `${soundSize}px`
 			})
+		}
+
+		if (itemWidth === 0 || itemWidth == Infinity) {
+			return null
 		}
 
 		return (

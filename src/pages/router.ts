@@ -3,6 +3,7 @@ import { ChordPlayer } from './chord-player'
 import { ChordProgressions } from './chord-progressions'
 import { HomePage } from './home'
 import { InstrumentPlayer } from './instrument-player'
+import { SequencerPlayer } from './sequencer-player'
 
 export const routeConfig = [
 	{
@@ -34,11 +35,25 @@ export const routeConfig = [
 		Component: ChordProgressions,
 	},
 	{
-		name_zh: '钢琴',
-		name_en: 'Piano',
-		path: '/piana',
+		name_zh: '和弦收藏',
+		name_en: 'Chord Collection',
+		path: '/collection',
 		type: 'menu',
 		Component: InstrumentPlayer,
+	},
+	{
+		name_zh: '乐器',
+		name_en: 'Instrument',
+		path: '/instrument',
+		type: 'menu',
+		Component: InstrumentPlayer,
+	},
+	{
+		name_zh: '创造',
+		name_en: 'Creation',
+		path: '/creation',
+		type: 'menu',
+		Component: SequencerPlayer,
 	},
 	// 'Chord Analyzer': true, // 和弦编辑
 	// 'Chord Collection': true, // 收藏

@@ -1,7 +1,11 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
-import { degreeList } from '@/pages/chord-progressions/progressions.config'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+	degreeList,
+	ProgressionItem,
+	ProgressionsConfig,
+	tagList,
+} from '@/pages/chord-progressions/progressions.config'
 import cx from 'classnames'
-import styles from './degree-controller.module.scss'
 import {
 	ControllerList,
 	ControllerProps,
@@ -11,15 +15,34 @@ import {
 } from '@/components'
 import { transChord, transChordTaps } from 'to-guitar'
 
+import styles from './degree-controller.module.scss'
+
 /**
  * 级数选择器
  * @returns
  */
 export const DegreeController = () => {
-	const { progressionIndex, setProgressionIndex, progressions } = usePlayerContext()
+	const { progressionIndex, setProgressionIndex, progressions, dispatchProgressions } =
+		usePlayerContext()
 	const [expand, setExpand] = useState(false)
-	const handleExpande = () => {
+	const [edit, setEdit] = useState(false)
+	const toggleExpande = () => {
 		setExpand(!expand)
+	}
+
+	const toggleEdit = () => {
+		setEdit(!edit)
+	}
+
+	const handleSubmit = (progression: ProgressionsConfig) => {
+		dispatchProgressions({ type: 'set', payload: [...progressions, progression] })
+		setProgressionIndex(progressions.length)
+	}
+
+	const handleRemove = (index: number) => {
+		progressions.splice(index, 1)
+		dispatchProgressions({ type: 'set', payload: [...progressions] })
+		setProgressionIndex(progressions.length - 1)
 	}
 
 	const list = progressions.map((progress, index) => {
@@ -33,7 +56,7 @@ export const DegreeController = () => {
 				}}
 			>
 				{degreeList[degree.name - 1]}
-				{degree.tag}
+				<span className={styles['degree-item-tag']}>{degree.tag}</span>
 			</div>
 		))
 
@@ -46,6 +69,12 @@ export const DegreeController = () => {
 				)}
 			>
 				{degreesView}
+				<div
+					className={cx('buitar-primary-button', styles['degree-add'], styles['degree-remove'])}
+					onClick={() => handleRemove(index)}
+				>
+					<Icon name="icon-close" />
+				</div>
 			</div>
 		)
 	})
@@ -54,19 +83,134 @@ export const DegreeController = () => {
 
 	return (
 		<div className={styles['degree-controller']}>
-			<div
-				className={cx(
-					'buitar-primary-button',
-					styles['degree-expand'],
-					expand && styles['icon-expand']
-				)}
-				onClick={handleExpande}
-			>
-				<Icon name="icon-back" />
+			{edit ? (
+				<>
+					<DegreeEditor onClose={toggleEdit} onSubmit={handleSubmit} />
+				</>
+			) : (
+				<>
+					<div
+						className={cx(
+							'buitar-primary-button',
+							styles['degree-expand'],
+							expand && styles['icon-expand']
+						)}
+						onClick={toggleExpande}
+					>
+						<Icon name="icon-back" />
+					</div>
+					<div className={styles['degree-container']}>{expand ? list : item}</div>
+					<div className={cx('buitar-primary-button', styles['degree-add'])} onClick={toggleEdit}>
+						<Icon name="icon-add" />
+					</div>
+				</>
+			)}
+		</div>
+	)
+}
+
+const defaultTag = {
+	name: 1,
+	tag: '',
+	beat: 1,
+}
+
+export const DegreeEditor: FC<{
+	onClose: () => void
+	onSubmit: (x: ProgressionsConfig) => void
+}> = ({ onClose, onSubmit }) => {
+	const [procession, setProcession] = useState<ProgressionItem[]>([{ ...defaultTag }])
+	const [checked, setChecked] = useState<number>(procession.length - 1)
+
+	const handleAdd = useCallback(() => {
+		procession.push({ ...defaultTag })
+		setChecked(procession.length - 1)
+		setProcession([...procession])
+	}, [procession])
+
+	const handleSubmit = useCallback(() => {
+		onSubmit({
+			procession: procession,
+			name: '',
+			introduction: '',
+		})
+		onClose()
+	}, [procession])
+
+	const handleRemove = (index: number) => {
+		procession.splice(index, 1)
+		setProcession([...procession])
+	}
+
+	return (
+		<div className={styles['degree-container']}>
+			<div className={styles['degree-view']}>
+				{procession.map((degree, index) => (
+					<div
+						key={index}
+						className={cx(
+							'buitar-primary-button',
+							styles['degree-item'],
+							index === checked && 'touch-yellow'
+						)}
+						onClick={() => setChecked(index)}
+					>
+						{degreeList[degree.name - 1]}
+						<span className={styles['degree-item-tag']}>{degree.tag}</span>
+						<div
+							onClick={() => {
+								handleRemove(index)
+							}}
+							className={cx(styles['degree-item-remove'])}
+						>
+							<Icon name="icon-close" />
+						</div>
+					</div>
+				))}
+				<div className={cx('buitar-primary-button', styles['degree-add'])} onClick={handleAdd}>
+					<Icon name="icon-add" size={24} />
+				</div>
+
+				<div className={cx('buitar-primary-button', styles['degree-add'])} onClick={handleSubmit}>
+					<Icon name="icon-confirm" />
+				</div>
+				<div className={cx('buitar-primary-button', styles['degree-add'])} onClick={onClose}>
+					<Icon name="icon-close" />
+				</div>
 			</div>
-			<div className={styles['degree-container']}>{expand ? list : item}</div>
-			<div className={cx('buitar-primary-button', styles['degree-add'])}>
-				<Icon name="icon-add" />
+
+			<div className={styles['degree-view']}>
+				{degreeList.map((degree, index) => (
+					<div
+						key={index}
+						onClick={() => {
+							procession[checked].name = index + 1
+							setProcession([...procession])
+						}}
+						className={cx(
+							'buitar-primary-button',
+							styles['degree-item'],
+							styles['degree-item-second']
+						)}
+					>
+						{degree}
+					</div>
+				))}
+			</div>
+
+			<div className={cx(styles['degree-view'], styles['tags-view'])}>
+				{tagList.map((tag) => (
+					<div
+						key={tag}
+						onClick={() => {
+							procession[checked].tag = tag
+							setProcession([...procession])
+						}}
+						className={cx('buitar-primary-button', styles['tags-item'])}
+					>
+						{tag}
+					</div>
+				))}
 			</div>
 		</div>
 	)
@@ -84,21 +228,26 @@ export const DegreeChordController: FC<ControllerProps> = () => {
 	} = useBoardContext()
 	const { progressions, progressionIndex, setSoundList, setSoundListIndex } = usePlayerContext()
 
-	const tones = guitarBoardOption.chords?.map((chord) => chord.tone)
-	const chords = progressions[progressionIndex].procession.map((degree) => {
-		const tone = tones![degree.name - 1]
-		const chord = transChord(tone.note, degree.tag)!
-		return {
-			...chord,
-			tone,
-			degree: degreeList[degree.name - 1],
+	const chords = useMemo(() => {
+		if (!progressions[progressionIndex]) {
+			return []
 		}
-	})
-	const soundList = chords.map((item) => {
-		return transChordTaps(item.chord, guitarBoardOption.keyboard).chordList[0]
-	})
+		const tones = guitarBoardOption.chords?.map((chord) => chord.tone)
+		return progressions[progressionIndex].procession.map((degree) => {
+			const tone = tones![degree.name - 1]
+			const chord = transChord(tone.note, degree.tag)!
+			return {
+				...chord,
+				tone,
+				degree: degreeList[degree.name - 1],
+			}
+		})
+	}, [guitarBoardOption.chords])
 
 	useEffect(() => {
+		const soundList = chords.map((item) => {
+			return transChordTaps(item.chord, guitarBoardOption.keyboard).chordList[0]
+		})
 		setSoundList(soundList)
 	}, [guitarBoardOption.chords])
 
@@ -109,6 +258,10 @@ export const DegreeChordController: FC<ControllerProps> = () => {
 		},
 		[setChord, setSoundListIndex]
 	)
+
+	if (!progressions[progressionIndex] || progressionIndex < 0) {
+		return null
+	}
 
 	return (
 		<ControllerList

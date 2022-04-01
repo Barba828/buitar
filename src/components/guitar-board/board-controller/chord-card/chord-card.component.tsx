@@ -34,7 +34,7 @@ export const ChordCard: FC<{
 		player.triggerPointRelease(taps)
 	}
 
-	const chordName = useChordName(0)
+	const chordName = useChordName()
 	const chordTitle = title || chordName
 
 	const card = (
@@ -104,20 +104,26 @@ export const getChordName = (
 	}
 }
 
-export const DetialCard: FC = () => {
+export const DetailCard: FC<{ index?: number }> = ({ index = 0 }) => {
 	const { chord, chordTaps } = useBoardContext()
-	const visible = !!chordTaps?.chordType[0]
+	const chordName = useChordName(index)
+	const visible = !!chordTaps?.chordType[index]
 
 	if (!visible) {
 		return null
 	}
-	const title = chordTaps.chordType[0].name
-	const subTitle = chordTaps.chordType[0].tag !== '*' ? chordTaps.chordType[0].name_zh : '自定义'
+
+	const title = chordTaps.chordType[index].name
+	const subTitle =
+		chordTaps.chordType[index].tag !== '*' ? chordTaps.chordType[index].name_zh : '自定义'
 	return (
 		<div className={cx(styles['detail-card'])}>
-			<div className={cx('buitar-primary-button', styles['detail-name'])}>
-				{title}
-				<div className={styles['detail-subname']}>{subTitle}</div>
+			<div className={cx('buitar-primary-button', styles['detail-view'])}>
+				<div className={styles['detail-title']}>{chordName}</div>
+				<div className={styles['detail-name']}>
+					{title}
+					<div className={styles['detail-subname']}>{subTitle}</div>
+				</div>
 			</div>
 			<div className={styles['detail-chord']}>
 				{chord.map((note, index) => (

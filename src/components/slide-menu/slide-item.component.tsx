@@ -6,6 +6,8 @@ import styles from './slide-item.module.scss'
 import { Icon } from '@/components/icon'
 import { useMenuContext } from './index'
 import { routeConfig } from '@/pages/router'
+import { menuConfig, MenuKeys } from './menu-provider/menu-config'
+import { Switch } from '../index'
 
 export const SlideMenu = () => {
 	const { menus, dispatchMenus } = useMenuContext()
@@ -27,20 +29,17 @@ export const SlideMenu = () => {
 			</Link>
 		))
 
-	const options = Object.keys(menus).map((title, index) => {
-		const value = typeof menus[title] === 'boolean' && menus[title]
+	const options = menuConfig.map((item, index) => {
+		const checked = !!menus[item.key]
 		return (
-			<div
-				onClick={() => {
-					dispatchMenus({ type: 'set', payload: { [title]: !value } })
-				}}
-				className={cx(
-					styles['slide-menu-tab-item'],
-					value && styles['slide-menu-tab-item-checked']
-				)}
-				key={`${index}`}
-			>
-				{title}
+			<div className={cx(styles['slide-menu-tab-item'])} key={`${index}`}>
+				{item.name_zh}
+				<Switch
+					defaultValue={checked}
+					onChange={(value) => {
+						dispatchMenus({ type: 'set', payload: { [item.key]: value } })
+					}}
+				/>
 			</div>
 		)
 	})
@@ -67,6 +66,7 @@ export const SlideMenu = () => {
 			<div className={styles['slide-menu-tab']}>
 				{header}
 				{links}
+				<div className={styles['seperate']}></div>
 				{options}
 			</div>
 			<div

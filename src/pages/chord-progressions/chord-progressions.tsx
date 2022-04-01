@@ -67,10 +67,16 @@ const TapsViewer = () => {
 	const { soundList, progressionIndex, progressions } = usePlayerContext()
 	const progression = progressions[progressionIndex]
 
+	if (!progression || progressionIndex < 0) {
+		return null
+	}
 	return (
 		<div className={styles['taps-viewer']}>
 			{soundList.map((taps, index) => {
 				const grade = progression.procession[index]
+				if (!grade) {
+					return null
+				}
 				const name = degreeList[grade.name - 1]
 				return (
 					<ChordCard

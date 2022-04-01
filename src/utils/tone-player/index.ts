@@ -21,7 +21,6 @@ const API_HOST = 'http://localhost:8282'
 export class TonePlayer extends Tone.Sampler {
 	private sampler: Tone.Sampler | PolySynth = new Tone.PolySynth(Tone.Synth).toDestination()
 	private instrument: Instrument = 'default'
-	private duration: Tone.Unit.Time | Tone.Unit.Time[] = '2n'
 
 	constructor(instrument: Instrument = 'default') {
 		super()
@@ -90,10 +89,13 @@ export class TonePlayer extends Tone.Sampler {
 	 * 播放to-guitar point 音（1/2拍后自动释放）
 	 * @param point
 	 */
-	public triggerPointRelease = (point: Point | Point[]) => {
+	public triggerPointRelease = (
+		point: Point | Point[],
+		duration: Tone.Unit.Time | Tone.Unit.Time[] = '2n'
+	) => {
 		const tones = Array.isArray(point) ? point : [point]
 		const notes = Array.from(new Set(tones.map(this.transPoint)))
-		this.sampler.triggerAttackRelease(notes, this.duration)
+		this.sampler.triggerAttackRelease(notes, duration)
 	}
 
 	private transPoint = (point: Point): Tone.Unit.Frequency => {

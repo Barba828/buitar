@@ -1,24 +1,40 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { usePlayerContext } from '../guitar-player'
 import { NOTE_LIST, Point, Tone, transNote } from 'to-guitar'
-import { Sequencer } from '../sequencer'
+import {
+	Sequencer,
+	SequencerController,
+	SequencerProvider,
+	Sound,
+	useSequencerContext,
+} from '../sequencer'
 import { useBoardContext } from '../guitar-board'
 import styles from './sound-board.module.scss'
 
 export const SoundBoard: FC = () => {
+	return (
+		<SequencerProvider defaultEditable={false}>
+			<SoundBoardInner />
+		</SequencerProvider>
+	)
+}
+
+const SoundBoardInner = () => {
 	const { player } = useBoardContext()
 	const { soundList } = usePlayerContext()
+	const { setM } = useSequencerContext()
+	const [sounds, setSounds] = useState<Sound[]>([])
+
+	useEffect(() => {
+		setM(Math.round(soundList.length / 4))
+		setSounds(pointsToSounds(soundList))
+	}, [soundList])
 
 	return (
-		<div>
-			<Sequencer
-				player={player as any}
-				sounds={pointsToSounds(soundList)}
-				m={Math.round(soundList.length / 4)}
-			/>
-
-			{/* <Sequencer player={player as any} /> */}
-		</div>
+		<>
+			<SequencerController mVisible={false} />
+			<Sequencer player={player} sounds={sounds} />
+		</>
 	)
 }
 

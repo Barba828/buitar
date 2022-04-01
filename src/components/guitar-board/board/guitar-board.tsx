@@ -11,11 +11,16 @@ import styles from './guitar-board.module.scss'
 interface GuitarBoardProps {
 	range?: [number, number]
 	onCheckedPoints?: (points: Point[]) => void
+	onChangePart?: (part: boolean) => void
 }
 
 const FRET_DOT = [, , '·', , '·', , '·', , '·', , , '··', , , , '·']
 
-export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 16], onCheckedPoints }) => {
+export const GuitarBoard: FC<GuitarBoardProps> = ({
+	range = [1, 16],
+	onCheckedPoints,
+	onChangePart,
+}) => {
 	const {
 		guitarBoardOption: { keyboard },
 		boardOptions: { hasTag, isPianoKeyDown },
@@ -46,6 +51,10 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 16], onCheckedPo
 		player.triggerPointRelease(points)
 		onCheckedPoints?.(points)
 	}, [debouceEmphasis])
+
+	useEffect(() => {
+		onChangePart?.(part)
+	}, [part])
 
 	if (!keyboard) {
 		return null

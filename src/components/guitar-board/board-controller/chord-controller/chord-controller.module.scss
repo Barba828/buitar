@@ -62,3 +62,28 @@
 		}
 	}
 }
+
+.chord-tab {
+	display: flex;
+
+	.chord-tab-item {
+		height: $button-size * 0.8 + px;
+		width: $button-size * 4 + px;
+		@include flex-center;
+		opacity: 0.9;
+	}
+}
+
+.chord-type {
+	display: flex;
+	flex-wrap: wrap;
+
+	.tags-item {
+		@include flex-center;
+		width: $button-size * 1.5;
+		height: $button-size * 0.8;
+		font-size: 14px;
+		font-weight: 500;
+		color: $white-02;
+	}
+}

@@ -14,6 +14,7 @@ interface PianoBoardProps
 	checked?: string[]
 	defaultTouched?: string[]
 	onChangeKey?: (checked: string[]) => void
+	onChangePart?: (level: boolean) => void
 	disableKeydown?: boolean
 }
 
@@ -23,6 +24,7 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 	checked = [],
 	defaultTouched = [],
 	onChangeKey,
+	onChangePart,
 	disableKeydown,
 	...divProps
 }) => {
@@ -30,7 +32,7 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 	// 鼠标事件
 	const { handler } = useBoardTouch(touched, setTouched)
 	// 按钮事件
-	const { level } = usePianoKeyDown(touched, setTouched, !!disableKeydown)
+	const { part } = usePianoKeyDown(touched, setTouched, !!disableKeydown)
 
 	const debouceTouched = useDebounce(touched, 30)
 	useEffect(() => {
@@ -40,6 +42,10 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 		onChangeKey?.(debouceTouched)
 		player.getContext().triggerAttackRelease(debouceTouched, '2n')
 	}, [debouceTouched])
+
+	useEffect(() => {
+		onChangePart?.(part)
+	}, [part])
 
 	return (
 		<div className="scroll-without-bar" {...divProps}>

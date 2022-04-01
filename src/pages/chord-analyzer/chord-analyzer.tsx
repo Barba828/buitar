@@ -6,7 +6,7 @@ import {
 	useBoardContext,
 	getChordName,
 	BoardController,
-	DetialCard,
+	DetailCard,
 } from '@/components/guitar-board'
 import { FifthsCircle } from '@/components/fifths-circle'
 import { Point, Note, transChordType, ToneSchema, ChordType } from 'to-guitar'
@@ -148,7 +148,7 @@ const TapedChordCard = () => {
 			/>
 			<ChordCard size={200} className={styles['svg-chord']} taps={taps} />
 			<div>
-				<DetialCard />
+				<DetailCard />
 				<div className={styles['type-list']}>{extra}</div>
 			</div>
 		</div>

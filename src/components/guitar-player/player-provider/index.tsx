@@ -1,17 +1,17 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import {
 	PROGRESSIONS_KEY,
 	progressionsConfig,
 	ProgressionsConfig,
 } from '@/pages/chord-progressions/progressions.config'
 import { useStore } from '@/utils/hooks/use-store'
-import { Note, Point } from 'to-guitar'
+import { Point } from 'to-guitar'
 
 type PlayerContextType = {
 	progressionIndex: number
 	setProgressionIndex: SetState<number>
 	progressions: ProgressionsConfig[]
-	setProgressions: Dispatch<ProgressionsConfig[]>
+	dispatchProgressions: Dispatch<ProgressionsConfig[]>
 	soundList: Point[][]
 	setSoundList: SetState<Point[][]>
 	soundListIndex: number
@@ -27,7 +27,7 @@ export const usePlayerContext = () => React.useContext(PlayerContext)
 
 export const PlayerProvider: FC = (props) => {
 	const [progressionIndex, setProgressionIndex] = useState<number>(0)
-	const [progressions, setProgressions] = useStore<ProgressionsConfig[]>(
+	const [progressions, dispatchProgressions] = useStore<ProgressionsConfig[]>(
 		PROGRESSIONS_KEY,
 		progressionsConfig
 	)
@@ -35,11 +35,15 @@ export const PlayerProvider: FC = (props) => {
 	const [soundListIndex, setSoundListIndex] = useState<number>(-1)
 	const [soundList, setSoundList] = useState<Point[][]>([])
 
+	// useEffect(() => {
+	// 	console.log('lnz', soundList)
+	// }, [soundList])
+
 	const playerValue = {
 		progressionIndex,
 		setProgressionIndex,
 		progressions,
-		setProgressions,
+		dispatchProgressions,
 		soundList,
 		setSoundList,
 		soundListIndex,

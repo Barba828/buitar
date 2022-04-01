@@ -53,18 +53,31 @@
 }
 
 .detail-card {
-	.detail-name {
+	.detail-view {
 		width: fit-content;
 		height: max-content;
-		padding: 10px 20px 10px 5px;
-		text-transform: capitalize;
+		padding: 10px;
+		display: flex;
+		align-items: center;
 
-		.detail-subname {
-			margin-top: 5px;
-			font-size: 12px;
+		.detail-title {
+			font-size: 24px;
+			font-weight: 600;
 			opacity: 0.8;
+			margin: 0 8px 0 4px;
+		}
+
+		.detail-name {
+			text-transform: capitalize;
+
+			.detail-subname {
+				margin-top: 5px;
+				font-size: 12px;
+				opacity: 0.8;
+			}
 		}
 	}
+
 	.detail-chord {
 		display: flex;
 

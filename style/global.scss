@@ -25,6 +25,32 @@
 	}
 }
 
+:global(.buitar-primary-range) {
+	// input[type='range'] {
+	-webkit-appearance: none;
+	flex: 1;
+	width: $button-size * 6;
+	height: 4px;
+	border-radius: 2px;
+	outline: none; /* 避免點選會有藍線或虛線 */
+	background: #eee4;
+	// }
+
+	&::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		width: 12px;
+		height: 12px;
+		background: #ccc;
+		border-radius: 50%;
+		transition: 0.2s; /* 點選放大時候的漸變時間 */
+	}
+
+	&:active::-webkit-slider-thumb {
+		width: 16px;
+		height: 16px;
+	}
+}
+
 :global(.hidden) {
 	display: none;
 }
@@ -35,4 +61,20 @@
 	vertical-align: -0.15em;
 	fill: currentColor;
 	overflow: hidden;
+}
+
+:global(.touch-yellow) {
+	@include touch-color;
+}
+:global(.touch-blue) {
+	@include touch-color($blue-primary, $blue-second);
+}
+:global(.touch-green) {
+	@include touch-color($green-primary, $green-second);
+}
+:global(.touch-cyan) {
+	@include touch-color($cyan-primary, $cyan-second);
+}
+:global(.touch-purple) {
+	@include touch-color($purple-primary, $purple-second);
 }

@@ -1,0 +1,68 @@
+.picker {
+	display: flex;
+
+	> div {
+		height: 30px;
+	}
+	svg {
+		opacity: 0.7;
+	}
+	.instrument-item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 80px;
+		font-size: 14px;
+		padding: 0 4px;
+		opacity: 0.8;
+		white-space: nowrap;
+
+		&.instrument-item-hidden {
+			width: 0px;
+			padding: 0px;
+			margin: 2px 0px;
+		}
+	}
+
+	.options-item {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: max-content;
+		min-width: 30px;
+
+		&:hover {
+			.options-item-span {
+				width: 24px;
+			}
+		}
+
+		.options-item-icon {
+			padding: 0 10px;
+			&:hover {
+				opacity: 0.9;
+			}
+		}
+
+		.options-item-span {
+			transition: all 0.15s ease-in-out;
+			font-size: 12px;
+			font-weight: 600;
+			width: 0px;
+			opacity: 0.7;
+			overflow: hidden;
+		}
+
+		.options-item-input {
+			width: 140px;
+			margin-right: 10px;
+		}
+	}
+}
+
+.add {
+	@include flex-center;
+	> svg {
+		opacity: 0.6;
+	}
+}

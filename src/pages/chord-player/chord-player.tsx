@@ -6,7 +6,7 @@ import {
 	BoardProvider,
 	useBoardContext,
 	BoardController,
-	DetialCard,
+	DetailCard,
 } from '@/components/guitar-board'
 import { transChordTaps } from 'to-guitar'
 import { PianoBoard } from '@/components/piano-board'
@@ -54,7 +54,7 @@ const ChordDetail = () => {
 	return (
 		<div style={{ display: 'flex' }}>
 			<ChordCard taps={taps} />
-			<DetialCard />
+			<DetailCard />
 		</div>
 	)
 }

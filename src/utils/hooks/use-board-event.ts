@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { NOTE_LIST } from 'to-guitar'
 
 export const useBoardTouch = (touched: string[], setTouched: SetState<string[]>) => {
 	const isTouched = useRef(false)
@@ -40,31 +41,40 @@ export const usePianoKeyDown = (
 	setTouched: SetState<string[]>,
 	disable?: boolean
 ) => {
-	const [level, setLevel] = useState(3)
+	const [part, setPart] = useState(false)
+	const baseIndex = part ? 4 : 2 //默认是C2 => B4 共四个八度
+
+	const getNode = useCallback(
+		(key: number) => {
+			const level = Math.floor(key / 12) + baseIndex
+			const noteKey = NOTE_LIST[key % 12]
+			return `${noteKey}${level}`
+		},
+		[baseIndex]
+	)
 
 	const onKeyDown = (e: KeyboardEvent) => {
-		const noteKey = PianoKeyConfig.get(e.code)
-		const note = `${noteKey}${level}`
+		if (PianoKeyConfig.has(e.code)) {
+			const note = getNode(PianoKeyConfig.get(e.code)!)
 
-		if (PianoKeyConfig.has(e.code) && !touched.includes(note)) {
-			touched.push(note)
-			setTouched([...touched])
-		} else {
-			const tempLevel = Number(e.key)
-			if (tempLevel && 1 < tempLevel && tempLevel < 6) {
-				setLevel(tempLevel)
+			if (!touched.includes(note)) {
+				touched.push(note)
+				setTouched([...touched])
 			}
+		} else if (e.code.includes('Shift')) {
+			setPart(!part)
 		}
 	}
 
 	const onKeyUp = (e: KeyboardEvent) => {
-		const noteKey = PianoKeyConfig.get(e.code)
-		const note = `${noteKey}${level}`
+		if (PianoKeyConfig.has(e.code)) {
+			const note = getNode(PianoKeyConfig.get(e.code)!)
 
-		if (PianoKeyConfig.has(e.code) && touched.includes(note)) {
-			const index = touched.indexOf(note)
-			touched.splice(index, 1)
-			setTouched([...touched])
+			if (touched.includes(note)) {
+				const index = touched.indexOf(note)
+				touched.splice(index, 1)
+				setTouched([...touched])
+			}
 		}
 	}
 
@@ -82,9 +92,9 @@ export const usePianoKeyDown = (
 			window.removeEventListener('keydown', onKeyDown)
 			window.removeEventListener('keyup', onKeyUp)
 		}
-	}, [level, disable])
+	}, [part, disable])
 
-	return { level }
+	return { part }
 }
 
 export const useGuitarKeyDown = (
@@ -142,18 +152,31 @@ export const useGuitarKeyDown = (
 }
 
 const PianoKeyConfig = new Map([
-	['KeyD', 'C'], //d
-	['KeyR', 'C#'], //r
-	['KeyF', 'D'], //f
-	['KeyT', 'D#'], //t
-	['KeyG', 'E'], //g
-	['KeyH', 'F'], //h
-	['KeyU', 'F#'], //u
-	['KeyJ', 'G'], //j
-	['KeyI', 'G#'], //i
-	['KeyK', 'A'], //k
-	['KeyO', 'A#'], //o
-	['KeyL', 'B'], //l
+	['KeyZ', 0],
+	['KeyS', 1],
+	['KeyX', 2],
+	['KeyD', 3],
+	['KeyC', 4],
+	['KeyV', 5],
+	['KeyG', 6],
+	['KeyB', 7],
+	['KeyH', 8],
+	['KeyN', 9],
+	['KeyJ', 10],
+	['KeyM', 11],
+
+	['KeyY', 12],
+	['Digit7', 13],
+	['KeyU', 14],
+	['Digit8', 15],
+	['KeyI', 16],
+	['KeyO', 17],
+	['Digit0', 18],
+	['KeyP', 19],
+	['Minus', 20],
+	['BracketLeft', 21],
+	['Equal', 22],
+	['BracketRight', 23],
 ])
 const GuitarKeyConfig = new Map([
 	['KeyZ', 0],

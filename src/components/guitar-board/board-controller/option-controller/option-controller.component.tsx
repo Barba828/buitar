@@ -8,6 +8,7 @@ import { optionsUIConfig, instrumentUIConfig } from './controller.config'
 import { ControllerList } from '../controller'
 import cx from 'classnames'
 import styles from './option-controller.module.scss'
+import { useMenuContext } from '@/components'
 
 export interface ControllerProps {
 	disableAnimation?: boolean
@@ -32,6 +33,11 @@ export const BoardController: FC<ControllerProps> = (props) => {
  */
 export const BoardOptionsController: FC<ControllerProps> = (props) => {
 	const { boardOptions, dispatchBoardOptions } = useBoardContext()
+	const { menus } = useMenuContext()
+
+	if (!menus.board_setting) {
+		return null
+	}
 
 	const handleClick = (option: keyof GuitarBoardOptions) => {
 		dispatchBoardOptions({
@@ -82,6 +88,11 @@ export const BoardOptionsController: FC<ControllerProps> = (props) => {
  */
 export const BoardInstrumentController: FC<ControllerProps> = (props) => {
 	const { instrument, dispatchInstrument } = useBoardContext()
+	const { menus } = useMenuContext()
+
+	if (!menus.instrument_setting) {
+		return null
+	}
 
 	const renderInstrumentItem = (instrument: Instrument) => {
 		return (

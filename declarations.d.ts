@@ -33,6 +33,7 @@ declare type Dispatch<T> = React.Dispatch<{
 	type: 'set' | 'init' | 'reset'
 	payload: T
 }>
+declare type MutableRef<T> = React.MutableRefObject<T>
 /**
  * 推断函数入参类型
  */

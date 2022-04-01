@@ -31,10 +31,10 @@ $sound-height: 30;
 
 	.sound-item-active {
 		position: absolute;
-		background: $blue-second;
-		&:hover {
-			background: $blue-third;
-		}
+		// background: $yellow-primary;
+		// &:hover {
+		// 	background: $yellow-second;
+		// }
 	}
 
 	.sound-item-handler {
@@ -58,7 +58,7 @@ $sound-height: 30;
 
 	.sound-item-ghost {
 		position: absolute;
-		background: $yellow-primary;
+		background: #aaa;
 		pointer-events: none;
 	}
 }
@@ -72,7 +72,7 @@ $sound-height: 30;
 		width: $sound-margin * 2 + px;
 		top: 0px;
 		z-index: -1;
-		background: #333;
+		background: #222c;
 	}
 
 	.sound-time-line {
@@ -97,7 +97,7 @@ $sound-height: 30;
 
 	.player-icon {
 		margin: $sound-margin;
-		@include flex-center;
+		@include flex-center(row);
 		:first-child {
 			opacity: 0.8;
 		}
@@ -119,29 +119,12 @@ $sound-height: 30;
 		.player-range-bpm {
 			font-size: 16px;
 		}
-		input[type='range'] {
-			-webkit-appearance: none;
-			flex: 1;
-			width: $button-size * 6;
-			height: 4px;
-			border-radius: 2px;
-			outline: none; /* 避免點選會有藍線或虛線 */
-			background: #eee4;
-		}
+	}
 
-		input[type='range']::-webkit-slider-thumb {
-			-webkit-appearance: none;
-			width: 12px;
-			height: 12px;
-			background: #ccc;
-			border-radius: 50%;
-			transition: 0.2s; /* 點選放大時候的漸變時間 */
-		}
-
-		input[type='range']:active::-webkit-slider-thumb {
-			width: 16px;
-			height: 16px;
-		}
+	.player-m {
+		font-size: 18px;
+		font-weight: 700;
+		opacity: 0.8;
 	}
 }
 

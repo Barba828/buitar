@@ -6,7 +6,7 @@ import { useBoardContext } from '@/components'
 
 import styles from './fifth-circle-controller.module.scss'
 
-export const FifthCircleController: FC<{ className?: string }> = (props) => {
+export const FifthCircleController: FC<{ className?: string; minor?: boolean }> = (props) => {
 	const { guitar } = useBoardContext()
 
 	const handleClickFifths = ({ tone, mode }: { tone: ToneSchema; mode: ModeType }) => {

@@ -36,7 +36,7 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 			name_en: 'note',
 		},
 		unchecked: {
-			name_zh: '唱名',
+			name_zh: '音级',
 			name_en: 'interval',
 		},
 		others: {
@@ -102,35 +102,50 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 	},
 }
 
-export const instrumentUIConfig: { [K in Instrument]: any } = {
-	'bass-electric': {
-		name: 'Electric Bass',
-		name_zh: '贝斯',
-		icon: 'icon-bass',
-	},
+export type InstrumentColor = 'yellow' | 'blue' | 'green' | 'cyan' | 'purple'
+
+export const instrumentUIConfig: {
+	[K in Instrument]: {
+		name_en: string
+		name_zh: string
+		icon: string
+		color: InstrumentColor
+	}
+} = {
 	'guitar-acoustic': {
-		name: 'Acoustic Guitar',
+		name_en: 'Acoustic Guitar',
 		name_zh: '木吉他',
 		icon: 'icon-acoustic-guitar',
+		color: 'yellow',
 	},
 	'guitar-electric': {
-		name: 'Electric Guitar',
+		name_en: 'Electric Guitar',
 		name_zh: '电吉他',
 		icon: 'icon-electric-guitar',
+		color: 'blue',
 	},
 	'guitar-nylon': {
-		name: 'Nylon Guitar',
+		name_en: 'Nylon Guitar',
 		name_zh: '尼龙吉他',
 		icon: 'icon-nylon-guitar',
+		color: 'green',
+	},
+	'bass-electric': {
+		name_en: 'Electric Bass',
+		name_zh: '贝斯',
+		icon: 'icon-bass',
+		color: 'cyan',
 	},
 	piano: {
-		name: 'Piano',
+		name_en: 'Piano',
 		name_zh: '钢琴',
 		icon: 'icon-piano',
+		color: 'purple',
 	},
 	default: {
-		name: 'synth',
+		name_en: 'synth',
 		name_zh: '合成音',
 		icon: 'icon-synth',
+		color: 'yellow',
 	},
 }

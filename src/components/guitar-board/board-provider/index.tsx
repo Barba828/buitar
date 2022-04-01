@@ -93,6 +93,7 @@ export const BoardProvider: FC = (props) => {
 	// 吉他指板实例化对象
 	const guitar = useMemo(() => {
 		const _board = new Board((board) => {
+			// board对象更新时，emit执行setState
 			setGuitarBoardOption(board)
 		})
 		// 实际上初始化 guitarBoardOption
