@@ -19,8 +19,8 @@ export const PagesIntro: FC<PageIntroType> = ({ title, content }) => {
 	return (
 		<div className={styles['pages-intro']}>
 			<h2>{title}</h2>
-			{content.map((item) => (
-				<p>{item}</p>
+			{content.map((item, index) => (
+				<p key={index}>{item}</p>
 			))}
 		</div>
 	)
