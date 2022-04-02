@@ -4,6 +4,7 @@ $black-height: $button-size * 3;
 .piano {
 	display: flex;
 	width: max-content;
+	outline: none;
 
 	.key {
 		width: $button-size;

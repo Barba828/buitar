@@ -30,11 +30,12 @@ export const useStore = <T>(key: string, defaultValue: T) => {
 				case 'set':
 					let value = action.payload
 					if (Array.isArray(state)) {
-						value = new Object(action.payload) as T
+						value = [...(action.payload as any)] as unknown as T
 					} else if (typeof state === 'object') {
 						value = { ...state, ...action.payload }
 					}
 					storage.setItem(key, JSON.stringify(value))
+
 					return value
 				case 'init':
 					return init()
@@ -50,4 +51,8 @@ export const useStore = <T>(key: string, defaultValue: T) => {
 	const [state, dispatch] = useReducer(reducer, defaultValue, init)
 
 	return [state, dispatch] as const
+}
+
+export const clearStore = () => {
+	storage.clear()
 }

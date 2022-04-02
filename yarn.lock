@@ -3747,10 +3747,10 @@ thunky@^1.0.2:
   resolved "https://registry.npmmirror.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
-to-guitar@0.0.9:
-  version "0.0.9"
-  resolved "https://registry.npmmirror.com/to-guitar/-/to-guitar-0.0.9.tgz#ef02ec02b991fa9e33584bb79e6e172e4db29b17"
-  integrity sha512-TWcoX1pTYYR76Pt8fes+O2SLz9kNaV826lmqDNFKYBQfaWlMyXpLWV8C6fgL+9mMQeod9JRU4NyijHnYE2lMCg==
+to-guitar@0.0.12:
+  version "0.0.12"
+  resolved "https://registry.npmmirror.com/to-guitar/-/to-guitar-0.0.12.tgz#826f8af277c2ec77f1823b5a26dcfbcf5e47bad4"
+  integrity sha512-lxZ1e5dG+YEKpiIOB7sSMUPuOvauvDRgnKQtc6aLuhnYZnxaPmsF8w+mTqISs7PeDXOcycURM7B7RMzjsOX2wQ==
 
 to-regex-range@^5.0.1:
   version "5.0.1"

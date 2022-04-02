@@ -21,7 +21,6 @@ const app = () => {
 		const board = new Board(ctx, canvas)
 
 		board.addButtonListener('change', (btn) => {
-			console.log('onChange', btn.point.toneSchema.note)
 			synth.triggerAttackRelease(`${btn.point.toneSchema.note}4`, '8n')
 		})
 		board.addButtonListener('mousemove', (btn) => {
@@ -35,7 +34,6 @@ const app = () => {
 		})
 
 		typesChecker((type) => {
-			console.log(type)
 			board.boardButtons.forEach((button) => {
 				button.setOptions({ ToneTypeName: type })
 			})

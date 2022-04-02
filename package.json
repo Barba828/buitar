@@ -39,7 +39,7 @@
 	},
 	"dependencies": {
 		"react-router-dom": "^6.2.2",
-		"to-guitar": "0.0.11",
+		"to-guitar": "0.0.12",
 		"tone": "^14.7.77"
 	}
 }

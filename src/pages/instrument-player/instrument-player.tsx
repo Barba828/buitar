@@ -5,14 +5,17 @@ import {
 	GuitarBoard,
 	PianoBoard,
 	useBoardContext,
+	usePagesIntro,
 } from '@/components'
 
 export const InstrumentPlayer = () => {
+	const intro = usePagesIntro()
 	const [part, setPart] = useState(false)
 	const [level, setPianoPart] = useState(false)
 
 	return (
 		<BoardProvider>
+			{intro}
 			<BoardController />
 			<GuitarBoard onChangePart={setPart} />
 			<PianoBoards onChangePart={setPianoPart} />
@@ -21,16 +24,7 @@ export const InstrumentPlayer = () => {
 }
 
 const PianoBoards = (props: any) => {
-	const {
-		player,
-		boardOptions: { isPianoKeyDown },
-	} = useBoardContext()
+	const { player } = useBoardContext()
 
-	return (
-		<PianoBoard
-			player={player}
-			disableKeydown={!isPianoKeyDown}
-			onChangePart={props.onChangePart}
-		></PianoBoard>
-	)
+	return <PianoBoard player={player} onChangePart={props.onChangePart}></PianoBoard>
 }

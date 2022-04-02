@@ -5,6 +5,7 @@ import { Board, BoardOption, Point, Tone, transChordTaps } from 'to-guitar'
 import { TonePlayer } from '@/utils'
 import { useStore } from '@/utils/hooks/use-store'
 import { OPTIONS_KEY, INSTRUMENT_KEY } from '../board-controller'
+import { COLLECTIONS_KEY, CollectionType } from '@/pages/collections'
 
 /**
  * 吉他指板默认配置
@@ -34,15 +35,21 @@ const defaultBoardOptions: GuitarBoardOptions = {
 	 * 是否全部展示键盘
 	 */
 	isAllKey: true,
-	/**
-	 * 键盘按压事件监听
-	 */
-	isPianoKeyDown: false,
 }
 /**
  * 吉他乐器默认配置
  */
 const defaultInstrument = 'guitar-acoustic'
+/**
+ * 默认收藏
+ */
+const defaultCollection = [
+	{
+		title: 'Collection 1',
+		intro: '',
+		data: [],
+	},
+]
 /**
  * 吉他播放器
  */
@@ -60,6 +67,8 @@ type BoardContextType = {
 	dispatchBoardOptions: Dispatch<GuitarBoardOptions>
 	instrument: Instrument // 乐器设置
 	dispatchInstrument: Dispatch<Instrument>
+	collection: CollectionType[] // 收藏和弦
+	dispatchCollection: Dispatch<CollectionType[]>
 
 	// 乐理内容
 	chord: Tone[] // 大调音阶和弦
@@ -85,6 +94,10 @@ export const BoardProvider: FC = (props) => {
 		defaultBoardOptions
 	)
 	const [instrument, dispatchInstrument] = useStore<Instrument>(INSTRUMENT_KEY, defaultInstrument)
+	const [collection, dispatchCollection] = useStore<CollectionType[]>(
+		COLLECTIONS_KEY,
+		defaultCollection
+	)
 	const [chord, setChord] = useState<Tone[]>([])
 	const [chordTaps, setChordTaps] = useState<ReturnType<typeof transChordTaps> | null>(null)
 	const [taps, setTaps] = useState<Point[]>([])
@@ -109,11 +122,15 @@ export const BoardProvider: FC = (props) => {
 	const boardValue = {
 		player,
 		guitar,
+
 		guitarBoardOption,
 		boardOptions,
 		dispatchBoardOptions,
 		instrument,
 		dispatchInstrument,
+		collection,
+		dispatchCollection,
+
 		chord,
 		setChord,
 		chordTaps,

@@ -98,7 +98,17 @@ $side-width: 60px;
 			&:hover {
 				font-weight: 400;
 				padding-left: 10px;
+
+				.slide-menu-tab-hint {
+					opacity: 0.8;
+				}
 			}
+		}
+
+		&-hint {
+			transition: all 0.15s linear;
+			font-size: 12px;
+			opacity: 0;
 		}
 
 		&-item-checked {

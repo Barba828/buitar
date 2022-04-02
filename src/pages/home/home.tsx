@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import cx from 'classnames'
 import styles from './home.module.scss'
 import { Point, transChordType } from 'to-guitar'
+import { Icon } from '@/components'
 
 export const HomePage = () => {
 	return (
@@ -28,6 +29,11 @@ export const HomePage = () => {
 				<Link to="/analyzer" className={cx('buitar-primary-button', styles['links-button'])}>
 					定义我的和弦
 				</Link>
+			</div>
+
+			<div className={cx(styles.more, styles.intro)}>
+				<Icon name="icon-back" size={14} />
+				菜单查看更多功能
 			</div>
 
 			<div className={styles.example}>

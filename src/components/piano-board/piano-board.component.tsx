@@ -25,14 +25,13 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 	defaultTouched = [],
 	onChangeKey,
 	onChangePart,
-	disableKeydown,
 	...divProps
 }) => {
 	const [touched, setTouched] = useState<string[]>(defaultTouched)
 	// 鼠标事件
 	const { handler } = useBoardTouch(touched, setTouched)
 	// 按钮事件
-	const { part } = usePianoKeyDown(touched, setTouched, !!disableKeydown)
+	const { part, keyHandler } = usePianoKeyDown(touched, setTouched)
 
 	const debouceTouched = useDebounce(touched, 30)
 	useEffect(() => {
@@ -49,7 +48,7 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 
 	return (
 		<div className="scroll-without-bar" {...divProps}>
-			<div className={styles.piano} {...handler}>
+			<div className={styles.piano} {...handler} {...keyHandler}>
 				{levels.map((level, index) => (
 					<PianoKeys key={index} level={level} touched={touched} checked={checked} />
 				))}

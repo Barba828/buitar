@@ -35,10 +35,6 @@ export const PlayerProvider: FC = (props) => {
 	const [soundListIndex, setSoundListIndex] = useState<number>(-1)
 	const [soundList, setSoundList] = useState<Point[][]>([])
 
-	// useEffect(() => {
-	// 	console.log('lnz', soundList)
-	// }, [soundList])
-
 	const playerValue = {
 		progressionIndex,
 		setProgressionIndex,

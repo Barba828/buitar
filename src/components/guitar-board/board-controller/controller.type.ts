@@ -5,5 +5,4 @@ export type GuitarBoardOptionsKey =
 	| 'isNote'
 	| 'hasTag'
 	| 'isAllKey'
-	| 'isPianoKeyDown'
 export type GuitarBoardOptions = { [key in GuitarBoardOptionsKey]: boolean }

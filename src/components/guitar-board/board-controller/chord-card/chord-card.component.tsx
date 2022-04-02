@@ -1,22 +1,35 @@
-import React, { FC, useMemo } from 'react'
+import React, { FC, useMemo, useState } from 'react'
 import { useBoardContext } from '../../board-provider'
 import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
-import cx from 'classnames'
-import styles from './chord-card.module.scss'
 import { Icon } from '@/components/icon'
 import { getBoardOptionsNote } from '@/components/guitar-board/utils'
 import { Portal } from '@/components'
 import { ChordType, Point } from 'to-guitar'
 import { GuitarBoardOptions } from '../controller.type'
+import { CardCollector } from './card-collector.component'
+import cx from 'classnames'
+import styles from './chord-card.module.scss'
 
 export const ChordCard: FC<{
 	taps: Point[]
+	/**
+	 * 是否显示收藏/移除按钮
+	 */
+	disableCollect?: boolean
+	/**
+	 * 有移除函数则为移除按钮
+	 */
+	onRemoveCollection?: () => void
+	/**
+	 * 自定义Chord标题
+	 */
 	title?: string
 	className?: string
 	size?: number
 	extra?: JSX.Element | JSX.Element[]
-}> = ({ taps, title, className, size = 160, extra }) => {
+}> = ({ taps, title, className, size = 160, extra, disableCollect, onRemoveCollection }) => {
 	const { player } = useBoardContext()
+	const [collectionVisible, setCollectionVisible] = useState(false)
 
 	const cls = cx(
 		'buitar-primary-button',
@@ -27,6 +40,7 @@ export const ChordCard: FC<{
 
 	const handleClick = () => {
 		player.triggerPointArpeggio(taps)
+		setCollectionVisible(false)
 	}
 
 	const handleSoundClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -34,21 +48,47 @@ export const ChordCard: FC<{
 		player.triggerPointRelease(taps)
 	}
 
+	const handleCollectionVisible = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		e?.stopPropagation()
+		setCollectionVisible(!collectionVisible)
+	}
+
+	const handleRemoveCollection = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		e?.stopPropagation()
+		onRemoveCollection?.()
+	}
+
 	const chordName = useChordName()
 	const chordTitle = title || chordName
+	const collectionData = {
+		taps,
+		title: chordTitle,
+	}
 
 	const card = (
-		<div onClick={handleClick} className={cls}>
-			<SvgChord points={transToSvgPoints(taps)} size={size} title={chordTitle} />
-			<div className={styles['chord-card-dot']} />
-			<div className={styles['chord-card-icons']}>
-				<div className={styles['chord-card-sounds']} onClick={handleSoundClick}>
-					<Icon name="icon-eighth-note" size={16} />
-				</div>
-				<div className={styles['chord-card-sounds']} onClick={handleSoundClick}>
-					<Icon name="icon-collection" size={16} />
+		<div className={styles.container}>
+			<div onClick={handleClick} className={cls}>
+				<SvgChord points={transToSvgPoints(taps)} size={size} title={chordTitle} />
+				<div className={styles['chord-card-dot']} />
+				<div className={styles['chord-card-icons']}>
+					<div className={styles['chord-card-sounds']} onClick={handleSoundClick}>
+						<Icon name="icon-eighth-note" size={16} />
+					</div>
+					{disableCollect ? null : onRemoveCollection ? (
+						<div className={styles['chord-card-sounds']} onClick={handleRemoveCollection}>
+							<Icon name="icon-delete" size={16} />
+						</div>
+					) : (
+						<div className={styles['chord-card-sounds']} onClick={handleCollectionVisible}>
+							<Icon name="icon-collection" size={16} />
+						</div>
+					)}
 				</div>
 			</div>
+
+			{collectionVisible && (
+				<CardCollector data={collectionData} onCancel={handleCollectionVisible} />
+			)}
 		</div>
 	)
 	return extra ? (

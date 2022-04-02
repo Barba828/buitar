@@ -1,8 +1,13 @@
-import React, { memo, useCallback, useEffect, useState } from 'react'
-import { Icon, Sequencer, SequencerController, SequencerProvider } from '@/components'
+import React, { memo, useEffect, useState } from 'react'
+import {
+	Icon,
+	Sequencer,
+	SequencerController,
+	SequencerProvider,
+	usePagesIntro,
+} from '@/components'
 import { instrumentUIConfig } from '@/components/guitar-board/board-controller/option-controller/controller.config'
 import { Instrument } from '@/utils/tone-player/instrument.type'
-import cx from 'classnames'
 import {
 	SequencerReducerPayload,
 	SequencerReducerType,
@@ -10,14 +15,17 @@ import {
 	useSequencerReducer,
 } from './use-sequencer-reducer'
 import { useDebounce } from '@/utils/hooks/use-debouce'
+import cx from 'classnames'
 
 import styles from './sequencer-player.module.scss'
 
 export const SequencerPlayer = memo(() => {
+	const intro = usePagesIntro()
 	const [sequencers, dispatchSequencers] = useSequencerReducer()
 
 	return (
 		<SequencerProvider>
+			{intro}
 			<SequencerController
 				onSave={() => {
 					setSequencersStateToStore(sequencers)

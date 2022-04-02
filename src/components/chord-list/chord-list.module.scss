@@ -1,0 +1,35 @@
+.list {
+	display: flex;
+
+	.title-view {
+		position: relative;
+		height: auto;
+		min-width: 80px;
+		padding: 10px;
+		font-weight: 600;
+		@include flex-center;
+		&:hover {
+			.list-remove {
+				opacity: 0.8;
+			}
+		}
+
+		.list-remove {
+			position: absolute;
+			right: 4px;
+			top: 4px;
+			font-size: 18px;
+			opacity: 0;
+		}
+	}
+}
+
+.card {
+	width: 130px !important;
+	height: 130px !important;
+}
+
+.data-list {
+	display: flex;
+	width: fit-content;
+}

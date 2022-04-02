@@ -3,6 +3,7 @@ export * from './piano-board'
 export * from './sound-board'
 export * from './sequencer'
 export * from './guitar-player'
+export * from './pages-intro'
 
 export * from './switch'
 export * from './slide-menu'

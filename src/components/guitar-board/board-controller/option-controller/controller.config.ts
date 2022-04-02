@@ -13,7 +13,7 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 		},
 		others: {
 			intro_zh: '吉他显示',
-			intro_en: 'Guitar display',
+			intro_en: 'Guitar Display',
 		},
 	},
 	isSharpSemitone: {
@@ -54,8 +54,8 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 			name_en: 'hide',
 		},
 		others: {
-			intro_zh: '',
-			intro_en: '',
+			intro_zh: '吉他显示',
+			intro_en: 'Guitar Display',
 		},
 	},
 	hasTag: {
@@ -68,8 +68,8 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 			name_en: 'hide',
 		},
 		others: {
-			intro_zh: '',
-			intro_en: '',
+			intro_zh: '吉他显示',
+			intro_en: 'Guitar Display',
 		},
 	},
 	isAllKey: {
@@ -84,20 +84,6 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 		others: {
 			intro_zh: '键盘显示',
 			intro_en: 'Keyboard display',
-		},
-	},
-	isPianoKeyDown: {
-		checked: {
-			name_zh: '键盘',
-			name_en: 'Keyboard',
-		},
-		unchecked: {
-			name_zh: '吉他',
-			name_en: 'Guitar',
-		},
-		others: {
-			intro_zh: '按键声音',
-			intro_en: 'Key sound',
 		},
 	},
 }

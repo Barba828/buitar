@@ -6,8 +6,9 @@ import styles from './slide-item.module.scss'
 import { Icon } from '@/components/icon'
 import { useMenuContext } from './index'
 import { routeConfig } from '@/pages/router'
-import { menuConfig, MenuKeys } from './menu-provider/menu-config'
+import { menuConfig } from './menu-provider/menu-config'
 import { Switch } from '../index'
+import { clearStore } from '@/utils/hooks/use-store'
 
 export const SlideMenu = () => {
 	const { menus, dispatchMenus } = useMenuContext()
@@ -43,6 +44,12 @@ export const SlideMenu = () => {
 			</div>
 		)
 	})
+	options.push(
+		<div key="clear" className={cx(styles['slide-menu-tab-item'])} onClick={clearStore}>
+			清理
+			<span className={cx(styles['slide-menu-tab-hint'])}>有效解决应用崩溃</span>
+		</div>
+	)
 
 	const header = (
 		<Link to="/" className={cx(styles['slide-menu-tab-title'])}>
@@ -74,9 +81,7 @@ export const SlideMenu = () => {
 					setExtend(!extend)
 				}}
 				className={styles['slide-menu-intro']}
-			>
-				{/* <Icon name="icon-close" size={26} className={styles['slide-menu-bar-icon']} /> */}
-			</div>
+			></div>
 		</div>
 	)
 }

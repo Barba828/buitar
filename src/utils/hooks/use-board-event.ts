@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { KeyboardEventHandler, useCallback, useEffect, useRef, useState } from 'react'
 import { NOTE_LIST } from 'to-guitar'
 
 export const useBoardTouch = (touched: string[], setTouched: SetState<string[]>) => {
@@ -36,11 +36,7 @@ export const useBoardTouch = (touched: string[], setTouched: SetState<string[]>)
 	return { handler, isTouched }
 }
 
-export const usePianoKeyDown = (
-	touched: string[],
-	setTouched: SetState<string[]>,
-	disable?: boolean
-) => {
+export const usePianoKeyDown = (touched: string[], setTouched: SetState<string[]>) => {
 	const [part, setPart] = useState(false)
 	const baseIndex = part ? 4 : 2 //默认是C2 => B4 共四个八度
 
@@ -53,7 +49,7 @@ export const usePianoKeyDown = (
 		[baseIndex]
 	)
 
-	const onKeyDown = (e: KeyboardEvent) => {
+	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (PianoKeyConfig.has(e.code)) {
 			const note = getNode(PianoKeyConfig.get(e.code)!)
 
@@ -66,7 +62,7 @@ export const usePianoKeyDown = (
 		}
 	}
 
-	const onKeyUp = (e: KeyboardEvent) => {
+	const onKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (PianoKeyConfig.has(e.code)) {
 			const note = getNode(PianoKeyConfig.get(e.code)!)
 
@@ -78,34 +74,35 @@ export const usePianoKeyDown = (
 		}
 	}
 
-	useEffect(() => {
-		if (disable) {
-			return () => {
-				window.removeEventListener('keydown', onKeyDown)
-				window.removeEventListener('keyup', onKeyUp)
-			}
-		}
-		window.addEventListener('keydown', onKeyDown)
-		window.addEventListener('keyup', onKeyUp)
+	// useEffect(() => {
+	// 	if (disable) {
+	// 		return () => {
+	// 			window.removeEventListener('keydown', onKeyDown)
+	// 			window.removeEventListener('keyup', onKeyUp)
+	// 		}
+	// 	}
+	// 	window.addEventListener('keydown', onKeyDown)
+	// 	window.addEventListener('keyup', onKeyUp)
 
-		return () => {
-			window.removeEventListener('keydown', onKeyDown)
-			window.removeEventListener('keyup', onKeyUp)
-		}
-	}, [part, disable])
+	// 	return () => {
+	// 		window.removeEventListener('keydown', onKeyDown)
+	// 		window.removeEventListener('keyup', onKeyUp)
+	// 	}
+	// }, [part, disable])
+	const keyHandler = {
+		onKeyDown,
+		onKeyUp,
+		tabIndex: 0,
+	}
 
-	return { part }
+	return { part, keyHandler }
 }
 
-export const useGuitarKeyDown = (
-	touched: string[],
-	setTouched: SetState<string[]>,
-	disable?: boolean
-) => {
+export const useGuitarKeyDown = (touched: string[], setTouched: SetState<string[]>) => {
 	const [part, setPart] = useState(false)
 	const baseIndex = part ? 48 : 0
 
-	const onKeyDown = (e: KeyboardEvent) => {
+	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (GuitarKeyConfig.has(e.code)) {
 			const index = GuitarKeyConfig.get(e.code)!
 			const note = `${index + baseIndex}`
@@ -119,11 +116,10 @@ export const useGuitarKeyDown = (
 		}
 	}
 
-	const onKeyUp = (e: KeyboardEvent) => {
+	const onKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (GuitarKeyConfig.has(e.code)) {
 			const index = GuitarKeyConfig.get(e.code)!
 			const note = `${index + baseIndex}`
-
 			if (touched.includes(note)) {
 				const index = touched.indexOf(note)
 				touched.splice(index, 1)
@@ -132,23 +128,30 @@ export const useGuitarKeyDown = (
 		}
 	}
 
-	useEffect(() => {
-		if (disable) {
-			return () => {
-				window.removeEventListener('keydown', onKeyDown)
-				window.removeEventListener('keyup', onKeyUp)
-			}
-		}
-		window.addEventListener('keydown', onKeyDown)
-		window.addEventListener('keyup', onKeyUp)
+	// useEffect(() => {
+	// 	if (disable) {
+	// 		return () => {
+	// 			window.removeEventListener('keydown', onKeyDown)
+	// 			window.removeEventListener('keyup', onKeyUp)
+	// 		}
+	// 	}
 
-		return () => {
-			window.removeEventListener('keydown', onKeyDown)
-			window.removeEventListener('keyup', onKeyUp)
-		}
-	}, [part, disable])
+	// 	window.addEventListener('keydown', onKeyDown)
+	// 	window.addEventListener('keyup', onKeyUp)
 
-	return { part }
+	// 	return () => {
+	// 		window.removeEventListener('keydown', onKeyDown)
+	// 		window.removeEventListener('keyup', onKeyUp)
+	// 	}
+	// }, [part, disable])
+
+	const keyHandler = {
+		onKeyDown,
+		onKeyUp,
+		tabIndex: 0,
+	}
+
+	return { part, keyHandler }
 }
 
 const PianoKeyConfig = new Map([

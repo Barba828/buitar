@@ -23,7 +23,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 }) => {
 	const {
 		guitarBoardOption: { keyboard },
-		boardOptions: { hasTag, isPianoKeyDown },
+		boardOptions: { hasTag },
 		emphasis,
 		setEmphasis,
 		player,
@@ -32,7 +32,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	// 鼠标事件监听
 	const { handler } = useBoardTouch(emphasis, setEmphasis)
 	// 键盘事件监听
-	const { part } = useGuitarKeyDown(emphasis, setEmphasis, !!isPianoKeyDown)
+	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis)
 
 	const boardList = useMemo(() => {
 		if (!keyboard) {
@@ -100,7 +100,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	})
 
 	return (
-		<div className={cx(styles.board)} {...handler}>
+		<div id="fret-board" className={cx(styles.board)} {...handler} {...keyHandler}>
 			<div className={styles['board-view']}>{zeroView}</div>
 			<div className={'scroll-without-bar'}>
 				<div className={styles['board-view']}>{boardView}</div>

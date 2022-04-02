@@ -1,7 +1,8 @@
+import { HomePage } from './home'
 import { ChordAnalyzer } from './chord-analyzer'
 import { ChordPlayer } from './chord-player'
 import { ChordProgressions } from './chord-progressions'
-import { HomePage } from './home'
+import { Collections } from './collections'
 import { InstrumentPlayer } from './instrument-player'
 import { SequencerPlayer } from './sequencer-player'
 
@@ -39,7 +40,7 @@ export const routeConfig = [
 		name_en: 'Chord Collection',
 		path: '/collection',
 		type: 'menu',
-		Component: InstrumentPlayer,
+		Component: Collections,
 	},
 	{
 		name_zh: '乐器',

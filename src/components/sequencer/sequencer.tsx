@@ -65,8 +65,8 @@ export interface SequencerProps {
  */
 export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, player, color }) => {
 	const { setIsPlaying, m, isPlaying } = useSequencerContext()
-	const sequencerList = useRef<SequencerListRefs>(null)
-	const scheduleId = useRef<number>()
+	const sequencerList = useRef<SequencerListRefs>(null) // 音序条Ref
+	const scheduleId = useRef<number>() // 当前组件循环播放ID
 
 	useEffect(() => {
 		if (!isPlaying) {
@@ -84,8 +84,6 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 					player.getContext().triggerAttackRelease(key, duration, time + start)
 				})
 			})
-
-			console.log(player.getInstrument())
 
 			Tone.Draw.schedule(() => {
 				// 每次循环滚动时间线

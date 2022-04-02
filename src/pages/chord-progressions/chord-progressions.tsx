@@ -4,22 +4,25 @@ import {
 	BoardProvider,
 	useBoardContext,
 	DegreeController,
-	FifthCircleController,
 	DegreeChordController,
 	ChordCard,
 	ChordControllerInner,
 } from '@/components/guitar-board'
 import { Point, transChordTaps } from 'to-guitar'
 import { PlayerProvider, usePlayerContext } from '@/components/guitar-player'
-
-import styles from './chord-progressions.module.scss'
 import { SoundBoard } from '@/components/sound-board'
 import { degreeList } from './progressions.config'
+import { usePagesIntro } from '@/components'
+
+import styles from './chord-progressions.module.scss'
 
 export const ChordProgressions = () => {
+	const intro = usePagesIntro()
+
 	return (
 		<BoardProvider>
 			<PlayerProvider>
+				{intro}
 				<DegreeController />
 				<ChordPicker />
 				<TapsViewer />

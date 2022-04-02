@@ -1,0 +1,30 @@
+.selector {
+	select {
+		// -webkit-appearance: none;
+		outline: none;
+		border: none;
+		border-radius: 2px;
+		height: $button-size;
+		width: $button-size * 2;
+		margin: $button-margin;
+		padding: 4px 10px;
+		color: $white-01;
+		font-size: 16px;
+		background: $gray-primary;
+		&:hover {
+			background: $gray-second;
+		}
+		option {
+			&:hover {
+				background: $yellow-primary;
+			}
+
+			&:focus {
+				background: $yellow-primary;
+			}
+		}
+		select {
+			background: $yellow-primary;
+		}
+	}
+}

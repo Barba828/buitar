@@ -41,6 +41,18 @@
 		}
 	}
 
+	.more {
+		margin: 20px 0px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		> svg {
+			fill: $white-01;
+			opacity: 0.8;
+			margin: 4px;
+		}
+	}
+
 	.example {
 		font-size: 18px;
 		font-weight: 300;

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
 	GuitarBoard,
 	ChordCard,
@@ -10,14 +10,18 @@ import {
 } from '@/components/guitar-board'
 import { FifthsCircle } from '@/components/fifths-circle'
 import { Point, Note, transChordType, ToneSchema, ChordType } from 'to-guitar'
+import { AddTextInput } from '@/components/basic'
+import { usePagesIntro } from '@/components'
 import cx from 'classnames'
 
 import styles from './chord-analyzer.module.scss'
-import { Icon } from '@/components'
 
 export const ChordAnalyzer = () => {
+	const intro = usePagesIntro()
+
 	return (
 		<BoardProvider>
+			{intro}
 			<TapedGuitarBoard />
 			<BoardController />
 			<TapedChordCard />
@@ -153,53 +157,4 @@ const TapedChordCard = () => {
 			</div>
 		</div>
 	)
-}
-
-const AddTextInput: FC<{ onConfirm?: (text: string) => void }> = ({ onConfirm }) => {
-	const [isInput, setIsInput] = useState<boolean>(false)
-	const [name, setName] = useState<string>('')
-
-	const handleClick = () => {
-		setIsInput(!isInput)
-	}
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setName(e.target.value)
-	}
-
-	const handleConfirm = () => {
-		setIsInput(false)
-		onConfirm?.(name)
-	}
-
-	const add = (
-		<div onClick={handleClick} className={cx('buitar-primary-button', styles['type-item'])}>
-			<Icon name="icon-add" />
-		</div>
-	)
-
-	const input = (
-		<>
-			<input
-				placeholder="C..."
-				onChange={handleChange}
-				className={cx('buitar-primary-button', styles['type-input'])}
-			></input>
-			<div className={cx(styles['type-input-controller'])}>
-				<div
-					onClick={handleClick}
-					className={cx('buitar-primary-button', styles['type-input-item'])}
-				>
-					<Icon name="icon-back" size={12} />
-				</div>
-				<div
-					onClick={handleConfirm}
-					className={cx('buitar-primary-button', styles['type-input-item'])}
-				>
-					<Icon name="icon-confirm" size={14} />
-				</div>
-			</div>
-		</>
-	)
-	return isInput ? input : add
 }

@@ -10,10 +10,14 @@ import {
 } from '@/components/guitar-board'
 import { transChordTaps } from 'to-guitar'
 import { PianoBoard } from '@/components/piano-board'
+import { usePagesIntro } from '@/components'
 
 export const ChordPlayer = () => {
+	const intro = usePagesIntro()
+
 	return (
 		<BoardProvider>
+			{intro}
 			<ChordPlayerInner />
 		</BoardProvider>
 	)
@@ -61,12 +65,10 @@ const ChordDetail = () => {
 
 const ChordKeyboard = () => {
 	const { taps, player, boardOptions } = useBoardContext()
-	const { isAllKey, isPianoKeyDown } = boardOptions
+	const { isAllKey } = boardOptions
 	const levels = isAllKey ? [2, 3, 4, 5] : [3]
 	const notes = taps.map(
 		(point) => `${point.toneSchema.note}${isAllKey ? point.toneSchema.level : 3}`
 	)
-	return (
-		<PianoBoard player={player} checked={notes} levels={levels} disableKeydown={!isPianoKeyDown} />
-	)
+	return <PianoBoard player={player} checked={notes} levels={levels} />
 }

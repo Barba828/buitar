@@ -1,20 +1,29 @@
 # Buitar
 
-基于[to-guitar.js](https://github.com/Barba828/to-guitar)和[tone.js](https://github.com/Tonejs/Tone.js)的吉他学习工具
+[中文介绍](./README_zh.md)
 
-[前往](https://barba828.github.io/Buitar/)
+Welcone to Buitar! A guitar and chord leaning tool based on [to-guitar.js](https://github.com/Barba828/to-guitar) and [tone.js](https://github.com/Tonejs/Tone.js)
 
-## 开发
+So [Enjoy it!](https://barba828.github.io/Buitar/) on Github Pages
 
-```sh
-yarn
+- Complete chord learning toolset
+- Complete instrument set
+- Freely matched chord progressions
+- Flexible guitar fretboard/keyboard
+- Fun sequencer
 
-# 本地开发
-yarn dev
+## About
 
-# 构建
-yarn build
+I have always been troubled by the knowledge of guitar music theory such as guitar chord conversion. Of course, I have also seen some guitar learning tools on the Internet, but I think these tools are a bit too many and messy, and finally I plan to make one by myself during the epidemic prevention days at home. Set of tools. At the same time, I also learned the knowledge of guitar music theory again, including the circle of fifths, the twelve equal temperament, the harmony system... and some Web Audio exploration.
 
-# 构建github page
-yarn build:docs
-```
+In fact, there are still many deficiencies in the function and music theory. You are welcome to make comments and suggestions. I will improve it as soon as possible.
+
+Finally, I have to continue to practice the guitar. I like to practice the fingerstyle of Oshio Kotaro and Kishibe Maaki. Finally, when will I be able to play jazz?
+
+If you have any questions or ideas, please submit your issue
+
+## ToDO
+
+- Collection
+- Guitar Rhythm
+- Metronome

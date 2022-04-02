@@ -18,6 +18,7 @@ export const ChordController: FC<ControllerProps> = (props) => {
 			<div className={cx(styles['chord-tab'])}>
 				{chordControllConfig.map((item, index) => (
 					<div
+						key={index}
 						className={cx(
 							'buitar-primary-button',
 							styles['chord-tab-item'],
