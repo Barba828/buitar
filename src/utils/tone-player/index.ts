@@ -47,7 +47,7 @@ export class TonePlayer extends Tone.Sampler {
 		return Tone.loaded()
 	}
 
-	public getLoad() {
+	public get loaded(): boolean {
 		if (this.instrument === 'default') {
 			return true
 		}
@@ -69,6 +69,10 @@ export class TonePlayer extends Tone.Sampler {
 	 * @example 扫弦 triggerAttack(['D4', 'F4', 'A4', 'C4', 'E4'], 0.005)
 	 */
 	public triggerAttackArpeggio = (notes: Tone.Unit.Frequency[], duration: number = 0.3) => {
+		if (!this.loaded) {
+			return
+		}
+
 		const now = Tone.now()
 		notes.forEach((note, index) => {
 			this.sampler.triggerAttack(note, now + index * duration)
@@ -93,6 +97,10 @@ export class TonePlayer extends Tone.Sampler {
 		point: Point | Point[],
 		duration: Tone.Unit.Time | Tone.Unit.Time[] = '2n'
 	) => {
+		if (!this.loaded) {
+			return
+		}
+
 		const tones = Array.isArray(point) ? point : [point]
 		const notes = Array.from(new Set(tones.map(this.transPoint)))
 		this.sampler.triggerAttackRelease(notes, duration)

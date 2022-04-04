@@ -39,7 +39,7 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 			return
 		}
 		onChangeKey?.(debouceTouched)
-		player.getContext().triggerAttackRelease(debouceTouched, '2n')
+		player.loaded && player.getContext().triggerAttackRelease(debouceTouched, '2n')
 	}, [debouceTouched])
 
 	useEffect(() => {

@@ -68,6 +68,12 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 	const sequencerList = useRef<SequencerListRefs>(null) // 音序条Ref
 	const scheduleId = useRef<number>() // 当前组件循环播放ID
 
+	/**
+	 * sounds改变默认修改音序机重复内容
+	 * scheduleId保存这个组件实例上一次的音序，并更新本次sounds生成的音序
+	 * （不能直接Tone.Transport.clear，因为会导致其他音序机实例的内容被清除）
+	 * Tone.Draw.schedule：Tone重复的动画interval函数
+	 */
 	useEffect(() => {
 		if (!isPlaying) {
 			return
@@ -81,7 +87,7 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 				blocks.forEach((block) => {
 					const start = block[0] * itemTime // 在一拍中的开始时间
 					const duration = 16 / (block[1] - block[0] + 1) + 'n' //在一拍中的持续时间
-					player.getContext().triggerAttackRelease(key, duration, time + start)
+					player.loaded && player.getContext().triggerAttackRelease(key, duration, time + start)
 				})
 			})
 
@@ -96,8 +102,11 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 		}
 	}, [sounds, m, isPlaying])
 
+	/**
+	 * 音序条改变时提示
+	 */
 	const handleChange = useCallback((sound: Sound) => {
-		player.getContext().triggerAttackRelease(sound.key, '2n')
+		player.loaded && player.getContext().triggerAttackRelease(sound.key, '2n')
 	}, [])
 
 	return (

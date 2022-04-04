@@ -7,7 +7,7 @@ interface ControllerListProps<T> extends ControllerProps {
 	list: T[]
 	className?: string
 	onClickItem: (item: T, index?: number) => void
-	renderListItem: (item: T) => JSX.Element
+	renderListItem: (item: T, checked?: boolean) => JSX.Element
 
 	checkedItem?: (item: T) => boolean
 	visibleItem?: (item: T) => boolean
@@ -42,7 +42,7 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 
 		return (
 			<div key={`${index}`} onClick={handleClick} className={cls}>
-				{renderListItem(item)}
+				{renderListItem(item, checkedItem?.(item))}
 			</div>
 		)
 	})
