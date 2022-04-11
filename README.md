@@ -1,8 +1,10 @@
 # Buitar
 
+![star](https://img.shields.io/github/stars/Barba828/Buitar?style=social)
+
 [中文介绍](./README_zh.md)
 
-Welcone to Buitar! A guitar and chord leaning tool based on [to-guitar.js](https://github.com/Barba828/to-guitar) and [tone.js](https://github.com/Tonejs/Tone.js)
+Welcone to Buitar! A guitar and chord leaning tool based on [to-guitar.js](https://github.com/Barba828/to-guitar) and [tone.js](https://github.com/Tonejs/Tone.js).
 
 So [Enjoy it!](https://barba828.github.io/Buitar/) on Github Pages
 
@@ -11,6 +13,19 @@ So [Enjoy it!](https://barba828.github.io/Buitar/) on Github Pages
 - Freely matched chord progressions
 - Flexible guitar fretboard/keyboard
 - Fun sequencer
+
+And the instruments used in it refer to [tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments)
+
+- acoustic guitar
+- nylon guitar
+- electric guitar
+- electric bass
+- piano
+
+And preview screenshots
+![screen](./assets/screen1.png)
+![screen](./assets/screen2.png)
+![screen](./assets/screen3.png)
 
 ## About
 
@@ -22,7 +37,7 @@ Finally, I have to continue to practice the guitar. I like to practice the finge
 
 If you have any questions or ideas, please submit your issue
 
-## ToDO
+## ToDo
 
 - Collection
 - Guitar Rhythm

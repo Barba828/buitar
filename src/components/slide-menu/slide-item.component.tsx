@@ -15,6 +15,12 @@ export const SlideMenu = () => {
 	const { pathname } = useLocation()
 	const [extend, setExtend] = useState<boolean>(false)
 
+	const header = (
+		<Link to="/" className={cx(styles['slide-menu-tab-title'])}>
+			Buitar
+		</Link>
+	)
+
 	const links = routeConfig
 		.filter((route) => route.type === 'menu')
 		.map((route) => (
@@ -50,11 +56,19 @@ export const SlideMenu = () => {
 			<span className={cx(styles['slide-menu-tab-hint'])}>有效解决应用崩溃</span>
 		</div>
 	)
+	options.unshift(<div key="seperate" className={styles['seperate']}></div>)
 
-	const header = (
-		<Link to="/" className={cx(styles['slide-menu-tab-title'])}>
-			Buitar
-		</Link>
+	const footer = (
+		<div className={styles['slide-menu-tab-footer']}>
+			<a
+				href="https://github.com/Barba828/Buitar"
+				className={cx(styles['slide-menu-tab-item'], styles['slide-menu-tab-item-checked'])}
+				target="view_window"
+			>
+				Github
+				<Icon size={20} name="icon-github" />
+			</a>
+		</div>
 	)
 
 	return (
@@ -73,8 +87,8 @@ export const SlideMenu = () => {
 			<div className={styles['slide-menu-tab']}>
 				{header}
 				{links}
-				<div className={styles['seperate']}></div>
 				{options}
+				{footer}
 			</div>
 			<div
 				onClick={() => {

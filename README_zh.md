@@ -1,5 +1,7 @@
 # Buitar
 
+![star](https://img.shields.io/github/stars/Barba828/Buitar?style=social)
+
 基于[to-guitar.js](https://github.com/Barba828/to-guitar)和[tone.js](https://github.com/Tonejs/Tone.js)的吉他学习工具
 
 [前往网址](https://barba828.github.io/Buitar/)
@@ -9,6 +11,19 @@
 - 自由搭配的和弦进行
 - 灵活使用的吉他指板/键盘指板
 - 趣味无限的音序机
+
+使用的乐器参考[tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments)
+
+- 原声吉他
+- 尼龙吉他
+- 电吉他
+- 贝斯
+- 钢琴
+
+预览截图
+![screen](./assets/screen1.png)
+![screen](./assets/screen2.png)
+![screen](./assets/screen3.png)
 
 ## 关于
 

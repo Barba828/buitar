@@ -67,6 +67,7 @@ $side-width: 60px;
 		overflow: hidden;
 		white-space: nowrap;
 		box-shadow: inset;
+		position: relative;
 
 		@media (max-width: 540px) {
 			opacity: 1;
@@ -113,6 +114,12 @@ $side-width: 60px;
 
 		&-item-checked {
 			background-color: $yellow-primary;
+		}
+
+		&-footer {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
 		}
 	}
 
