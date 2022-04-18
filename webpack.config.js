@@ -29,7 +29,7 @@ module.exports = {
 						options: {
 							modules: {
 								// localIdentName: '[path][local]--[hash:base64:6]',
-								localIdentName: '[local]--[hash:base64:6]',
+								localIdentName: '[local]--[hash:base64:6]', // classname添加 hash 后缀
 							},
 						},
 					},
@@ -91,9 +91,9 @@ module.exports = {
 	],
 	externals: isProduction
 		? {
-				react: 'React',
-				'react-dom': 'ReactDOM',
-		  }
+			react: 'React',
+			'react-dom': 'ReactDOM',
+		}
 		: {},
 	devServer: {
 		port: 8282, // 服务器端口号
@@ -105,5 +105,3 @@ module.exports = {
 	},
 	devtool: 'source-map',
 }
-// file:///Users/liningzhu/Desktop/BarbaGit/Buitar/dist/main.3de68b.js
-// file:///static/samples/guitar-acoustic/Fs3.ogg
