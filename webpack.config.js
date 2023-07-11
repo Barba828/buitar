@@ -1,5 +1,6 @@
-const path = require('path')
+const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const isDocs = process.env.NODE_OUT === 'docs'
@@ -44,7 +45,7 @@ module.exports = {
 					},
 					{
 						loader: 'sass-resources-loader',
-						options: { resources: path.resolve(__dirname, 'style/app.scss') },
+						options: { resources: resolve(__dirname, 'style/app.scss') },
 					},
 				],
 			},
@@ -76,24 +77,35 @@ module.exports = {
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js', 'json', 'sass'],
 		alias: {
-			'@': path.resolve(__dirname, 'src/'),
-			'~': path.resolve(__dirname, 'static/'),
+			'@': resolve(__dirname, 'src/'),
+			'~': resolve(__dirname, 'static/'),
 		},
 	},
 	output: {
 		filename: '[name].[chunkhash:6].js',
-		path: path.resolve(__dirname, isDocs ? 'docs' : 'dist'),
+		path: resolve(__dirname, isDocs ? 'docs' : 'dist'),
 	},
 	plugins: [
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: resolve(__dirname, 'public'),
+					to: process.env.NODE_OUT,
+					globOptions: {
+						ignore: ['**/.DS_Store', resolve(__dirname, 'public/index.html')],
+					},
+				},
+			],
+		}),
 		new HtmlWebpackPlugin({
-			template: path.resolve(__dirname, 'static/index.html'),
+			template: resolve(__dirname, 'public/index.html'),
 		}),
 	],
 	externals: isProduction
 		? {
-			react: 'React',
-			'react-dom': 'ReactDOM',
-		}
+				react: 'React',
+				'react-dom': 'ReactDOM',
+		  }
 		: {},
 	devServer: {
 		port: 8282, // 服务器端口号

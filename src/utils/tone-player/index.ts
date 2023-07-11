@@ -16,8 +16,6 @@ window.Tone = Tone
  * Tone.Transport.timeSignature = 3 拍数（3/4拍）
  */
 
-const API_HOST = 'http://localhost:8282'
-
 export class TonePlayer extends Tone.Sampler {
 	private sampler: Tone.Sampler | PolySynth = new Tone.PolySynth(Tone.Synth).toDestination()
 	private instrument: Instrument = 'default'
