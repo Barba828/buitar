@@ -8,7 +8,7 @@ const isDocs = process.env.NODE_OUT === 'docs'
 module.exports = {
 	mode: isProduction ? 'production' : 'development',
 	entry: {
-		main: './index.ts',
+		main: resolve(__dirname, 'src/index.ts'),
 	},
 	module: {
 		rules: [
@@ -45,7 +45,7 @@ module.exports = {
 					},
 					{
 						loader: 'sass-resources-loader',
-						options: { resources: resolve(__dirname, 'style/app.scss') },
+						options: { resources: resolve(__dirname, 'src/style/app.scss') },
 					},
 				],
 			},
