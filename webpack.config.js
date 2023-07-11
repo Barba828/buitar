@@ -86,7 +86,7 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			template: './index.html',
+			template: path.resolve(__dirname, 'static/index.html'),
 		}),
 	],
 	externals: isProduction
