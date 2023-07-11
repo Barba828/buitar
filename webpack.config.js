@@ -1,9 +1,10 @@
-const { resolve } = require('path')
+const { resolve, join } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const WebpackPwaManifest = require('webpack-pwa-manifest')
 
 const isProduction = process.env.NODE_ENV === 'production'
-const isDocs = process.env.NODE_OUT === 'docs'
+// const isDocs = process.env.NODE_OUT === 'docs'
 
 module.exports = {
 	mode: isProduction ? 'production' : 'development',
@@ -83,8 +84,8 @@ module.exports = {
 	},
 	output: {
 		filename: 'static/js/[name].[chunkhash:6].js',
-        chunkFilename: 'static/js/[name].[contenthash:6].js',
-		path: resolve(__dirname, isDocs ? 'docs' : 'dist'),
+		chunkFilename: 'static/js/[name].[contenthash:6].js',
+		path: resolve(__dirname, 'dist'),
 	},
 	plugins: [
 		new CopyWebpackPlugin({
@@ -97,6 +98,26 @@ module.exports = {
 					},
 				},
 			],
+		}),
+		new WebpackPwaManifest({
+			name: "Buitar",
+			short_name: 'Buitar',
+			description: '吉他和弦乐理应用',
+			background_color: '#3f4345',
+			theme_color: '#3f4345',
+			filename: 'manifest.[hash:8].json',
+			publicPath: '/',
+			icons: [
+				{
+					src: resolve(__dirname, 'static/logo.png'),
+					sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
+				},
+			],
+			ios: {
+				'apple-mobile-web-app-title': 'Buitar',
+				'apple-mobile-web-app-status-bar-style': '#3f4345',
+				'apple-mobile-web-app-capable': 'yes',
+			},
 		}),
 		new HtmlWebpackPlugin({
 			template: resolve(__dirname, 'public/index.html'),
