@@ -27,10 +27,13 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		emphasis,
 		setEmphasis,
 		player,
+		resumePlayer,
 	} = useBoardContext()
 
 	// 鼠标事件监听
-	const { handler } = useBoardTouch(emphasis, setEmphasis)
+	const { handler } = useBoardTouch(emphasis, setEmphasis, {
+		onClick: resumePlayer,
+	})
 	// 键盘事件监听
 	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis)
 

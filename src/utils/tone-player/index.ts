@@ -42,6 +42,7 @@ export class TonePlayer extends Tone.Sampler {
 			urls: instrumentConfig[instrument],
 			baseUrl: `static/samples/${instrument}/`,
 		}).toDestination()
+		this.sampler.context.resume()
 		return Tone.loaded()
 	}
 
@@ -58,6 +59,15 @@ export class TonePlayer extends Tone.Sampler {
 
 	public getContext() {
 		return this.sampler
+	}
+
+	/**
+	 * 手动处理 invoke ，否则safari会默认静音
+	 */
+	public async resume() {
+		await this.sampler.context.resume()
+		// await Tone.start()
+		// await Tone.context.resume()
 	}
 
 	/**
@@ -98,7 +108,6 @@ export class TonePlayer extends Tone.Sampler {
 		if (!this.loaded) {
 			return
 		}
-
 		const tones = Array.isArray(point) ? point : [point]
 		const notes = Array.from(new Set(tones.map(this.transPoint)))
 		this.sampler.triggerAttackRelease(notes, duration)

@@ -1,11 +1,14 @@
-$switch-size: $button-size * 0.4;
+$switch-size: $button-size * 0.5;
 
 .switch {
-	width: $switch-size * 2;
+	width: $switch-size * 1.8;
 	height: $switch-size;
 	border-radius: $switch-size + px;
 	background: $gray-01;
 	transition: all 0.15s linear;
+	&:hover {
+		background: $gray-third;
+	}
 
 	.circle {
 		width: calc($switch-size - 2) + px;
@@ -21,6 +24,6 @@ $switch-size: $button-size * 0.4;
 	background: #eeea;
 
 	.circle {
-		transform: translateX(calc($switch-size - 0) + px);
+		transform: translateX(calc($switch-size * 0.8) + px);
 	}
 }

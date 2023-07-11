@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react'
+import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
 import { Instrument } from '@/utils/tone-player/instrument.type'
 import { GuitarBoardOptions } from '../board-controller/controller.type'
 import { Board, BoardOption, Point, Tone, transChordTaps } from 'to-guitar'
@@ -60,6 +60,8 @@ type BoardContextType = {
 	player: TonePlayer
 	// to-guitar.js指板
 	guitar: Board
+	// 重置播放player
+	resumePlayer(): void
 
 	// 指板内容
 	guitarBoardOption: Partial<BoardOption>
@@ -103,6 +105,10 @@ export const BoardProvider: FC = (props) => {
 	const [taps, setTaps] = useState<Point[]>([])
 	const [emphasis, setEmphasis] = useState<string[]>([])
 
+	const resumePlayer = useCallback(async () => {
+		await player.resume()
+	}, [])
+
 	// 吉他指板实例化对象
 	const guitar = useMemo(() => {
 		const _board = new Board((board) => {
@@ -122,6 +128,7 @@ export const BoardProvider: FC = (props) => {
 	const boardValue = {
 		player,
 		guitar,
+		resumePlayer,
 
 		guitarBoardOption,
 		boardOptions,

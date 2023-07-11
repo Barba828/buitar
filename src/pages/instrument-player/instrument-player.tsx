@@ -24,7 +24,13 @@ export const InstrumentPlayer = () => {
 }
 
 const PianoBoards = (props: any) => {
-	const { player } = useBoardContext()
+	const { player, resumePlayer } = useBoardContext()
 
-	return <PianoBoard player={player} onChangePart={props.onChangePart}></PianoBoard>
+	return (
+		<PianoBoard
+			player={player}
+			resumePlayer={resumePlayer}
+			onChangePart={props.onChangePart}
+		></PianoBoard>
+	)
 }

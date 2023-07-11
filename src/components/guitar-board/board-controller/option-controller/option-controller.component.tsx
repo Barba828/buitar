@@ -71,6 +71,7 @@ export const BoardOptionsController: FC<ControllerProps> = (props) => {
 	return (
 		<ControllerList
 			{...props}
+			scrollable={false}
 			list={list}
 			onClickItem={handleClick}
 			renderListItem={renderOptionItem}
@@ -110,6 +111,7 @@ export const BoardInstrumentController: FC<ControllerProps> = (props) => {
 	return (
 		<ControllerList
 			{...props}
+			scrollable={false}
 			list={Object.keys(instrumentConfig) as Instrument[]}
 			onClickItem={handleClick}
 			checkedItem={(item) => item === instrument}

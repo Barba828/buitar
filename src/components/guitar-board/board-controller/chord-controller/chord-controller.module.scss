@@ -5,6 +5,13 @@
 
 .container {
 	display: flex;
+	@media (max-width: 540px) {
+		flex-direction: column;
+		width: calc(100vw - 20px);
+		.chord-controllers {
+			width: auto !important;
+		}
+	}
 
 	.fifth-circle {
 		height: $button-size * 6 + $button-margin * 4 + px !important;

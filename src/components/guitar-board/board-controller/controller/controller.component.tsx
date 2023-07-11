@@ -6,6 +6,10 @@ import styles from './controller.module.scss'
 interface ControllerListProps<T> extends ControllerProps {
 	list: T[]
 	className?: string
+	/**
+	 * 水平滚动显示
+	 */
+	scrollable?: boolean
 	onClickItem: (item: T, index?: number) => void
 	renderListItem: (item: T, checked?: boolean) => JSX.Element
 
@@ -18,6 +22,7 @@ interface ControllerListProps<T> extends ControllerProps {
 export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element = ({
 	list,
 	className,
+	scrollable = true,
 	onClickItem,
 	renderListItem,
 	checkedItem,
@@ -47,15 +52,22 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 		)
 	})
 
-	return (
+	const views = (
 		<div
 			className={cx(
 				className,
 				!disableAnimation && styles['board-controller-animation'],
-				styles['board-controller']
+				!scrollable && styles['board-controller__wrap'],
+				styles['board-controller'],
 			)}
 		>
 			{controllerView}
 		</div>
 	)
+
+	if (scrollable) {
+		return <div className="scroll-without-bar">{views}</div>
+	}
+
+	return views
 }

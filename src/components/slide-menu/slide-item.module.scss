@@ -6,10 +6,10 @@ $side-width: 60px;
 	display: flex;
 	z-index: 99;
 	height: 100%;
-	transition: all 0.5s ease-in-out;
+	// transition: all 0.1s;
 	backdrop-filter: blur(0px);
 
-	&.slide-menu-extend {
+	&.slide-menu__extend {
 		width: 100%;
 		backdrop-filter: blur(40px);
 
@@ -60,7 +60,7 @@ $side-width: 60px;
 	}
 
 	&-tab {
-		transition: all 0.5s ease-in-out;
+		transition: all 0.2s linear;
 		width: 0px;
 		background: $gray-02;
 		opacity: 0.8;
@@ -120,6 +120,9 @@ $side-width: 60px;
 			position: absolute;
 			bottom: 0;
 			width: 100%;
+			@media (max-width: 540px) {
+				display: none;
+			}
 		}
 	}
 

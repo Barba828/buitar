@@ -31,6 +31,9 @@ export const SlideMenu = () => {
 					styles['slide-menu-tab-item'],
 					pathname === route.path && styles['slide-menu-tab-item-checked']
 				)}
+				onClick={() => {
+					setExtend(false)
+				}}
 			>
 				{route.name_zh}
 			</Link>
@@ -74,7 +77,7 @@ export const SlideMenu = () => {
 	return (
 		<div
 			id="slide-menu"
-			className={cx(styles['slide-menu'], extend && styles['slide-menu-extend'])}
+			className={cx(styles['slide-menu'], extend && styles['slide-menu__extend'])}
 		>
 			<div
 				className={styles['slide-menu-bar']}

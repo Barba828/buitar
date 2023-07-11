@@ -1,5 +1,8 @@
 .container {
 	display: flex;
+	@media (max-width: 540px) {
+		flex-direction: column;
+	}
 }
 
 .controller-inner {

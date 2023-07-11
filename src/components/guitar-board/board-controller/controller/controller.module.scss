@@ -18,6 +18,12 @@ $controller-nums: 4;
 	flex-direction: row;
 	width: fit-content;
 
+	@media (max-width: 540px) {
+		&.board-controller__wrap {
+			flex-wrap: wrap;
+		}
+	}
+
 	// > :first-child {
 	// 	@extend %controller-extend;
 	// }
@@ -57,10 +63,4 @@ $controller-nums: 4;
 			width: $controller-size;
 		}
 	}
-}
-
-.board-controller-wrap {
-	flex-wrap: wrap;
-	align-content: flex-start;
-	max-width: $controller-nums * $controller-width;
 }

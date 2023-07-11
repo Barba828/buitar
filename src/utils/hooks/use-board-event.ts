@@ -1,7 +1,22 @@
 import { KeyboardEventHandler, useCallback, useEffect, useRef, useState } from 'react'
 import { NOTE_LIST } from 'to-guitar'
 
-export const useBoardTouch = (touched: string[], setTouched: SetState<string[]>) => {
+export const useBoardTouch = (
+	/**
+	 * 点击音符值
+	 */
+	touched: string[],
+	/**
+	 * SetState音符值
+	 */
+	setTouched: SetState<string[]>,
+	/**
+	 * 手动设置Touch事件
+	 */
+	options?: {
+		onClick?(): void
+	}
+) => {
 	const isTouched = useRef(false)
 
 	const onMouseDown = (e: React.MouseEvent) => {
@@ -19,6 +34,7 @@ export const useBoardTouch = (touched: string[], setTouched: SetState<string[]>)
 	}
 	const onMouseUp = () => {
 		isTouched.current = false
+		options?.onClick?.()
 		setTouched([])
 	}
 	const onMouseLeave = () => {
