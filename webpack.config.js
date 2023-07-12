@@ -84,7 +84,7 @@ module.exports = {
 	},
 	output: {
 		path: resolve(__dirname, 'dist'),
-		publicPath: '/',
+		publicPath: '/Buitar/',
 		filename: 'static/js/[name].[chunkhash:6].js',
 		chunkFilename: 'static/js/[name].[contenthash:6].js',
 	},
