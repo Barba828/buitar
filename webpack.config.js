@@ -83,9 +83,9 @@ module.exports = {
 		},
 	},
 	output: {
+		path: resolve(__dirname, 'dist'),
 		filename: 'static/js/[name].[chunkhash:6].js',
 		chunkFilename: 'static/js/[name].[contenthash:6].js',
-		path: resolve(__dirname, 'dist'),
 	},
 	plugins: [
 		new CopyWebpackPlugin({
