@@ -29,6 +29,9 @@ $white-02: rgba(202, 201, 199, 0.911);
 $button-size: 40;
 $button-margin: 2;
 
+$mobileLayout: "(max-width: 499px)";
+$pcLayout: "only screen and (min-width: 499px)";
+
 @mixin flex-center($direction: column) {
 	display: flex;
 	justify-content: center;

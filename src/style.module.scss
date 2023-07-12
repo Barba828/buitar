@@ -25,7 +25,7 @@ body {
 		padding-left: 12%;
 		// padding-right: 4%;
 
-		@media (max-width: 540px) {
+		@media #{$mobileLayout} {
 			padding-left: 20px;
 		}
 

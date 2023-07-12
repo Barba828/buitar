@@ -18,7 +18,7 @@ $controller-nums: 4;
 	flex-direction: row;
 	width: fit-content;
 
-	@media (max-width: 540px) {
+	@media #{$mobileLayout} {
 		&.board-controller__wrap {
 			flex-wrap: wrap;
 		}

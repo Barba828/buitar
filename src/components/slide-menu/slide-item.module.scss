@@ -14,7 +14,7 @@ $side-width: 60px;
 		backdrop-filter: blur(40px);
 
 		.slide-menu-bar {
-			@media (max-width: 540px) {
+			@media #{$mobileLayout} {
 				display: none;
 			}
 		}
@@ -22,7 +22,7 @@ $side-width: 60px;
 		.slide-menu-tab {
 			width: $side-width * 5;
 
-			@media (max-width: 540px) {
+			@media #{$mobileLayout} {
 				padding-left: 20px;
 				width: 80%;
 			}
@@ -42,13 +42,15 @@ $side-width: 60px;
 		min-width: $side-width;
 		background: $gray-02;
 
-		@media (max-width: 540px) {
+		@media #{$mobileLayout} {
+		// @media (max-width: 499px) {
 			width: 0px;
 			min-width: 0px;
+			opacity: 1;
 		}
 
 		&-icon {
-			@media (max-width: 540px) {
+			@media #{$mobileLayout} {
 				transform: translateX(100%);
 			}
 
@@ -69,7 +71,7 @@ $side-width: 60px;
 		box-shadow: inset;
 		position: relative;
 
-		@media (max-width: 540px) {
+		@media #{$mobileLayout} {
 			opacity: 1;
 		}
 
@@ -80,7 +82,7 @@ $side-width: 60px;
 			line-height: 92px;
 			font-weight: 700;
 
-			@media (max-width: 540px) {
+			@media #{$mobileLayout} {
 				line-height: 100px;
 			}
 		}
@@ -120,7 +122,7 @@ $side-width: 60px;
 			position: absolute;
 			bottom: 0;
 			width: 100%;
-			@media (max-width: 540px) {
+			@media #{$mobileLayout} {
 				display: none;
 			}
 		}

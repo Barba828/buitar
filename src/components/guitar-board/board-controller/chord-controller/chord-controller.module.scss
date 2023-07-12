@@ -5,7 +5,7 @@
 
 .container {
 	display: flex;
-	@media (max-width: 540px) {
+	@media #{$mobileLayout} {
 		flex-direction: column;
 		width: calc(100vw - 20px);
 		.chord-controllers {

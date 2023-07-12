@@ -40,7 +40,7 @@ export class TonePlayer extends Tone.Sampler {
 		// 选择乐器使用 取样器 播放
 		this.sampler = new Tone.Sampler({
 			urls: instrumentConfig[instrument],
-			baseUrl: `static/samples/${instrument}/`,
+			baseUrl: `${location.origin}/static/samples/${instrument}/`,
 		}).toDestination()
 		this.sampler.context.resume()
 		return Tone.loaded()

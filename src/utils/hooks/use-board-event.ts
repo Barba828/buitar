@@ -1,5 +1,6 @@
-import { KeyboardEventHandler, useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NOTE_LIST } from 'to-guitar'
+import { useIsMobile } from '@/utils/hooks/use-device'
 
 export const useBoardTouch = (
 	/**
@@ -18,15 +19,16 @@ export const useBoardTouch = (
 	}
 ) => {
 	const isTouched = useRef(false)
+	const isMobile = useIsMobile()
 
-	const onMouseDown = (e: React.MouseEvent) => {
+	const onMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
 		isTouched.current = true
 		const targetData = (e.target as HTMLDivElement).dataset.key
 		if (targetData && touched.indexOf(targetData) === -1) {
 			setTouched([targetData])
 		}
 	}
-	const onMouseOver = (e: React.MouseEvent) => {
+	const onMouseOver = (e: React.MouseEvent | React.TouchEvent) => {
 		const targetData = (e.target as HTMLDivElement).dataset.key
 		if (targetData && isTouched.current && touched.indexOf(targetData) === -1) {
 			setTouched([targetData])
@@ -41,13 +43,20 @@ export const useBoardTouch = (
 		isTouched.current = false
 	}
 
-	const handler = {
-		onMouseDown,
-		onMouseOver,
-		onMouseUp,
-		onMouseLeave,
-		onClick: onMouseOver,
-	}
+	const handler = isMobile
+		? {
+				onTouchStart: onMouseDown,
+				onTouchMove: onMouseOver,
+				onTouchEnd: onMouseUp,
+				onClick: onMouseOver,
+		  }
+		: {
+				onMouseDown,
+				onMouseOver,
+				onMouseUp,
+				onMouseLeave,
+				onClick: onMouseOver,
+		  }
 
 	return { handler, isTouched }
 }
