@@ -67,7 +67,7 @@ export const ChordCard: FC<{
 
 	const card = (
 		<div className={styles.container}>
-			<div onClick={handleClick} className={cls}>
+			<div onClick={handleClick} className={cls} style={{ width: size * 1.2, height: size * 1.2 }}>
 				<SvgChord points={transToSvgPoints(taps)} size={size} title={chordTitle} />
 				<div className={styles['chord-card-dot']} />
 				<div className={styles['chord-card-icons']}>

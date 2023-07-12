@@ -1,3 +1,5 @@
+import { routeMap } from './router'
+
 export type PageIntroType = {
 	title: string
 	content: string[]
@@ -5,7 +7,7 @@ export type PageIntroType = {
 
 export const pagesConfif = new Map<string, PageIntroType>([
 	[
-		'/library',
+		routeMap.chordLib.path,
 		{
 			title: '找到你要的和弦',
 			content: [
@@ -15,7 +17,7 @@ export const pagesConfif = new Map<string, PageIntroType>([
 		},
 	],
 	[
-		'/analyzer',
+		routeMap.chordAnalyzer.path,
 		{
 			title: '自由的编辑你的和弦',
 			content: [
@@ -25,7 +27,7 @@ export const pagesConfif = new Map<string, PageIntroType>([
 		},
 	],
 	[
-		'/progressions',
+		routeMap.progressions.path,
 		{
 			title: '更好玩的和弦级数玩法',
 			content: [
@@ -35,7 +37,7 @@ export const pagesConfif = new Map<string, PageIntroType>([
 		},
 	],
 	[
-		'/collection',
+		routeMap.collections.path,
 		{
 			title: '你的和弦都在这里',
 			content: [
@@ -45,7 +47,7 @@ export const pagesConfif = new Map<string, PageIntroType>([
 		},
 	],
 	[
-		'/instrument',
+		routeMap.instrument.path,
 		{
 			title: '游乐场时间到了',
 			content: [
@@ -56,7 +58,7 @@ export const pagesConfif = new Map<string, PageIntroType>([
 		},
 	],
 	[
-		'/creation',
+		routeMap.creation.path,
 		{
 			title: '这是你的创作时间',
 			content: [

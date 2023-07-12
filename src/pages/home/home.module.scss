@@ -2,6 +2,10 @@
 	padding-top: 80px;
 	padding-bottom: 120px;
 	padding-right: 100px;
+	@media #{$mobileLayout} {
+		padding-top: 40px;
+		padding-right: 20px;
+	}
 	.title {
 		font-size: 80px;
 		opacity: 0.9;

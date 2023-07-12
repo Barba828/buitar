@@ -12,6 +12,8 @@ import { FifthsCircle } from '@/components/fifths-circle'
 import { Point, Note, transChordType, ToneSchema, ChordType } from 'to-guitar'
 import { AddTextInput } from '@/components/basic'
 import { usePagesIntro } from '@/components'
+import { useIsMobile } from '@/utils/hooks/use-device'
+
 import cx from 'classnames'
 
 import styles from './chord-analyzer.module.scss'
@@ -60,6 +62,7 @@ const TapedGuitarBoard = () => {
 }
 
 const TapedChordCard = () => {
+	const isMobile = useIsMobile()
 	const { taps, chordTaps, setChordTaps, boardOptions, setEmphasis, guitarBoardOption } =
 		useBoardContext()
 
@@ -143,13 +146,13 @@ const TapedChordCard = () => {
 
 	return (
 		<div className={styles['taped-container']}>
-			<FifthsCircle
+			{!isMobile && <FifthsCircle
 				size={280}
 				thin={70}
 				minor={false}
 				onClick={handleClickFifths}
 				className={cx('buitar-primary-button', styles['fifth-circle'])}
-			/>
+			/>}
 			<ChordCard size={200} className={styles['svg-chord']} taps={taps} />
 			<div>
 				<DetailCard />

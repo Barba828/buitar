@@ -5,7 +5,7 @@ import cx from 'classnames'
 import styles from './slide-item.module.scss'
 import { Icon } from '@/components/icon'
 import { useMenuContext } from './index'
-import { routeConfig } from '@/pages/router'
+import { routeConfig, routeMap } from '@/pages/router'
 import { menuConfig } from './menu-provider/menu-config'
 import { Switch } from '../index'
 import { clearStore } from '@/utils/hooks/use-store'
@@ -16,7 +16,7 @@ export const SlideMenu = () => {
 	const [extend, setExtend] = useState<boolean>(false)
 
 	const header = (
-		<Link to={routeConfig[0].path} className={cx(styles['slide-menu-tab-title'])}>
+		<Link to={routeMap.home.path} className={cx(styles['slide-menu-tab-title'])}>
 			Buitar
 		</Link>
 	)

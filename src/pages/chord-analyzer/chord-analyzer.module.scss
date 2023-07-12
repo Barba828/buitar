@@ -1,5 +1,8 @@
 .taped-container {
 	display: flex;
+	@media #{$mobileLayout} {
+		flex-direction: column;
+	}
 	.svg-chord {
 		width: $button-size * 6 !important;
 		height: $button-size * 6 !important;

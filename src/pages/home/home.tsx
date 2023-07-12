@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { GuitarBoard, ChordCard, BoardProvider, useBoardContext } from '@/components/guitar-board'
 import { Link } from 'react-router-dom'
+import { Point, transChordType } from 'to-guitar'
+import { Icon } from '@/components'
+import { routeMap } from '@/pages/router'
 
 import cx from 'classnames'
 import styles from './home.module.scss'
-import { Point, transChordType } from 'to-guitar'
-import { Icon } from '@/components'
 
 export const HomePage = () => {
 	return (
@@ -23,10 +24,10 @@ export const HomePage = () => {
 			</p>
 
 			<div className={styles.links}>
-				<Link to="/library" className={cx('buitar-primary-button', styles['links-button'])}>
+				<Link to={routeMap.chordLib.path} className={cx('buitar-primary-button', styles['links-button'])}>
 					先从顺阶和弦开始
 				</Link>
-				<Link to="/analyzer" className={cx('buitar-primary-button', styles['links-button'])}>
+				<Link to={routeMap.chordAnalyzer.path} className={cx('buitar-primary-button', styles['links-button'])}>
 					定义我的和弦
 				</Link>
 			</div>

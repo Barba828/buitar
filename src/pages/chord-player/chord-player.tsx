@@ -11,6 +11,7 @@ import {
 import { transChordTaps } from 'to-guitar'
 import { PianoBoard } from '@/components/piano-board'
 import { usePagesIntro } from '@/components'
+import { useIsMobile } from '@/utils/hooks/use-device'
 
 export const ChordPlayer = () => {
 	const intro = usePagesIntro()
@@ -54,10 +55,11 @@ const ChordPlayerInner = () => {
 
 const ChordDetail = () => {
 	const { taps } = useBoardContext()
+	const isMobile = useIsMobile()
 
 	return (
-		<div style={{ display: 'flex' }}>
-			<ChordCard taps={taps} />
+		<div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
+			<ChordCard taps={taps} size={isMobile ? 120 : 160} />
 			<DetailCard />
 		</div>
 	)
