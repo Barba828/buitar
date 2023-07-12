@@ -101,23 +101,44 @@ module.exports = {
 			],
 		}),
 		new WebpackPwaManifest({
-			name: "Buitar",
+			name: 'Buitar',
 			short_name: 'Buitar',
 			description: '吉他和弦乐理应用',
 			background_color: '#3f4345',
 			theme_color: '#3f4345',
 			filename: 'manifest.[hash:8].json',
-			publicPath: '/',
+			start_url: '/Buitar',
+			id: '/Buitar',
+			display: 'standalone',
+			orientation: 'portrait',
 			icons: [
 				{
 					src: resolve(__dirname, 'static/logo.png'),
 					sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
 				},
+				{
+					src: resolve(__dirname, 'static/logo.png'),
+					sizes: [96, 128, 192, 256, 384, 512],
+					purpose: 'maskable',
+				},
+			],
+			shortcuts: [
+				{
+					name: '和弦库',
+					short_name: 'Chord Library',
+					url: '/Buitar/library',
+				},
+				{
+					name: '和弦编辑',
+					short_name: 'Chord Analyzer',
+					url: '/Buitar/analyzer',
+				},
 			],
 			ios: {
 				'apple-mobile-web-app-title': 'Buitar',
-				'apple-mobile-web-app-status-bar-style': '#3f4345',
+				'apple-mobile-web-app-status-bar-style': 'default', // 'black-translucent'
 				'apple-mobile-web-app-capable': 'yes',
+				'apple-touch-startup-image': './apple-splash.png',
 			},
 		}),
 		new HtmlWebpackPlugin({
