@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo } from 'react'
-import type { Point, ToneSchema } from 'to-guitar'
+import type { Point, ToneSchema } from '@to-guitar'
 import { useBoardContext } from '../board-provider'
 import { getBoardOptionsTone } from '../utils'
 import { GuitarBoardOptions } from '../board-controller/controller.type'

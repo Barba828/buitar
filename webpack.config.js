@@ -79,6 +79,7 @@ module.exports = {
 		alias: {
 			'@': resolve(__dirname, 'src/'),
 			'~': resolve(__dirname, 'static/'),
+			'@to-guitar': resolve(__dirname, 'to-guitar/src/index.ts'),
 		},
 	},
 	output: {
@@ -155,7 +156,11 @@ module.exports = {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 		},
-		historyApiFallback: true,
+		historyApiFallback: {
+			rewrites: [
+			  { from: /^\/Buitar\/.*/, to: '/Buitar' }, // 开发环境前往Buitar主页，使用前端路由
+			],
+		  },
 	},
 	devtool: isProduction ? 'cheap-module-source-map' : 'source-map',
 }

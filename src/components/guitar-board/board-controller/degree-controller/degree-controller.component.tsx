@@ -13,7 +13,7 @@ import {
 	useBoardContext,
 	usePlayerContext,
 } from '@/components'
-import { transChord, transChordTaps } from 'to-guitar'
+import { transChord, transChordTaps } from '@to-guitar'
 
 import styles from './degree-controller.module.scss'
 

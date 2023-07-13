@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { BoardProvider, useBoardContext, usePagesIntro } from '@/components'
 import { ChordList } from '@/components/chord-list'
-import { ChordType, Point, Tone, transChord, transChordTaps } from 'to-guitar'
+import { ChordType, Point, Tone, transChord, transChordTaps } from '@to-guitar'
 
 export type CollectionChord = {
 	taps: Point[]

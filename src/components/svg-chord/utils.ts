@@ -1,4 +1,4 @@
-import { Point } from 'to-guitar'
+import { Point } from '@to-guitar'
 import { SvgChordPoint } from './svg-chord'
 
 /**

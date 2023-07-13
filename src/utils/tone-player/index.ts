@@ -2,7 +2,7 @@ import * as Tone from 'tone'
 import { instrumentConfig } from './tone.config'
 import type { PolySynth } from 'tone'
 import type { Instrument } from './instrument.type'
-import type { Point } from 'to-guitar'
+import type { Point } from '@to-guitar'
 
 require('~/samples/index')
 window.Tone = Tone

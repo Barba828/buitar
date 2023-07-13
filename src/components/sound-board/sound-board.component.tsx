@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { usePlayerContext } from '../guitar-player'
-import { NOTE_LIST, Point, Tone, transNote } from 'to-guitar'
+import { NOTE_LIST, Point, Tone, transNote } from '@to-guitar'
 import {
 	Sequencer,
 	SequencerController,

@@ -1,8 +1,8 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react'
 import { ControllerList } from '../controller'
-import { Chord, chordDegreeMap, ChordDegreeNum, transChord, transChordTaps } from 'to-guitar'
+import { Chord, chordDegreeMap, ChordDegreeNum, transChord, getDegreeTag } from '@to-guitar'
 import { ControllerProps } from '../option-controller'
-import { useBoardContext, getBoardOptionsList, ChordTapsController } from '../../index'
+import { useBoardContext, ChordTapsController } from '../../index'
 import { FifthCircleController } from '../fifth-circle-controller'
 import { tagList } from '@/pages/chord-progressions/progressions.config'
 import cx from 'classnames'
@@ -169,7 +169,7 @@ const ChordPickerController: FC<ControllerProps> = ({ ...props }) => {
 			renderListItem={(item) => {
 				return (
 					<div className={styles['chord-item']}>
-						<div className={styles['chord-item-grade']}>{item.degree.tag}</div>
+						<div className={styles['chord-item-grade']}>{getDegreeTag(item.degree.degreeNum)}</div>
 						<span className={styles['chord-item-note']}>
 							{isSharpSemitone ? item.tone.note : item.tone.noteFalling}
 						</span>

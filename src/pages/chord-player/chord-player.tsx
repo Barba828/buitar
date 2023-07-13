@@ -8,7 +8,7 @@ import {
 	BoardController,
 	DetailCard,
 } from '@/components/guitar-board'
-import { transChordTaps } from 'to-guitar'
+import { transChordTaps } from '@to-guitar'
 import { PianoBoard } from '@/components/piano-board'
 import { usePagesIntro } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'

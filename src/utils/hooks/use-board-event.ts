@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { NOTE_LIST } from 'to-guitar'
+import { NOTE_LIST } from '@to-guitar'
 import { useIsMobile } from '@/utils/hooks/use-device'
 
 export const useBoardTouch = (

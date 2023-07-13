@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
 import { Instrument } from '@/utils/tone-player/instrument.type'
 import { GuitarBoardOptions } from '../board-controller/controller.type'
-import { Board, BoardOption, Point, Tone, transChordTaps } from 'to-guitar'
+import { Board, BoardOption, Point, Tone, transChordTaps } from '@to-guitar'
 import { TonePlayer } from '@/utils'
 import { useStore } from '@/utils/hooks/use-store'
 import { OPTIONS_KEY, INSTRUMENT_KEY } from '../board-controller'
@@ -105,6 +105,7 @@ export const BoardProvider: FC = (props) => {
 	const [taps, setTaps] = useState<Point[]>([])
 	const [emphasis, setEmphasis] = useState<string[]>([])
 
+	// 手动出发tonePlayer播放（某些浏览器会自动静音Audio）
 	const resumePlayer = useCallback(async () => {
 		await player.resume()
 	}, [])
