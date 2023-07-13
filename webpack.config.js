@@ -4,7 +4,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
 
 const isProduction = process.env.NODE_ENV === 'production'
-// const isDocs = process.env.NODE_OUT === 'docs'
 
 module.exports = {
 	mode: isProduction ? 'production' : 'development',
@@ -84,7 +83,7 @@ module.exports = {
 	},
 	output: {
 		path: resolve(__dirname, 'dist'),
-		publicPath: isProduction ? '/Buitar/' : '',
+		publicPath: '/Buitar',
 		filename: 'static/js/[name].[chunkhash:6].js',
 		chunkFilename: 'static/js/[name].[contenthash:6].js',
 	},
@@ -109,7 +108,7 @@ module.exports = {
 			filename: 'manifest.[hash:8].json',
 			start_url: '/Buitar',
 			id: '/Buitar',
-			publicPath: isProduction ? '/Buitar/' : '',
+			publicPath: '/Buitar',
 			display: 'standalone',
 			orientation: 'portrait',
 			icons: [
@@ -146,12 +145,10 @@ module.exports = {
 			template: resolve(__dirname, 'public/index.html'),
 		}),
 	],
-	externals: isProduction
-		? {
-				react: 'React',
-				'react-dom': 'ReactDOM',
-		  }
-		: {},
+	externals: {
+		react: 'React',
+		'react-dom': 'ReactDOM',
+	},
 	devServer: {
 		port: 8282, // 服务器端口号
 		proxy: {}, //

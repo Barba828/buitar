@@ -16,7 +16,13 @@ export const SlideMenu = () => {
 	const [extend, setExtend] = useState<boolean>(false)
 
 	const header = (
-		<Link to={routeMap.home.path} className={cx(styles['slide-menu-tab-title'])}>
+		<Link
+			to={routeMap.home.path}
+			className={cx(styles['slide-menu-tab-title'])}
+			onClick={() => {
+				setExtend(false)
+			}}
+		>
 			Buitar
 		</Link>
 	)
