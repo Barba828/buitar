@@ -41,7 +41,7 @@
 	},
 	"dependencies": {
 		"react-router-dom": "^6.2.2",
-		"to-guitar": "workspace:*",
+		"to-guitar": "file:./to-guitar",
 		"tone": "^14.7.77"
 	}
 }

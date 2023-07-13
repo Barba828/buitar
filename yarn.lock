@@ -4339,10 +4339,8 @@ tinycolor2@^1.4.1:
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.6.0.tgz#f98007460169b0263b97072c5ae92484ce02d09e"
   integrity sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==
 
-"to-guitar@workspace:*":
+"to-guitar@file:./to-guitar":
   version "0.0.13"
-  resolved "https://registry.yarnpkg.com/to-guitar/-/to-guitar-0.0.13.tgz#405612c719b5851b2208b2c9690fc6030bd64978"
-  integrity sha512-jFY/7UOtaYXQJro45BEcye9S/KW6ooS33i93pL1/zPPqdQ7/7HRDOTUva272kq111O7+pa3tEk9Cq9xDs3sw/w==
 
 to-regex-range@^5.0.1:
   version "5.0.1"

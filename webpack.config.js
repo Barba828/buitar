@@ -109,6 +109,7 @@ module.exports = {
 			filename: 'manifest.[hash:8].json',
 			start_url: '/Buitar',
 			id: '/Buitar',
+			publicPath: isProduction ? '/Buitar/' : '',
 			display: 'standalone',
 			orientation: 'portrait',
 			icons: [
