@@ -32,11 +32,8 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Update Submodule
         run: |
+          git submodule init
           git submodule update
-          cd to-guitar
-          yarn
-          yarn build
-          cd ..
       - name: Install and Build
         run: |
           yarn
