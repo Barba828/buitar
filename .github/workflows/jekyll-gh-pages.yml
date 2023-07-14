@@ -37,7 +37,7 @@ jobs:
       - name: Install and Build
         run: |
           npm install pnpm -g
-          pnpm i
+          pnpm install --no-frozen-lockfile
           pnpm build
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
