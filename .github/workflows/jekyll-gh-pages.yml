@@ -36,6 +36,7 @@ jobs:
           git submodule update
       - name: Install and Build
         run: |
+          npm install pnpm -g
           pnpm i
           pnpm build
       - name: Build with Jekyll
