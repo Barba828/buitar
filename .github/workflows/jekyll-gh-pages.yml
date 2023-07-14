@@ -36,8 +36,8 @@ jobs:
           git submodule update
       - name: Install and Build
         run: |
-          yarn
-          yarn build
+          pnpm i
+          pnpm build
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:

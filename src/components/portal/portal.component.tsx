@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { FC, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import cx from 'classnames'
 import styles from './portal.module.scss'

@@ -82,8 +82,19 @@
 	.detail-chord {
 		display: flex;
 
-		> div {
-			@include flex-center;
+		&-note {
+			width: $button-size * 1.2;
+			height: $button-size * 1.2;
+			padding: 2px;
+		}
+		&-title {
+			font-size: 18px;
+			text-align: center;
+			transform: scale((1.2));
+		}
+		&-tag {
+			font-size: 10px;
+			opacity: 0.6;
 		}
 	}
 }
@@ -93,8 +104,7 @@
 		display: flex;
 	}
 	.confirm {
-		// margin-bottom: $button-margin * 2 + px !important;
-		width: $button-size -$button-margin;
+		width: $button-size (-$button-margin);
 		@include flex-center;
 
 		> svg {

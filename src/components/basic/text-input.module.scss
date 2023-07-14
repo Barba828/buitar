@@ -24,7 +24,7 @@
 
 	.type-input-item {
 		@include flex-center;
-		width: $button-size - $button-margin;
+		width: $button-size (-$button-margin);
 		opacity: 0.8;
 	}
 }

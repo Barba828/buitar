@@ -4,7 +4,7 @@ import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
 import { Icon } from '@/components/icon'
 import { getBoardOptionsNote } from '@/components/guitar-board/utils'
 import { Portal } from '@/components'
-import { ChordType, Point } from '@to-guitar'
+import { ChordType, Point, getDegreeTag } from '@to-guitar'
 import { GuitarBoardOptions } from '../controller.type'
 import { CardCollector } from './card-collector.component'
 import cx from 'classnames'
@@ -147,15 +147,24 @@ export const getChordName = (
 export const DetailCard: FC<{ index?: number }> = ({ index = 0 }) => {
 	const { chord, chordTaps } = useBoardContext()
 	const chordName = useChordName(index)
-	const visible = !!chordTaps?.chordType[index]
-
-	if (!visible) {
+	const chordTypeItem = chordTaps?.chordType[index]
+	
+	if (!chordTypeItem) {
 		return null
 	}
 
-	const title = chordTaps.chordType[index].name
+	const constitute = chordTaps.chordType[0].constitute
+	const constituteTag = constitute?.map(item => getDegreeTag(item))
+	const chordList = chord.map((note, index) => {
+		return {
+			note, 
+			degreeTag: constituteTag?.[index],
+			degree: constitute?.[index]
+		}
+	})
+	const title = chordTypeItem.name
 	const subTitle =
-		chordTaps.chordType[index].tag !== '*' ? chordTaps.chordType[index].name_zh : '自定义'
+	chordTypeItem.tag !== '*' ? chordTypeItem.name_zh : '自定义'
 	return (
 		<div className={cx(styles['detail-card'])}>
 			<div className={cx('buitar-primary-button', styles['detail-view'])}>
@@ -166,9 +175,11 @@ export const DetailCard: FC<{ index?: number }> = ({ index = 0 }) => {
 				</div>
 			</div>
 			<div className={styles['detail-chord']}>
-				{chord.map((note, index) => (
-					<div key={index} className="buitar-primary-button">
-						{note}
+				{chordList.map(({note, degree, degreeTag}, index) => (
+					<div key={index} className={cx('buitar-primary-button', styles['detail-chord-note'])}>
+						<div className={styles['detail-chord-tag']}>{degreeTag}</div>
+						<div className={styles['detail-chord-title']}>{note}</div>
+						<div className={styles['detail-chord-tag']}>{degree}</div>
 					</div>
 				))}
 			</div>
