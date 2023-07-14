@@ -1,4 +1,4 @@
-import { PageIntroType, pagesConfif } from '@/pages/pages.config'
+import { PageIntroType, pagesIntroConfig } from '@/pages/pages.config'
 import React, { FC } from 'react'
 import { useLocation } from 'react-router-dom'
 
@@ -6,11 +6,11 @@ import styles from './pages-intro.module.scss'
 
 export const usePagesIntro = () => {
 	const { pathname } = useLocation()
-	if (!pathname || !pagesConfif.has(pathname)) {
+	if (!pathname || !pagesIntroConfig.has(pathname)) {
 		return null
 	}
 
-	const pageInfo = pagesConfif.get(pathname)!
+	const pageInfo = pagesIntroConfig.get(pathname)!
 
 	return <PagesIntro {...pageInfo} />
 }

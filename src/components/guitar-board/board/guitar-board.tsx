@@ -9,8 +9,21 @@ import cx from 'classnames'
 import styles from './guitar-board.module.scss'
 
 interface GuitarBoardProps {
+	/**
+	 * 渲染吉他品数范围
+	 */
 	range?: [number, number]
+	/**
+	 * 选中指位 callback
+	 * @param points 
+	 * @returns 
+	 */
 	onCheckedPoints?: (points: Point[]) => void
+	/**
+	 * 键盘切换监听范围
+	 * @param part 
+	 * @returns 
+	 */
 	onChangePart?: (part: boolean) => void
 }
 
@@ -44,6 +57,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		return exchangeBoardList(keyboard)
 	}, [keyboard])
 
+	// 指位停留 30 ms以上 => play & checked
 	const debouceEmphasis = useDebounce(emphasis, 30)
 	useEffect(() => {
 		if (debouceEmphasis.length <= 0 || !boardList) {
@@ -117,17 +131,19 @@ const BoardButton = ({
 	itemClassName,
 	touched = [],
 }: { point: Point; itemClassName?: string; touched?: string[] } & GuitarBoardProps) => {
-	const { boardOptions, taps, emphasis } = useBoardContext()
+	const { boardOptions, taps, fixedTaps, emphasis } = useBoardContext()
 	const { hasLevel, isNote } = boardOptions
 
 	// key
 	const key = `${point.index}`
 	// 强调的point
 	const emphasised = emphasis.includes(key) || touched.includes(key)
+	// 固定的point
+	const fixed = !!fixedTaps.find((tap) => tap.index === point.index)
 	// 被点击的point
-	const tapped = taps.findIndex((tap) => tap.index === point.index) !== -1
-	// 显示音调文本
-	const tone = getBoardOptionsTone(point.toneSchema, boardOptions, !tapped)
+	const tapped = !!taps.find((tap) => tap.index === point.index)
+	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
+	const tone = getBoardOptionsTone(point.toneSchema, boardOptions, !tapped && !fixed && !emphasised)
 	// 显示八度音高
 	const level = tone && getLevel(point.toneSchema, boardOptions)
 
@@ -140,6 +156,7 @@ const BoardButton = ({
 				: styles['interval-point']
 			: null,
 		emphasised && styles['emphasised-point'], // 被强调的point
+		fixed && styles['fixed-point'], // 被固定高亮的point
 		tapped && styles['tapped-point'], // 被点击的point
 		styles['point'],
 		itemClassName

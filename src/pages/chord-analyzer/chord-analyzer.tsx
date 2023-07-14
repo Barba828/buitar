@@ -63,7 +63,7 @@ const TapedGuitarBoard = () => {
 
 const TapedChordCard = () => {
 	const isMobile = useIsMobile()
-	const { taps, chordTaps, setChordTaps, boardOptions, setEmphasis, guitarBoardOption } =
+	const { taps, chordTaps, setChordTaps, boardOptions, setFixedTaps, guitarBoardOption } =
 		useBoardContext()
 
 	const changeChordTapName = (index: number) => {
@@ -129,19 +129,19 @@ const TapedChordCard = () => {
 			return
 		}
 		if (!tone) {
-			setEmphasis([])
+			setFixedTaps([])
 			return
 		}
 
-		const emphasis: string[] = []
+		const fixedTaps: Point[] = []
 		guitarBoardOption.keyboard.forEach((string) => {
 			string.forEach((point) => {
 				if (point.toneSchema.note === tone.note) {
-					emphasis.push(String(point.index))
+					fixedTaps.push(point)
 				}
 			})
 		})
-		setEmphasis(emphasis)
+		setFixedTaps(fixedTaps)
 	}
 
 	return (

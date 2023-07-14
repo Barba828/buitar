@@ -5,7 +5,7 @@ export type PageIntroType = {
 	content: string[]
 }
 
-export const pagesConfif = new Map<string, PageIntroType>([
+export const pagesIntroConfig = new Map<string, PageIntroType>([
 	[
 		routeMap.chordLib.path,
 		{
@@ -23,6 +23,16 @@ export const pagesConfif = new Map<string, PageIntroType>([
 			content: [
 				'或许你想要的和弦不在和弦库中，或许你仍有自己手法，你可以在这里编辑或收藏你的和弦。假若算法猜不透你想要的和弦名称，你也可以自己定一个名称再加入收藏。',
 				'五度圈还能帮你迅速找到根音。',
+			],
+		},
+	],
+	[
+		routeMap.guitarTableture.path,
+		{
+			title: '从指型图熟悉指板',
+			content: [
+				'五度音阶学习',
+				'并且对关系大小调&平行大小调运用自如',
 			],
 		},
 	],

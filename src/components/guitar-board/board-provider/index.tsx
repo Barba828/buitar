@@ -77,8 +77,10 @@ type BoardContextType = {
 	setChord: SetState<Tone[]>
 	chordTaps: ReturnType<typeof transChordTaps> | null // 音阶和弦指位列表
 	setChordTaps: SetState<ReturnType<typeof transChordTaps> | null>
-	taps: Point[] // 指板选中Point
+	taps: Point[] // 指板选中高亮展示Point
 	setTaps: SetState<Point[]>
+	fixedTaps: Point[] // 指板固定高亮Point
+	setFixedTaps: SetState<Point[]>
 	emphasis: string[] // 指板强调Point
 	setEmphasis: SetState<string[]>
 }
@@ -103,7 +105,12 @@ export const BoardProvider: FC = (props) => {
 	const [chord, setChord] = useState<Tone[]>([])
 	const [chordTaps, setChordTaps] = useState<ReturnType<typeof transChordTaps> | null>(null)
 	const [taps, setTaps] = useState<Point[]>([])
+	const [fixedTaps, setFixedTaps] = useState<Point[]>([])
 	const [emphasis, setEmphasis] = useState<string[]>([])
+
+	useEffect(()=>{
+		console.log('lnz emphasis', emphasis);
+	}, [emphasis])
 
 	// 手动出发tonePlayer播放（某些浏览器会自动静音Audio）
 	const resumePlayer = useCallback(async () => {
@@ -145,6 +152,8 @@ export const BoardProvider: FC = (props) => {
 		setChordTaps,
 		taps,
 		setTaps,
+		fixedTaps,
+		setFixedTaps,
 		emphasis,
 		setEmphasis,
 	}

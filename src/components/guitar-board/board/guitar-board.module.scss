@@ -79,10 +79,6 @@
 	width: $button-size * 2 !important;
 	@include flex-center(row);
 
-	// &:active {
-	// 	background: $yellow-primary !important;
-	// }
-
 	@media (any-hover: hover) {
 		&:hover {
 			font-size: 18px;
@@ -112,11 +108,16 @@
 		flex-direction: column-reverse;
 	}
 
+	// 如下三种point风格，以出现越后的优先级越高
+	&.fixed-point {
+		background: $yellow-second !important;
+	}
+
 	&.tapped-point {
 		background: $blue-primary !important;
 	}
 
 	&.emphasised-point {
-		background: $yellow-primary !important;
+		background: $green-primary !important;
 	}
 }

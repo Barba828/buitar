@@ -1,6 +1,7 @@
 import { HomePage } from './home'
 import { ChordAnalyzer } from './chord-analyzer'
 import { ChordPlayer } from './chord-player'
+import { GuitarTableture } from './guitar-tableture'
 import { ChordProgressions } from './chord-progressions'
 import { Collections } from './collections'
 import { InstrumentPlayer } from './instrument-player'
@@ -27,6 +28,13 @@ export const routeMap = {
 		path: '/Buitar/analyzer',
 		type: 'menu',
 		Component: ChordAnalyzer,
+	},
+	guitarTableture: {
+		name_zh: '吉他指型',
+		name_en: 'Guitar Tableture',
+		path: '/Buitar/tableture',
+		type: 'menu',
+		Component: GuitarTableture,
 	},
 	progressions: {
 		name_zh: '和弦进行',
