@@ -1,0 +1,38 @@
+.switch {
+	display: flex;
+	position: relative;
+	width: $button-size * 3.2;
+	height: $button-size * 0.8;
+	border-radius: 4px;
+	margin: 2px;
+	background: $gray-second;
+	cursor: pointer;
+	@media (any-hover: hover) {
+		&:hover {
+			background: $gray-primary;
+		}
+	}
+
+	&-item {
+		flex: 1;
+		font-size: 12px;
+		z-index: 1;
+		transition: all 0.15s linear;
+		@include flex-center;
+
+		&__active {
+			color: $gray-02;
+			font-size: 14px;
+			font-weight: 700;
+		}
+
+		&__cursor {
+			position: absolute;
+			background-color: $white-02;
+			height: calc(100% - 4px);
+			margin: 2px;
+			border-radius: 3px;
+			transition: all 0.15s linear;
+		}
+	}
+}

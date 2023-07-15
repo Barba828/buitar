@@ -56,33 +56,71 @@ const defaultCollection = [
 const player = new TonePlayer(defaultInstrument)
 
 type BoardContextType = {
-	// tone.js播放器
+	/**
+	 * tone.js播放器
+	 */
 	player: TonePlayer
-	// to-guitar.js指板
+	/**
+	 * to-guitar.js指板
+	 */
 	guitar: Board
-	// 重置播放player
+	/**
+	 * 重置播放player
+	 */
 	resumePlayer(): void
 
 	// 指板内容
+	/**
+	 * 吉他单例属性
+	 */
 	guitarBoardOption: Partial<BoardOption>
-	boardOptions: GuitarBoardOptions // 显示设置
+	/**
+	 * 指板显示设置
+	 */
+	boardOptions: GuitarBoardOptions
 	dispatchBoardOptions: Dispatch<GuitarBoardOptions>
-	instrument: Instrument // 乐器设置
+	/**
+	 * 乐器设置
+	 */
+	instrument: Instrument
 	dispatchInstrument: Dispatch<Instrument>
-	collection: CollectionType[] // 收藏和弦
+	/**
+	 * 收藏和弦
+	 */
+	collection: CollectionType[]
 	dispatchCollection: Dispatch<CollectionType[]>
 
 	// 乐理内容
-	chord: Tone[] // 大调音阶和弦
+	/**
+	 * 大调音阶和弦
+	 */
+	chord: Tone[] 
 	setChord: SetState<Tone[]>
-	chordTaps: ReturnType<typeof transChordTaps> | null // 音阶和弦指位列表
+	/**
+	 * 音阶和弦指位列表
+	 */
+	chordTaps: ReturnType<typeof transChordTaps> | null
 	setChordTaps: SetState<ReturnType<typeof transChordTaps> | null>
-	taps: Point[] // 指板选中高亮展示Point
+	/**
+	 * 指板选中高亮展示Point
+	 */
+	taps: Point[] 
 	setTaps: SetState<Point[]>
-	fixedTaps: Point[] // 指板固定高亮Point
+	/**
+	 * 指板固定高亮Point
+	 */
+	fixedTaps: Point[] 
 	setFixedTaps: SetState<Point[]>
-	emphasis: string[] // 指板强调Point
+	/**
+	 * 指板交互强调反馈Point
+	 */
+	emphasis: string[]
 	setEmphasis: SetState<string[]>
+	/**
+	 * 指板固定高亮 最高级Point
+	 */
+	highFixedTaps: Point[]
+	setHighFixedTaps: SetState<Point[]>
 }
 const BoardContext = React.createContext<BoardContextType>({} as any)
 
@@ -106,11 +144,8 @@ export const BoardProvider: FC = (props) => {
 	const [chordTaps, setChordTaps] = useState<ReturnType<typeof transChordTaps> | null>(null)
 	const [taps, setTaps] = useState<Point[]>([])
 	const [fixedTaps, setFixedTaps] = useState<Point[]>([])
+	const [highFixedTaps, setHighFixedTaps] = useState<Point[]>([])
 	const [emphasis, setEmphasis] = useState<string[]>([])
-
-	useEffect(()=>{
-		console.log('lnz emphasis', emphasis);
-	}, [emphasis])
 
 	// 手动出发tonePlayer播放（某些浏览器会自动静音Audio）
 	const resumePlayer = useCallback(async () => {
@@ -154,6 +189,8 @@ export const BoardProvider: FC = (props) => {
 		setTaps,
 		fixedTaps,
 		setFixedTaps,
+		highFixedTaps,
+		setHighFixedTaps,
 		emphasis,
 		setEmphasis,
 	}

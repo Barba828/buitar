@@ -120,4 +120,8 @@
 	&.emphasised-point {
 		background: $green-primary !important;
 	}
+
+	&.high-fixed-point {
+		background: $green-second !important;
+	}
 }

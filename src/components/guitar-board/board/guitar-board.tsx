@@ -65,6 +65,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		}
 		const points = debouceEmphasis.map((index) => boardList[Number(index)])
 
+		console.log('%c Points ','color:white; background:rgb(57, 167, 150);border-radius: 2px', points)
 		player.triggerPointRelease(points)
 		onCheckedPoints?.(points)
 	}, [debouceEmphasis])
@@ -129,17 +130,18 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 const BoardButton = ({
 	point,
 	itemClassName,
-	touched = [],
-}: { point: Point; itemClassName?: string; touched?: string[] } & GuitarBoardProps) => {
-	const { boardOptions, taps, fixedTaps, emphasis } = useBoardContext()
+}: { point: Point; itemClassName?: string; } & GuitarBoardProps) => {
+	const { boardOptions, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
 	const { hasLevel, isNote } = boardOptions
 
 	// key
 	const key = `${point.index}`
-	// 强调的point
-	const emphasised = emphasis.includes(key) || touched.includes(key)
+	// 交互反馈强调的point
+	const emphasised = emphasis.includes(key)
 	// 固定的point
 	const fixed = !!fixedTaps.find((tap) => tap.index === point.index)
+	// 固定最高亮的point
+	const highFixed = !!highFixedTaps.find((tap) => tap.index === point.index)
 	// 被点击的point
 	const tapped = !!taps.find((tap) => tap.index === point.index)
 	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
@@ -158,6 +160,7 @@ const BoardButton = ({
 		emphasised && styles['emphasised-point'], // 被强调的point
 		fixed && styles['fixed-point'], // 被固定高亮的point
 		tapped && styles['tapped-point'], // 被点击的point
+		highFixed && styles['high-fixed-point'], // 被点击的point
 		styles['point'],
 		itemClassName
 	)
