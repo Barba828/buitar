@@ -9,17 +9,6 @@
 		width: fit-content;
 	}
 
-	.board-base {
-		.point {
-			width: $button-size !important;
-			@media (any-hover: hover) {
-				&:hover {
-					background: $yellow-second !important;
-				}
-			}
-		}
-	}
-
 	.board-view {
 		display: flex;
 		flex-direction: row;
@@ -28,7 +17,7 @@
 				width: $button-size !important;
 				@media (any-hover: hover) {
 					&:hover {
-						background: $yellow-second !important;
+						background: $gray-third !important;
 					}
 				}
 			}
@@ -123,5 +112,15 @@
 
 	&.high-fixed-point {
 		background: $green-second !important;
+	}
+}
+
+@media #{$mobileLayout} {
+	.board .board-view .frets-zero .point {
+		width: $mobile-button-size !important;
+	}
+	.board .board-view .frets .frets-dot,
+	.point {
+		width: $mobile-button-size * 2 !important;
 	}
 }

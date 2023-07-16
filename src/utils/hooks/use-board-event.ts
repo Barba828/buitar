@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { NOTE_LIST } from '@to-guitar'
+import { useIsMobile } from '@/utils/hooks/use-device'
 
 export const useBoardTouch = (
 	/**
@@ -18,6 +19,7 @@ export const useBoardTouch = (
 	}
 ) => {
 	const isTouched = useRef(false)
+	const isMobile = useIsMobile()
 
 	const onMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
 		isTouched.current = true
@@ -41,19 +43,21 @@ export const useBoardTouch = (
 		isTouched.current = false
 	}
 
-	const handler = {
-		// PC
-		onMouseDown,
-		onMouseOver,
-		onMouseUp,
-		onMouseLeave,
-		// Mobile
-		onTouchStart: onMouseDown,
-		onTouchMove: onMouseOver,
-		onTouchEnd: onMouseUp,
-		// default
-		onClick: onMouseOver,
-	}
+	const handler = isMobile
+		? {
+				// Mobile
+				onTouchEnd: onMouseUp,
+				onClick: onMouseDown,
+		  }
+		: {
+				// PC
+				onMouseDown,
+				onMouseOver,
+				onMouseUp,
+				onMouseLeave,
+				// default
+				onClick: onMouseOver,
+		  }
 	return { handler, isTouched }
 }
 
@@ -95,21 +99,6 @@ export const usePianoKeyDown = (touched: string[], setTouched: SetState<string[]
 		}
 	}
 
-	// useEffect(() => {
-	// 	if (disable) {
-	// 		return () => {
-	// 			window.removeEventListener('keydown', onKeyDown)
-	// 			window.removeEventListener('keyup', onKeyUp)
-	// 		}
-	// 	}
-	// 	window.addEventListener('keydown', onKeyDown)
-	// 	window.addEventListener('keyup', onKeyUp)
-
-	// 	return () => {
-	// 		window.removeEventListener('keydown', onKeyDown)
-	// 		window.removeEventListener('keyup', onKeyUp)
-	// 	}
-	// }, [part, disable])
 	const keyHandler = {
 		onKeyDown,
 		onKeyUp,

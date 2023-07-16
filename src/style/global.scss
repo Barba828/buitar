@@ -23,10 +23,14 @@
 			background: $gray-second;
 		}
 	}
+	@media #{$mobileLayout} {
+		height: $mobile-button-size + px;
+		width: $mobile-button-size + px;
+		margin: $mobile-button-margin + px;
+	}
 }
 
 :global(.buitar-primary-range) {
-	// input[type='range'] {
 	-webkit-appearance: none;
 	flex: 1;
 	width: $button-size * 6;
@@ -34,7 +38,6 @@
 	border-radius: 2px;
 	outline: none; /* 避免點選會有藍線或虛線 */
 	background: #eee4;
-	// }
 
 	&::-webkit-slider-thumb {
 		-webkit-appearance: none;

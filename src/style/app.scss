@@ -29,6 +29,8 @@ $white-03: rgba(178, 178, 178, 0.911);
 
 $button-size: 40;
 $button-margin: 2;
+$mobile-button-size: $button-size * 0.8;
+$mobile-button-margin: $button-margin * 0.8;
 
 $mobileLayout: "(max-width: 499px)";
 $pcLayout: "only screen and (min-width: 499px)";
