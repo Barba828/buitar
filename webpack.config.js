@@ -115,12 +115,20 @@ module.exports = {
 			icons: [
 				{
 					src: resolve(__dirname, 'static/logo.png'),
+					destination: join('static', 'img', 'icons'),
 					sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
 				},
 				{
 					src: resolve(__dirname, 'static/logo.png'),
+					destination: join('static', 'img', 'icons', 'maskable'),
 					sizes: [96, 128, 192, 256, 384, 512],
 					purpose: 'maskable',
+				},
+				{
+					src: resolve(__dirname, 'public/apple-splash.png'),
+					sizes: [1024],
+					destination: join('static', 'img', 'startup'),
+					ios: 'startup',
 				},
 			],
 			shortcuts: [
@@ -139,7 +147,7 @@ module.exports = {
 				'apple-mobile-web-app-title': 'Buitar',
 				'apple-mobile-web-app-status-bar-style': 'default', // 'black-translucent'
 				'apple-mobile-web-app-capable': 'yes',
-				'apple-touch-startup-image': './apple-splash.png',
+				// 'apple-touch-startup-image': join('/Buitar', '/apple-splash.png'),
 			},
 		}),
 		new HtmlWebpackPlugin({
@@ -158,9 +166,9 @@ module.exports = {
 		},
 		historyApiFallback: {
 			rewrites: [
-			  { from: /^\/Buitar\/.*/, to: '/Buitar' }, // 开发环境前往Buitar主页，使用前端路由
+				{ from: /^\/Buitar\/.*/, to: '/Buitar' }, // 开发环境前往Buitar主页，使用前端路由
 			],
-		  },
+		},
 	},
 	devtool: isProduction ? 'cheap-module-source-map' : 'source-map',
 }

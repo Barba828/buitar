@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import cx from 'classnames'
 import styles from './tab-switch.module.scss'
 
