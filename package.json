@@ -36,10 +36,12 @@
 		"webpack": "^5.70.0",
 		"webpack-cli": "^4.9.2",
 		"webpack-dev-server": "^4.7.4",
-		"webpack-pwa-manifest": "^4.3.0"
+		"webpack-pwa-manifest": "^4.3.0",
+		"workbox-webpack-plugin": "^7.0.0"
 	},
 	"dependencies": {
 		"react-router-dom": "^6.2.2",
-		"tone": "^14.7.77"
+		"tone": "^14.7.77",
+		"workbox-window": "^7.0.0"
 	}
 }

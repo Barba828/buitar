@@ -2,6 +2,7 @@ const { resolve, join } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
+const { GenerateSW } = require('workbox-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -148,6 +149,13 @@ module.exports = {
 				'apple-mobile-web-app-status-bar-style': 'default', // 'black-translucent'
 				'apple-mobile-web-app-capable': 'yes',
 				// 'apple-touch-startup-image': join('/Buitar', '/apple-splash.png'),
+			},
+		}),
+		isProduction && new GenerateSW({
+			maximumFileSizeToCacheInBytes: 8388608, // 8MB
+			swDest: 'sw.js',
+			modifyURLPrefix: {
+				'/Buitar': '/Buitar/',
 			},
 		}),
 		new HtmlWebpackPlugin({
