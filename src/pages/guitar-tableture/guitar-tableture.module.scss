@@ -9,3 +9,13 @@
         width: $button-size * 9;
     }
 }
+
+.guitar-size-slider {
+    height: $button-size / 2 !important;
+    width: $button-size * 6 !important;
+    padding: 0 10px;
+    font-size: 10px;
+    display: flex;
+    @include flex-center();
+    flex-direction: row;
+}

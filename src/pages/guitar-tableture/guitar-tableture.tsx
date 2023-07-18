@@ -117,7 +117,7 @@ const GuitarBoardTabletureList = () => {
 					品数范围{range[0]} - {range[1]}
 				</div>
 			</div>
-			<GuitarRangeSlider />
+			<GuitarRangeSlider onChange={setRange} />
 			<ToneModeController />
 
 			<GuitarBoard range={[range[0] + 1, range[1] + 1]} onCheckedPoints={handleCheckedPoint} />
@@ -129,7 +129,8 @@ const GuitarRangeSlider = ({ onChange }: Pick<RangeSliderProps, 'onChange'>) => 
 	const [size, setSize] = useState(5)
 	return (
 		<>
-			<div>
+			<div className={cx(styles['guitar-size-slider'], 'buitar-primary-button')}>
+				指板宽度 {size}
 				<input
 					type="range"
 					className="buitar-primary-range"

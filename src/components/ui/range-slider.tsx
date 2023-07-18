@@ -26,7 +26,7 @@ export const RangeSlider = ({
 	const handleChange = useCallback((e) => {
 		const value = Number(e?.target?.value || 0)
 		onChange?.([value, value + size])
-	}, [])
+	}, [size])
 
 	return (
 		<div
