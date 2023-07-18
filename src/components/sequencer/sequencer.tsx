@@ -15,7 +15,7 @@ import { useEditable } from './use-editable'
 import cx from 'classnames'
 
 import styles from './sequencer.module.scss'
-import { Switch } from '../switch'
+import { Switch } from '../ui'
 import { TonePlayer } from '@/utils'
 import { useSequencerContext } from '.'
 import { InstrumentColor } from '@/components/guitar-board/board-controller/option-controller/controller.config'

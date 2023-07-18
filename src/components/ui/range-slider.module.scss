@@ -1,0 +1,22 @@
+.range-slider {
+	:global(.buitar-primary-range) {
+		width: $button-size * 4;
+		height: $button-size / 2;
+		border-radius: 4px;
+
+		&::-webkit-slider-thumb {
+			height: $button-size / 2;
+			width: var(--thumb-width);
+			background: var(--thumb-color);
+			opacity: 0.4;
+			border-radius: 4px;
+		}
+
+		&:active::-webkit-slider-thumb {
+			width: var(--thumb-width);
+			transform: scaleY(1.1);
+			height: $button-size / 2;
+			opacity: 1;
+		}
+	}
+}

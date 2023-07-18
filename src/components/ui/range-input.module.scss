@@ -1,0 +1,15 @@
+.range-input {
+	position: relative;
+	pointer-events: none; // range 移除默认的点击事件
+	::-webkit-slider-thumb {
+		pointer-events: auto; // range 保留默认的拖拽事件
+	}
+
+	.input-hidden {
+		appearance: none;
+		background: none !important;
+		position: absolute;
+		left: 0;
+        top: 0;
+	}
+}

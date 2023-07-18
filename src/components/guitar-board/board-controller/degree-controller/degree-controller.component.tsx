@@ -1,11 +1,9 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import {
-	degreeList,
 	ProgressionItem,
 	ProgressionsConfig,
 	tagList,
 } from '@/pages/chord-progressions/progressions.config'
-import cx from 'classnames'
 import {
 	ControllerList,
 	ControllerProps,
@@ -13,7 +11,8 @@ import {
 	useBoardContext,
 	usePlayerContext,
 } from '@/components'
-import { transChord, transChordTaps } from '@to-guitar'
+import { transChord, transChordTaps, DEGREE_TAG_LIST } from '@to-guitar'
+import cx from 'classnames'
 
 import styles from './degree-controller.module.scss'
 
@@ -55,7 +54,7 @@ export const DegreeController = () => {
 					setProgressionIndex(index)
 				}}
 			>
-				{degreeList[degree.name - 1]}
+				{DEGREE_TAG_LIST[degree.name - 1]}
 				<span className={styles['degree-item-tag']}>{degree.tag}</span>
 			</div>
 		))
@@ -155,7 +154,7 @@ export const DegreeEditor: FC<{
 						)}
 						onClick={() => setChecked(index)}
 					>
-						{degreeList[degree.name - 1]}
+						{DEGREE_TAG_LIST[degree.name - 1]}
 						<span className={styles['degree-item-tag']}>{degree.tag}</span>
 						<div
 							onClick={() => {
@@ -180,7 +179,7 @@ export const DegreeEditor: FC<{
 			</div>
 
 			<div className={styles['degree-view']}>
-				{degreeList.map((degree, index) => (
+				{DEGREE_TAG_LIST.map((degree, index) => (
 					<div
 						key={index}
 						onClick={() => {
@@ -239,7 +238,7 @@ export const DegreeChordController: FC<ControllerProps> = () => {
 			return {
 				...chord,
 				tone,
-				degree: degreeList[degree.name - 1],
+				degree: DEGREE_TAG_LIST[degree.name - 1],
 			}
 		})
 	}, [guitarBoardOption.chords])

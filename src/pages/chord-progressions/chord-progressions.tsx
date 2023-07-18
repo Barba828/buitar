@@ -8,10 +8,9 @@ import {
 	ChordCard,
 	ChordControllerInner,
 } from '@/components/guitar-board'
-import { Point, transChordTaps } from '@to-guitar'
+import { Point, transChordTaps, DEGREE_TAG_LIST } from '@to-guitar'
 import { PlayerProvider, usePlayerContext } from '@/components/guitar-player'
 import { SoundBoard } from '@/components/sound-board'
-import { degreeList } from './progressions.config'
 import { usePagesIntro } from '@/components'
 
 import styles from './chord-progressions.module.scss'
@@ -80,7 +79,7 @@ const TapsViewer = () => {
 				if (!grade) {
 					return null
 				}
-				const name = degreeList[grade.name - 1]
+				const name = DEGREE_TAG_LIST[grade.name - 1]
 				return (
 					<ChordCard
 						key={index}

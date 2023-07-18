@@ -2,41 +2,29 @@ import React, { FC, memo, useCallback, useEffect, useState } from 'react'
 import { ControllerList } from '../controller'
 import { Chord, chordDegreeMap, ChordDegreeNum, transChord, getDegreeTag } from '@to-guitar'
 import { ControllerProps } from '../option-controller'
-import { useBoardContext, ChordTapsController } from '../../index'
+import { useBoardContext, ChordTapsController } from '@/components/guitar-board'
 import { FifthCircleController } from '../fifth-circle-controller'
 import { tagList } from '@/pages/chord-progressions/progressions.config'
+import { chordControllConfig } from './chord-controll.config'
+import { TabSwitch } from '@/components/ui'
 import cx from 'classnames'
 
 import styles from './chord-controller.module.scss'
-import { chordControllConfig } from './chord-controll.config'
 
 export const ChordController: FC<ControllerProps> = (props) => {
 	const [tabIndex, setTabIndex] = useState(0)
 
-	const ChordCheckerTab = memo(() => {
-		return (
-			<div className={cx(styles['chord-tab'])}>
-				{chordControllConfig.map((item, index) => (
-					<div
-						key={index}
-						className={cx(
-							'buitar-primary-button',
-							styles['chord-tab-item'],
-							tabIndex === index && 'touch-yellow'
-						)}
-						onClick={() => {
-							setTabIndex(index)
-						}}
-					>
-						{item.name_zh}
-					</div>
-				))}
-			</div>
-		)
-	})
 	return (
 		<>
-			<ChordCheckerTab />
+			<TabSwitch
+				className={cx(styles['chord-tab'])}
+				values={chordControllConfig}
+				defaultValue={chordControllConfig[tabIndex]}
+				onChange={(value, index) => {
+					setTabIndex(index)
+				}}
+				renderTabItem={(item) => item.name_zh}
+			/>
 			{tabIndex === 0 ? (
 				<ChordControllerInner>
 					<ChordNumPickerController {...props} />

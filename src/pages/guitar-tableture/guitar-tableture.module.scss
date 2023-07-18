@@ -1,0 +1,11 @@
+.tableture-tab {
+	width: $button-size * 5;
+}
+
+.tableture-list-options {
+    display: flex;
+    .tableture-options-range {
+        @include flex-center();
+        width: $button-size * 9;
+    }
+}

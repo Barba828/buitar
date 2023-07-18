@@ -71,14 +71,7 @@
 }
 
 .chord-tab {
-	display: flex;
-
-	.chord-tab-item {
-		height: $button-size * 0.8 + px;
-		width: $button-size * 4 + px;
-		@include flex-center;
-		opacity: 0.9;
-	}
+	width: $button-size * 6;
 }
 
 .chord-type {

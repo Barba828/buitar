@@ -5,7 +5,7 @@ export * from './sequencer'
 export * from './guitar-player'
 export * from './pages-intro'
 
-export * from './switch'
+export * from './ui'
 export * from './slide-menu'
 export * from './portal'
 export * from './icon'
