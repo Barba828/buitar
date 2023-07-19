@@ -3,19 +3,82 @@
 }
 
 .tableture-list-options {
-    display: flex;
-    .tableture-options-range {
-        @include flex-center();
-        width: $button-size * 9;
-    }
+	display: flex;
+	.tableture-options-mode {
+		@include flex-center();
+		font-size: 20px;
+		position: relative;
+		width: $button-size * 2;
+		&-tag {
+			font-size: 10px;
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			opacity: 0.6;
+			transform: scale(0.6);
+		}
+	}
+
+	.tableture-options-range {
+		@include flex-center();
+		font-size: 12px;
+		position: relative;
+		width: $button-size * 4;
+	}
+
+	.tableture-options-remove {
+		@include flex-center();
+		font-size: 20px;
+		opacity: 0.6;
+	}
+}
+
+.tableture-list {
+	// display: flex;
+	// flex-wrap: wrap;
+    > div {
+        margin-top: $button-size * 0.2;
+		margin-right: $button-size * 0.2;
+	}
+}
+
+.tableture-list-add {
+	@include flex-center();
+	font-size: 20px;
+	opacity: 0.6;
+	width: $button-size * 1.5 !important;
+	height: $button-size * 1.5 !important;
 }
 
 .guitar-size-slider {
-    height: $button-size / 2 !important;
-    width: $button-size * 6 !important;
-    padding: 0 10px;
-    font-size: 10px;
-    display: flex;
-    @include flex-center();
-    flex-direction: row;
+	height: $button-size * 0.8 !important;
+	width: $button-size * 6 !important;
+	padding: 0 12px;
+	font-size: 10px;
+	display: flex;
+	@include flex-center();
+	flex-direction: row;
+	:global(.buitar-primary-range) {
+		margin-left: 12px;
+	}
+}
+
+.guitar-range-slider {
+	width: $button-size * 6 + 24 !important;
+	margin-bottom: $button-margin * 2;
+	:global(.buitar-primary-range) {
+		width: inherit;
+	}
+}
+
+.icon-right {
+	font-size: 14px;
+	position: absolute;
+	right: $button-margin * 2;
+	opacity: 0.4;
+	transition: transform 0.15s ease-in-out;
+	&.icon-right__extend {
+		opacity: 0.8;
+		transform: rotate(90deg);
+	}
 }

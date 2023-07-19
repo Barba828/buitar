@@ -1,21 +1,21 @@
 .range-slider {
+	height: $button-size * 0.8;
 	:global(.buitar-primary-range) {
 		width: $button-size * 4;
-		height: $button-size / 2;
-		border-radius: 4px;
-
+		border-radius: 2px;
+        height: inherit;
 		&::-webkit-slider-thumb {
-			height: $button-size / 2;
+			height: $button-size * 0.8;
 			width: var(--thumb-width);
 			background: var(--thumb-color);
 			opacity: 0.4;
-			border-radius: 4px;
+			border-radius: 2px; 
 		}
 
 		&:active::-webkit-slider-thumb {
 			width: var(--thumb-width);
 			transform: scaleY(1.1);
-			height: $button-size / 2;
+			height: $button-size * 0.8;
 			opacity: 1;
 		}
 	}

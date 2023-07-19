@@ -15,14 +15,14 @@ interface GuitarBoardProps {
 	range?: [number, number]
 	/**
 	 * 选中指位 callback
-	 * @param points 
-	 * @returns 
+	 * @param points
+	 * @returns
 	 */
 	onCheckedPoints?: (points: Point[]) => void
 	/**
 	 * 键盘切换监听范围
-	 * @param part 
-	 * @returns 
+	 * @param part
+	 * @returns
 	 */
 	onChangePart?: (part: boolean) => void
 }
@@ -42,6 +42,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		player,
 		resumePlayer,
 	} = useBoardContext()
+	const boardRange = range[0] < 1 ? [1, range[1]] : range;
 
 	// 鼠标事件监听
 	const { handler } = useBoardTouch(emphasis, setEmphasis, {
@@ -65,7 +66,11 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		}
 		const points = debouceEmphasis.map((index) => boardList[Number(index)])
 
-		console.log('%c Points ','color:white; background:rgb(57, 167, 150);border-radius: 2px', points)
+		console.log(
+			'%c Points ',
+			'color:white; background:rgb(57, 167, 150);border-radius: 2px',
+			points
+		)
 		player.triggerPointRelease(points)
 		onCheckedPoints?.(points)
 	}, [debouceEmphasis])
@@ -80,7 +85,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 
 	const board = exchangeBoardArray(keyboard)
 
-	const boardView = board.slice(range[0], range[1]).map((frets, fretIndex) => {
+	const boardView = board.slice(boardRange[0], boardRange[1] + 1).map((frets, fretIndex) => {
 		const fretsView = frets
 			.reverse()
 			.map((point, stringIndex) => <BoardButton key={stringIndex} point={point} />)
@@ -93,8 +98,8 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 					!hasTag && styles['frets-hidden']
 				)}
 			>
-				{FRET_DOT[fretIndex]}
-				<span className={styles['frets-dot-text']}>{fretIndex + 1}</span>
+				{FRET_DOT[fretIndex + boardRange[0] - 1]}
+				<span className={styles['frets-dot-text']}>{fretIndex  + boardRange[0]}</span>
 			</div>
 		)
 		return (
@@ -130,7 +135,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 const BoardButton = ({
 	point,
 	itemClassName,
-}: { point: Point; itemClassName?: string; } & GuitarBoardProps) => {
+}: { point: Point; itemClassName?: string } & GuitarBoardProps) => {
 	const { boardOptions, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
 	const { hasLevel, isNote } = boardOptions
 

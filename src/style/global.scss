@@ -1,3 +1,5 @@
+@import './animation.scss';
+
 :global(.scroll-without-bar) {
 	overflow: scroll;
 	scrollbar-width: none; /* Firefox */
@@ -56,6 +58,11 @@
 
 :global(.hidden) {
 	display: none;
+}
+
+:global(.none-height) {
+	height: 0 !important;
+	overflow: hidden;
 }
 
 :global(.icon) {

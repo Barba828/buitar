@@ -70,26 +70,15 @@ export const getBoardOptionsToneType = (
  * @returns
  */
 export const getBoardOptionsList = (
-	options: Pick<GuitarBoardOptions, 'isSharpSemitone' | 'isNote'>,
-	mode: ModeType = 'major'
+	options: Pick<GuitarBoardOptions, 'isSharpSemitone' | 'isNote'>
 ) => {
 	const { isSharpSemitone, isNote } = options
 
-	const list = isSharpSemitone
+	return isSharpSemitone
 		? isNote
 			? NOTE_LIST
 			: INTERVAL_LIST
 		: isNote
 		? NOTE_FALLING_LIST
 		: INTERVAL_FALLING_LIST
-
-	if (mode === 'major') {
-		// 大调直接返回
-		return list
-	} else {
-		const tempList = [...list]
-		// 小调重新排序，9个「半音」是A
-		const startAm = tempList.splice(9)
-		return [...startAm, ...tempList]
-	}
 }

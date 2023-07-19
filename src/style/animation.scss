@@ -1,0 +1,27 @@
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+:global(.fade-in) {
+	animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes slideRightIn {
+	0% {
+        transform: translateX(30px);
+		opacity: 0;
+	}
+	100% {
+        transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+:global(.slide-right-in) {
+	animation: slideRightIn 0.3s ease-in-out;
+}

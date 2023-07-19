@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import type { RangeInputProps } from './range-input'
 import cx from 'classnames'
 
@@ -19,14 +19,21 @@ export const RangeSlider = ({
 	size = Math.floor((max - min) / 4),
 	defaultValue = 0,
 	onChange,
-	backgoundColor = '#eee4',
+	backgoundColor = 'rgb(94, 101, 105)',
 	highLightColor = '#ccc',
 	className,
 }: RangeSliderProps) => {
+	const [value, setValue] = useState(defaultValue)
+	const ref = useRef(null)
+
 	const handleChange = useCallback((e) => {
-		const value = Number(e?.target?.value || 0)
-		onChange?.([value, value + size])
-	}, [size])
+		const value = Math.round(Number(e?.target?.value || 0))
+		setValue(value)
+	}, [])
+
+	useEffect(() => {
+		onChange?.([value, Math.min(value + size - 1, max)])
+	}, [size, value])
 
 	return (
 		<div
@@ -39,12 +46,13 @@ export const RangeSlider = ({
 			}
 		>
 			<input
+				ref={ref}
 				type="range"
 				className="buitar-primary-range"
 				min={min}
 				max={max}
-				step={1}
-				defaultValue={defaultValue}
+				step={((max - min) / 100).toFixed(1)}
+				defaultValue={value}
 				style={{ background: backgoundColor }}
 				onChange={handleChange}
 			/>
