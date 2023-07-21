@@ -26,10 +26,15 @@
 		width: $button-size * 4;
 	}
 
-	.tableture-options-remove {
+	.tableture-options-button {
 		@include flex-center();
 		font-size: 20px;
 		opacity: 0.6;
+	}
+
+	.tableture-options-button__active {
+        background: $green-primary;
+		opacity: 1;
 	}
 }
 

@@ -169,28 +169,38 @@ const GuitarBoardTabletureItem = ({
 	const [range, setRange] = useState<TabletrueItemConfig['range']>(defaultRange)
 	const [mode, setMode] = useState<TabletrueItemConfig['mode']>(defaultMode)
 	const [rootPitch, setRootPitch] = useState<TabletrueItemConfig['root']>(defaultRoot) // 根音
+	const [isEdit, setIsEdit] = useState<boolean>(false) // 编辑
 	const deboucedRange = useDebounce(range, 200) // 200ms 防抖 改变range重计算指型
 	// pitch转note查看
 	const rootNote = getBoardOptionsList(boardOptions)[rootPitch]
 
+	// 编辑：改变根音
 	const handleCheckedPoint = (points: Point[]) => {
+		if (!isEdit) {
+			return
+		}
 		if (!points) {
 			return
 		}
 		setRootPitch(points[0].tone)
 	}
-
+	// 编辑：改变调式
 	const handleCheckedMode = (item: ModeType) => {
 		setMode(item)
 	}
 
+	// 保存指板option
+	const handleSaveTableture = () => {
+		setIsEdit(!isEdit)
+	}
+
 	// 显示指板设置
 	const handleCheckedOption = (option: number) => {
-		if (option === optionVisible) {
+		if (option === optionVisible || !isEdit) {
 			setOptionVisible(0)
-		} else {
-			setOptionVisible(option)
+			return
 		}
+		setOptionVisible(option)
 	}
 
 	// 监听变化，更改指型
@@ -209,6 +219,13 @@ const GuitarBoardTabletureItem = ({
 		})
 	}, [rootPitch, deboucedRange, mode])
 
+	// 非编辑模式下，不可查看 调式 & 范围 编辑
+	useEffect(() => {
+		if (!isEdit) {
+			setOptionVisible(0)
+		}
+	}, [isEdit])
+
 	const modeText = mode?.includes('major') ? 'Major' : 'Minor'
 
 	return (
@@ -221,13 +238,15 @@ const GuitarBoardTabletureItem = ({
 				>
 					{rootNote}
 					<div className={cx(styles['tableture-options-mode-tag'])}>{modeText}</div>
-					<Icon
-						name="icon-play"
-						className={cx(
-							styles['icon-right'],
-							optionVisible === 1 && styles['icon-right__extend']
-						)}
-					/>
+					{isEdit && (
+						<Icon
+							name="icon-play"
+							className={cx(
+								styles['icon-right'],
+								optionVisible === 1 && styles['icon-right__extend']
+							)}
+						/>
+					)}
 				</div>
 				{/* 吉他指板范围选择 */}
 				<div
@@ -235,17 +254,30 @@ const GuitarBoardTabletureItem = ({
 					onClick={() => handleCheckedOption(2)}
 				>
 					品数范围 {range[0]} - {range[1]}
-					<Icon
-						name="icon-play"
-						className={cx(
-							styles['icon-right'],
-							optionVisible === 2 && styles['icon-right__extend']
-						)}
-					/>
+					{isEdit && (
+						<Icon
+							name="icon-play"
+							className={cx(
+								styles['icon-right'],
+								optionVisible === 2 && styles['icon-right__extend']
+							)}
+						/>
+					)}
+				</div>
+				{/* 编辑模式 */}
+				<div
+					className={cx(
+						styles['tableture-options-button'],
+						isEdit && styles['tableture-options-button__active'],
+						'buitar-primary-button'
+					)}
+					onClick={handleSaveTableture}
+				>
+					<Icon name="icon-edit" />
 				</div>
 				{/* 删除 */}
 				<div
-					className={cx(styles['tableture-options-remove'], 'buitar-primary-button')}
+					className={cx(styles['tableture-options-button'], 'buitar-primary-button')}
 					onClick={onRemove}
 				>
 					<Icon name="icon-close" />
