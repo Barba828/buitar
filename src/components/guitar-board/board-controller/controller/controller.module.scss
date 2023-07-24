@@ -18,15 +18,10 @@ $controller-nums: 4;
 	flex-direction: row;
 	width: fit-content;
 
-	@media #{$mobileLayout} {
-		&.board-controller__wrap {
-			flex-wrap: wrap;
-		}
+	&.board-controller__wrap {
+		flex-wrap: wrap;
 	}
 
-	// > :first-child {
-	// 	@extend %controller-extend;
-	// }
 	.controller {
 		width: $controller-size;
 		height: $controller-size;

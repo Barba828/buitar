@@ -85,7 +85,7 @@ module.exports = {
 	},
 	output: {
 		path: resolve(__dirname, 'dist'),
-		publicPath: '/Buitar',
+		publicPath: '/Buitar/',
 		filename: 'static/js/[name].[chunkhash:6].js',
 		chunkFilename: 'static/js/[name].[contenthash:6].js',
 	},
@@ -108,9 +108,9 @@ module.exports = {
 			background_color: '#3f4345',
 			theme_color: '#3f4345',
 			filename: 'manifest.[hash:8].json',
-			start_url: '/Buitar',
-			id: '/Buitar',
-			publicPath: '/Buitar',
+			start_url: '/Buitar/',
+			id: '/Buitar/',
+			publicPath: '/Buitar/',
 			display: 'standalone',
 			orientation: 'portrait',
 			icons: [
@@ -151,12 +151,12 @@ module.exports = {
 				// 'apple-touch-startup-image': join('/Buitar', '/apple-splash.png'),
 			},
 		}),
-		isProduction && new GenerateSW({
+		new GenerateSW({
 			maximumFileSizeToCacheInBytes: 8388608, // 8MB
 			swDest: 'sw.js',
-			modifyURLPrefix: {
-				'/Buitar': '/Buitar/',
-			},
+			// modifyURLPrefix: {
+			// 	'/Buitar': '/Buitar/',
+			// },
 		}),
 		new HtmlWebpackPlugin({
 			template: resolve(__dirname, 'public/index.html'),
@@ -174,7 +174,7 @@ module.exports = {
 		},
 		historyApiFallback: {
 			rewrites: [
-				{ from: /^\/Buitar\/.*/, to: '/Buitar' }, // 开发环境前往Buitar主页，使用前端路由
+				{ from: /^\/Buitar\/.*/, to: '/Buitar/' }, // 开发环境前往Buitar主页，使用前端路由
 			],
 		},
 	},
