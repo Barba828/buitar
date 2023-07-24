@@ -151,10 +151,11 @@ module.exports = {
 				// 'apple-touch-startup-image': join('/Buitar', '/apple-splash.png'),
 			},
 		}),
-		new GenerateSW({
+		isProduction && new GenerateSW({
 			maximumFileSizeToCacheInBytes: 8388608, // 8MB
 			swDest: 'sw.js',
 			sourcemap: !isProduction,
+			disableDevLogs: true, 
 			runtimeCaching: [
 				{
 					// 缓存 cdn jslib（打包 external 的）
@@ -162,6 +163,20 @@ module.exports = {
 					handler: 'StaleWhileRevalidate',
 					options: {
 						cacheName: 'external-resources',
+					},
+				},
+				{
+					urlPattern: /manifest\.*\.json$/,
+					handler: 'StaleWhileRevalidate',
+					options: {
+						cacheName: 'manifest-json',
+					},
+				},
+				{
+					urlPattern: /favicon\.ico$/,
+					handler: 'StaleWhileRevalidate',
+					options: {
+						cacheName: 'favicon',
 					},
 				},
 			],
