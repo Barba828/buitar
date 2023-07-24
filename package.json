@@ -22,9 +22,6 @@
 		"file-loader": "^6.2.0",
 		"html-webpack-plugin": "^5.5.0",
 		"node-sass": "^7.0.1",
-		"postcss-loader": "^6.2.1",
-		"react": "17.0.2",
-		"react-dom": "17.0.2",
 		"sass": "^1.49.9",
 		"sass-loader": "^12.6.0",
 		"sass-resources-loader": "^2.2.4",
@@ -40,6 +37,9 @@
 		"workbox-webpack-plugin": "^7.0.0"
 	},
 	"dependencies": {
+		"postcss-loader": "^6.2.1",
+		"react": "17.0.2",
+		"react-dom": "17.0.2",
 		"react-router-dom": "^6.2.2",
 		"tone": "^14.7.77",
 		"workbox-window": "^7.0.0"

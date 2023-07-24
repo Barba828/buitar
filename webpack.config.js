@@ -154,18 +154,26 @@ module.exports = {
 		new GenerateSW({
 			maximumFileSizeToCacheInBytes: 8388608, // 8MB
 			swDest: 'sw.js',
-			// modifyURLPrefix: {
-			// 	'/Buitar': '/Buitar/',
-			// },
+			sourcemap: !isProduction,
+			runtimeCaching: [
+				{
+					// 缓存 cdn jslib（打包 external 的）
+					urlPattern: /^https:\/\/unpkg\.com/,
+					handler: 'StaleWhileRevalidate',
+					options: {
+						cacheName: 'external-resources',
+					},
+				},
+			],
 		}),
 		new HtmlWebpackPlugin({
 			template: resolve(__dirname, 'public/index.html'),
 		}),
 	],
-	externals: {
-		react: 'React',
-		'react-dom': 'ReactDOM',
-	},
+	// externals: {
+	// 	react: 'React',
+	// 	'react-dom': 'ReactDOM',
+	// },
 	devServer: {
 		port: 8282, // 服务器端口号
 		proxy: {}, //
