@@ -9,10 +9,8 @@ import { TabSwitch, RangeSlider, usePagesIntro, Icon } from '@/components'
 import type { RangeSliderProps } from '@/components'
 import {
 	ModeType,
-	NOTE_LIST,
 	Pitch,
 	Point,
-	Tone,
 	getModeFregTaps,
 	getModeRangeTaps,
 } from '@to-guitar'
@@ -33,7 +31,7 @@ const TABLETRUE_CONFIG: TabletrueItemConfig = {
 export const GuitarTableture: FC = () => {
 	const intro = usePagesIntro()
 	const [tabIndex, setTabIndex] = useState(1)
-	const tabList = ['查询根音', '固定区域']
+	const tabList = ['指板分析', '固定区域指型']
 
 	return (
 		<BoardProvider>
@@ -109,16 +107,35 @@ const GuitarBoardTabletureList = () => {
 	const [tabletrues, dispatchTabletrues] = useStore<TabletrueItemConfig[]>(TABLETURES_KEY, [
 		TABLETRUE_CONFIG,
 	])
+	const [isEdit, setIsEdit] = useState<boolean>(false) // 编辑
+
+	// 保存指板option
+	const handleSaveTableture = () => {
+		setIsEdit(!isEdit)
+	}
 
 	return (
 		<>
-			<div className={cx(styles['tableture-list'])}>
+			{/* 编辑模式 */}
+			<div
+				className={cx(
+					styles['tableture-list-button'],
+					isEdit && 'touch-yellow',
+					'buitar-primary-button'
+				)}
+				onClick={handleSaveTableture}
+			>
+				<Icon name={isEdit ? 'icon-confirm' : 'icon-edit'} />
+			</div>
+			{/* 指板列表 */}
+			<div className={cx(styles['tableture-list'], isEdit && styles['tableture-list__edit'])}>
 				{tabletrues.map((config, index) => (
 					<BoardProvider>
 						<GuitarBoardTabletureItem
 							range={config.range}
 							mode={config.mode}
 							root={config.root}
+							isEdit={isEdit}
 							onRemove={() => {
 								tabletrues.splice(index, 1)
 								dispatchTabletrues({ type: 'set', payload: tabletrues })
@@ -131,8 +148,9 @@ const GuitarBoardTabletureList = () => {
 					</BoardProvider>
 				))}
 			</div>
+			{/* 新增指板 */}
 			<div
-				className={cx(styles['tableture-list-add'], 'buitar-primary-button')}
+				className={cx(styles['tableture-list-button'], 'buitar-primary-button')}
 				onClick={() => {
 					dispatchTabletrues({ type: 'set', payload: [...tabletrues, TABLETRUE_CONFIG] })
 				}}
@@ -152,6 +170,7 @@ type TabletrueItemConfig = {
 type TabletrueItemProps = TabletrueItemConfig & {
 	onChange?(data: TabletrueItemConfig): void
 	onRemove?(): void
+	isEdit?: boolean
 }
 
 /**
@@ -161,6 +180,7 @@ const GuitarBoardTabletureItem = ({
 	range: defaultRange = [0, 3],
 	mode: defaultMode = 'minor-pentatonic',
 	root: defaultRoot = 0,
+	isEdit = false,
 	onChange,
 	onRemove,
 }: Partial<TabletrueItemProps>) => {
@@ -169,7 +189,6 @@ const GuitarBoardTabletureItem = ({
 	const [range, setRange] = useState<TabletrueItemConfig['range']>(defaultRange)
 	const [mode, setMode] = useState<TabletrueItemConfig['mode']>(defaultMode)
 	const [rootPitch, setRootPitch] = useState<TabletrueItemConfig['root']>(defaultRoot) // 根音
-	const [isEdit, setIsEdit] = useState<boolean>(false) // 编辑
 	const deboucedRange = useDebounce(range, 200) // 200ms 防抖 改变range重计算指型
 	// pitch转note查看
 	const rootNote = getBoardOptionsList(boardOptions)[rootPitch]
@@ -187,11 +206,6 @@ const GuitarBoardTabletureItem = ({
 	// 编辑：改变调式
 	const handleCheckedMode = (item: ModeType) => {
 		setMode(item)
-	}
-
-	// 保存指板option
-	const handleSaveTableture = () => {
-		setIsEdit(!isEdit)
 	}
 
 	// 显示指板设置
@@ -229,11 +243,15 @@ const GuitarBoardTabletureItem = ({
 	const modeText = mode?.includes('major') ? 'Major' : 'Minor'
 
 	return (
-		<div>
+		<div className={styles['tableture-list-item']}>
 			<div className={cx(styles['tableture-list-options'])}>
 				{/* 调式选择 */}
 				<div
-					className={cx(styles['tableture-options-mode'], 'buitar-primary-button')}
+					className={cx(
+						styles['tableture-options-mode'],
+						isEdit && 'touch-yellow',
+						'buitar-primary-button'
+					)}
 					onClick={() => handleCheckedOption(1)}
 				>
 					{rootNote}
@@ -250,7 +268,11 @@ const GuitarBoardTabletureItem = ({
 				</div>
 				{/* 吉他指板范围选择 */}
 				<div
-					className={cx(styles['tableture-options-range'], 'buitar-primary-button')}
+					className={cx(
+						styles['tableture-options-range'],
+						isEdit && 'touch-yellow',
+						'buitar-primary-button'
+					)}
 					onClick={() => handleCheckedOption(2)}
 				>
 					品数范围 {range[0]} - {range[1]}
@@ -264,24 +286,19 @@ const GuitarBoardTabletureItem = ({
 						/>
 					)}
 				</div>
-				{/* 编辑模式 */}
-				<div
-					className={cx(
-						styles['tableture-options-button'],
-						isEdit && styles['tableture-options-button__active'],
-						'buitar-primary-button'
-					)}
-					onClick={handleSaveTableture}
-				>
-					<Icon name="icon-edit" />
-				</div>
 				{/* 删除 */}
-				<div
-					className={cx(styles['tableture-options-button'], 'buitar-primary-button')}
-					onClick={onRemove}
-				>
-					<Icon name="icon-close" />
-				</div>
+				{isEdit && (
+					<div
+						className={cx(
+							styles['tableture-options-button'],
+							'touch-purple',
+							'buitar-primary-button'
+						)}
+						onClick={onRemove}
+					>
+						<Icon name="icon-delete" />
+					</div>
+				)}
 			</div>
 
 			{optionVisible === 1 && (

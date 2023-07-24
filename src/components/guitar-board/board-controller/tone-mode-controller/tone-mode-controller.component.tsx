@@ -22,7 +22,7 @@ export const ToneModeController = ({
 	const handleClick = useCallback((item: ModeConfigType) => {
 		onClick?.(item.key)
 	}, [])
-	
+
 	const renderInstrumentItem = (item: ModeConfigType) => {
 		return (
 			<div className={styles['chord-item']}>
