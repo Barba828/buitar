@@ -23,9 +23,9 @@ And the instruments used in it refer to [tonejs-instruments](https://github.com/
 - piano
 
 And preview screenshots
-![screen](./assets/screen1.png)
-![screen](./assets/screen2.png)
-![screen](./assets/screen3.png)
+![screen](./docs/assets/screen1.png)
+![screen](./docs/assets/screen2.png)
+![screen](./docs/assets/screen3.png)
 
 ## About
 

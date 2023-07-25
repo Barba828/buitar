@@ -1,0 +1,43 @@
+{
+	"name": "@buitar/to-guitar",
+	"version": "0.0.13",
+	"description": "guitar chord js lib",
+	"main": "dist/index.esm.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"test": "jest",
+		"patch": "yarn version --patch",
+		"dev": "rollup -c --watch",
+		"build": "rollup -c",
+		"publish:patch": "yarn build && yarn patch && npm publish"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Barba828/to-guitar.git"
+	},
+	"keywords": [
+		"guitar",
+		"chord",
+		"music",
+		"tone"
+	],
+	"author": "liningzhu2012@gmail.com",
+	"license": "MIT",
+	"files": [
+		"dist"
+	],
+	"bugs": {
+		"url": "https://github.com/Barba828/to-guitar/issues"
+	},
+	"homepage": "https://github.com/Barba828/to-guitar#readme",
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^21.0.2",
+		"@rollup/plugin-typescript": "^8.3.1",
+		"@types/jest": "^27.4.1",
+		"jest": "^27.5.1",
+		"rollup": "^2.70.0",
+		"rollup-plugin-dts": "^4.2.0",
+		"rollup-plugin-node-resolve": "^5.2.0",
+		"ts-jest": "^27.1.3"
+	}
+}

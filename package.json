@@ -4,44 +4,26 @@
 	"description": "Learning Guitar Web App",
 	"main": "index.js",
 	"scripts": {
-		"dev": "NODE_ENV=development webpack-dev-server --config ./webpack.config.js",
-		"build": "rm -rf ./dist && NODE_ENV=production webpack --config ./webpack.config.js",
-		"build:dev": "rm -rf ./dist && webpack --config ./webpack.config.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"dev": "pnpm -r run dev",
+		"build": "pnpm -r run build"
 	},
-	"author": "",
-	"license": "ISC",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Barba828/Buitar.git"
+	},
+	"license": "MIT",
 	"devDependencies": {
-		"@types/node-sass": "^4.11.2",
-		"@types/react": "17.0.2",
-		"@types/react-dom": "17.0.2",
-		"@types/webpack-env": "^1.16.3",
-		"classnames": "^2.3.1",
-		"copy-webpack-plugin": "^11.0.0",
-		"css-loader": "^6.7.1",
-		"file-loader": "^6.2.0",
-		"html-webpack-plugin": "^5.5.0",
-		"node-sass": "^7.0.1",
-		"sass": "^1.49.9",
-		"sass-loader": "^12.6.0",
-		"sass-resources-loader": "^2.2.4",
-		"style-loader": "^3.3.1",
+		"@types/node": "^20.4.4",
 		"ts-loader": "^9.2.8",
 		"tsc": "^2.0.4",
-		"typescript": "^4.6.2",
-		"url-loader": "^4.1.1",
-		"webpack": "^5.70.0",
-		"webpack-cli": "^4.9.2",
-		"webpack-dev-server": "^4.7.4",
-		"webpack-pwa-manifest": "^4.3.0",
-		"workbox-webpack-plugin": "^7.0.0"
+		"tslib": "^2.3.1",
+		"typescript": "^4.6.2"
 	},
 	"dependencies": {
 		"postcss-loader": "^6.2.1",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
 		"react-router-dom": "^6.2.2",
-		"tone": "^14.7.77",
-		"workbox-window": "^7.0.0"
+		"tone": "^14.7.77"
 	}
 }

@@ -1,0 +1,16 @@
+{
+	"interval": "音程",
+	"note": "音名",
+	"scale": "音阶",
+	"semitones": "半音",
+	"triad": "三和弦",
+	"chord": "和弦",
+	"pitch": "音高（绝对）",
+	"tone": "音高",
+	"flat": "降",
+	"sharp": "升",
+	"B flat minor": "降B小调",
+	"string": "弦",
+	"fret": "品",
+	"grade": "品位"
+}
