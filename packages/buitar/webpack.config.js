@@ -79,8 +79,8 @@ module.exports = {
 		extensions: ['.tsx', '.ts', '.js', 'json', 'sass'],
 		alias: {
 			'@': resolve(__dirname, 'src/'),
-			'~': resolve(__dirname, 'static/'),
-			'@to-guitar': resolve(__dirname, 'to-guitar/src/index.ts'),
+			'@to-guitar': resolve(__dirname, '../to-guitar/src/index.ts'),
+			'@samples': resolve(__dirname, '../samples/'),
 		},
 	},
 	output: {
@@ -115,12 +115,12 @@ module.exports = {
 			orientation: 'portrait',
 			icons: [
 				{
-					src: resolve(__dirname, 'static/logo.png'),
+					src: resolve(__dirname, 'public/logo.png'),
 					destination: join('static', 'img', 'icons'),
 					sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
 				},
 				{
-					src: resolve(__dirname, 'static/logo.png'),
+					src: resolve(__dirname, 'public/logo.png'),
 					destination: join('static', 'img', 'icons', 'maskable'),
 					sizes: [96, 128, 192, 256, 384, 512],
 					purpose: 'maskable',

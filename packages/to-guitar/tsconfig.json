@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"module": "esnext",
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"sourceMap": true,
+		"outDir": "./dist",
+		"rootDir": "./src",
+
+		/* Strict Type-Checking Options */
+		"strict": true,
+		/* Additional Checks */
+
+		/* Module Resolution Options */
+		"moduleResolution": "node",
+		"baseUrl": "./",
+		"paths": {
+			// "@/*": ["./src/*"]
+		},
+		"esModuleInterop": true,
+
+		/* Advanced Options */
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true
+	}
+}

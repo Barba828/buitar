@@ -4,7 +4,8 @@ import type { PolySynth } from 'tone'
 import type { Instrument } from './instrument.type'
 import type { Point } from '@to-guitar'
 
-require('~/samples/index')
+import '@samples/index'
+
 window.Tone = Tone
 /**
  * time
