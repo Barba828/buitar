@@ -5,6 +5,9 @@
   "types": "dist/index.d.ts",
   "author": "liningzhu2012@gmail.com",
   "license": "MIT",
+  "files": [
+		"dist"
+	],
   "scripts": {
     "dev": "rollup -c --watch",
     "build": "rm -rf ./dist && rollup -c"

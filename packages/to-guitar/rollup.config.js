@@ -17,7 +17,7 @@ export default [
 		input: './src/index.ts',
 		output: [
 			{
-				file: './lib/index.esm.js',
+				file: './dist/index.esm.js',
 				format: 'esm',
 				footer,
 				sourcemap: true,
@@ -27,7 +27,7 @@ export default [
 	},
 	{
 		input: ['./src/index.ts'],
-		output: [{ file: 'lib/index.d.ts', format: 'esm' }],
+		output: [{ file: 'dist/index.d.ts', format: 'esm' }],
 		plugins: [dts()],
 	},
 ]

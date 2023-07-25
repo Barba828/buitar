@@ -2,8 +2,8 @@
 	"name": "@buitar/to-guitar",
 	"version": "0.0.13",
 	"description": "guitar chord js lib",
-	"main": "lib/index.esm.js",
-	"types": "lib/index.d.ts",
+	"main": "dist/index.esm.js",
+	"types": "dist/index.d.ts",
 	"scripts": {
 		"test": "jest",
 		"patch": "yarn version --patch",
@@ -24,7 +24,7 @@
 	"author": "liningzhu2012@gmail.com",
 	"license": "MIT",
 	"files": [
-		"lib"
+		"dist"
 	],
 	"bugs": {
 		"url": "https://github.com/Barba828/to-guitar/issues"

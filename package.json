@@ -4,8 +4,8 @@
 	"description": "Learning Guitar Web App",
 	"main": "index.js",
 	"scripts": {
-		"dev": "NODE_ENV=development webpack-dev-server --config packages/buitar/webpack.config.js",
-		"build": "rm -rf ./dist && NODE_ENV=production webpack --config packages/buitar/webpack.config.js"
+		"dev": "pnpm -r run dev",
+		"build": "pnpm -r run build"
 	},
 	"repository": {
 		"type": "git",

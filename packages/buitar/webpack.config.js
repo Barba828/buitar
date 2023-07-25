@@ -105,7 +105,7 @@ module.exports = {
 					from: resolve(__dirname, '../tone-player/samples'),
 					to: 'static/samples',
 					globOptions: {
-						ignore: ['index.*', ],
+						ignore: ['index.*', '**/*.ogg', '**/*.wav'],
 					},
 				},
 			],
