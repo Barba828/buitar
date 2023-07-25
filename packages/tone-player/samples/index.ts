@@ -1,3 +1,4 @@
-const context = require.context('./', true, /\.(mp3)$/)
+// const samples = require.context('./', true, /\.(mp3)$/)
+// import * as samples from './**/*.mp3';
 
-export const samplesKeys = context.keys()
+// export const samplesKeys = samples.keys()

@@ -9,7 +9,7 @@ import commonjs from '@rollup/plugin-commonjs'
 // 一段自定义的内容，以下内容会添加到打包结果中
 const footer = `
 if(typeof window !== 'undefined') {
-  window._Dry_VERSION_ = '${pkg.version}'
+  window._Buitar_ToGuitar_VERSION = '${pkg.version}'
 }`
 
 export default [

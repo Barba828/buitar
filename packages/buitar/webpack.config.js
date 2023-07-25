@@ -101,6 +101,13 @@ module.exports = {
 						ignore: ['**/.DS_Store', resolve(__dirname, 'public/index.html')],
 					},
 				},
+				{
+					from: resolve(__dirname, '../tone-player/samples'),
+					to: 'static/samples',
+					globOptions: {
+						ignore: ['index.*', ],
+					},
+				},
 			],
 		}),
 		new WebpackPwaManifest({

@@ -18,10 +18,11 @@ import './samples/index'
 export class TonePlayer extends Tone.Sampler {
 	private sampler: Tone.Sampler | PolySynth = new Tone.PolySynth(Tone.Synth).toDestination()
 	private instrument: Instrument = 'default'
+	static baseUrl: String = '/'
 
-	constructor(instrument: Instrument = 'default') {
+	constructor(instrument: Instrument = 'default', baseUrl?: string) {
 		super()
-		this.dispatchInstrument(instrument)
+		this.dispatchInstrument(instrument, baseUrl)
 	}
 
 	public get Tone(): any {
@@ -30,21 +31,25 @@ export class TonePlayer extends Tone.Sampler {
 
 	/**
 	 * 设置乐器，会请求乐器音频文件
-	 * @param instrument
+	 * @param instrument 乐器
+	 * @param baseUrl 音频文件base地址
 	 * @returns
 	 */
-	public dispatchInstrument(instrument: Instrument) {
+	public dispatchInstrument(instrument: Instrument, baseUrl?: string) {
+		if (instrument === this.instrument) {
+			return Promise.resolve()
+		}
 		this.instrument = instrument
+		TonePlayer.setBaseUrl(baseUrl) // 更新静态baseUrl
 		// 默认使用 复音合成器 播放
 		if (instrument === 'default') {
 			this.sampler = new Tone.PolySynth(Tone.Synth).toDestination()
-			return Promise.resolve(true)
+			return Promise.resolve()
 		}
 		// 选择乐器使用 取样器 播放
 		this.sampler = new Tone.Sampler({
 			urls: instrumentConfig[instrument],
-			baseUrl: `/Buitar/_/tone-player/samples/${instrument}/`,
-			// baseUrl: `/Buitar/static/samples/${instrument}/`,
+			baseUrl: `${TonePlayer.baseUrl}${instrument}/`,
 		}).toDestination()
 		this.sampler.context.resume()
 		return Tone.loaded()
@@ -55,6 +60,14 @@ export class TonePlayer extends Tone.Sampler {
 			return true
 		}
 		return (this.sampler as Tone.Sampler).loaded
+	}
+
+	static setBaseUrl(baseUrl?: string) {
+		if (!baseUrl || typeof baseUrl !== 'string') {
+			return
+		}
+		TonePlayer.baseUrl = baseUrl
+		return TonePlayer.baseUrl
 	}
 
 	public getInstrument() {
