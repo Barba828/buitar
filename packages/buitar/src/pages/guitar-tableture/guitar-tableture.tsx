@@ -13,7 +13,7 @@ import {
 	Point,
 	getModeFregTaps,
 	getModeRangeTaps,
-} from '@to-guitar'
+} from '@buitar/to-guitar'
 import { ToneModeController } from '@/components/guitar-board/board-controller/tone-mode-controller/tone-mode-controller.component'
 import cx from 'classnames'
 

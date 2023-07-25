@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
-import { Instrument } from '@/utils/tone-player/instrument.type'
+import { Instrument } from '@buitar/tone-player/instrument.type'
 import { GuitarBoardOptions } from '../board-controller/controller.type'
-import { Board, BoardOption, Point, Tone, transChordTaps } from '@to-guitar'
-import { TonePlayer } from '@/utils'
+import { Board, BoardOption, Point, Tone, transChordTaps } from '@buitar/to-guitar'
+import { TonePlayer } from '@buitar/tone-player'
 import { useStore } from '@/utils/hooks/use-store'
 import { OPTIONS_KEY, INSTRUMENT_KEY } from '../board-controller'
 import { COLLECTIONS_KEY, CollectionType } from '@/pages/collections'
@@ -54,6 +54,7 @@ const defaultCollection = [
  * 吉他播放器
  */
 const player = new TonePlayer(defaultInstrument)
+window.tonePlayer = player
 
 type BoardContextType = {
 	/**

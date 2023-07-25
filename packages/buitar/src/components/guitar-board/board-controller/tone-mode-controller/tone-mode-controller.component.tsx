@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { ControllerList } from '@/components/guitar-board/board-controller'
 import { modeConfigs, ModeConfigType } from './tone-mode.config'
-import { ModeType } from '@to-guitar'
+import { ModeType } from '@buitar/to-guitar'
 import cx from 'classnames'
 
 import componentStyles from './tone-mode-controller.module.scss'

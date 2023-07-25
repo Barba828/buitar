@@ -1,5 +1,5 @@
 {
-	"name": "to-guitar",
+	"name": "@buitar/to-guitar",
 	"version": "0.0.13",
 	"description": "guitar chord js lib",
 	"main": "lib/index.esm.js",
@@ -9,7 +9,6 @@
 		"patch": "yarn version --patch",
 		"dev": "rollup -c --watch",
 		"build": "rollup -c",
-		"build:types": "tsc",
 		"publish:patch": "yarn build && yarn patch && npm publish"
 	},
 	"repository": {
@@ -22,8 +21,8 @@
 		"music",
 		"tone"
 	],
-	"author": "Barba828",
-	"license": "ISC",
+	"author": "liningzhu2012@gmail.com",
+	"license": "MIT",
 	"files": [
 		"lib",
 		"src/types"

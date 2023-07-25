@@ -2,6 +2,7 @@ const { resolve, join } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
+const { DefinePlugin } = require('webpack')
 const { GenerateSW } = require('workbox-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -79,8 +80,6 @@ module.exports = {
 		extensions: ['.tsx', '.ts', '.js', 'json', 'sass'],
 		alias: {
 			'@': resolve(__dirname, 'src/'),
-			'@to-guitar': resolve(__dirname, '../to-guitar/src/index.ts'),
-			'@samples': resolve(__dirname, '../samples/'),
 		},
 	},
 	output: {
@@ -90,6 +89,9 @@ module.exports = {
 		chunkFilename: 'static/js/[name].[contenthash:6].js',
 	},
 	plugins: [
+		new DefinePlugin({
+			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+		}),
 		new CopyWebpackPlugin({
 			patterns: [
 				{
@@ -151,36 +153,37 @@ module.exports = {
 				// 'apple-touch-startup-image': join('/Buitar', '/apple-splash.png'),
 			},
 		}),
-		isProduction && new GenerateSW({
-			maximumFileSizeToCacheInBytes: 8388608, // 8MB
-			swDest: 'sw.js',
-			sourcemap: !isProduction,
-			disableDevLogs: true, 
-			runtimeCaching: [
-				{
-					// 缓存 cdn jslib（打包 external 的）
-					urlPattern: /^https:\/\/unpkg\.com/,
-					handler: 'StaleWhileRevalidate',
-					options: {
-						cacheName: 'external-resources',
+		isProduction &&
+			new GenerateSW({
+				maximumFileSizeToCacheInBytes: 8388608, // 8MB
+				swDest: 'sw.js',
+				sourcemap: !isProduction,
+				disableDevLogs: true,
+				runtimeCaching: [
+					{
+						// 缓存 cdn jslib（打包 external 的）
+						urlPattern: /^https:\/\/unpkg\.com/,
+						handler: 'StaleWhileRevalidate',
+						options: {
+							cacheName: 'external-resources',
+						},
 					},
-				},
-				{
-					urlPattern: /manifest\.*\.json$/,
-					handler: 'StaleWhileRevalidate',
-					options: {
-						cacheName: 'manifest-json',
+					{
+						urlPattern: /manifest\.*\.json$/,
+						handler: 'StaleWhileRevalidate',
+						options: {
+							cacheName: 'manifest-json',
+						},
 					},
-				},
-				{
-					urlPattern: /favicon\.ico$/,
-					handler: 'StaleWhileRevalidate',
-					options: {
-						cacheName: 'favicon',
+					{
+						urlPattern: /favicon\.ico$/,
+						handler: 'StaleWhileRevalidate',
+						options: {
+							cacheName: 'favicon',
+						},
 					},
-				},
-			],
-		}),
+				],
+			}),
 		new HtmlWebpackPlugin({
 			template: resolve(__dirname, 'public/index.html'),
 		}),

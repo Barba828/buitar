@@ -6,7 +6,7 @@ import {
 	NOTE_LIST,
 	ToneSchema,
 	ToneTypeName,
-} from '@to-guitar'
+} from '@buitar/to-guitar'
 import { GuitarBoardOptions } from './board-controller/controller.type'
 
 /**

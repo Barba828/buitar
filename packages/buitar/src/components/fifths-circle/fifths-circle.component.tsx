@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { ModeType, Tone, ToneSchema, transFifthsCircle } from '@to-guitar'
+import { ModeType, Tone, ToneSchema, transFifthsCircle } from '@buitar/to-guitar'
 import { getBoardOptionsToneType } from '../guitar-board/utils'
 import { useBoardContext } from '../index'
 import classnames from 'classnames'

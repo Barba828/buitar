@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { FifthsCircle } from '@/components/fifths-circle'
-import { ToneSchema, ModeType } from '@to-guitar'
+import { ToneSchema, ModeType } from '@buitar/to-guitar'
 import cx from 'classnames'
 import { useBoardContext } from '@/components'
 

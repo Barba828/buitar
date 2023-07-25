@@ -5,13 +5,13 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "NODE_ENV=development webpack-dev-server --config packages/buitar/webpack.config.js",
-		"build": "rm -rf ./dist && NODE_ENV=production webpack --config ./webpack.config.js"
+		"build": "rm -rf ./dist && NODE_ENV=production webpack --config packages/buitar/webpack.config.js"
 	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Barba828/Buitar.git"
 	},
-	"license": "ISC",
+	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^20.4.4",
 		"ts-loader": "^9.2.8",

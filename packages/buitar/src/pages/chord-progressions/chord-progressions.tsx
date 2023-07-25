@@ -8,7 +8,7 @@ import {
 	ChordCard,
 	ChordControllerInner,
 } from '@/components/guitar-board'
-import { Point, transChordTaps, DEGREE_TAG_LIST } from '@to-guitar'
+import { Point, transChordTaps, DEGREE_TAG_LIST } from '@buitar/to-guitar'
 import { PlayerProvider, usePlayerContext } from '@/components/guitar-player'
 import { SoundBoard } from '@/components/sound-board'
 import { usePagesIntro } from '@/components'

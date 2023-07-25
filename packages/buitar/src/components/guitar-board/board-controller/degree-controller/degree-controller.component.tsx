@@ -11,7 +11,7 @@ import {
 	useBoardContext,
 	usePlayerContext,
 } from '@/components'
-import { transChord, transChordTaps, DEGREE_TAG_LIST } from '@to-guitar'
+import { transChord, transChordTaps, DEGREE_TAG_LIST } from '@buitar/to-guitar'
 import cx from 'classnames'
 
 import styles from './degree-controller.module.scss'

@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react'
 import { ControllerList } from '../controller'
-import { Chord, chordDegreeMap, ChordDegreeNum, transChord, getDegreeTag } from '@to-guitar'
+import { Chord, chordDegreeMap, ChordDegreeNum, transChord, getDegreeTag } from '@buitar/to-guitar'
 import { ControllerProps } from '../option-controller'
 import { useBoardContext, ChordTapsController } from '@/components/guitar-board'
 import { FifthCircleController } from '../fifth-circle-controller'

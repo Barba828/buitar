@@ -1,0 +1,15 @@
+{
+  "name": "@buitar/tone-player",
+  "version": "0.0.1",
+  "main": "index.ts",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "author": "liningzhu2012@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup index.ts --sourcemap --dts --format esm,cjs"
+  },
+  "dependencies": {
+    "@buitar/to-guitar": "workspace:*"
+  }
+}

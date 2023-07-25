@@ -2,11 +2,10 @@ import * as Tone from 'tone'
 import { instrumentConfig } from './tone.config'
 import type { PolySynth } from 'tone'
 import type { Instrument } from './instrument.type'
-import type { Point } from '@to-guitar'
+import type { Point } from '@buitar/to-guitar'
 
-import '@samples/index'
+import './samples/index'
 
-window.Tone = Tone
 /**
  * time
  * 1m: 一个小节
@@ -16,7 +15,6 @@ window.Tone = Tone
  * Tone.Transport.bpm = 120 节拍
  * Tone.Transport.timeSignature = 3 拍数（3/4拍）
  */
-
 export class TonePlayer extends Tone.Sampler {
 	private sampler: Tone.Sampler | PolySynth = new Tone.PolySynth(Tone.Synth).toDestination()
 	private instrument: Instrument = 'default'
@@ -24,6 +22,10 @@ export class TonePlayer extends Tone.Sampler {
 	constructor(instrument: Instrument = 'default') {
 		super()
 		this.dispatchInstrument(instrument)
+	}
+
+	public get Tone(): any {
+		return Tone
 	}
 
 	/**
@@ -41,7 +43,8 @@ export class TonePlayer extends Tone.Sampler {
 		// 选择乐器使用 取样器 播放
 		this.sampler = new Tone.Sampler({
 			urls: instrumentConfig[instrument],
-			baseUrl: `/Buitar/static/samples/${instrument}/`,
+			baseUrl: `/Buitar/_/tone-player/samples/${instrument}/`,
+			// baseUrl: `/Buitar/static/samples/${instrument}/`,
 		}).toDestination()
 		this.sampler.context.resume()
 		return Tone.loaded()

@@ -9,8 +9,8 @@
 		"build:dev": "rm -rf ./dist && webpack --config ./webpack.config.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"author": "",
-	"license": "ISC",
+	"author": "liningzhu2012@gmail.com",
+	"license": "MIT",
 	"devDependencies": {
 		"@types/node-sass": "^4.11.2",
 		"@types/react": "17.0.2",
@@ -34,6 +34,8 @@
 		"workbox-webpack-plugin": "^7.0.0"
 	},
 	"dependencies": {
+		"@buitar/to-guitar": "workspace:*",
+		"@buitar/tone-player": "workspace:*",
 		"workbox-window": "^7.0.0"
 	}
 }

@@ -1,4 +1,4 @@
-import { Instrument } from '@/utils/tone-player/instrument.type'
+import { Instrument } from '@buitar/tone-player/instrument.type'
 import { GuitarBoardOptionsKey } from '../controller.type'
 
 export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {

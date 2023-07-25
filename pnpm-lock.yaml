@@ -27,6 +27,8 @@ importers:
 
   packages/buitar:
     specifiers:
+      '@buitar/to-guitar': workspace:*
+      '@buitar/tone-player': workspace:*
       '@types/node-sass': ^4.11.2
       '@types/react': 17.0.2
       '@types/react-dom': 17.0.2
@@ -49,6 +51,8 @@ importers:
       workbox-webpack-plugin: ^7.0.0
       workbox-window: ^7.0.0
     dependencies:
+      '@buitar/to-guitar': link:../to-guitar
+      '@buitar/tone-player': link:../tone-player
       workbox-window: 7.0.0
     devDependencies:
       '@types/node-sass': 4.11.3
@@ -97,6 +101,12 @@ importers:
       tsc: 2.0.4
       tslib: 2.6.0
       typescript: 4.9.5
+
+  packages/tone-player:
+    specifiers:
+      '@buitar/to-guitar': workspace:*
+    dependencies:
+      '@buitar/to-guitar': link:../to-guitar
 
 packages:
 

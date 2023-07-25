@@ -1,4 +1,4 @@
-/*! *****************************************************************************
+/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -34,9 +34,11 @@ function __spreadArray(to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 }
 
-/**
- * 乐理知识配置
- */
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};
+
 /**
  * 音高Interval数组
  */
@@ -47,11 +49,23 @@ var INTERVAL_FALLING_LIST = ['1', '2b', '2', '3b', '3', '4', '5b', '5', '6b', '6
 var DEFAULT_TUNE = ['E', 'A', 'D', 'G', 'B', 'E'];
 var DEFAULT_LEVEL = 2;
 var NOTE_SORT = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C'];
-/**
- * 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian'
- * https://learningmusic.ableton.com/zh-Hans/advanced-topics/modes.html
- */
-var MODE_LIST = ['major', 'minor'];
+var MODE_LIST = [
+    // 标准七度
+    'major',
+    'minor',
+    // 中古调式
+    'dorian',
+    'phrygian',
+    'lydian',
+    'mixolydian',
+    'locrian',
+    // 五度
+    'major-pentatonic',
+    'minor-pentatonic',
+    // 布鲁斯
+    'major-blues',
+    'minor-blues',
+];
 var DEGREE_TAG_MAP = {
     1: 'Ⅰ',
     2: 'Ⅱ',
@@ -61,11 +75,12 @@ var DEGREE_TAG_MAP = {
     6: 'Ⅵ',
     7: 'Ⅶ',
 };
+var DEGREE_TAG_LIST = ['Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ', 'Ⅶ'];
 // export const SEMITONES_LENGTH = NOTE_LIST.length
 /**
- * 品柱数量
+ * 品柱数量，即从 0 ～ 16品
  */
-var GRADE_NUMS = 16;
+var GRADE_NUMS = 17;
 /**
  * 弦数量
  */
@@ -174,6 +189,66 @@ var degreeMap = new Map([
             { interval: 10, degreeNum: 7, scale: 'SubTonic', roll: 'Te' }, // 下主 和声小调/旋律小调 interval = 11, roll = 'Ti' 即为 导音
         ],
     ],
+    [
+        /**
+         * 大调五度音阶音程关系
+         * 音：1 2 3 5 6 | CDEGA
+         * 宫商角徴羽（宫调式 ）
+         */
+        'major-pentatonic',
+        [
+            { interval: 0, degreeNum: 1, scale: 'Tonic', roll: 'Do' },
+            { interval: 2, degreeNum: 2, scale: 'Supertonic', roll: 'Re' },
+            { interval: 4, degreeNum: 3, scale: 'Mediant', roll: 'Mi' },
+            { interval: 7, degreeNum: 5, scale: 'Dominant', roll: 'So' },
+            { interval: 9, degreeNum: 6, scale: 'Submediant', roll: 'La' },
+        ],
+    ],
+    [
+        /**
+         * 小调五度音阶音程关系
+         * 音：1 b3 4 5 b7 | ACDEG
+         * 羽宫商角徴（羽调式）
+         */
+        'minor-pentatonic',
+        [
+            { interval: 0, degreeNum: 1, scale: 'Tonic', roll: 'Do' },
+            { interval: 3, degreeNum: 3, scale: 'Mediant', roll: 'Mi' },
+            { interval: 5, degreeNum: 4, scale: 'Subdominant', roll: 'Fa' },
+            { interval: 7, degreeNum: 5, scale: 'Dominant', roll: 'So' },
+            { interval: 10, degreeNum: 7, scale: 'SubTonic', roll: 'Te' },
+        ],
+    ],
+    [
+        /**
+         * 大调布鲁斯
+         * 大调五声音阶中加入了降III级的音
+         */
+        'major-blues',
+        [
+            { interval: 0, degreeNum: 1, scale: 'Tonic', roll: 'Do' },
+            { interval: 2, degreeNum: 2, scale: 'Supertonic', roll: 'Re' },
+            { interval: 3, degreeNum: 3, scale: 'Mediant', roll: 'Mi' },
+            { interval: 4, degreeNum: 3, scale: 'Mediant', roll: 'Mi' },
+            { interval: 7, degreeNum: 5, scale: 'Dominant', roll: 'So' },
+            { interval: 9, degreeNum: 6, scale: 'Submediant', roll: 'La' },
+        ],
+    ],
+    [
+        /**
+         * 小调布鲁斯
+         * 小调五声音阶添加了一个升IV级音
+         */
+        'minor-blues',
+        [
+            { interval: 0, degreeNum: 1, scale: 'Tonic', roll: 'Do' },
+            { interval: 3, degreeNum: 3, scale: 'Mediant', roll: 'Mi' },
+            { interval: 5, degreeNum: 4, scale: 'Subdominant', roll: 'Fa' },
+            { interval: 6, degreeNum: 4, scale: 'Subdominant', roll: 'Fa' },
+            { interval: 7, degreeNum: 5, scale: 'Dominant', roll: 'So' },
+            { interval: 10, degreeNum: 7, scale: 'SubTonic', roll: 'Te' },
+        ],
+    ],
     // @todo [...]
 ]);
 /**
@@ -244,6 +319,18 @@ function transTone(note) {
         index: index,
     };
 }
+/**
+ * Tone音字符 => 相对音高 （0～11）
+ * @param x
+ * @returns Pitch
+ */
+function transToneNum(x) {
+    if (x instanceof Array) {
+        return x.map(function (x) { return transToneNum(x); });
+    }
+    var note = transNote(x);
+    return NOTE_LIST.indexOf(note);
+}
 var isNote = function (x) {
     return NOTE_LIST.includes(x);
 };
@@ -254,7 +341,7 @@ var isInterval = function (x) {
     return INTERVAL_LIST.includes(x);
 };
 var isIntervalNum = function (x) {
-    return typeof x === 'number';
+    return typeof x === 'number' && x < 12;
 };
 
 /**
@@ -291,11 +378,15 @@ var getChordType = function (chords) {
  */
 var getDegreeTag = function (degree) {
     var _a;
-    var num = (_a = degree.toString().match(/[1-7]/g)) === null || _a === void 0 ? void 0 : _a[0];
-    if (!num) {
+    var numStr = (_a = degree.toString().match(/\d+/g)) === null || _a === void 0 ? void 0 : _a[0];
+    if (!numStr) {
         return '';
     }
-    return DEGREE_TAG_MAP[Number(num)];
+    var num = Number(numStr);
+    if (num > 7) {
+        num = (num % 7);
+    }
+    return DEGREE_TAG_MAP[num];
 };
 /**
  * 和弦根音 => 和弦
@@ -573,6 +664,98 @@ var transChordTaps = function (tones, board, fingerSpan) {
     var chordList = tapsList.filter(integrityFilter).filter(fingersFilter).sort(gradeSorter);
     return { chordType: chordType, chordList: chordList };
 };
+/**
+ * 获取调式音阶基础指法(上行 & 下行)
+ * @param root 根音
+ * @param board 指板
+ * @param mode 调式
+ */
+var getModeFregTaps = function (root, board, mode) {
+    var _a;
+    if (board === void 0) { board = transBoard(); }
+    if (mode === void 0) { mode = 'minor-pentatonic'; }
+    var up = [], down = [];
+    // 获取该调式音程关系
+    var intervals = (_a = degreeMap.get(mode)) === null || _a === void 0 ? void 0 : _a.map(function (item) { return item.interval; });
+    if (!intervals) {
+        return { up: up, down: down };
+    }
+    // 获取有效相对音高，在根音品数range范围内的所有相对音高符合即可
+    var rootTone = root.tone; // 根音相对音高
+    // 音阶相对音高
+    var toneList = intervals.map(function (interval) { return (interval + rootTone) % 12; });
+    var rootGrade = root.grade; // 根音品位置
+    // 音阶上行指法
+    if (mode.includes('major') && (root.string === 1 || root.string === 5 || root.string === 6)) {
+        up = getTapsFromBoard(toneList, board, [rootGrade - 4, rootGrade]);
+    }
+    else {
+        up = getTapsFromBoard(toneList, board, [rootGrade - 3, rootGrade + 1]);
+    }
+    // 音阶下行指法
+    if (mode.includes('minor') && (root.string === 2 || root.string === 4)) {
+        down = getTapsFromBoard(toneList, board, [rootGrade, rootGrade + 4]);
+    }
+    else {
+        down = getTapsFromBoard(toneList, board, [rootGrade - 1, rootGrade + 3]);
+    }
+    return { up: up, down: down };
+};
+/**
+ * 获取指板某范围内某调式音阶
+ * @param root
+ * @param board
+ * @param mode
+ * @param range
+ * @returns
+ */
+var getModeRangeTaps = function (root, board, mode, range) {
+    var _a;
+    if (board === void 0) { board = transBoard(); }
+    if (mode === void 0) { mode = 'minor-pentatonic'; }
+    if (range === void 0) { range = [0, 5]; }
+    var intervals = (_a = degreeMap.get(mode)) === null || _a === void 0 ? void 0 : _a.map(function (item) { return item.interval; });
+    if (!intervals) {
+        return [];
+    }
+    // 获取有效相对音高，在range范围内的所有相对音高符合即可
+    var rootTone = isPoint(root) ? root.tone : transToneNum(root);
+    // 音阶相对音高
+    var toneList = intervals.map(function (interval) { return (interval + rootTone) % 12; });
+    return getTapsFromBoard(toneList, board, range);
+};
+/**
+ * 通过相对音高获取指板范围内所有符合音高的指位
+ * @param tones 相对音高
+ * @param board 吉他指板
+ * @param range 指板范围
+ * @returns
+ */
+var getTapsFromBoard = function (tones, board, range) {
+    if (board === void 0) { board = transBoard(); }
+    if (range === void 0) { range = []; }
+    var points = [];
+    // 默认范围取 0 ～ 指板长度
+    var _a = range[0], start = _a === void 0 ? 0 : _a, _b = range[1], end = _b === void 0 ? board[0].length - 1 : _b;
+    for (var string = 0; string < 6; string++) {
+        var _loop_1 = function (grade) {
+            var point = board[string][grade];
+            if (point && tones.includes(point.tone) && !points.find(function (p) { return p.pitch === point.pitch; })) {
+                points.push(point);
+            }
+        };
+        for (var grade = start; grade <= end; grade++) {
+            _loop_1(grade);
+        }
+    }
+    return points;
+};
+var isPoint = function (x) {
+    if (typeof x !== 'object') {
+        return false;
+    }
+    return 'tone' in x && 'pitch' in x;
+};
 
 var FRAME_TIMER = 16;
 var debounce = function (fn, wait) {
@@ -674,7 +857,7 @@ var Board = /** @class */ (function () {
     return Board;
 }());
 
-export { Board, DEFAULT_LEVEL, DEFAULT_TUNE, DEGREE_TAG_MAP, FINGER_GRADE_NUMS, GRADE_NUMS, INTERVAL_FALLING_LIST, INTERVAL_LIST, MODE_LIST, NOTE_FALLING_LIST, NOTE_LIST, NOTE_SORT, STRING_NUMS, chordDegreeMap, chordMap, defaultOptions as defaultBoardOptions, degreeMap, getDegreeTag, transBoard, transChord, transChordTaps, transChordType, transFifthsCircle, transNote, transScale, transScaleDegree, transTone };
+export { Board, DEFAULT_LEVEL, DEFAULT_TUNE, DEGREE_TAG_LIST, DEGREE_TAG_MAP, FINGER_GRADE_NUMS, GRADE_NUMS, INTERVAL_FALLING_LIST, INTERVAL_LIST, MODE_LIST, NOTE_FALLING_LIST, NOTE_LIST, NOTE_SORT, STRING_NUMS, chordDegreeMap, chordMap, defaultOptions as defaultBoardOptions, degreeMap, getDegreeTag, getModeFregTaps, getModeRangeTaps, transBoard, transChord, transChordTaps, transChordType, transFifthsCircle, transNote, transScale, transScaleDegree, transTone, transToneNum };
 
 if(typeof window !== 'undefined') {
   window._Dry_VERSION_ = '0.0.13'

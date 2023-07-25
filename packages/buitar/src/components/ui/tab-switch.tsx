@@ -27,6 +27,7 @@ export const TabSwitch: <T>(props: ControllerListProps<T>) => JSX.Element = ({
 		<div className={cx(styles.switch, className)}>
 			{values.map((item, index) => (
 				<div
+					key={index}
 					onClick={() => handleChange(item, index)}
 					className={cx(styles['switch-item'], item === value && styles['switch-item__active'])}
 				>

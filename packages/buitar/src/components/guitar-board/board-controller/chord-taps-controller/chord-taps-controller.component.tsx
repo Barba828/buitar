@@ -5,7 +5,7 @@ import { useBoardContext } from '../../board-provider'
 import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
 
 import styles from './chord-taps-controller.module.scss'
-import { Point } from '@to-guitar'
+import { Point } from '@buitar/to-guitar'
 
 /**
  * 选择指法列表中的指法

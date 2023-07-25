@@ -7,17 +7,10 @@
 		"sourceMap": true,
 		"outDir": "./dist",
 		"rootDir": "./src",
-
-		/* Strict Type-Checking Options */
 		"strict": true,
-		/* Additional Checks */
-
-		/* Module Resolution Options */
 		"moduleResolution": "node",
 		"baseUrl": "./",
-		"paths": {
-			// "@/*": ["./src/*"]
-		},
+		"paths": {},
 		"esModuleInterop": true,
 
 		/* Advanced Options */

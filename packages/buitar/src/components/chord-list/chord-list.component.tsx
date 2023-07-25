@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { ChordType, Point } from '@to-guitar'
+import { ChordType, Point } from '@buitar/to-guitar'
 import { ChordCard, useBoardContext } from '../guitar-board'
 import cx from 'classnames'
 

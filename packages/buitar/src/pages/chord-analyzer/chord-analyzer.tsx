@@ -9,7 +9,7 @@ import {
 	DetailCard,
 } from '@/components/guitar-board'
 import { FifthsCircle } from '@/components/fifths-circle'
-import { Point, Note, transChordType, ToneSchema, ChordType } from '@to-guitar'
+import { Point, Note, transChordType, ToneSchema, ChordType } from '@buitar/to-guitar'
 import { AddTextInput } from '@/components/basic'
 import { usePagesIntro } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'

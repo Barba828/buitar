@@ -16,7 +16,7 @@ import cx from 'classnames'
 
 import styles from './sequencer.module.scss'
 import { Switch } from '../ui'
-import { TonePlayer } from '@/utils'
+import { TonePlayer } from '@buitar/tone-player'
 import { useSequencerContext } from '.'
 import { InstrumentColor } from '@/components/guitar-board/board-controller/option-controller/controller.config'
 

@@ -1,4 +1,4 @@
-import { ModeType } from '@to-guitar'
+import { ModeType } from '@buitar/to-guitar'
 
 export type ModeConfigType = {
 	key: ModeType

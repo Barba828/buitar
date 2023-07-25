@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
-import { NOTE_LIST } from '@to-guitar'
+import { NOTE_LIST } from '@buitar/to-guitar'
 import cx from 'classnames'
-import { TonePlayer } from '@/utils'
+import { TonePlayer } from '@buitar/tone-player'
 import { useBoardTouch, usePianoKeyDown } from '@/utils/hooks/use-board-event'
 import { useDebounce } from '@/utils/hooks/use-debouce'
 

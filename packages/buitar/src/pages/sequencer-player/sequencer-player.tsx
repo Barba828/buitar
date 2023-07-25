@@ -7,7 +7,7 @@ import {
 	usePagesIntro,
 } from '@/components'
 import { instrumentUIConfig } from '@/components/guitar-board/board-controller/option-controller/controller.config'
-import { Instrument } from '@/utils/tone-player/instrument.type'
+import { Instrument } from '@buitar/tone-player/instrument.type'
 import {
 	SequencerReducerPayload,
 	SequencerReducerType,

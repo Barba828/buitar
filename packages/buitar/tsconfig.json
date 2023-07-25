@@ -7,8 +7,6 @@
 		"baseUrl": "./",
 		"paths": {
 			"@/*": ["src/*"],
-			"@samples": ["../samples/*"],
-			"@to-guitar": ["../to-guitar/src/index.ts"]
 		}
 	},
 	"extends": "../../tsconfig.json"

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { GuitarBoard, ChordCard, BoardProvider, useBoardContext } from '@/components/guitar-board'
 import { Link } from 'react-router-dom'
-import { Point, transChordType } from '@to-guitar'
+import { Point, transChordType } from '@buitar/to-guitar'
 import { Icon } from '@/components'
 import { routeMap } from '@/pages/router'
 

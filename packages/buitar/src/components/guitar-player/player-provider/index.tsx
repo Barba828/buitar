@@ -5,7 +5,7 @@ import {
 	ProgressionsConfig,
 } from '@/pages/chord-progressions/progressions.config'
 import { useStore } from '@/utils/hooks/use-store'
-import { Point } from '@to-guitar'
+import { Point } from '@buitar/to-guitar'
 
 type PlayerContextType = {
 	progressionIndex: number
