@@ -12,12 +12,24 @@ const baseUrl = '/buitar/'
 export default defineConfig({
 	plugins: [
 		react(),
+		copy({
+			targets: [
+				{
+					src: resolve(__dirname, '../tone-player/samples/**/*.mp3'),
+					dest: 'assets/samples/',
+					rename: (fileName: string, fileExtension: string, fullPath: string) =>
+						fullPath.match(/packages\/tone-player\/samples\/(.*)/)[1] ||
+						`${fileName}.${fileExtension}`,
+				},
+			],
+		}),
 		pwa({
 			registerType: 'autoUpdate',
 			injectRegister: 'script', // 生成 script 标签注入注册sw
 			workbox: {
 				clientsClaim: true,
 				skipWaiting: true,
+				globPatterns: ['**/*.{js,css,html,mp3,ico}'],
 			},
 			manifest: {
 				name: 'Buitar',
@@ -31,32 +43,38 @@ export default defineConfig({
 				orientation: 'portrait',
 				icons: [
 					...[64, 96, 128, 192, 512].map((size) => ({
-						src: `pwa-${size}x${size}.png`,
+						src: `icons/pwa-${size}x${size}.png`,
 						sizes: `${size}x${size}`,
 						type: 'image/png',
 					})),
 					...[64, 96, 128, 192, 512].map((size) => ({
-						src: `pwa-${size}x${size}.png`,
+						src: `icons/pwa-${size}x${size}.png`,
 						sizes: `${size}x${size}`,
 						type: 'image/png',
 						purpose: 'maskable',
 					})),
 				],
+				shortcuts: [
+					{
+						name: '和弦库',
+						short_name: 'Chord Library',
+						url: `${baseUrl}library`,
+					},
+					{
+						name: '和弦编辑',
+						short_name: 'Chord Analyzer',
+						url: `${baseUrl}analyzer`,
+					},
+					{
+						name: '吉他指型',
+						short_name: 'Guitar Tableture',
+						url: `${baseUrl}tableture`,
+					},
+				],
 			},
 			devOptions: {
 				enabled: true,
 			},
-		}),
-		copy({
-			targets: [
-				{
-					src: resolve(__dirname, '../tone-player/samples/**/*.mp3'),
-					dest: 'assets/samples/',
-					rename: (fileName: string, fileExtension: string, fullPath: string) =>
-						fullPath.match(/packages\/tone-player\/samples\/(.*)/)[1] ||
-						`${fileName}.${fileExtension}`,
-				},
-			],
 		}),
 	],
 	base: baseUrl,
