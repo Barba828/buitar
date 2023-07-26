@@ -7,60 +7,62 @@ import { Collections } from './collections'
 import { InstrumentPlayer } from './instrument-player'
 import { SequencerPlayer } from './sequencer-player'
 
+export const baseUrl = import.meta.env.BASE_URL || '/buitar/'
+
 export const routeMap = {
 	home: {
 		name_zh: '首页',
 		name_en: 'Home',
-		path: '/Buitar/',
+		path: baseUrl,
 		type: '',
 		Component: HomePage,
 	},
 	chordLib: {
 		name_zh: '和弦库',
 		name_en: 'Chord Library',
-		path: '/Buitar/library',
+		path: `${baseUrl}library`,
 		type: 'menu',
 		Component: ChordPlayer,
 	},
 	chordAnalyzer: {
 		name_zh: '和弦编辑',
 		name_en: 'Chord Analyzer',
-		path: '/Buitar/analyzer',
+		path: `${baseUrl}analyzer`,
 		type: 'menu',
 		Component: ChordAnalyzer,
 	},
 	guitarTableture: {
 		name_zh: '吉他指型',
 		name_en: 'Guitar Tableture',
-		path: '/Buitar/tableture',
+		path: `${baseUrl}tableture`,
 		type: 'menu',
 		Component: GuitarTableture,
 	},
 	progressions: {
 		name_zh: '和弦进行',
 		name_en: 'Chord Progressions',
-		path: '/Buitar/progressions',
+		path: `${baseUrl}progressions`,
 		type: 'menu',
 		Component: ChordProgressions,
 	},
 	collections: {
 		name_zh: '和弦收藏',
 		name_en: 'Chord Collections',
-		path: '/Buitar/collections',
+		path: `${baseUrl}collections`,
 		type: 'menu',
 		Component: Collections,
 	},
 	instrument: {
 		name_zh: '乐器',
 		name_en: 'Instrument',
-		path: '/Buitar/instrument',
+		path: `${baseUrl}instrument`,
 		type: 'menu',
 		Component: InstrumentPlayer,
 	},
 	creation: {
 		name_zh: '创造',
 		name_en: 'Creation',
-		path: '/Buitar/creation',
+		path: `${baseUrl}creation`,
 		type: 'menu',
 		Component: SequencerPlayer,
 	},

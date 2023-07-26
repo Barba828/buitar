@@ -1,4 +1,3 @@
-import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { MenuProvider, SlideMenu } from '@/components'
 import { routeConfig } from '@/pages/router'
@@ -28,3 +27,4 @@ const Board = () => {
 		</div>
 	)
 }
+

@@ -1,8 +1,8 @@
 .container {
 	display: flex;
 	.chord-card {
-		width: $button-size * 5;
-		height: $button-size * 5;
+		width: $button-size * 5px;
+		height: $button-size * 5px;
 		position: relative;
 		@include flex-center(row);
 
@@ -83,8 +83,8 @@
 		display: flex;
 
 		&-note {
-			width: $button-size * 1.2;
-			height: $button-size * 1.2;
+			width: $button-size * 1.2px;
+			height: $button-size * 1.2px;
 			padding: 2px;
 		}
 		&-title {
@@ -104,7 +104,7 @@
 		display: flex;
 	}
 	.confirm {
-		width: $button-size (-$button-margin);
+		width: $button-size (-$button-margin) + px;
 		@include flex-center;
 
 		> svg {

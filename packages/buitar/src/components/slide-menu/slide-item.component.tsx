@@ -70,7 +70,7 @@ export const SlideMenu = () => {
 	const footer = (
 		<div className={styles['slide-menu-tab-footer']}>
 			<a
-				href="https://github.com/Barba828/Buitar"
+				href="https://github.com/Barba828/buitar"
 				className={cx(styles['slide-menu-tab-item'], styles['slide-menu-tab-item-checked'])}
 				target="view_window"
 			>

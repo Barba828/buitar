@@ -1,11 +1,9 @@
-import path from 'path'
 import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
 
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import copy from 'rollup-plugin-copy'
-import url from '@rollup/plugin-url'
 
 export default [
 	{

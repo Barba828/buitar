@@ -14,7 +14,7 @@
 		flex-direction: row;
 		.frets-zero {
 			.point {
-				width: $button-size !important;
+				width: $button-size + px !important;
 				@media (any-hover: hover) {
 					&:hover {
 						background: $gray-third !important;
@@ -32,7 +32,7 @@
 			.frets-dot {
 				font-size: 30px;
 				height: 20px;
-				width: $button-size * 2;
+				width: $button-size * 2px;
 				background: $gray-second;
 				line-height: 100%;
 				position: relative;
@@ -49,7 +49,7 @@
 					opacity: 0;
 					font-size: 12px;
 					font-weight: 700;
-					right: $button-margin * 2;
+					right: $button-margin * 2px;
 					position: absolute;
 					transition: all 0.15s ease-in-out;
 				}
@@ -65,7 +65,7 @@
 
 .point {
 	list-style-type: none;
-	width: $button-size * 2 !important;
+	width: $button-size * 2px !important;
 	@include flex-center(row);
 
 	@media (any-hover: hover) {
@@ -117,10 +117,10 @@
 
 @media #{$mobileLayout} {
 	.board .board-view .frets-zero .point {
-		width: $mobile-button-size !important;
+		width: $mobile-button-size + px !important;
 	}
 	.board .board-view .frets .frets-dot,
 	.point {
-		width: $mobile-button-size * 2 !important;
+		width: $mobile-button-size * 2 + px !important;
 	}
 }

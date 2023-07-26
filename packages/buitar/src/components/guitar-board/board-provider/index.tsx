@@ -3,6 +3,7 @@ import { Instrument } from '@buitar/tone-player/instrument.type'
 import { GuitarBoardOptions } from '../board-controller/controller.type'
 import { Board, BoardOption, Point, Tone, transChordTaps } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
+import { baseUrl } from '@/pages/router'
 import { useStore } from '@/utils/hooks/use-store'
 import { OPTIONS_KEY, INSTRUMENT_KEY } from '../board-controller'
 import { COLLECTIONS_KEY, CollectionType } from '@/pages/collections'
@@ -50,13 +51,11 @@ const defaultCollection = [
 		data: [],
 	},
 ]
-TonePlayer.setBaseUrl('/Buitar/static/samples/')
+TonePlayer.setBaseUrl(`${baseUrl}assets/samples/`)
 /**
  * 吉他播放器
  */
 const player = new TonePlayer(defaultInstrument)
-console.log('lnz playerplayer');
-
 window.tonePlayer = player
 
 type BoardContextType = {

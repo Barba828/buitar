@@ -1,6 +1,6 @@
 @import './animation.scss';
 
-:global(.scroll-without-bar) {
+.scroll-without-bar {
 	overflow: scroll;
 	scrollbar-width: none; /* Firefox */
 	-ms-overflow-style: none; /* IE 10+ */
@@ -9,7 +9,7 @@
 	}
 }
 
-:global(.buitar-primary-button) {
+.buitar-primary-button {
 	margin: $button-margin + px;
 	border-radius: $button-margin + px;
 
@@ -32,10 +32,10 @@
 	}
 }
 
-:global(.buitar-primary-range) {
+.buitar-primary-range {
 	appearance: none;
 	flex: 1;
-	width: $button-size * 6;
+	width: $button-size * 6px;
 	height: 4px;
 	border-radius: 2px;
 	outline: none; /* 避免點選會有藍線或虛線 */
@@ -56,16 +56,16 @@
 	}
 }
 
-:global(.hidden) {
+.hidden {
 	display: none;
 }
 
-:global(.none-height) {
+.none-height {
 	height: 0 !important;
 	overflow: hidden;
 }
 
-:global(.icon) {
+.icon {
 	width: 1em;
 	height: 1em;
 	vertical-align: -0.15em;
@@ -73,18 +73,18 @@
 	overflow: hidden;
 }
 
-:global(.touch-yellow) {
+.touch-yellow {
 	@include touch-color;
 }
-:global(.touch-blue) {
+.touch-blue {
 	@include touch-color($blue-primary, $blue-second);
 }
-:global(.touch-green) {
+.touch-green {
 	@include touch-color($green-primary, $green-second);
 }
-:global(.touch-cyan) {
+.touch-cyan {
 	@include touch-color($cyan-primary, $cyan-second);
 }
-:global(.touch-purple) {
+.touch-purple {
 	@include touch-color($purple-primary, $purple-second);
 }

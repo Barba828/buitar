@@ -1,12 +1,12 @@
 # Buitar
 
-![star](https://img.shields.io/github/stars/Barba828/Buitar?style=social)
+![star](https://img.shields.io/github/stars/Barba828/buitar?style=social)
 
 [中文介绍](./README_zh.md)
 
 Welcone to Buitar! A guitar and chord leaning tool based on [to-guitar.js](https://github.com/Barba828/to-guitar) and [tone.js](https://github.com/Tonejs/Tone.js).
 
-So [Enjoy it!](https://barba828.github.io/Buitar/) on Github Pages
+So [Enjoy it!](https://barba828.github.io/buitar/) on Github Pages
 
 - Complete chord learning toolset
 - Complete instrument set
