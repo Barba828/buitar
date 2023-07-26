@@ -1,8 +1,7 @@
 // src/components/IconComponent
-import React, { FC } from 'react'
+import { FC } from 'react'
 import cx from 'classnames'
-
-require('./iconfont.js')
+import './iconfont.js'
 interface IconProps {
 	name: string
 	size?: number

@@ -1,8 +1,8 @@
 $switch-size: $button-size * 0.5;
 
 .switch {
-	width: $switch-size * 1.8;
-	height: $switch-size;
+	width: $switch-size * 1.8px;
+	height: $switch-size + px;
 	border-radius: $switch-size + px;
 	background: $gray-01;
 	transition: all 0.15s linear;

@@ -3,10 +3,10 @@ $side-width: 60px;
 .slide-menu {
 	position: fixed;
 	left: 0;
+	top: 0;
 	display: flex;
 	z-index: 99;
 	height: 100%;
-	// transition: all 0.1s;
 	backdrop-filter: blur(0px);
 
 	&.slide-menu__extend {
@@ -43,7 +43,7 @@ $side-width: 60px;
 		background: $gray-02;
 
 		@media #{$mobileLayout} {
-		// @media (max-width: 499px) {
+			// @media (max-width: 499px) {
 			width: 0px;
 			min-width: 0px;
 			opacity: 1;

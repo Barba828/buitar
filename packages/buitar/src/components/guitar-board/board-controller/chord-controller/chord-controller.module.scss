@@ -71,7 +71,7 @@
 }
 
 .chord-tab {
-	width: $button-size * 6;
+	width: $button-size * 6px;
 }
 
 .chord-type {
@@ -80,8 +80,8 @@
 
 	.tags-item {
 		@include flex-center;
-		width: $button-size * 1.5;
-		height: $button-size * 0.8;
+		width: $button-size * 1.5px;
+		height: $button-size * 0.8px;
 		font-size: 14px;
 		font-weight: 500;
 		color: $white-02;

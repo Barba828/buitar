@@ -7,9 +7,9 @@ $black-height: $button-size * 3;
 	outline: none;
 
 	.key {
-		width: $button-size;
+		width: $button-size + px;
 		border-radius: 0 0 $button-margin + px $button-margin + px;
-		margin: $button-margin;
+		margin: $button-margin + px;
 		transition: all 0.1s linear;
 
 		display: flex;
@@ -25,7 +25,7 @@ $black-height: $button-size * 3;
 	}
 
 	.flat {
-		height: $white-height;
+		height: $white-height + px;
 		background: $white-01;
 		color: #4446;
 
@@ -39,7 +39,7 @@ $black-height: $button-size * 3;
 	}
 
 	.sharp {
-		height: $black-height;
+		height: $black-height + px;
 		background: #444;
 		margin-left: calc($button-size / (-2)) + px;
 		margin-right: calc($button-size / (-2)) + px;

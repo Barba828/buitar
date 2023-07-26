@@ -55,8 +55,6 @@ TonePlayer.setBaseUrl('/Buitar/static/samples/')
  * 吉他播放器
  */
 const player = new TonePlayer(defaultInstrument)
-console.log('lnz playerplayer');
-
 window.tonePlayer = player
 
 type BoardContextType = {
