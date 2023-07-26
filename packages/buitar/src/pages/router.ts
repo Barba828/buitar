@@ -7,7 +7,7 @@ import { Collections } from './collections'
 import { InstrumentPlayer } from './instrument-player'
 import { SequencerPlayer } from './sequencer-player'
 
-const baseUrl = import.meta.env.BASE_URL || '/buitar/'
+export const baseUrl = import.meta.env.BASE_URL || '/buitar/'
 
 export const routeMap = {
 	home: {

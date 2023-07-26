@@ -7,6 +7,7 @@
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
+		"generate-pwa-assets": "pwa-assets-generator",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "liningzhu2012@gmail.com",
@@ -14,6 +15,7 @@
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
+		"@vite-pwa/assets-generator": "^0.0.4",
 		"@vitejs/plugin-react": "^4.0.3",
 		"classnames": "^2.3.1",
 		"eslint": "^8.45.0",
@@ -21,11 +23,12 @@
 		"eslint-plugin-react-refresh": "^0.4.3",
 		"sass": "^1.49.9",
 		"typescript": "^5.0.2",
-		"vite": "^4.4.5"
+		"vite": "^4.4.5",
+		"vite-plugin-pwa": "^0.16.4",
+		"vite-plugin-static-copy": "^0.17.0"
 	},
 	"dependencies": {
 		"@buitar/to-guitar": "workspace:*",
-		"@buitar/tone-player": "workspace:*",
-		"workbox-window": "^7.0.0"
+		"@buitar/tone-player": "workspace:*"
 	}
 }
