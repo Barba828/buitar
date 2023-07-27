@@ -1,6 +1,5 @@
-import React, { FC, memo, useEffect, useMemo, useRef, useState } from 'react'
+import React, { FC, useEffect, useMemo, useState } from 'react'
 import * as Tone from 'tone'
-import { Sound } from '../index'
 
 type SequencerCorntextType = {
 	isPlaying: boolean

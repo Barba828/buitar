@@ -1,6 +1,7 @@
 $sound-margin: 1;
 $sound-height: 30;
 
+// es module 使用
 :export {
 	sound_margin: $sound-margin;
 	sound_height: $sound-height;
@@ -14,7 +15,7 @@ $sound-height: 30;
 		font-size: 12px;
 		font-weight: 700;
 		opacity: 0.8;
-		width: $button-size !important;
+		width: $button-size + px !important;
 		letter-spacing: 1.5px;
 	}
 
@@ -25,21 +26,17 @@ $sound-height: 30;
 	}
 
 	.sound-item {
-		height: $sound-height;
-		margin: $sound-margin !important;
+		height: $sound-height + px;
+		margin: $sound-margin + px !important;
 	}
 
 	.sound-item-active {
 		position: absolute;
-		// background: $yellow-primary;
-		// &:hover {
-		// 	background: $yellow-second;
-		// }
 	}
 
 	.sound-item-handler {
 		position: absolute;
-		height: calc($sound-height / 2);
+		height: calc($sound-height / 2) + px;
 		width: 14px;
 		height: 100%;
 		right: 0px;
@@ -48,8 +45,8 @@ $sound-height: 30;
 		@include flex-center;
 		&-view {
 			pointer-events: none;
-			width: $sound-margin * 3;
-			height: $sound-height * 0.6;
+			width: $sound-margin * 3px;
+			height: $sound-height * 0.6px;
 			border-radius: $sound-margin * 2px;
 			background-color: $white-01;
 			opacity: 0.6;
@@ -96,7 +93,7 @@ $sound-height: 30;
 	flex-direction: row;
 
 	.player-icon {
-		margin: $sound-margin;
+		margin: $sound-margin + px;
 		@include flex-center(row);
 		:first-child {
 			opacity: 0.8;
@@ -105,7 +102,7 @@ $sound-height: 30;
 
 	.player-range {
 		@include flex-center(row);
-		margin: $sound-margin;
+		margin: $sound-margin + px;
 		padding: 0 8px;
 		justify-content: start;
 		width: fit-content;
@@ -113,8 +110,8 @@ $sound-height: 30;
 			font-size: 14px;
 			font-weight: 600;
 			opacity: 0.8;
-			width: 120px;
 			letter-spacing: 0.5px;
+			margin-right: 4px;;
 		}
 		.player-range-bpm {
 			font-size: 16px;

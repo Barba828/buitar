@@ -1,14 +1,4 @@
-import React, {
-	FC,
-	forwardRef,
-	memo,
-	useCallback,
-	useEffect,
-	useImperativeHandle,
-	useMemo,
-	useRef,
-	useState,
-} from 'react'
+import { FC, forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
 import * as Tone from 'tone'
 import { Icon } from '../icon'
 import { useEditable } from './use-editable'
@@ -17,8 +7,9 @@ import cx from 'classnames'
 import styles from './sequencer.module.scss'
 import { Switch } from '../ui'
 import { TonePlayer } from '@buitar/tone-player'
-import { useSequencerContext } from '.'
+import { useSequencerContext } from './sequencer-provider'
 import { InstrumentColor } from '@/components/guitar-board/board-controller/option-controller/controller.config'
+import { useIsMobile } from '@/utils/hooks/use-device'
 
 /**
  * 单序列active的音符
@@ -125,6 +116,8 @@ export const SequencerController: FC<{
 	const { isPlaying, setIsPlaying, editable, setEditable, bpm, setBpm, m, setM } =
 		useSequencerContext()
 
+	const isMobile = useIsMobile()
+
 	const handlePlay = useCallback(() => {
 		Tone.Transport.toggle()
 		setIsPlaying(!isPlaying)
@@ -145,7 +138,7 @@ export const SequencerController: FC<{
 
 			<div className={cx('buitar-primary-button', styles['player-range'])}>
 				<span className={styles['player-range-text']}>
-					Tempo
+					{!isMobile && 'Tempo'}
 					<span className={styles['player-range-bpm']}> {bpm} </span>
 					bpm
 				</span>

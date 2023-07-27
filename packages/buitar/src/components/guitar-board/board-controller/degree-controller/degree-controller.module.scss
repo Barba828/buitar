@@ -1,5 +1,6 @@
 .degree-controller {
 	display: flex;
+	flex-wrap: wrap;
 
 	.degree-expand {
 		width: calc($button-size / 2);

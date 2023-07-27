@@ -54,6 +54,10 @@
 		width: 16px;
 		height: 16px;
 	}
+
+	@media #{$mobileLayout} {
+		width: $button-size * 4px;
+	}
 }
 
 .hidden {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import {
 	ChordTapsController,
 	BoardProvider,
@@ -12,6 +12,7 @@ import { Point, transChordTaps, DEGREE_TAG_LIST } from '@buitar/to-guitar'
 import { PlayerProvider, usePlayerContext } from '@/components/guitar-player'
 import { SoundBoard } from '@/components/sound-board'
 import { usePagesIntro } from '@/components'
+import { useIsMobile } from '@/utils/hooks/use-device'
 
 import styles from './chord-progressions.module.scss'
 
@@ -37,8 +38,11 @@ const ChordPicker = () => {
 
 	// 切换和弦：更新指板图列表
 	useEffect(() => {
+		if (soundListIndex < 0) {
+			return
+		}
 		setChordTaps(transChordTaps(chord, guitarBoardOption.keyboard))
-	}, [chord])
+	}, [chord, soundListIndex])
 
 	// 指板更新：清除和弦指位列表
 	useEffect(() => {
@@ -67,6 +71,7 @@ const ChordPicker = () => {
 
 const TapsViewer = () => {
 	const { soundList, progressionIndex, progressions } = usePlayerContext()
+	const isMobile = useIsMobile()
 	const progression = progressions[progressionIndex]
 
 	if (!progression || progressionIndex < 0) {
@@ -86,7 +91,7 @@ const TapsViewer = () => {
 						className={styles['card-view']}
 						title={`${name}${grade.tag}`}
 						taps={taps}
-						size={120}
+						size={isMobile ? 100 : 140}
 					/>
 				)
 			})}

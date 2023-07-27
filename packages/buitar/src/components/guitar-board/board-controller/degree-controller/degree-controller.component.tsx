@@ -222,10 +222,14 @@ export const DegreeEditor: FC<{
 export const DegreeChordController: FC<ControllerProps> = () => {
 	const {
 		guitarBoardOption,
+		chord,
+		chordTaps,
 		setChord,
+		setChordTaps,
 		boardOptions: { isSharpSemitone },
 	} = useBoardContext()
-	const { progressions, progressionIndex, setSoundList, setSoundListIndex } = usePlayerContext()
+	const { progressions, progressionIndex, soundListIndex, setSoundList, setSoundListIndex } =
+		usePlayerContext()
 
 	const chords = useMemo(() => {
 		if (!progressions[progressionIndex]) {
@@ -252,10 +256,17 @@ export const DegreeChordController: FC<ControllerProps> = () => {
 
 	const handleClick = useCallback(
 		(item, index) => {
+			// 点击相同的级数和弦，收起指法列表
+			if (index === soundListIndex) {
+				setSoundListIndex(-1)
+				setChordTaps(null)
+				return
+			}
+
 			setChord(item.chord)
 			setSoundListIndex(index)
 		},
-		[setChord, setSoundListIndex]
+		[setChord, setSoundListIndex, soundListIndex]
 	)
 
 	if (!progressions[progressionIndex] || progressionIndex < 0) {

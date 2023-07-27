@@ -18,7 +18,7 @@ export default defineConfig({
 					src: resolve(__dirname, '../tone-player/samples/**/*.mp3'),
 					dest: 'assets/samples/',
 					rename: (fileName: string, fileExtension: string, fullPath: string) =>
-						fullPath.match(/packages\/tone-player\/samples\/(.*)/)[1] ||
+						fullPath.match(/packages\/tone-player\/samples\/(.*)/)?.[1] ||
 						`${fileName}.${fileExtension}`,
 				},
 			],
@@ -98,7 +98,7 @@ export default defineConfig({
 	},
 	server: {
 		port: 8282,
-		host: 'localhost',
+		host: '0.0.0.0',
 		open: '/',
 	},
 })

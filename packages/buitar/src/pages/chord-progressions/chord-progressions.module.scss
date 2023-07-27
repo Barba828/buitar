@@ -1,8 +1,6 @@
 .taps-viewer {
 	display: flex;
-
+	flex-wrap: wrap;
 	.card-view {
-		width: $button-size * 4px !important;
-		height: $button-size * 4px !important;
 	}
 }
