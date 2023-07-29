@@ -1,0 +1,17 @@
+.audio-btn {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	width: 32px !important;
+	height: 32px !important;
+	border-radius: 16px !important;
+	box-shadow: 2px 2px 8px #444;
+	@include flex-center;
+}
+
+.audio-btn__hidden {
+    transition-delay: 3s;
+	transition: all 2s ease-in-out !important;
+	opacity: 0;
+	pointer-events: none;
+}

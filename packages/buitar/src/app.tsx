@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { MenuProvider, SlideMenu } from '@/components'
+import { MenuProvider, SlideMenu , AudioBtn} from '@/components'
 import { routeConfig } from '@/pages/router'
 import cx from 'classnames'
 import styles from './style.module.scss'
@@ -11,6 +11,7 @@ export const App = () => {
 				<MenuProvider>
 					<SlideMenu />
 					<Board />
+					<AudioBtn />
 				</MenuProvider>
 			</BrowserRouter>
 		</div>

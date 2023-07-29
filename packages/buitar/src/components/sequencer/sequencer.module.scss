@@ -94,6 +94,7 @@ $sound-height: 30;
 
 	.player-icon {
 		margin: $sound-margin + px;
+		width: $button-size * 1.2px !important;
 		@include flex-center(row);
 		:first-child {
 			opacity: 0.8;

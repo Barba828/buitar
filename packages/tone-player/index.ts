@@ -8,10 +8,10 @@ import './samples/index'
 
 /**
  * time
- * 1m: 一个小节
- * 2n: 二分音符
- * 4n: 八分音符
- * 8t: 八分音符三连音
+ * 1m: 一个小节 measure
+ * 2n: 二分音符 note
+ * 4n: 四分音符 note
+ * 8t: 八分音符三连音 triplet
  * Tone.Transport.bpm = 120 节拍
  * Tone.Transport.timeSignature = 3 拍数（3/4拍）
  */
@@ -79,12 +79,12 @@ export class TonePlayer extends Tone.Sampler {
 	}
 
 	/**
-	 * 手动处理 invoke ，否则safari会默认静音
+	 * 手动处理 invoke (默认静音)
 	 */
 	public async resume() {
 		await this.sampler.context.resume()
-		// await Tone.start()
-		// await Tone.context.resume()
+		await Tone.start()
+		await Tone.context.resume()
 	}
 
 	/**

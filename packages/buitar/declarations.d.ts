@@ -1,6 +1,7 @@
 interface Window {
-	tonePlayer: any
-	toGuitar: any
+	Tone: Tone
+	ToGuitar: toGuitar
+	tonePlayer: TonePlayer
 }
 
 /**

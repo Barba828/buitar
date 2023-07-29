@@ -34,7 +34,7 @@ const defaultSounds: Sound[] = [
 	{ key: 'C3', blocks: [] },
 ]
 
-export interface SequencerProps {
+export interface SequencerProps extends Pick<SequencerListProps, 'color'> {
 	/**
 	 * 播放列表
 	 */
@@ -47,51 +47,109 @@ export interface SequencerProps {
 	 * 存在Controller
 	 */
 	controllable?: boolean
+}
 
-	color?: InstrumentColor
+interface TonePart {
+	/**
+	 * time 格式为"bars:quarters:sixteenths" 分别对应小节、四分音符和十六分音符
+	 * 实际上这对应4进制的 百十个 三位数字
+	 */
+	time: string
+	key: Sound['key']
+	duration: string
 }
 
 /**
  * 音序机
  */
 export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, player, color }) => {
-	const { setIsPlaying, m, isPlaying } = useSequencerContext()
+	const { m, isPlaying } = useSequencerContext()
 	const sequencerList = useRef<SequencerListRefs>(null) // 音序条Ref
-	const scheduleId = useRef<number>() // 当前组件循环播放ID
+	const tonePart = useRef<Tone.Part<TonePart>>() // 当前组件循环播放ID
 
 	/**
-	 * sounds改变默认修改音序机重复内容
-	 * scheduleId保存这个组件实例上一次的音序，并更新本次sounds生成的音序
-	 * （不能直接Tone.Transport.clear，因为会导致其他音序机实例的内容被清除）
-	 * Tone.Draw.schedule：Tone重复的动画interval函数
+	 * Tone.Part循环播放实现音序机Looper
+	 * Tone.Loop同步循环实现UI绘制
 	 */
 	useEffect(() => {
-		if (!isPlaying) {
+		tonePart.current?.clear()
+		if (!isPlaying || !player.loaded) {
 			return
 		}
-		scheduleId.current && Tone.Transport.clear(scheduleId.current)
-		scheduleId.current = Tone.Transport.scheduleRepeat((time) => {
-			// 十六分音符时间长度
-			const itemTime = Tone.Transport.toSeconds('16n')
-			sounds.forEach((sound) => {
-				const { key, blocks } = sound
-				blocks.forEach((block) => {
-					const start = block[0] * itemTime // 在一拍中的开始时间
-					const duration = 16 / (block[1] - block[0] + 1) + 'n' //在一拍中的持续时间
-					player.loaded && player.getContext().triggerAttackRelease(key, duration, time + start)
+
+		// 音序机所有Sounds格子生成时间片List
+		const partNotes: TonePart[] = []
+		sounds.forEach((sound) => {
+			const { key, blocks } = sound
+			blocks.forEach((block) => {
+				const time = block[0].toString(4).padStart(3, '0').split('').join(':')
+				const duration = 8 / (block[1] - block[0] + 1) + 'n'
+				partNotes.push({
+					time,
+					key,
+					duration,
 				})
 			})
+		})
+		// 播放时间片
+		tonePart.current = new Tone.Part((time, { key, duration }) => {
+			player.getContext().triggerAttackRelease(key, duration, time)
+		}, partNotes)
+		// 循环
+		tonePart.current.loop = true
+		tonePart.current.loopEnd = `${m}m`
 
-			Tone.Draw.schedule(() => {
-				// 每次循环滚动时间线
-				setIsPlaying(true)
-				sequencerList.current?.playTimeline(Tone.Transport.toSeconds(`${m}m`))
-			}, time)
-		}, `${m}m`)
+		const looper = new Tone.Loop((time) => {
+			sequencerList.current?.playTimeline(Tone.Transport.toSeconds(`${m}m`))
+		}, `${m}m`).start(0)
+
+		tonePart?.current?.start()
+		Tone.Transport.start()
+
 		return () => {
+			looper.cancel()
+			tonePart.current?.clear()
 			Tone.Transport.cancel().stop()
 		}
 	}, [sounds, m, isPlaying])
+
+	// /**
+	//  * old 方案 Tone.Transport.scheduleRepeat 实现音序机Looper
+	//  *
+	//  * scheduleId保存这个组件实例上一次的音序，并更新本次sounds生成的音序
+	//  * （不能直接Tone.Transport.clear，因为会导致其他音序机实例的内容被清除）
+	//  * Tone.Draw.schedule：Tone重复的动画interval函数
+	//  */
+	// const scheduleId = useRef<number>() // 当前组件循环播放ID
+	// useEffect(() => {
+	// 	if (!isPlaying || !player.loaded) {
+	// 		return
+	// 	}
+
+	// 	// 清理并重置 scheduleRepeat
+	// 	scheduleId.current && Tone.Transport.clear(scheduleId.current)
+	// 	scheduleId.current = Tone.Transport.scheduleRepeat((startTime) => {
+	// 		// 十六分音符时间长度
+	// 		const itemTime = Tone.Transport.toSeconds('16n')
+	// 		sounds.forEach((sound) => {
+	// 			const { key, blocks } = sound
+	// 			blocks.forEach((block) => {
+	// 				const start = block[0] * itemTime // 在一拍中的开始时间
+	// 				const duration = 8 / (block[1] - block[0] + 1) + 'n' //在一拍中的持续时间
+	// 				player.getContext().triggerAttackRelease(key, duration, startTime + start)
+	// 			})
+	// 		})
+
+	// 		Tone.Draw.schedule(() => {
+	// 			// 每次循环滚动时间线
+	// 			setIsPlaying(true)
+	// 			sequencerList.current?.playTimeline(Tone.Transport.toSeconds(`${m}m`))
+	// 		}, startTime)
+	// 	}, `${m}m`)
+	// 	return () => {
+	// 		Tone.Transport.cancel().stop()
+	// 	}
+	// }, [sounds, m, isPlaying])
 
 	/**
 	 * 音序条改变时提示
@@ -118,11 +176,18 @@ export const SequencerController: FC<{
 
 	const isMobile = useIsMobile()
 
-	const handlePlay = useCallback(() => {
+	/**
+	 * 播放按钮
+	 */
+	const handlePlay = useCallback(async () => {
+		await Tone.start()
 		Tone.Transport.toggle()
 		setIsPlaying(!isPlaying)
 	}, [isPlaying])
 
+	/**
+	 * 小节数选择器
+	 */
 	const handleChangeM = useCallback(() => {
 		const nextM = m === 1 ? 2 : m === 2 ? 4 : 1
 		Tone.Transport.stop()
@@ -177,7 +242,13 @@ export const SequencerController: FC<{
 }
 
 interface SequencerListProps {
+	/**
+	 * 播放List
+	 */
 	soundList: Sound[]
+	/**
+	 * 高亮按钮颜色
+	 */
 	color?: InstrumentColor
 	onChange?: (sound: Sound) => void
 }
@@ -196,9 +267,9 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 		const container = useRef<HTMLDivElement>(null)
 		const timeline = useRef<HTMLDivElement>(null)
 
-		const itemSize = 2 * styles.sound_margin + itemWidth // 格子宽度
-		const itemSizeY = 2 * styles.sound_margin + Number(styles.sound_height) // 格子高度
-		const headSize = 2 * styles.sound_margin + Number(styles.button_size) // 音符格子宽度
+		const itemSize = 2 * Number(styles.sound_margin) + itemWidth // 格子宽度
+		const itemSizeY = 2 * Number(styles.sound_margin) + Number(styles.sound_height) // 格子高度
+		const headSize = 2 * Number(styles.sound_margin) + Number(styles.button_size) // 音符格子宽度
 		const soundSize = headSize + itemSize * maxLength // 格子行总宽度
 
 		/**
@@ -329,13 +400,14 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 			timeline.current.style.transition = ''
 			timeline.current.style.left = `${headSize}px`
 
+			// 10ms 防止页面left未复原
 			setTimeout(() => {
 				if (!timeline.current) {
 					return
 				}
 				timeline.current.style.transition = `left ${time}s linear`
 				timeline.current.style.left = `${soundSize}px`
-			})
+			}, 10)
 		}
 
 		if (itemWidth === 0 || itemWidth == Infinity) {

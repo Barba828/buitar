@@ -35,7 +35,7 @@ export const SequencerPlayer = memo(() => {
 				const { sequencerPlayer, sounds, color } = sequencer
 				return (
 					<div key={sequencer.sequencerPlayer.getInstrument() + index}>
-						<Sequencer player={sequencerPlayer} sounds={sounds} color={color} />
+						<Sequencer player={sequencerPlayer} color={color} sounds={sounds} />
 						<SequencerOptionController
 							defaultInstrument={sequencerPlayer.getInstrument()}
 							onChange={(type, payload) => {

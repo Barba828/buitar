@@ -3,7 +3,6 @@ import { Instrument } from '@buitar/tone-player/instrument.type'
 import { GuitarBoardOptions } from '../board-controller/controller.type'
 import { Board, BoardOption, Point, Tone, transChordTaps } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
-import { baseUrl } from '@/pages/router'
 import { useStore } from '@/utils/hooks/use-store'
 import { OPTIONS_KEY, INSTRUMENT_KEY } from '../board-controller'
 import { COLLECTIONS_KEY, CollectionType } from '@/pages/collections'
@@ -38,10 +37,6 @@ const defaultBoardOptions: GuitarBoardOptions = {
 	isAllKey: true,
 }
 /**
- * 吉他乐器默认配置
- */
-const defaultInstrument = 'guitar-acoustic'
-/**
  * 默认收藏
  */
 const defaultCollection = [
@@ -51,12 +46,6 @@ const defaultCollection = [
 		data: [],
 	},
 ]
-TonePlayer.setBaseUrl(`${baseUrl}assets/samples/`)
-/**
- * 吉他播放器
- */
-const player = new TonePlayer(defaultInstrument)
-window.tonePlayer = player
 
 type BoardContextType = {
 	/**
@@ -133,12 +122,13 @@ const BoardContext = React.createContext<BoardContextType>({} as any)
 export const useBoardContext = () => React.useContext(BoardContext)
 
 export const BoardProvider: FC = (props) => {
+	const player = window.tonePlayer as TonePlayer
 	const [guitarBoardOption, setGuitarBoardOption] = useState<Partial<BoardOption>>({})
 	const [boardOptions, dispatchBoardOptions] = useStore<GuitarBoardOptions>(
 		OPTIONS_KEY,
 		defaultBoardOptions
 	)
-	const [instrument, dispatchInstrument] = useStore<Instrument>(INSTRUMENT_KEY, defaultInstrument)
+	const [instrument, dispatchInstrument] = useStore<Instrument>(INSTRUMENT_KEY, player.getInstrument())
 	const [collection, dispatchCollection] = useStore<CollectionType[]>(
 		COLLECTIONS_KEY,
 		defaultCollection
