@@ -4,7 +4,8 @@
 	"description": "Learning Guitar Web App",
 	"main": "index.js",
 	"scripts": {
-		"dev": "pnpm -r run dev",
+		"dev": "pnpm -r --parallel run dev",
+		"dev:app": "pnpm --filter buitar run dev",	
 		"build": "pnpm -r run build"
 	},
 	"repository": {
