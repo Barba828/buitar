@@ -1,6 +1,6 @@
 .type-item {
 	@include flex-center;
-	width: $button-size * 2px !important;
+	width: calc($btn-size * 2) !important;
 	> svg {
 		opacity: 0.8;
 	}
@@ -13,10 +13,10 @@
 	border: 0px;
 	outline: 0px;
 	background: none;
-	width: $button-size * 2px !important;
+	width: calc($btn-size * 2) !important;
 	padding: 0px 10px;
 	&:focus {
-		width: $button-size * 3px !important;
+		width: calc($btn-size * 3) !important;
 	}
 }
 .type-input-controller {
@@ -24,7 +24,7 @@
 
 	.type-input-item {
 		@include flex-center;
-		width: $button-size (-$button-margin) + px;
+		width: calc($btn-size - $btn-margin);
 		opacity: 0.8;
 	}
 }

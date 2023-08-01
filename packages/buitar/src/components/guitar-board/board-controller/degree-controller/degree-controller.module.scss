@@ -3,8 +3,8 @@
 	flex-wrap: wrap;
 
 	.degree-expand {
-		width: calc($button-size / 2);
-		height: $button-size * 2px;
+		width: calc($btn-size / 2);
+		height: calc($btn-size * 2);
 		@include flex-center;
 
 		&.icon-expand {
@@ -22,8 +22,8 @@
 	}
 
 	.degree-add {
-		width: $button-size * 2px;
-		height: $button-size * 2px;
+		width: calc($btn-size * 2);
+		height: calc($btn-size * 2);
 		@include flex-center;
 
 		&:hover {
@@ -51,15 +51,15 @@
 		&:hover {
 			.degree-remove {
 				display: flex;
-				width: $button-size * 2px;
+				width: calc($btn-size * 2);
 				margin: 2px;
 			}
 		}
 
 		.degree-item {
 			position: relative;
-			width: $button-size * 2px;
-			height: $button-size * 2px;
+			width: calc($btn-size * 2);
+			height: calc($btn-size * 2);
 			font-size: 24px;
 			white-space: nowrap;
 			@include flex-center(row);
@@ -86,7 +86,7 @@
 		}
 
 		.degree-item-second {
-			height: $button-size;
+			height: $btn-size;
 			&:hover {
 				@include touch-color;
 			}
@@ -112,7 +112,7 @@
 		flex-wrap: wrap;
 
 		.tags-item {
-			width: $button-size * 2px;
+			width: calc($btn-size * 2);
 			font-size: 14px;
 			opacity: 0.8;
 			@include flex-center;

@@ -1,5 +1,5 @@
-$white-height: $button-size * 4;
-$black-height: $button-size * 3;
+$white-height: calc($btn-size * 4);
+$black-height: calc($btn-size * 3);
 
 .piano {
 	display: flex;
@@ -7,9 +7,9 @@ $black-height: $button-size * 3;
 	outline: none;
 
 	.key {
-		width: $button-size + px;
-		border-radius: 0 0 $button-margin + px $button-margin + px;
-		margin: $button-margin + px;
+		width: $btn-size;
+		border-radius: 0 0 $btn-margin $btn-margin;
+		margin: $btn-margin;
 		transition: all 0.1s linear;
 
 		display: flex;
@@ -25,7 +25,7 @@ $black-height: $button-size * 3;
 	}
 
 	.flat {
-		height: $white-height + px;
+		height: $white-height;
 		background: $white-01;
 		color: #4446;
 
@@ -39,10 +39,10 @@ $black-height: $button-size * 3;
 	}
 
 	.sharp {
-		height: $black-height + px;
+		height: $black-height;
 		background: #444;
-		margin-left: calc($button-size / (-2)) + px;
-		margin-right: calc($button-size / (-2)) + px;
+		margin-left: calc($btn-size / (-2));
+		margin-right: calc($btn-size / (-2));
 		z-index: 1;
 
 		color: #fff6;

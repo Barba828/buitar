@@ -15,7 +15,7 @@ $sound-height: 30;
 		font-size: 12px;
 		font-weight: 700;
 		opacity: 0.8;
-		width: $button-size + px !important;
+		width: $btn-size !important;
 		letter-spacing: 1.5px;
 	}
 
@@ -94,7 +94,7 @@ $sound-height: 30;
 
 	.player-icon {
 		margin: $sound-margin + px;
-		width: $button-size * 1.2px !important;
+		width: calc($btn-size * 1.2) !important;
 		@include flex-center(row);
 		:first-child {
 			opacity: 0.8;

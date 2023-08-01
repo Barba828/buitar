@@ -1,5 +1,5 @@
-$controller-size: $button-size * 2px;
-$controller-margin: $button-margin + px;
+$controller-size: calc($btn-size * 2);
+$controller-margin: $btn-margin;
 $controller-nums: 4;
 
 %controller-extends {

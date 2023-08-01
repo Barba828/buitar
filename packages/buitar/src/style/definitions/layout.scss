@@ -1,6 +1,9 @@
+
+// 响应式参数
 $mobileLayout: "(max-width: 499px)";
 $pcLayout: "only screen and (min-width: 499px)";
 
+// 响应式变量
 :root {
 	--space-4: 4px;
 	--space-6: 6px;
@@ -11,9 +14,9 @@ $pcLayout: "only screen and (min-width: 499px)";
 	--space-20: 20px;
 	--space-24: 24px;
 
-	--button-size: 40px;
-	--button-radius: 2px;
-	--button-margin: 2px;
+	--btn-size: 40px;
+	--btn-radius: 2px;
+	--btn-margin: 2px;
 
 	@media #{$mobileLayout} {
 		--space-4: 2px;
@@ -25,9 +28,9 @@ $pcLayout: "only screen and (min-width: 499px)";
 		--space-20: 14px;
 		--space-24: 16px;
 
-		--button-size: 32px;
-		--button-radius: 2px;
-		--button-margin: 1.6px;
+		--btn-size: 32px;
+		--btn-radius: 2px;
+		--btn-margin: 1.6px;
 	}
 }
 

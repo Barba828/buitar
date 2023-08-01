@@ -1,5 +1,5 @@
 .fifth-circle {
-	min-width: $button-size * 7px;
-	height: $button-size * 7px !important;
+	min-width: calc($btn-size * 7);
+	height: calc($btn-size * 7) !important;
 	background: $gray-second !important;
 }

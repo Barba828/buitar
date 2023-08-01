@@ -1,8 +1,8 @@
 .switch {
 	display: flex;
 	position: relative;
-	width: $button-size * 3.2px;
-	height: $button-size * 0.8px;
+	width: calc($btn-size * 3).2px;
+	height: calc($btn-size * 0.8);
 	border-radius: 4px;
 	margin: 2px;
 	background: $gray-second;

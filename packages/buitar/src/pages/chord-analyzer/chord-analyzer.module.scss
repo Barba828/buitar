@@ -4,14 +4,14 @@
 		flex-direction: column;
 	}
 	.svg-chord {
-		width: $button-size * 6px !important;
-		height: $button-size * 6px !important;
-		margin: $button-margin + px !important;
+		width: calc($btn-size * 6) !important;
+		height: calc($btn-size * 6) !important;
+		margin: $btn-margin !important;
 	}
 
 	.fifth-circle {
-		width: $button-size * 6px;
-		height: $button-size * 6px;
+		width: calc($btn-size * 6);
+		height: calc($btn-size * 6);
 		background: $gray-second !important;
 	}
 
@@ -23,5 +23,5 @@
 
 .type-item {
 	@include flex-center;
-	width: $button-size * 2px !important;
+	width: calc($btn-size * 2) !important;
 }

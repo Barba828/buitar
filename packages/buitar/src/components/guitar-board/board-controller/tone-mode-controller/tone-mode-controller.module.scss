@@ -1,7 +1,7 @@
 .mode-container {
 	:global {
 		.buitar-primary-button {
-			width: $button-size * 2.8px !important;
+			width: calc($btn-size * 2.8)!important;
 		}
 	}
     flex-direction: row !important;

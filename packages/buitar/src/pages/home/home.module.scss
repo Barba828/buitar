@@ -24,8 +24,8 @@
 		.links-button {
 			font-weight: 300;
 			font-size: 18px;
-			width: $button-size * 4px;
-			height: $button-size * 1.5px;
+			width: calc($btn-size * 4);
+			height: calc($btn-size * 1.5);
 			text-decoration: none;
 			color: $white-01;
 			@include flex-center;

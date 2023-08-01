@@ -4,9 +4,9 @@
 		outline: none;
 		border: none;
 		border-radius: 2px;
-		height: $button-size;
-		width: $button-size * 2px;
-		margin: $button-margin + px;
+		height: $btn-size;
+		width: calc($btn-size * 2);
+		margin: $btn-margin;
 		padding: 4px 10px;
 		color: $white-01;
 		font-size: 16px;

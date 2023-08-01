@@ -10,11 +10,11 @@
 }
 
 .buitar-primary-button {
-	margin: $button-margin + px;
-	border-radius: $button-margin + px;
+	margin: $btn-margin;
+	border-radius: $btn-margin;
 
-	width: $button-size + px;
-	height: $button-size + px;
+	width: $btn-size;
+	height: $btn-size;
 	background: $gray-primary;
 	transition: all 0.15s linear;
 	overflow: hidden;
@@ -25,17 +25,12 @@
 			background: $gray-second;
 		}
 	}
-	@media #{$mobileLayout} {
-		height: $mobile-button-size + px;
-		width: $mobile-button-size + px;
-		margin: $mobile-button-margin + px;
-	}
 }
 
 .buitar-primary-range {
 	appearance: none;
 	flex: 1;
-	width: $button-size * 6px;
+	width: calc($btn-size * 6);
 	height: 4px;
 	border-radius: 2px;
 	outline: none; /* 避免點選會有藍線或虛線 */
@@ -56,7 +51,7 @@
 	}
 
 	@media #{$mobileLayout} {
-		width: $button-size * 4px;
+		width: calc($btn-size * 4);
 	}
 }
 
