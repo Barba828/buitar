@@ -11,9 +11,9 @@ $switch-size: calc($btn-size * 0.5);
 	}
 
 	.circle {
-		width: calc($switch-size - 2);
-		height: calc($switch-size - 2);
-		border-radius: calc($switch-size - 2);
+		width: calc($switch-size - 2px);
+		height: calc($switch-size - 2px);
+		border-radius: calc($switch-size - 2px);
 		margin: 1px;
 		background-color: $white-01;
 		transition: all 0.15s linear;

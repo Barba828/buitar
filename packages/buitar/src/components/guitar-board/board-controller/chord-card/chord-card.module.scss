@@ -7,13 +7,13 @@
 		@include flex-center(row);
 
 		&-dot {
-			width: 10px;
-			height: 10px;
+			width: calc($btn-size * 0.25);
+			height: calc($btn-size * 0.25);
 			border-radius: 10px;
 			background-color: white;
 			position: absolute;
-			right: 10px;
-			top: 10px;
+			right: calc($btn-size * 0.25);
+			top: calc($btn-size * 0.25);
 			opacity: 0.7;
 		}
 
