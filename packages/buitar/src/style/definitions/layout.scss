@@ -1,0 +1,34 @@
+$mobileLayout: "(max-width: 499px)";
+$pcLayout: "only screen and (min-width: 499px)";
+
+:root {
+	--space-4: 4px;
+	--space-6: 6px;
+	--space-8: 8px;
+	--space-10: 10px;
+	--space-12: 12px;
+	--space-16: 16px;
+	--space-20: 20px;
+	--space-24: 24px;
+
+	--button-size: 40px;
+	--button-radius: 2px;
+	--button-margin: 2px;
+
+	@media #{$mobileLayout} {
+		--space-4: 2px;
+		--space-6: 4px;
+		--space-8: 6px;
+		--space-10: 8px;
+		--space-12: 10px;
+		--space-16: 12px;
+		--space-20: 14px;
+		--space-24: 16px;
+
+		--button-size: 32px;
+		--button-radius: 2px;
+		--button-margin: 1.6px;
+	}
+}
+
+

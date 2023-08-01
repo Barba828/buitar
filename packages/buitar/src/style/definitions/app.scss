@@ -1,5 +1,3 @@
-// @import './global.scss';
-
 $gray-primary: rgb(94, 101, 105);
 $gray-second: rgba($gray-primary, 60%);
 $gray-third: rgb(123, 141, 151);
@@ -29,25 +27,13 @@ $white-03: rgba(178, 178, 178, 0.911);
 
 $button-size: 40;
 $button-margin: 2;
-$mobile-button-size: $button-size * 0.8;
-$mobile-button-margin: $button-margin * 0.8;
-
-$mobileLayout: "(max-width: 499px)";
-$pcLayout: "only screen and (min-width: 499px)";
-
-@mixin flex-center($direction: column) {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: $direction;
-}
-
-@mixin touch-color($color: $yellow-primary, $hover-color: $yellow-second) {
-	background: $color;
-	&:hover {
-		background: $hover-color;
-	}
-}
+$mobile-button-size: 32;
+$mobile-button-margin: 1.6;
+// $button-size-new: var(--button-size);
+// $button-size: var(--button-size);
+// $button-margin: var(--button-margin);
+// $mobile-button-size: var(--button-size);
+// $mobile-button-margin: var(--button-margin);
 
 // es module 使用
 :export {
