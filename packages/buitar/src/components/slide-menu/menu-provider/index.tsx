@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { useStore } from '@/utils/hooks/use-store'
 import { defaultMenuSetting, MenuKeys } from './menu-config'
 
-type MenuList = { [x in string]: boolean }
+type MenuList = Partial<Record<MenuKeys, boolean>>
 
 type MenuContextType = {
 	menus: MenuList

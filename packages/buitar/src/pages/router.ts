@@ -6,6 +6,7 @@ import { ChordProgressions } from './chord-progressions'
 import { Collections } from './collections'
 import { InstrumentPlayer } from './instrument-player'
 import { SequencerPlayer } from './sequencer-player'
+import { SettingsPage } from './settings'
 
 export const baseUrl = import.meta.env.BASE_URL || '/buitar/'
 
@@ -65,6 +66,13 @@ export const routeMap = {
 		path: `${baseUrl}creation`,
 		type: 'menu',
 		Component: SequencerPlayer,
+	},
+	settings: {
+		name_zh: '设置',
+		name_en: 'Settings',
+		path: `${baseUrl}settings`,
+		type: 'menu',
+		Component: SettingsPage,
 	},
 }
 

@@ -1,17 +1,9 @@
-import React from 'react'
 import cx from 'classnames'
-import { ControllerProps } from '../option-controller/option-controller.component'
 import styles from './controller.module.scss'
 
-interface ControllerListProps<T> extends ControllerProps {
-	list: T[]
-	className?: string
-	/**
-	 * 水平滚动显示
-	 */
-	scrollable?: boolean
-	onClickItem: (item: T, index?: number) => void
-	renderListItem: (item: T, checked?: boolean) => JSX.Element
+export interface ControllerProps<T> {
+	onClickItem?: (item: T, index?: number) => void
+	renderListItem?: (item: T, checked?: boolean) => JSX.Element
 
 	checkedItem?: (item: T) => boolean
 	visibleItem?: (item: T) => boolean
@@ -19,8 +11,21 @@ interface ControllerListProps<T> extends ControllerProps {
 	itemClassName?: (item: T) => string
 }
 
+export interface ControllerListProps<T> extends ControllerProps<T> {
+	list?: T[]
+	className?: string
+	/**
+	 * 水平滚动显示
+	 */
+	scrollable?: boolean
+	/**
+	 * 禁止trigger展开项（即全部展开可选项）
+	 */
+	disableAnimation?: boolean
+}
+
 export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element = ({
-	list,
+	list = [],
 	className,
 	scrollable = true,
 	onClickItem,
@@ -33,7 +38,7 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 }) => {
 	const controllerView = list.map((item, index) => {
 		const handleClick = () => {
-			onClickItem(item, index)
+			onClickItem?.(item, index)
 		}
 
 		const cls = cx(
@@ -47,7 +52,7 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 
 		return (
 			<div key={`${index}`} onClick={handleClick} className={cls}>
-				{renderListItem(item, checkedItem?.(item))}
+				{renderListItem ? renderListItem(item, checkedItem?.(item)) : String(item)}
 			</div>
 		)
 	})
@@ -58,7 +63,7 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 				className,
 				!disableAnimation && styles['board-controller-animation'],
 				!scrollable && styles['board-controller__wrap'],
-				styles['board-controller'],
+				styles['board-controller']
 			)}
 		>
 			{controllerView}

@@ -1,21 +1,19 @@
-import React, { FC, useCallback } from 'react'
-import { ControllerList } from '../controller'
-import { ControllerProps } from '../option-controller'
+import { FC, useCallback } from 'react'
 import { useBoardContext } from '../../board-provider'
 import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
+import { Point } from '@buitar/to-guitar'
+import { ControllerList, ControllerListProps } from '@/components/controller'
 
 import styles from './chord-taps-controller.module.scss'
-import { Point } from '@buitar/to-guitar'
 
 /**
  * 选择指法列表中的指法
  * @param props
  * @returns
  */
-export const ChordTapsController: FC<ControllerProps & { onClickTap?(points: Point[]): void }> = ({
-	onClickTap,
-	...props
-}) => {
+export const ChordTapsController: FC<
+	ControllerListProps<Point[]> & { onClickTap?(points: Point[]): void }
+> = ({ onClickTap, ...props }) => {
 	const { chordTaps, player, taps, setTaps } = useBoardContext()
 
 	const handleClick = useCallback(

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { GuitarBoard, ChordCard, BoardProvider, useBoardContext } from '@/components/guitar-board'
 import { Link } from 'react-router-dom'
-import { Point, transChordType } from '@buitar/to-guitar'
+import { transChordTaps } from '@buitar/to-guitar'
 import { Icon } from '@/components'
 import { routeMap } from '@/pages/router'
 
@@ -49,26 +49,16 @@ export const HomePage = () => {
 	)
 }
 
-const GIndex = [3, 18, 32, 48, 64, 83]
-
 const Example = () => {
-	const { taps, guitarBoardOption, setTaps, setChordTaps } = useBoardContext()
+	const { taps, guitarBoardOption, setTaps, setChordTaps,  } = useBoardContext()
 
 	if (!guitarBoardOption.keyboard) return null
 
-	const GChords = transChordType(['G', 'B', 'D'])
-	const GChordTaps: Point[] = []
-	guitarBoardOption.keyboard.forEach((string) => {
-		string.forEach((point) => {
-			if (GIndex.includes(point.index)) {
-				GChordTaps.push(point)
-			}
-		})
-	})
+	const GChordTaps = transChordTaps(['G', 'B', 'D'], guitarBoardOption.keyboard)
 
 	useEffect(() => {
-		setTaps(GChordTaps)
-		setChordTaps({ chordType: GChords, chordList: [] })
+		setTaps(GChordTaps.chordList[0])
+		setChordTaps(GChordTaps)
 	}, [])
 	return (
 		<>

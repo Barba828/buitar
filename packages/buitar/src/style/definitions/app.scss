@@ -32,6 +32,14 @@ $btn-size: var(--btn-size);
 $btn-margin: var(--btn-margin);
 $btn-radius: var(--btn-radius);
 
+$font-10: var(--font-10);
+$font-12: var(--font-12);
+$font-14: var(--font-14);
+$font-16: var(--font-16);
+$font-18: var(--font-18);
+$font-20: var(--font-20);
+$font-22: var(--font-22);
+
 // es module 使用
 :export {
 	button_size: $button-size;

@@ -1,17 +1,16 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import  { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	ProgressionItem,
 	ProgressionsConfig,
 	tagList,
 } from '@/pages/chord-progressions/progressions.config'
 import {
-	ControllerList,
-	ControllerProps,
 	Icon,
 	useBoardContext,
 	usePlayerContext,
 } from '@/components'
 import { transChord, transChordTaps, DEGREE_TAG_LIST } from '@buitar/to-guitar'
+import { ControllerList, ControllerListProps } from '@/components/controller'
 import cx from 'classnames'
 
 import styles from './degree-controller.module.scss'
@@ -219,11 +218,9 @@ export const DegreeEditor: FC<{
  * 级数和弦选择器
  * @returns
  */
-export const DegreeChordController: FC<ControllerProps> = () => {
+export const DegreeChordController: FC<ControllerListProps<any>> = () => {
 	const {
 		guitarBoardOption,
-		chord,
-		chordTaps,
 		setChord,
 		setChordTaps,
 		boardOptions: { isSharpSemitone },

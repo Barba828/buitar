@@ -21,7 +21,10 @@ $switch-size: calc($btn-size * 0.5);
 }
 
 .switch-on {
-	background: #eeea;
+	background: $yellow-primary;
+	&:hover {
+		background: $yellow-second;
+	}
 
 	.circle {
 		transform: translateX(calc($switch-size * 0.8));

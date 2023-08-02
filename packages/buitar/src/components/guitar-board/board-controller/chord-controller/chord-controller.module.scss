@@ -50,21 +50,21 @@
 		white-space: nowrap;
 		&-grade {
 			opacity: 0.8;
-			font-size: 12px;
+			font-size: $font-12;
 		}
 
 		&-note {
-			font-size: 22px;
+			font-size: $font-22;
 			line-height: 32px;
 		}
 
 		&-tag {
-			font-size: 16px;
+			font-size: $font-16;
 		}
 
 		&-scale {
 			opacity: 0.8;
-			font-size: 10px;
+			font-size: $font-10;
 			white-space: nowrap;
 		}
 	}

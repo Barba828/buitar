@@ -27,6 +27,11 @@
 			opacity: 0.8;
 		}
 	}
+	@media #{$mobileLayout} {
+		.controller-inner-unchecked {
+			opacity: 0.8;
+		}
+	}
 
 	.controller-inner-intro {
 		font-size: 12px;

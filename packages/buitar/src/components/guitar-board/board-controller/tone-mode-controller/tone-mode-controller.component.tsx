@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react'
-import { ControllerList } from '@/components/guitar-board/board-controller'
+import { useCallback } from 'react'
+import { ControllerList } from '@/components/controller'
 import { modeConfigs, ModeConfigType } from './tone-mode.config'
 import { ModeType } from '@buitar/to-guitar'
 import cx from 'classnames'
@@ -35,10 +35,10 @@ export const ToneModeController = ({
 	return (
 		<ControllerList
 			scrollable={false}
+			disableAnimation={true}
 			list={modeConfigs}
 			onClickItem={handleClick}
 			checkedItem={(item) => item.key === mode}
-			visibleItem={() => true}
 			renderListItem={renderInstrumentItem}
 			className={cx(styles['container'], componentStyles['mode-container'], className)}
 		/>

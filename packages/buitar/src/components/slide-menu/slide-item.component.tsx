@@ -45,6 +45,7 @@ export const SlideMenu = () => {
 			</Link>
 		))
 
+	// 侧边栏设置项
 	const options = menuConfig.map((item, index) => {
 		const checked = !!menus[item.key]
 		return (

@@ -18,6 +18,14 @@ $pcLayout: "only screen and (min-width: 499px)";
 	--btn-radius: 2px;
 	--btn-margin: 2px;
 
+	--font-10: 10px;
+	--font-12: 12px;
+	--font-14: 14px;
+	--font-16: 16px;
+	--font-18: 18px;
+	--font-20: 20px;
+	--font-22: 22px;
+
 	@media #{$mobileLayout} {
 		--space-4: 2px;
 		--space-6: 4px;
@@ -31,6 +39,14 @@ $pcLayout: "only screen and (min-width: 499px)";
 		--btn-size: 32px;
 		--btn-radius: 2px;
 		--btn-margin: 1.6px;
+
+		--font-10: 10px;
+		--font-12: 10px;
+		--font-14: 12px;
+		--font-16: 14px;
+		--font-18: 16px;
+		--font-20: 17px;
+		--font-22: 18px;
 	}
 }
 

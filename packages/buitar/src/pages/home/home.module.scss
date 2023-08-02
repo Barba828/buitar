@@ -23,8 +23,8 @@
 
 		.links-button {
 			font-weight: 300;
-			font-size: 18px;
-			width: calc($btn-size * 4);
+			font-size: $font-18;
+			width: calc($btn-size * 5);
 			height: calc($btn-size * 1.5);
 			text-decoration: none;
 			color: $white-01;
@@ -36,7 +36,7 @@
 	}
 
 	.intro {
-		font-size: 18px;
+		font-size: $font-18;
 		font-weight: 300;
 		letter-spacing: 0.5px;
 		opacity: 0.8;

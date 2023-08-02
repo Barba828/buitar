@@ -49,7 +49,6 @@ $controller-nums: 4;
 	.controller {
 		width: 0px;
 		margin: $controller-margin 0px;
-		// transition: width 0.15s ease-in-out, margin 0.15s ease-in-out;
 	}
 	&:hover {
 		.controller {

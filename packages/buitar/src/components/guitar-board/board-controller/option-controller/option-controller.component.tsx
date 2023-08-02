@@ -1,24 +1,22 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { useBoardContext } from '@/components/guitar-board/index'
 import { instrumentConfig } from '@buitar/tone-player/tone.config'
 import { Instrument } from '@buitar/tone-player/instrument.type'
 import { Icon } from '@/components/icon'
 import { optionsUIConfig, instrumentUIConfig } from './controller.config'
-import { ControllerList, GuitarBoardOptions } from '@/components/guitar-board/board-controller'
+import { GuitarBoardOptions } from '@/components/guitar-board/board-controller'
+import { ControllerList, ControllerListProps } from '@/components/controller'
+import { useMenuContext } from '@/components/slide-menu/menu-provider'
 import cx from 'classnames'
-import styles from './option-controller.module.scss'
-import { useMenuContext } from '@/components'
 
-export interface ControllerProps {
-	disableAnimation?: boolean
-}
+import styles from './option-controller.module.scss'
 
 export const OPTIONS_KEY = 'options'
 export const INSTRUMENT_KEY = 'instrument'
 
-export const BoardController: FC<ControllerProps> = (props) => {
+export const BoardController: FC<ControllerListProps<any> & {controllerClassName?: string}> = (props) => {
 	return (
-		<div className={styles['container']}>
+		<div className={cx(styles['container'], props.controllerClassName)}>
 			<BoardOptionsController {...props} />
 			<BoardInstrumentController {...props} />
 		</div>
@@ -30,7 +28,9 @@ export const BoardController: FC<ControllerProps> = (props) => {
  * @param props
  * @returns
  */
-export const BoardOptionsController: FC<ControllerProps> = (props) => {
+export const BoardOptionsController: FC<ControllerListProps<keyof GuitarBoardOptions>> = (
+	props
+) => {
 	const { boardOptions, dispatchBoardOptions } = useBoardContext()
 	const { menus } = useMenuContext()
 
@@ -86,7 +86,7 @@ export const BoardOptionsController: FC<ControllerProps> = (props) => {
  * @param props
  * @returns
  */
-export const BoardInstrumentController: FC<ControllerProps> = (props) => {
+export const BoardInstrumentController: FC<ControllerListProps<Instrument>> = (props) => {
 	const { instrument, dispatchInstrument } = useBoardContext()
 	const { menus } = useMenuContext()
 

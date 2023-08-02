@@ -1,17 +1,16 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react'
-import { ControllerList } from '../controller'
 import { Chord, chordDegreeMap, ChordDegreeNum, transChord, getDegreeTag } from '@buitar/to-guitar'
-import { ControllerProps } from '../option-controller'
 import { useBoardContext, ChordTapsController } from '@/components/guitar-board'
 import { FifthCircleController } from '../fifth-circle-controller'
 import { tagList } from '@/pages/chord-progressions/progressions.config'
 import { chordControllConfig } from './chord-controll.config'
 import { TabSwitch } from '@/components/ui'
+import { ControllerList, ControllerListProps } from '@/components/controller'
 import cx from 'classnames'
 
 import styles from './chord-controller.module.scss'
 
-export const ChordController: FC<ControllerProps> = (props) => {
+export const ChordController: FC = (props) => {
 	const [tabIndex, setTabIndex] = useState(0)
 
 	return (
@@ -99,7 +98,7 @@ const ChordTypePicker = () => {
  * @param props
  * @returns
  */
-const ChordNumPickerController: FC<ControllerProps> = (props) => {
+const ChordNumPickerController: FC<ControllerListProps<ChordDegreeNum>> = (props) => {
 	const { guitarBoardOption, guitar } = useBoardContext()
 
 	const handleClick = useCallback(
@@ -137,7 +136,7 @@ const ChordNumPickerController: FC<ControllerProps> = (props) => {
  * @param props
  * @returns
  */
-const ChordPickerController: FC<ControllerProps> = ({ ...props }) => {
+const ChordPickerController: FC<ControllerListProps<Chord>> = ({ ...props }) => {
 	const {
 		chord,
 		setChord,

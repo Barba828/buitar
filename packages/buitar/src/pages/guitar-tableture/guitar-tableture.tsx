@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import {
 	BoardProvider,
 	GuitarBoard,
@@ -7,13 +7,7 @@ import {
 } from '@/components/guitar-board'
 import { TabSwitch, RangeSlider, usePagesIntro, Icon } from '@/components'
 import type { RangeSliderProps } from '@/components'
-import {
-	ModeType,
-	Pitch,
-	Point,
-	getModeFregTaps,
-	getModeRangeTaps,
-} from '@buitar/to-guitar'
+import { ModeType, Pitch, Point, getModeFregTaps, getModeRangeTaps } from '@buitar/to-guitar'
 import { ToneModeController } from '@/components/guitar-board/board-controller/tone-mode-controller/tone-mode-controller.component'
 import cx from 'classnames'
 
@@ -30,7 +24,7 @@ const TABLETRUE_CONFIG: TabletrueItemConfig = {
 
 export const GuitarTableture: FC = () => {
 	const intro = usePagesIntro()
-	const [tabIndex, setTabIndex] = useState(1)
+	const [tabIndex, setTabIndex] = useState(0)
 	const tabList = ['指板分析', '固定区域指型']
 
 	return (

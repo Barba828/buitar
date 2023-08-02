@@ -20,8 +20,15 @@ export const AudioBtn: FC = memo(() => {
 	})
 
 	const toggleAudioContext = useCallback(async () => {
-        (window.tonePlayer as TonePlayer)?.getContext()?.triggerAttackRelease('A3', '2n')
+		const player = (window.tonePlayer as TonePlayer)?.getContext()
+        player?.triggerAttackRelease('A3', '2n')
+		
 		await Tone.start()
+		console.log(
+			'%c AudioContext ',
+			'color:white; background:rgb(199, 156, 15);border-radius: 2px',
+			player.context.state
+		)
 	}, [])
 
 	return (
