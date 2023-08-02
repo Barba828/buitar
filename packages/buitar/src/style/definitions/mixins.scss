@@ -7,7 +7,9 @@
 
 @mixin touch-color($color: $yellow-primary, $hover-color: $yellow-second) {
 	background: $color;
-	&:hover {
-		background: $hover-color;
+	@media (any-hover: hover) {
+		&:hover {
+			background: $hover-color;
+		}
 	}
 }

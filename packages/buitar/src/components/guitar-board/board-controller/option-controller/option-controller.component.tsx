@@ -14,7 +14,15 @@ import styles from './option-controller.module.scss'
 export const OPTIONS_KEY = 'options'
 export const INSTRUMENT_KEY = 'instrument'
 
-export const BoardController: FC<ControllerListProps<any> & {controllerClassName?: string}> = (props) => {
+export const BoardController: FC<
+	ControllerListProps<any> & {
+		controllerClassName?: string
+		/**
+		 * 可见（忽略menu设置）
+		 */
+		visible?: boolean
+	}
+> = (props) => {
 	return (
 		<div className={cx(styles['container'], props.controllerClassName)}>
 			<BoardOptionsController {...props} />
@@ -28,13 +36,13 @@ export const BoardController: FC<ControllerListProps<any> & {controllerClassName
  * @param props
  * @returns
  */
-export const BoardOptionsController: FC<ControllerListProps<keyof GuitarBoardOptions>> = (
-	props
-) => {
+export const BoardOptionsController: FC<
+	ControllerListProps<keyof GuitarBoardOptions> & { visible?: boolean }
+> = (props) => {
 	const { boardOptions, dispatchBoardOptions } = useBoardContext()
 	const { menus } = useMenuContext()
 
-	if (!menus.board_setting) {
+	if (!menus.board_setting && !props.visible) {
 		return null
 	}
 
@@ -54,10 +62,15 @@ export const BoardOptionsController: FC<ControllerListProps<keyof GuitarBoardOpt
 			: optionsUIConfig[option].unchecked
 
 		return (
-			<div className={styles['controller-inner']}>
+			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
 				{checkedItem.name_zh}
 				<div className={styles['controller-inner-unchecked']}>{uncheckedItem.name_zh}</div>
-				<div className={cx(styles['controller-inner-unchecked'], styles['controller-inner-intro'])}>
+				<div
+					className={cx(
+						styles['controller-inner-unchecked'],
+						props.size !== 'small' && styles['controller-inner-intro']
+					)}
+				>
 					{optionsUIConfig[option].others.intro_zh}
 				</div>
 			</div>
@@ -70,7 +83,6 @@ export const BoardOptionsController: FC<ControllerListProps<keyof GuitarBoardOpt
 	return (
 		<ControllerList
 			{...props}
-			scrollable={false}
 			list={list}
 			onClickItem={handleClick}
 			renderListItem={renderOptionItem}
@@ -86,19 +98,21 @@ export const BoardOptionsController: FC<ControllerListProps<keyof GuitarBoardOpt
  * @param props
  * @returns
  */
-export const BoardInstrumentController: FC<ControllerListProps<Instrument>> = (props) => {
+export const BoardInstrumentController: FC<
+	ControllerListProps<Instrument> & { visible?: boolean }
+> = (props) => {
 	const { instrument, dispatchInstrument } = useBoardContext()
 	const { menus } = useMenuContext()
 
-	if (!menus.instrument_setting) {
+	if (!menus.instrument_setting && !props.visible) {
 		return null
 	}
 
 	const renderInstrumentItem = (instrument: Instrument) => {
 		return (
-			<div className={styles['controller-inner']}>
+			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
 				<span>{instrumentUIConfig[instrument].name_zh}</span>
-				<Icon name={instrumentUIConfig[instrument].icon} size={30} />
+				<Icon name={instrumentUIConfig[instrument].icon} size={props.size === 'small' ? 16 : 30} />
 			</div>
 		)
 	}
@@ -110,7 +124,6 @@ export const BoardInstrumentController: FC<ControllerListProps<Instrument>> = (p
 	return (
 		<ControllerList
 			{...props}
-			scrollable={false}
 			list={Object.keys(instrumentConfig) as Instrument[]}
 			onClickItem={handleClick}
 			checkedItem={(item) => item === instrument}

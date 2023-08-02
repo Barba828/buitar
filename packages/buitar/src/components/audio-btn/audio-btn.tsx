@@ -34,7 +34,7 @@ export const AudioBtn: FC = memo(() => {
 	return (
 		<div
 			className={cx(
-				'buitar-primary-button',
+				// 'buitar-primary-button',
 				styles['audio-btn'],
 				!mute && styles['audio-btn__hidden']
 			)}

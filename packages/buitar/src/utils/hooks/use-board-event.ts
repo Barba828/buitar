@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NOTE_LIST } from '@buitar/to-guitar'
 import { useIsMobile } from '@/utils/hooks/use-device'
 
@@ -59,6 +59,23 @@ export const useBoardTouch = (
 				onClick: onMouseOver,
 		  }
 	return { handler, isTouched }
+}
+
+export const useBoardWheel = (element?: HTMLDivElement | null) => {
+	useEffect(() => {
+		if (!element) {
+			return
+		}
+
+		element.addEventListener(
+			'wheel',
+			(e) => {
+				e.preventDefault()
+				element.scrollLeft += e.deltaY
+			},
+			{ passive: false }
+		)
+	}, [element])
 }
 
 export const usePianoKeyDown = (touched: string[], setTouched: SetState<string[]>) => {

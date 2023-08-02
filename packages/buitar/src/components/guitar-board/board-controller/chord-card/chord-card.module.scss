@@ -81,20 +81,30 @@
 
 	.detail-chord {
 		display: flex;
-
+		
 		&-note {
 			width: calc($btn-size * 1.2);
 			height: calc($btn-size * 1.2);
 			padding: 2px;
+			position: relative;
 		}
 		&-title {
-			font-size: 18px;
+			font-size: $font-20;
+			font-weight: bold;
+			opacity: 0.8;
 			text-align: center;
 			transform: scale((1.2));
 		}
 		&-tag {
-			font-size: 10px;
+			position: absolute;
+			left: 2px;
+			top: 2px;
+			font-size: $font-10;
 			opacity: 0.6;
+		}
+		&-tag__end {
+			top: unset;
+			bottom: 2px;
 		}
 	}
 }

@@ -39,7 +39,7 @@ const chordMap = new Map<number, ChordType>([
 	[523, { tag: '7sus4', name: 'seventh suspended 4 chord', constitute: ['1', '4', '5', '7b'], name_zh: '属七挂四和弦' }],
 	[432, { tag: '6', name: 'sixth chord', constitute: ['1', '3', '5', '6'], name_zh: '大六和弦' }],
 	[342, { tag: 'm6', name: 'minor sixth chord', constitute: ['1', '3b', '5', '6'], name_zh: '小六和弦' }],
-	[341, { tag: 'mb6', name: 'minor sixth chord', constitute: ['1', '3b', '5', '6b'], name_zh: '减六和弦?' }], // 不知道这个怎么读
+	[341, { tag: 'mb6', name: 'minor sixth chord', constitute: ['1', '3b', '5', '6b'], name_zh: '减六和弦' }], // 不知道这个怎么读
 
 	/**
 	 * 七和弦拓展

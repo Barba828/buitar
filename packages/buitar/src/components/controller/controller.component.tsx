@@ -4,6 +4,7 @@ import styles from './controller.module.scss'
 export interface ControllerProps<T> {
 	onClickItem?: (item: T, index?: number) => void
 	renderListItem?: (item: T, checked?: boolean) => JSX.Element
+	size?: 'small' | 'medium' | 'large'
 
 	checkedItem?: (item: T) => boolean
 	visibleItem?: (item: T) => boolean
@@ -19,22 +20,23 @@ export interface ControllerListProps<T> extends ControllerProps<T> {
 	 */
 	scrollable?: boolean
 	/**
-	 * 禁止trigger展开项（即全部展开可选项）
+	 * 全部展开可选项
 	 */
-	disableAnimation?: boolean
+	extendItem?: boolean
 }
 
 export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element = ({
 	list = [],
 	className,
 	scrollable = true,
+	size = 'medium',
 	onClickItem,
 	renderListItem,
 	checkedItem,
 	visibleItem,
 	invisibleItem,
 	itemClassName,
-	disableAnimation,
+	extendItem = true,
 }) => {
 	const controllerView = list.map((item, index) => {
 		const handleClick = () => {
@@ -43,9 +45,13 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 
 		const cls = cx(
 			'buitar-primary-button',
-			styles['controller'],
+			extendItem
+				? styles['controller']
+				: visibleItem?.(item)
+				? styles['controller']
+				: styles['controller-not-extend'],
+			styles[`controller-extend__${size}`],
 			checkedItem?.(item) && styles['controller-checked'],
-			visibleItem?.(item) && styles['controller-extend'],
 			invisibleItem?.(item) && styles['controller-not-extend'],
 			itemClassName?.(item)
 		)
@@ -61,7 +67,6 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 		<div
 			className={cx(
 				className,
-				!disableAnimation && styles['board-controller-animation'],
 				!scrollable && styles['board-controller__wrap'],
 				styles['board-controller']
 			)}

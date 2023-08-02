@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import {
 	ChordController,
 	GuitarBoard,
@@ -26,6 +26,7 @@ export const ChordPlayer = () => {
 
 const ChordPlayerInner = () => {
 	const { chord, chordTaps, guitarBoardOption, setChordTaps, setTaps } = useBoardContext()
+	const isMobile = useIsMobile()
 
 	// 指板更新：清除和弦指位列表
 	useEffect(() => {
@@ -48,7 +49,7 @@ const ChordPlayerInner = () => {
 			<ChordDetail />
 			<GuitarBoard />
 			<ChordKeyboard />
-			<BoardController />
+			<BoardController extendItem={isMobile}/>
 		</>
 	)
 }

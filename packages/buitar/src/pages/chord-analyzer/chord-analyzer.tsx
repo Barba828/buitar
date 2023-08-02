@@ -20,12 +20,13 @@ import styles from './chord-analyzer.module.scss'
 
 export const ChordAnalyzer = () => {
 	const intro = usePagesIntro()
+	const isMobile = useIsMobile()
 
 	return (
 		<BoardProvider>
 			{intro}
+			<BoardController extendItem={isMobile} scrollable={isMobile}/>
 			<TapedGuitarBoard />
-			<BoardController />
 			<TapedChordCard />
 		</BoardProvider>
 	)

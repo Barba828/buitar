@@ -1,59 +1,60 @@
-$controller-size: 80px;
-$controller-margin: $btn-margin;
-$controller-nums: 4;
-
 %controller-extends {
-	margin: $controller-margin $controller-margin !important;
-	width: $controller-size !important;
+	margin: $btn-margin $btn-margin !important;
+
+	&.controller-extend__small {
+		width: calc($btn-size * 1.8);
+		height: calc($btn-size * 1.4);
+	}
+	&.controller-extend__medium {
+		width: calc($btn-size * 2);
+		height: calc($btn-size * 2);
+	}
+	&.controller-extend__large {
+		width: calc($btn-size * 2.6);
+		height: calc($btn-size * 2.6);
+	}
 }
 
 %controller-not-extends {
-	width: 0px !important;
-	margin: $controller-margin 0px !important;
+	width: 0px;
+	margin: $btn-margin 0px;
 }
 
 .board-controller {
 	display: flex;
 	flex-direction: row;
 	width: fit-content;
+	transition: all 0.15s ease-in-out;
 
 	&.board-controller__wrap {
 		flex-wrap: wrap;
 	}
 
 	.controller {
-		width: $controller-size;
-		height: $controller-size;
-		overflow: hidden;
-		&:hover {
-			opacity: 0.8;
-			background: $gray-primary;
+		width: calc($btn-size * 2);
+		height: calc($btn-size * 2);
+		@extend %controller-extends;
+
+		@media (any-hover: hover) {
+			&:hover {
+				opacity: 0.8;
+				background: $gray-primary;
+			}
 		}
 	}
-	.controller-extend {
-		@extend %controller-extends;
-	}
-	.controller-not-extend {
-		@extend %controller-not-extends;
-	}
+
 	.controller-checked {
 		@extend %controller-extends;
 		background: $yellow-primary !important;
 	}
-}
 
-.board-controller-animation {
-	transition: all 0.15s ease-in-out;
-
-	// 不能使用 !important，因为会覆盖原来度条件控制的样式
-	.controller {
-		width: 0px;
-		margin: $controller-margin 0px;
+	.controller-not-extend {
+		@extend %controller-not-extends;
 	}
+
 	&:hover {
-		.controller {
-			margin: $controller-margin $controller-margin;
-			width: $controller-size;
+		.controller-not-extend {
+			@extend %controller-extends;
 		}
 	}
 }

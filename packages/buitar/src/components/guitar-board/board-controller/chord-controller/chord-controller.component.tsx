@@ -126,7 +126,6 @@ const ChordNumPickerController: FC<ControllerListProps<ChordDegreeNum>> = (props
 				)
 			}}
 			checkedItem={checked}
-			visibleItem={() => true}
 		/>
 	)
 }
@@ -166,7 +165,6 @@ const ChordPickerController: FC<ControllerListProps<Chord>> = ({ ...props }) => 
 				)
 			}}
 			checkedItem={(item) => item.chord === chord}
-			visibleItem={() => true}
 		/>
 	)
 }

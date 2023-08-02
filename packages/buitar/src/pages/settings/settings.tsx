@@ -6,7 +6,12 @@ import styles from './settings.module.scss'
 export const SettingsPage: FC = () => {
 	return (
 		<BoardProvider>
-			<BoardController disableAnimation={true} controllerClassName={styles['board-settings']}/>
+			<BoardController
+				controllerClassName={styles['board-settings']}
+				scrollable={false}
+				size="large"
+				visible={true}
+			/>
 		</BoardProvider>
 	)
 }

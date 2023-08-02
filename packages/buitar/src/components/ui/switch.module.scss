@@ -1,4 +1,5 @@
-$switch-size: calc($btn-size * 0.5);
+// $switch-size: calc($btn-size * 0.5);
+$switch-size: 20px;
 
 .switch {
 	width: calc($switch-size * 1.8);
@@ -6,8 +7,10 @@ $switch-size: calc($btn-size * 0.5);
 	border-radius: $switch-size;
 	background: $gray-01;
 	transition: all 0.15s linear;
-	&:hover {
-		background: $gray-third;
+	@media (any-hover: hover) {
+		&:hover {
+			background: $gray-third;
+		}
 	}
 
 	.circle {
@@ -22,8 +25,10 @@ $switch-size: calc($btn-size * 0.5);
 
 .switch-on {
 	background: $yellow-primary;
-	&:hover {
-		background: $yellow-second;
+	@media (any-hover: hover) {
+		&:hover {
+			background: $yellow-second;
+		}
 	}
 
 	.circle {

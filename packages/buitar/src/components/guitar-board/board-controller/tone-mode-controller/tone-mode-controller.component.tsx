@@ -35,7 +35,6 @@ export const ToneModeController = ({
 	return (
 		<ControllerList
 			scrollable={false}
-			disableAnimation={true}
 			list={modeConfigs}
 			onClickItem={handleClick}
 			checkedItem={(item) => item.key === mode}

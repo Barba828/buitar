@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useMemo } from 'react'
+import React, { FC, useEffect, useMemo, useRef } from 'react'
 import type { Point, ToneSchema } from '@buitar/to-guitar'
 import { useBoardContext } from '../board-provider'
 import { getBoardOptionsTone } from '../utils'
 import { GuitarBoardOptions } from '../board-controller/controller.type'
-import { useBoardTouch, useGuitarKeyDown } from '@/utils/hooks/use-board-event'
+import { useBoardTouch, useBoardWheel, useGuitarKeyDown } from '@/utils/hooks/use-board-event'
 import { useDebounce } from '@/utils/hooks/use-debouce'
 import cx from 'classnames'
 import styles from './guitar-board.module.scss'
@@ -43,13 +43,16 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		resumePlayer,
 	} = useBoardContext()
 	const boardRange = range[0] < 1 ? [1, range[1]] : range;
-
+	const scrollRef = useRef<HTMLDivElement>(null)
+	
 	// 鼠标事件监听
 	const { handler } = useBoardTouch(emphasis, setEmphasis, {
 		onClick: resumePlayer,
 	})
 	// 键盘事件监听
 	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis)
+	// 滚轮事件监听
+	useBoardWheel(scrollRef.current)
 
 	const boardList = useMemo(() => {
 		if (!keyboard) {
@@ -125,7 +128,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	return (
 		<div id="fret-board" className={cx(styles.board)} {...handler} {...keyHandler}>
 			<div className={styles['board-view']}>{zeroView}</div>
-			<div className={'scroll-without-bar'}>
+			<div ref={scrollRef} className={'scroll-without-bar'}>
 				<div className={styles['board-view']}>{boardView}</div>
 			</div>
 		</div>

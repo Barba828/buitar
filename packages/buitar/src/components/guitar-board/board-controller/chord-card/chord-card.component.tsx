@@ -176,10 +176,10 @@ export const DetailCard: FC<{ index?: number }> = ({ index = 0 }) => {
 			</div>
 			<div className={styles['detail-chord']}>
 				{chordList.map(({note, degree, degreeTag}, index) => (
-					<div key={index} className={cx('buitar-primary-button', styles['detail-chord-note'])}>
+					<div key={index} className={cx('buitar-primary-button', styles['detail-chord-note'], 'flex-center')}>
 						<div className={styles['detail-chord-tag']}>{degreeTag}</div>
 						<div className={styles['detail-chord-title']}>{note}</div>
-						<div className={styles['detail-chord-tag']}>{degree}</div>
+						<div className={cx(styles['detail-chord-tag'], styles['detail-chord-tag__end'])}>{degree}</div>
 					</div>
 				))}
 			</div>

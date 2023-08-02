@@ -87,3 +87,9 @@
 .touch-purple {
 	@include touch-color($purple-primary, $purple-second);
 }
+
+.flex-center {
+	@include flex-center();
+	height: 100%;
+	width: 100%;
+}

@@ -11,6 +11,12 @@ body {
 	-ms-user-select: none;
 	user-select: none;
 	-webkit-user-drag: none;
+
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE 10+ */
+	&::-webkit-scrollbar {
+		display: none; /* Chrome Safari */
+	}
 }
 
 .app {
@@ -21,9 +27,8 @@ body {
 	.board {
 		width: 100%;
 		height: 100%;
-		overflow-y: scroll;
+		overflow-x: hidden;
 		padding-left: 12%;
-		// padding-right: 4%;
 
 		@media #{$mobileLayout} {
 			padding-left: 20px;
