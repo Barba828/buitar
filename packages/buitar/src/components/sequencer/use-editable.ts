@@ -4,8 +4,8 @@ import type { Block, Sound } from './sequencer'
 
 import styles from './sequencer.module.scss'
 
-type TouchEvent<T> = React.MouseEvent<T> & React.TouchEvent<T>
-type DivTouchEvent = TouchEvent<HTMLDivElement>
+type BaseTouchEvent<T> = React.MouseEvent<T> & React.TouchEvent<T>
+type DivTouchEvent = BaseTouchEvent<HTMLDivElement>
 
 /**
  * 根据 data-sq 属性 active/handler/empty编辑sounds
@@ -55,6 +55,14 @@ export const useEditable = ({
 	useEffect(() => {
 		setSoundList(sounds)
 	}, [sounds])
+
+	useEffect(() => {
+		const handler = (e: TouchEvent) => {
+			e.preventDefault()
+		}
+		container.current?.addEventListener('touchmove', handler)
+		return () => container.current?.removeEventListener('touchmove', handler)
+	}, [container.current])
 
 	if (!editable) {
 		return { handler: {}, ghost }

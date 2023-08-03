@@ -49,7 +49,7 @@ const ChordPlayerInner = () => {
 			<ChordDetail />
 			<GuitarBoard />
 			<ChordKeyboard />
-			<BoardController extendItem={isMobile}/>
+			<BoardController extendItem={false}/>
 		</>
 	)
 }

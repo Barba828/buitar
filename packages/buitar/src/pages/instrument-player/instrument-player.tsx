@@ -18,7 +18,7 @@ export const InstrumentPlayer = () => {
 	return (
 		<BoardProvider>
 			{intro}
-			<BoardController extendItem={isMobile}/>
+			<BoardController extendItem={false}/>
 			<GuitarBoard onChangePart={setPart} />
 			<PianoBoards onChangePart={setPianoPart} />
 		</BoardProvider>

@@ -21,6 +21,7 @@
 
 %controller-not-extends {
 	width: 0px;
+	height: unset;
 	margin: $btn-margin 0px;
 }
 
@@ -28,7 +29,6 @@
 	display: flex;
 	flex-direction: row;
 	width: fit-content;
-	transition: all 0.15s ease-in-out;
 
 	&.board-controller__wrap {
 		flex-wrap: wrap;
