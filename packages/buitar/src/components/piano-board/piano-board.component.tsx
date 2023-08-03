@@ -38,7 +38,7 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 	// 按钮事件
 	const { part, keyHandler } = usePianoKeyDown(touched, setTouched)
 	// 滚轮事件监听
-	useBoardWheel(scrollRef.current)
+	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
 
 	const debouceTouched = useDebounce(touched, 30)
 	useEffect(() => {

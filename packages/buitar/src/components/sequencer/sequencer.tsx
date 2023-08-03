@@ -15,8 +15,9 @@ import { useIsMobile } from '@/utils/hooks/use-device'
  * 单序列active的音符
  * number[0] 为起始位置
  * number[1] 为结束位置
+ * string 为状态
  */
-export type Block = [number, number]
+export type Block = [number, number, ('translucent' | string)?]
 /**
  * key: 音符
  * blocks: 单序列active的音符列表
@@ -350,6 +351,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 									// `touch-yellow`
 								)}
 								style={{
+									opacity: block[2] === 'translucent' ? 0.4 : 1,
 									transform: `translateX(${block[0] * itemSize}px)`,
 									width: itemSize * (block[1] - block[0]) + itemWidth,
 								}}

@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
+import { useIsTouch } from '@/utils/hooks/use-device'
 import type { Block, Sound } from './sequencer'
 
 import styles from './sequencer.module.scss'
+
+type TouchEvent<T> = React.MouseEvent<T> & React.TouchEvent<T>
+type DivTouchEvent = TouchEvent<HTMLDivElement>
 
 /**
  * 根据 data-sq 属性 active/handler/empty编辑sounds
@@ -26,12 +30,21 @@ export const useEditable = ({
 
 	onChange?: (sounds: Sound) => void
 }) => {
+	const isMobile = useIsTouch()
 	const [soundList, setSoundList] = useState(sounds)
 
 	const start = useRef<[number, number]>([0, 0]) // 音序图左上起始坐标
 	const offset = useRef<[number, number]>([0, 0]) // 拖拽时，鼠标锚点相对于音序条位置
 	const dragable = useRef<false | 'drag' | 'resize'>(false) // 拖拽触发类型
-	const preTargetData = useRef<[number, number, number, number]>([-1, 0, 0, Date.now()]) // mouseenter事件前音序条位置，判断点击之后之后位置有更改则更新，无更改则删除
+	/**
+	 * 幽灵条原dom参数 [keyIndex, index, block[0], block[1]]
+	 */
+	const preTargetData = useRef<[number, number, number, number]>([-1, -1, 0, 0])
+	/**
+	 * 幽灵条dom参数
+	 * yIndex, xIndex, length -> 纵轴位置，横轴位置，长度
+	 */
+	const [ghost, setGhost] = useState<[number, number, number]>([-1, 0, 0])
 
 	useEffect(() => {
 		if (!container.current) return
@@ -43,12 +56,6 @@ export const useEditable = ({
 		setSoundList(sounds)
 	}, [sounds])
 
-	/**
-	 * 幽灵条
-	 * yIndex, xIndex, length -> 纵轴位置，横轴位置，长度
-	 */
-	const [ghost, setGhost] = useState<[number, number, number]>([-1, 0, 0])
-
 	if (!editable) {
 		return { handler: {}, ghost }
 	}
@@ -58,8 +65,9 @@ export const useEditable = ({
 	 * 根据 client 位置和 start 位置计算被拖拽条绝对位置
 	 * 幽灵条长度不变，改变(x,y)坐标
 	 */
-	const handleDragGhost = (e: React.MouseEvent) => {
-		const { clientX, clientY } = e
+	const handleDragGhost = (e: DivTouchEvent) => {
+		const clientX = e?.clientX || e?.touches[0]?.clientX
+		const clientY = e?.clientY || e?.touches[0]?.clientY
 		const [x, y] = start.current
 		const [offsetX] = offset.current
 		const yIndex = Math.floor((clientY - y) / itemSizeY)
@@ -74,8 +82,8 @@ export const useEditable = ({
 	 * 计算 resize-handler 绝对位置改变幽灵条长度
 	 * 幽灵条位置，改变长度
 	 */
-	const handleResizeGhost = (e: React.MouseEvent) => {
-		const { clientX } = e
+	const handleResizeGhost = (e: DivTouchEvent) => {
+		const clientX = e?.clientX || e?.touches[0]?.clientX
 		const [x] = start.current
 		const left = ghost[1] * itemSize + x
 		const length = Math.floor((clientX - left) / itemSize)
@@ -92,20 +100,16 @@ export const useEditable = ({
 		if (ghost[0] < 0) {
 			return
 		}
+
+		// 存在原音序条 -> 删除
+		if (soundList[Number(preTargetData.current[0])]) {
+			soundList[Number(preTargetData.current[0])].blocks.splice(preTargetData.current[1], 1)
+		}
+		// 使用幽灵音序条 -> 生成新音序条
 		const blocks = soundList[ghost[0]].blocks
 		const block: Block = [ghost[1], ghost[1] + ghost[2]] // 例 [2, 4]
 		block[0] < 0 && (block[0] = 0)
 		block[1] > maxLength - 1 && (block[1] = maxLength - 1)
-
-		// 和点击前 音序条 相同，且相隔时间小于 300 ms，视为点击事件 => 删除
-		if (
-			ghost.every((item, index) => item === preTargetData.current[index]) &&
-			preTargetData.current[3] + 300 > Date.now()
-		) {
-			// 待删除 音序条 已经在mousedown转为幽灵条，不用再 splice 删除了
-			// 幽灵条会在 mouseup 时删除
-			return
-		}
 
 		// 移动/拉伸 音序条 => 更新
 		const coverBlocks = [block]
@@ -142,7 +146,7 @@ export const useEditable = ({
 	/**
 	 * 事件处理
 	 */
-	const onMouseMove = (e: React.MouseEvent) => {
+	const onMouseMove = (e: DivTouchEvent) => {
 		if (dragable.current === 'drag') {
 			// drag模式下更新幽灵音序条位置
 			handleDragGhost(e)
@@ -151,8 +155,10 @@ export const useEditable = ({
 			handleResizeGhost(e)
 		}
 	}
-	const onMouseDown = (e: React.MouseEvent) => {
+	const onMouseDown = (e: DivTouchEvent) => {
 		const targetData = (e.target as HTMLElement).dataset.sq
+		const clientX = e?.clientX || e?.touches[0]?.clientX
+		const clientY = e?.clientY || e?.touches[0]?.clientY
 		if (!targetData) {
 			return
 		}
@@ -160,23 +166,23 @@ export const useEditable = ({
 		// 获取原音序条data
 		const [keyIndex, index, type] = targetData.split('-')
 		// 获取原音序条block
-		const block = soundList[Number(keyIndex)].blocks[Number(index)]
+		const block = soundList[Number(keyIndex)].blocks[Number(index)] || [-1, -1]
 
+		preTargetData.current = [Number(keyIndex), Number(index), block[0], block[1]]
 		if (type === 'active') {
 			// 音序条拖拽
 			dragable.current = 'drag'
-			preTargetData.current = [Number(keyIndex), block[0], block[1] - block[0], Date.now()]
 
 			// 默认幽灵条属性
 			ghost[2] = block[1] - block[0]
 
 			// 获取点击音序条初始位置（相对offset）
 			const rect = (e.target as HTMLElement).getBoundingClientRect()
-			offset.current = [e.clientX - rect.x, e.clientY - rect.y]
+			offset.current = [clientX - rect.x, clientY - rect.y]
 
-			// 移除原音序条（mouseup事件再将幽灵条还原为音序条）
-			soundList[Number(keyIndex)].blocks.splice(Number(index), 1)
-			setSoundList([...soundList])
+			// 原音序条置为半透明态
+			soundList[Number(keyIndex)].blocks[Number(index)][2] = 'translucent'
+			setSoundList(soundList)
 
 			// 以幽灵音序条代替
 			handleDragGhost(e)
@@ -188,30 +194,37 @@ export const useEditable = ({
 			ghost[0] = Number(keyIndex)
 			ghost[1] = type === 'handler' ? block[0] : Number(index)
 
-			if (type === 'handler') {
-				// 移除原音序条（mouseup事件再将幽灵条还原为音序条）
-				soundList[Number(keyIndex)].blocks.splice(Number(index), 1)
-				setSoundList([...soundList])
+			if (soundList[Number(keyIndex)].blocks[Number(index)]) {
+				// 原音序条置为半透明态
+				soundList[Number(keyIndex)].blocks[Number(index)][2] = 'translucent'
+				setSoundList(soundList)
 			}
 
 			// 以幽灵音序条代替
 			handleResizeGhost(e)
 		}
 	}
-	const onMouseUp = (e: React.MouseEvent) => {
+	const onMouseUp = (e: DivTouchEvent) => {
 		if (dragable.current) {
 			updateSoundList()
 			setGhost([-1, 0, 0])
-			preTargetData.current = [-1, 0, 0, 0]
+			preTargetData.current = [-1, -1, 0, 0]
 		}
 		dragable.current = false
 	}
-	const handler = {
-		onMouseMove,
-		onMouseDown,
-		onMouseUp,
-		onMouseLeave: onMouseUp,
-	}
 
+	const handler = isMobile
+		? {
+				onTouchStart: onMouseDown,
+				onTouchMove: onMouseMove,
+				onTouchEnd: onMouseUp,
+				onTouchCancel: onMouseUp,
+		  }
+		: {
+				onMouseMove,
+				onMouseDown,
+				onMouseUp,
+				onMouseLeave: onMouseUp,
+		  }
 	return { handler, ghost, dragable }
 }

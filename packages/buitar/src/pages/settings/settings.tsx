@@ -10,7 +10,7 @@ export const SettingsPage: FC = () => {
 				controllerClassName={styles['board-settings']}
 				scrollable={false}
 				size="large"
-				visible={true}
+				ignore={true}
 			/>
 		</BoardProvider>
 	)

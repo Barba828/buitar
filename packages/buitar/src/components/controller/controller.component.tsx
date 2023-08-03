@@ -1,5 +1,8 @@
 import cx from 'classnames'
 import styles from './controller.module.scss'
+import { Icon } from '@/components/icon'
+import { useCallback, useEffect, useState } from 'react'
+import { useIsHoverable } from '@/utils/hooks/use-device'
 
 export interface ControllerProps<T> {
 	onClickItem?: (item: T, index?: number) => void
@@ -38,21 +41,35 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 	itemClassName,
 	extendItem = true,
 }) => {
+	const isHoverable = useIsHoverable()
+	const [extend, setExtend] = useState(extendItem)
+	const handleClickTrigger = useCallback(() => {
+		setExtend(!extend)
+	}, [extend])
+
+	useEffect(() => {
+		setExtend(extendItem)
+	}, [extendItem])
+
 	const controllerView = list.map((item, index) => {
 		const handleClick = () => {
 			onClickItem?.(item, index)
 		}
 
+		// 展开优先级 1.item不可见；2.list默认展开；3.item可见
+		const itemExtendClass = invisibleItem?.(item)
+			? styles['controller-not-extend']
+			: extend
+			? styles['controller']
+			: visibleItem?.(item)
+			? styles['controller']
+			: styles['controller-not-extend']
+
 		const cls = cx(
 			'buitar-primary-button',
-			extendItem
-				? styles['controller']
-				: visibleItem?.(item)
-				? styles['controller']
-				: styles['controller-not-extend'],
+			itemExtendClass,
 			styles[`controller-extend__${size}`],
 			checkedItem?.(item) && styles['controller-checked'],
-			invisibleItem?.(item) && styles['controller-not-extend'],
 			itemClassName?.(item)
 		)
 
@@ -63,6 +80,22 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 		)
 	})
 
+	// 非全部展开 且 不支持Hover才显示展开trigger（PC非全部展开使用Hover展开list）
+	const trigger = !isHoverable && !extendItem && list.length > 0 && (
+		<div
+			className={cx(
+				'buitar-primary-button',
+				'flex-center',
+				styles['controller'],
+				styles[`controller-extend__${size}`],
+				styles[`controller-trigger`]
+			)}
+			onClick={handleClickTrigger}
+		>
+			<Icon name="icon-back" size={12} />
+		</div>
+	)
+
 	const views = (
 		<div
 			className={cx(
@@ -71,6 +104,7 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 				styles['board-controller']
 			)}
 		>
+			{trigger}
 			{controllerView}
 		</div>
 	)

@@ -1,4 +1,4 @@
-%controller-extends {
+@mixin controller-extends {
 	margin: $btn-margin $btn-margin !important;
 
 	&.controller-extend__small {
@@ -13,6 +13,10 @@
 		width: calc($btn-size * 2.6);
 		height: calc($btn-size * 2.6);
 	}
+}
+
+%controller-extends {
+	@include controller-extends();
 }
 
 %controller-not-extends {
@@ -52,9 +56,18 @@
 		@extend %controller-not-extends;
 	}
 
-	&:hover {
-		.controller-not-extend {
-			@extend %controller-extends;
+	.controller-trigger {
+		width: calc($btn-size / 3) !important;
+		> svg {
+			opacity: 0.6;
+		}
+	}
+
+	@media (any-hover: hover) {
+		&:hover {
+			.controller-not-extend {
+				@include controller-extends();
+			}
 		}
 	}
 }

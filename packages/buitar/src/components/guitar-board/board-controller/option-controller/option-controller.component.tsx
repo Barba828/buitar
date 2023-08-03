@@ -20,7 +20,7 @@ export const BoardController: FC<
 		/**
 		 * 可见（忽略menu设置）
 		 */
-		visible?: boolean
+		ignore?: boolean
 	}
 > = (props) => {
 	return (
@@ -37,12 +37,12 @@ export const BoardController: FC<
  * @returns
  */
 export const BoardOptionsController: FC<
-	ControllerListProps<keyof GuitarBoardOptions> & { visible?: boolean }
+	ControllerListProps<keyof GuitarBoardOptions> & { ignore?: boolean }
 > = (props) => {
 	const { boardOptions, dispatchBoardOptions } = useBoardContext()
 	const { menus } = useMenuContext()
 
-	if (!menus.board_setting && !props.visible) {
+	if (!menus.board_setting && !props.ignore) {
 		return null
 	}
 
@@ -99,12 +99,12 @@ export const BoardOptionsController: FC<
  * @returns
  */
 export const BoardInstrumentController: FC<
-	ControllerListProps<Instrument> & { visible?: boolean }
+	ControllerListProps<Instrument> & { ignore?: boolean }
 > = (props) => {
 	const { instrument, dispatchInstrument } = useBoardContext()
 	const { menus } = useMenuContext()
 
-	if (!menus.instrument_setting && !props.visible) {
+	if (!menus.instrument_setting && !props.ignore) {
 		return null
 	}
 

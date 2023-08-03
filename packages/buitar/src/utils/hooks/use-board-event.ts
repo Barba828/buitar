@@ -67,14 +67,13 @@ export const useBoardWheel = (element?: HTMLDivElement | null) => {
 			return
 		}
 
-		element.addEventListener(
-			'wheel',
-			(e) => {
-				e.preventDefault()
-				element.scrollLeft += e.deltaY
-			},
-			{ passive: false }
-		)
+		const handleWheel = (e: WheelEvent) => {
+			e.preventDefault()
+			element.scrollLeft += e.deltaY
+		}
+
+		element.addEventListener('wheel', handleWheel, { passive: false })
+		return element.removeEventListener('wheel', handleWheel)
 	}, [element])
 }
 

@@ -52,7 +52,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	// 键盘事件监听
 	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis)
 	// 滚轮事件监听
-	useBoardWheel(scrollRef.current)
+	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
 
 	const boardList = useMemo(() => {
 		if (!keyboard) {

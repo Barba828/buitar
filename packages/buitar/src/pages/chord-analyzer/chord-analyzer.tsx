@@ -25,7 +25,7 @@ export const ChordAnalyzer = () => {
 	return (
 		<BoardProvider>
 			{intro}
-			<BoardController extendItem={isMobile} scrollable={isMobile}/>
+			<BoardController extendItem={false} scrollable={isMobile}/>
 			<TapedGuitarBoard />
 			<TapedChordCard />
 		</BoardProvider>

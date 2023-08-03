@@ -63,5 +63,16 @@ export const useDevice = () => {
 
 /**
  * 基于媒体查询获取是否移动设备
+ * @media (max-width: 499px)
  */
 export const useIsMobile = () => useMediaQuery('(max-width: 499px)')
+/**
+ * 基于媒体查询获取是否支持Hover
+ * @media (any-hover: hover)
+ */
+export const useIsHoverable = () => useMediaQuery('(any-hover: hover)')
+/**
+ * 基于媒体查询获取是否支持Touch
+ * @media (pointer: coarse)
+ */
+export const useIsTouch = () => useMediaQuery('(pointer: coarse)')
