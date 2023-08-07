@@ -1,3 +1,9 @@
+.board {
+	border-radius: calc($btn-margin * 3);
+	overflow: hidden;
+	margin: $btn-margin;
+}
+
 .point {
 	z-index: 1;
 	position: relative;
@@ -21,8 +27,7 @@
 	width: calc($btn-size * 2);
 	height: calc($btn-size);
 	background: rgba($gray-primary, 0.4);
-
-	border-right: $btn-margin solid $yellow-second;
+	border-right: calc($btn-margin * 1.6) solid $yellow-second;
 
 	.point-string {
 		z-index: 0;
@@ -32,29 +37,28 @@
 		background: rgba($gray-third, 0.6);
 		top: calc(50% - $btn-margin * 0.8);
 		pointer-events: none;
+		border-bottom: $btn-margin solid rgba($gray-07, 0.6);
 	}
 }
 
 .fret-dots {
-    position: absolute;
+	position: absolute;
 	.fret-dots-item {
 		height: calc($btn-size * 0.32);
 		width: calc($btn-size * 0.32);
 		border-radius: calc($btn-size * 0.16);
 		background: rgba($white-01, 0.5);
-        margin: calc($btn-margin);
-        opacity: 1;
-        transition: all 0.15s ease-in-out;
+		margin: calc($btn-margin);
+		opacity: 1;
+		transition: all 0.15s ease-in-out;
 	}
 }
 
 .fret-num-dots {
-    margin-top: $btn-margin;
+	margin-top: $btn-margin;
 	font-size: $font-16 !important;
-    color: rgba($white-01, 0.5);
-    font-weight: bold;
+	color: rgba($white-01, 0.5);
+	font-weight: bold;
 	background: rgba($gray-primary, 0.4);
-    transition: all 0.15s ease-in-out;
+	transition: all 0.15s ease-in-out;
 }
-
-

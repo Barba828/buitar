@@ -120,7 +120,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		const fretsView = frets
 			.reverse()
 			.map((point, stringIndex) => (
-				<BoardBtnComponent key={stringIndex} point={point} visible={true} />
+				<BoardBtnComponent key={stringIndex} point={point} visible={true} stringVisible={false} />
 			))
 
 		const playButton = (
@@ -145,7 +145,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	})
 
 	return (
-		<div id="fret-board" className={cx(styles.board)} {...handler} {...keyHandler}>
+		<div id="fret-board" className={cx(styles.board, boardTheme !== 'default' && fretStyles['board'])} {...handler} {...keyHandler}>
 			<div className={styles['board-view']}>{zeroView}</div>
 			<div ref={scrollRef} className={'scroll-without-bar'}>
 				<div className={styles['board-view']}>{boardView}</div>
@@ -158,7 +158,15 @@ const BoardButton = ({
 	point,
 	itemClassName,
 	visible = false,
-}: { point: Point; itemClassName?: string; visible?: boolean } & GuitarBoardProps) => {
+	stringVisible = true,
+}: {
+	point: Point
+	itemClassName?: string
+	/** 按钮默认可见 */
+	visible?: boolean
+	/** 弦默认可见 */
+	stringVisible?: boolean
+} & GuitarBoardProps) => {
 	const {
 		key,
 		element,
@@ -177,7 +185,7 @@ const BoardButton = ({
 			{element}
 		</div>
 	)
-	const stringLine = <div className={fretStyles['point-string']}></div>
+	const stringLine = stringVisible && <div className={fretStyles['point-string']}></div>
 
 	return (
 		<li className={cx(fretStyles['fret-point'], 'flex-center')}>

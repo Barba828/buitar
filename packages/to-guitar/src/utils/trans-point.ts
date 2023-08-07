@@ -107,6 +107,7 @@ const transChordTaps = (tones: Tone[], board: GuitarBoard = transBoard(), finger
 	 * @param taps 递归当前和弦列表
 	 */
 	const findNextString = (stringIndex: number, taps: Point[]) => {
+		// 遍历完所有弦，递归结束
 		if (stringIndex >= board.length) {
 			tapsList.push(taps)
 			return
