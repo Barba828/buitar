@@ -13,3 +13,13 @@
 		}
 	}
 }
+
+@mixin hover-effect($properties) {
+	@media (any-hover: hover) {
+		&:hover {
+			@each $property, $value in $properties {
+				#{$property}: $value;
+			}
+		}
+	}
+}

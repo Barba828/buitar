@@ -14,7 +14,7 @@ export const Icon: FC<IconProps> = ({ name, size = '1em', color, className, ...r
 	const style = { width: size, height: size, color: color, ...restProps?.style }
 
 	return (
-		<svg className={cx('icon', className)} {...restProps} style={style} aria-hidden="true">
+		<svg className={cx('icon', name, className)} {...restProps} style={style} aria-hidden="true">
 			<use xlinkHref={`#${name}`}></use>
 		</svg>
 	)

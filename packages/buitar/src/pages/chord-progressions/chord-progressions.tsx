@@ -18,7 +18,6 @@ import styles from './chord-progressions.module.scss'
 
 export const ChordProgressions = () => {
 	const intro = usePagesIntro()
-	const isMobile = useIsMobile()
 	return (
 		<BoardProvider>
 			<PlayerProvider>

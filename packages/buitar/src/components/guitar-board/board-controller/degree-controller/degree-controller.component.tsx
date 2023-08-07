@@ -1,14 +1,10 @@
-import  { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	ProgressionItem,
 	ProgressionsConfig,
 	tagList,
 } from '@/pages/chord-progressions/progressions.config'
-import {
-	Icon,
-	useBoardContext,
-	usePlayerContext,
-} from '@/components'
+import { Icon, useBoardContext, usePlayerContext } from '@/components'
 import { transChord, transChordTaps, DEGREE_TAG_LIST } from '@buitar/to-guitar'
 import { ControllerList, ControllerListProps } from '@/components/controller'
 import cx from 'classnames'
@@ -57,22 +53,26 @@ export const DegreeController = () => {
 				<span className={styles['degree-item-tag']}>{degree.tag}</span>
 			</div>
 		))
+		const expandBtns = expand && (
+			<div
+				className={cx('buitar-primary-button', styles['degree-btn'], styles['degree-remove'])}
+				onClick={() => handleRemove(index)}
+			>
+				<Icon name="icon-close" />
+			</div>
+		)
 
 		return (
 			<div
 				key={index}
 				className={cx(
+					'scroll-without-bar',
 					styles['degree-view'],
 					progressionIndex === index && styles['degree-view-checked']
 				)}
 			>
 				{degreesView}
-				<div
-					className={cx('buitar-primary-button', styles['degree-add'], styles['degree-remove'])}
-					onClick={() => handleRemove(index)}
-				>
-					<Icon name="icon-close" />
-				</div>
+				{expandBtns}
 			</div>
 		)
 	})
@@ -87,18 +87,18 @@ export const DegreeController = () => {
 				</>
 			) : (
 				<>
+					<div className={styles['degree-container']}>{expand ? list : item}</div>
 					<div
 						className={cx(
 							'buitar-primary-button',
-							styles['degree-expand'],
+							styles['degree-btn'],
 							expand && styles['icon-expand']
 						)}
 						onClick={toggleExpande}
 					>
 						<Icon name="icon-back" />
 					</div>
-					<div className={styles['degree-container']}>{expand ? list : item}</div>
-					<div className={cx('buitar-primary-button', styles['degree-add'])} onClick={toggleEdit}>
+					<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={toggleEdit}>
 						<Icon name="icon-add" />
 					</div>
 				</>
@@ -165,15 +165,15 @@ export const DegreeEditor: FC<{
 						</div>
 					</div>
 				))}
-				<div className={cx('buitar-primary-button', styles['degree-add'])} onClick={handleAdd}>
+				<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={handleAdd}>
 					<Icon name="icon-add" size={24} />
 				</div>
 
-				<div className={cx('buitar-primary-button', styles['degree-add'])} onClick={handleSubmit}>
-					<Icon name="icon-confirm" />
+				<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={handleSubmit}>
+					<Icon name="icon-confirm" size={28}/>
 				</div>
-				<div className={cx('buitar-primary-button', styles['degree-add'])} onClick={onClose}>
-					<Icon name="icon-close" />
+				<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={onClose}>
+					<Icon name="icon-close" size={30}/>
 				</div>
 			</div>
 

@@ -1,65 +1,58 @@
+$degree-btn-size: calc($btn-size * 1.6);
+
 .degree-controller {
 	display: flex;
 	flex-wrap: wrap;
 
 	.degree-expand {
-		width: calc($btn-size / 2);
-		height: calc($btn-size * 2);
+		min-width: calc($btn-size * 0.4);
+		width: calc($btn-size * 0.4);
+		height: $degree-btn-size;
+		@include flex-center;
+	}
+
+	.degree-btn {
+		width: $degree-btn-size;
+		height: $degree-btn-size;
 		@include flex-center;
 
-		&.icon-expand {
-			:global(.icon) {
-				transform: rotate(90deg);
-			}
-		}
-
-		:global(.icon) {
-			width: 0.7em;
-			opacity: 0.6;
+		:global(.icon-back) {
 			transform: rotate(-90deg);
 			transition: transform 0.3s ease-in-out;
 		}
-	}
-
-	.degree-add {
-		width: calc($btn-size * 2);
-		height: calc($btn-size * 2);
-		@include flex-center;
-
-		&:hover {
-			:global(.icon) {
-				opacity: 0.6;
+		&.icon-expand {
+			:global(.icon-back) {
+				transform: rotate(90deg);
 			}
 		}
-
+		
 		:global(.icon) {
-			width: 2em;
-			height: 2em;
+			font-size: $font-22;
 			opacity: 0.4;
+		}
+		@media (any-hover: hover) {
+			&:hover {
+				:global(.icon) {
+					opacity: 0.6;
+				}
+			}
 		}
 	}
 }
 
 .degree-container {
-	// flex: 1;
+	width: 100%;
 
 	.degree-view {
 		opacity: 0;
 		display: flex;
 		animation: show 0.5s forwards;
 
-		&:hover {
-			.degree-remove {
-				display: flex;
-				width: calc($btn-size * 2);
-				margin: 2px;
-			}
-		}
-
 		.degree-item {
 			position: relative;
-			width: calc($btn-size * 2);
-			height: calc($btn-size * 2);
+			width: $degree-btn-size;
+			min-width: $degree-btn-size;
+			height: $degree-btn-size;
 			font-size: 24px;
 			white-space: nowrap;
 			@include flex-center(row);
@@ -86,6 +79,7 @@
 		}
 
 		.degree-item-second {
+			width: calc($btn-size * 2);
 			height: $btn-size;
 			&:hover {
 				@include touch-color;
@@ -97,6 +91,23 @@
 			margin: 2px 0px;
 			&:hover {
 				@include touch-color($purple-primary, $purple-second);
+			}
+		}
+
+		&:hover {
+			.degree-remove {
+				display: flex;
+				width: $degree-btn-size;
+				min-width: $degree-btn-size;
+				margin: 2px;
+			}
+		}
+		@media #{$mobileLayout} {
+			.degree-remove {
+				display: flex;
+				width: $degree-btn-size;
+				min-width: $degree-btn-size;
+				margin: 2px;
 			}
 		}
 
