@@ -60,15 +60,16 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 		const itemExtendClass = invisibleItem?.(item)
 			? styles['controller-not-extend']
 			: extend
-			? styles['controller']
+			? styles['controller-extend']
 			: visibleItem?.(item)
-			? styles['controller']
+			? styles['controller-extend']
 			: styles['controller-not-extend']
 
 		const cls = cx(
 			'buitar-primary-button',
-			itemExtendClass,
+			styles[`controller`],
 			styles[`controller-extend__${size}`],
+			itemExtendClass,
 			checkedItem?.(item) && styles['controller-checked'],
 			itemClassName?.(item)
 		)
@@ -87,12 +88,14 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => JSX.Element =
 				'buitar-primary-button',
 				'flex-center',
 				styles['controller'],
+				styles['controller-extend'],
 				styles[`controller-extend__${size}`],
-				styles[`controller-trigger`]
+				styles[`controller-trigger`],
+				extend && styles[`controller-trigger__extend`]
 			)}
 			onClick={handleClickTrigger}
 		>
-			<Icon name="icon-back" size={12} />
+			<Icon name="icon-play" size={14} />
 		</div>
 	)
 

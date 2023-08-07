@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
 	BoardController,
 	BoardProvider,
@@ -7,13 +7,11 @@ import {
 	useBoardContext,
 	usePagesIntro,
 } from '@/components'
-import { useIsMobile } from '@/utils/hooks/use-device'
 
 export const InstrumentPlayer = () => {
 	const intro = usePagesIntro()
 	const [part, setPart] = useState(false)
 	const [level, setPianoPart] = useState(false)
-	const isMobile = useIsMobile()
 
 	return (
 		<BoardProvider>
@@ -26,12 +24,11 @@ export const InstrumentPlayer = () => {
 }
 
 const PianoBoards = (props: any) => {
-	const { player, resumePlayer } = useBoardContext()
+	const { player } = useBoardContext()
 
 	return (
 		<PianoBoard
 			player={player}
-			resumePlayer={resumePlayer}
 			onChangePart={props.onChangePart}
 		></PianoBoard>
 	)

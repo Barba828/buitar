@@ -1,12 +1,14 @@
-import React, { FC, useEffect, useMemo, useRef } from 'react'
+import { FC, useCallback, useEffect, useMemo, useRef } from 'react'
 import type { Point, ToneSchema } from '@buitar/to-guitar'
 import { useBoardContext } from '../board-provider'
 import { getBoardOptionsTone } from '../utils'
 import { GuitarBoardOptions } from '../board-controller/controller.type'
-import { useBoardTouch, useBoardWheel, useGuitarKeyDown } from '@/utils/hooks/use-board-event'
+import { useBoardTouch, useGuitarKeyDown } from '@/utils/hooks/use-board-event'
 import { useDebounce } from '@/utils/hooks/use-debouce'
+import { Icon } from '@/components'
 import cx from 'classnames'
 import styles from './guitar-board.module.scss'
+import fretStyles from './guitar-board-fret.module.scss'
 
 interface GuitarBoardProps {
 	/**
@@ -37,18 +39,18 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	const {
 		guitarBoardOption: { keyboard },
 		boardOptions: { hasTag },
+		boardTheme,
+		taps,
 		emphasis,
 		setEmphasis,
 		player,
-		resumePlayer,
 	} = useBoardContext()
-	const boardRange = range[0] < 1 ? [1, range[1]] : range;
+	const boardRange = range[0] < 1 ? [1, range[1]] : range
 	const scrollRef = useRef<HTMLDivElement>(null)
-	
+	const BoardBtnComponent = boardTheme === 'default' ? BoardButtonOriginal : BoardButton
+
 	// 鼠标事件监听
-	const { handler } = useBoardTouch(emphasis, setEmphasis, {
-		onClick: resumePlayer,
-	})
+	const { handler } = useBoardTouch(emphasis, setEmphasis)
 	// 键盘事件监听
 	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis)
 	// 滚轮事件监听
@@ -82,6 +84,13 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		onChangePart?.(part)
 	}, [part])
 
+	/**
+	 * 播放所有弦音
+	 */
+	const handlePlayArpeggio = useCallback(() => {
+		player.triggerPointArpeggio(taps)
+	}, [taps])
+
 	if (!keyboard) {
 		return null
 	}
@@ -91,20 +100,14 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	const boardView = board.slice(boardRange[0], boardRange[1] + 1).map((frets, fretIndex) => {
 		const fretsView = frets
 			.reverse()
-			.map((point, stringIndex) => <BoardButton key={stringIndex} point={point} />)
+			.map((point, stringIndex) => <BoardBtnComponent key={stringIndex} point={point} />)
 
-		const dotsView = (
-			<div
-				className={cx(
-					'buitar-primary-button',
-					styles['frets-dot'],
-					!hasTag && styles['frets-hidden']
-				)}
-			>
-				{FRET_DOT[fretIndex + boardRange[0] - 1]}
-				<span className={styles['frets-dot-text']}>{fretIndex  + boardRange[0]}</span>
-			</div>
-		)
+		const dotsView =
+			boardTheme === 'default' ? (
+				<BoardDotsOriginal index={fretIndex + boardRange[0]} />
+			) : (
+				<BoardDots index={fretIndex + boardRange[0]} />
+			)
 		return (
 			<ul className={cx(styles.frets)} key={fretIndex}>
 				{fretsView}
@@ -116,11 +119,27 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	const zeroView = board.slice(0, 1).map((frets, fretIndex) => {
 		const fretsView = frets
 			.reverse()
-			.map((point, stringIndex) => <BoardButton key={stringIndex} point={point} />)
+			.map((point, stringIndex) => (
+				<BoardBtnComponent key={stringIndex} point={point} visible={true} />
+			))
 
+		const playButton = (
+			<div
+				onClick={handlePlayArpeggio}
+				className={cx(
+					'buitar-primary-button',
+					styles['frets-dot'],
+					!hasTag && styles['frets-hidden'],
+					styles['point']
+				)}
+			>
+				<Icon name="icon-eighth-note" color="#fff8" size={16} />
+			</div>
+		)
 		return (
 			<ul className={cx(styles.frets, styles['frets-zero'])} key={fretIndex}>
 				{fretsView}
+				{playButton}
 			</ul>
 		)
 	})
@@ -136,6 +155,64 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 }
 
 const BoardButton = ({
+	point,
+	itemClassName,
+	visible = false,
+}: { point: Point; itemClassName?: string; visible?: boolean } & GuitarBoardProps) => {
+	const {
+		key,
+		element,
+		baseCls,
+		status: { hidden },
+	} = useBoardBtnContent(point)
+
+	const cls = cx(
+		baseCls,
+		fretStyles['point'],
+		hidden && !visible && fretStyles['empty-point'],
+		itemClassName
+	)
+	const toneNode = (
+		<div className={cls} key={key} data-key={key}>
+			{element}
+		</div>
+	)
+	const stringLine = <div className={fretStyles['point-string']}></div>
+
+	return (
+		<li className={cx(fretStyles['fret-point'], 'flex-center')}>
+			{toneNode}
+			{stringLine}
+		</li>
+	)
+}
+const BoardDots = ({ index }: { index: number }) => {
+	const {
+		boardOptions: { hasTag, numTag },
+	} = useBoardContext()
+
+	const dotsArr = [...Array(FRET_DOT[index - 1]?.length || 0)]
+	return numTag ? (
+		<li
+			className={cx(
+				'flex-center',
+				fretStyles['fret-num-dots'],
+				styles['frets-dot'],
+				!hasTag && styles['frets-hidden']
+			)}
+		>
+			{index}
+		</li>
+	) : (
+		<div className={cx('flex-center', fretStyles['fret-dots'])}>
+			{dotsArr.map(() => (
+				<div className={fretStyles['fret-dots-item']}></div>
+			))}
+		</div>
+	)
+}
+
+const BoardButtonOriginal = ({
 	point,
 	itemClassName,
 }: { point: Point; itemClassName?: string } & GuitarBoardProps) => {
@@ -180,6 +257,30 @@ const BoardButton = ({
 		</li>
 	)
 }
+const BoardDotsOriginal = ({ index }: { index: number }) => {
+	const {
+		boardOptions: { hasTag, numTag },
+	} = useBoardContext()
+
+	return (
+		<div
+			className={cx(
+				'buitar-primary-button',
+				styles['frets-dot'],
+				!hasTag && styles['frets-hidden']
+			)}
+		>
+			{numTag ? (
+				<div className={styles['frets-dot-num']}>{index}</div>
+			) : (
+				<>
+					{FRET_DOT[index - 1]}
+					<span className={styles['frets-dot-text']}>{index}</span>
+				</>
+			)}
+		</div>
+	)
+}
 
 /**
  * 数字显示下的八度音高UI
@@ -200,8 +301,71 @@ const getLevel = (toneSchema: ToneSchema, boardOptions: GuitarBoardOptions) => {
 }
 
 /**
- * 二维数组纵横交换
+ * 获取按钮公共样式
+ * @param point
  * @returns
+ */
+const useBoardBtnContent = (point: Point) => {
+	const { boardOptions, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
+	const { hasLevel, isNote } = boardOptions
+
+	// key
+	const key = `${point.index}`
+	// 交互反馈强调的point
+	const emphasised = emphasis.includes(key)
+	// 固定的point
+	const fixed = !!fixedTaps.find((tap) => tap.index === point.index)
+	// 固定最高亮的point
+	const highFixed = !!highFixedTaps.find((tap) => tap.index === point.index)
+	// 被点击的point
+	const tapped = !!taps.find((tap) => tap.index === point.index)
+	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
+	const tone = getBoardOptionsTone(point.toneSchema, boardOptions, false)
+	// 显示八度音高
+	const level = tone && getLevel(point.toneSchema, boardOptions)
+
+	const hidden = !(fixed || emphasised || highFixed || tapped)
+
+	const userCls = highFixed
+		? styles['high-fixed-point']
+		: emphasised
+		? styles['emphasised-point']
+		: tapped
+		? styles['tapped-point']
+		: fixed
+		? styles['fixed-point']
+		: ''
+
+	return {
+		baseCls: cx(
+			userCls,
+			'buitar-primary-button',
+			styles['point'],
+			!isNote && hasLevel && point.toneSchema.level //处理数字显示时八度音高
+				? point.toneSchema.level > 3
+					? styles['interval-point-reverse']
+					: styles['interval-point']
+				: null
+		),
+		element: (
+			<>
+				{tone}
+				{level}
+			</>
+		),
+		status: {
+			hidden,
+			highFixed,
+			emphasised,
+			tapped,
+			fixed,
+		},
+		key: `${point.index}`,
+	}
+}
+
+/**
+ * 二维keyboard数组纵横交换 例如：[弦][品] -> [品][弦]
  */
 const exchangeBoardArray = (keyboard: Point[][]) => {
 	const board: Point[][] = []
@@ -217,6 +381,9 @@ const exchangeBoardArray = (keyboard: Point[][]) => {
 	return board
 }
 
+/**
+ * 二维keyboard数组降一维
+ */
 const exchangeBoardList = (keyboard: Point[][]) => {
 	const list: Point[] = []
 	keyboard.forEach((string) => {

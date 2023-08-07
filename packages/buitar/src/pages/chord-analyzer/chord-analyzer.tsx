@@ -20,12 +20,11 @@ import styles from './chord-analyzer.module.scss'
 
 export const ChordAnalyzer = () => {
 	const intro = usePagesIntro()
-	const isMobile = useIsMobile()
 
 	return (
 		<BoardProvider>
 			{intro}
-			<BoardController extendItem={false} scrollable={isMobile}/>
+			<BoardController extendItem={false}/>
 			<TapedGuitarBoard />
 			<TapedChordCard />
 		</BoardProvider>
@@ -44,16 +43,22 @@ const TapedGuitarBoard = () => {
 		setChordTaps({ chordType: chords, chordList: [] })
 	}, [taps])
 
+	/**
+	 * 选择 point 加入指板按键
+	 * @param points 
+	 */
 	const handleCheckedPoint = (points: Point[]) => {
 		const point = points[0]
 		const checkedIndex = taps.indexOf(point)
 		if (checkedIndex === -1) {
+			// 新增按键（如果该弦上已有其他品已按，则改为新按键）
 			const stringIndex = taps.findIndex((tap) => tap.string === point.string)
 			if (stringIndex > -1) {
 				taps.splice(stringIndex, 1)
 			}
 			setTaps([...taps, point])
 		} else {
+			// 已选 -> 移除该按键
 			taps.splice(checkedIndex, 1)
 			setTaps([...taps])
 		}
@@ -154,7 +159,7 @@ const TapedChordCard = () => {
 				onClick={handleClickFifths}
 				className={cx('buitar-primary-button', styles['fifth-circle'])}
 			/>}
-			<ChordCard size={200} className={styles['svg-chord']} taps={taps} />
+			<ChordCard size={isMobile ? 160 : 200} className={styles['svg-chord']} taps={taps} />
 			<div>
 				<DetailCard />
 				<div className={styles['type-list']}>{extra}</div>

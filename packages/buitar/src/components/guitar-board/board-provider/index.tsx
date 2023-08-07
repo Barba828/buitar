@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
 import { Instrument } from '@buitar/tone-player/instrument.type'
-import { GuitarBoardOptions } from '../board-controller/controller.type'
+import { GuitarBoardOptions, GuitarBoardThemeKey } from '@/components/guitar-board/board-controller/controller.type'
 import { Board, BoardOption, Point, Tone, transChordTaps } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
 import { useStore } from '@/utils/hooks/use-store'
-import { OPTIONS_KEY, INSTRUMENT_KEY } from '../board-controller'
+import { OPTIONS_KEY, INSTRUMENT_KEY, BOARD_THEME_KEY } from '@/components/guitar-board/board-controller'
 import { COLLECTIONS_KEY, CollectionType } from '@/pages/collections'
 
 /**
@@ -31,6 +31,10 @@ const defaultBoardOptions: GuitarBoardOptions = {
 	 * 是否显示吉他品记
 	 */
 	hasTag: true,
+	/**
+	 * 吉他品记是否数字展示
+	 */
+	numTag: false,
 	/**
 	 * 是否全部展示键盘
 	 */
@@ -76,6 +80,11 @@ type BoardContextType = {
 	 */
 	instrument: Instrument
 	dispatchInstrument: Dispatch<Instrument>
+	/**
+	 * 指板UI主题
+	 */
+	boardTheme: GuitarBoardThemeKey
+	dispatchBoardTheme: Dispatch<GuitarBoardThemeKey>
 	/**
 	 * 收藏和弦
 	 */
@@ -129,6 +138,7 @@ export const BoardProvider: FC = (props) => {
 		defaultBoardOptions
 	)
 	const [instrument, dispatchInstrument] = useStore<Instrument>(INSTRUMENT_KEY, player.getInstrument())
+	const [boardTheme, dispatchBoardTheme] = useStore<GuitarBoardThemeKey>(BOARD_THEME_KEY, 'default')
 	const [collection, dispatchCollection] = useStore<CollectionType[]>(
 		COLLECTIONS_KEY,
 		defaultCollection
@@ -171,6 +181,8 @@ export const BoardProvider: FC = (props) => {
 		dispatchBoardOptions,
 		instrument,
 		dispatchInstrument,
+		boardTheme, 
+		dispatchBoardTheme,
 		collection,
 		dispatchCollection,
 

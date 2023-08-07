@@ -35,10 +35,7 @@
 	}
 
 	.controller {
-		width: calc($btn-size * 2);
-		height: calc($btn-size * 2);
-		@extend %controller-extends;
-
+		position: relative;
 		@media (any-hover: hover) {
 			&:hover {
 				opacity: 0.8;
@@ -52,6 +49,12 @@
 		background: $yellow-primary !important;
 	}
 
+	.controller-extend {
+		width: calc($btn-size * 2);
+		height: calc($btn-size * 2);
+		@extend %controller-extends;
+	}
+
 	.controller-not-extend {
 		@extend %controller-not-extends;
 	}
@@ -59,7 +62,15 @@
 	.controller-trigger {
 		width: calc($btn-size / 3) !important;
 		> svg {
-			opacity: 0.6;
+			opacity: 0.4;
+			transition: all 0.15s ease-in-out;
+		}
+		&.controller-trigger__extend {
+			width: calc($btn-size / 3 + 4px) !important;
+			> svg {
+				opacity: 0.6;
+				transform: rotate(90deg);
+			}
 		}
 	}
 

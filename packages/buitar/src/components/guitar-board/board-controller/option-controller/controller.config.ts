@@ -1,7 +1,7 @@
 import { Instrument } from '@buitar/tone-player/instrument.type'
-import { GuitarBoardOptionsKey } from '../controller.type'
+import { GuitarBoardOptionsKey, GuitarBoardThemeKey } from '../controller.type'
 
-export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
+export const optionsUIConfig: Record<GuitarBoardOptionsKey, any> = {
 	isShowSemitone: {
 		checked: {
 			name_zh: '半音',
@@ -72,6 +72,20 @@ export const optionsUIConfig: { [K in GuitarBoardOptionsKey]: any } = {
 			intro_en: 'Guitar Display',
 		},
 	},
+	numTag: {
+		checked: {
+			name_zh: '数字',
+			name_en: 'num tag',
+		},
+		unchecked: {
+			name_zh: '圆点',
+			name_en: 'dot tag',
+		},
+		others: {
+			intro_zh: '品记',
+			intro_en: 'Fret Tag',
+		},
+	},
 	isAllKey: {
 		checked: {
 			name_zh: '48键',
@@ -133,5 +147,14 @@ export const instrumentUIConfig: {
 		name_zh: '合成音',
 		icon: 'icon-synth',
 		color: 'yellow',
+	},
+}
+
+export const boardStyleConfig: Record<GuitarBoardThemeKey, any> = {
+	default: {
+		name: '默认',
+	},
+	fender: {
+		name: '芬达',
 	},
 }

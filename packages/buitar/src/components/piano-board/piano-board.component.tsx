@@ -16,7 +16,6 @@ interface PianoBoardProps
 	onChangeKey?: (checked: string[]) => void
 	onChangePart?: (level: boolean) => void
 	disableKeydown?: boolean
-	resumePlayer?(): void
 }
 
 export const PianoBoard: FC<PianoBoardProps> = ({
@@ -26,15 +25,12 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 	defaultTouched = [],
 	onChangeKey,
 	onChangePart,
-	resumePlayer,
 	...divProps
 }) => {
 	const [touched, setTouched] = useState<string[]>(defaultTouched)
 	const scrollRef = useRef<HTMLDivElement>(null)
 	// 鼠标事件
-	const { handler } = useBoardTouch(touched, setTouched, {
-		onClick: resumePlayer,
-	})
+	const { handler } = useBoardTouch(touched, setTouched)
 	// 按钮事件
 	const { part, keyHandler } = usePianoKeyDown(touched, setTouched)
 	// 滚轮事件监听

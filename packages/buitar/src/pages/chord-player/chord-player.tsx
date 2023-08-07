@@ -67,11 +67,11 @@ const ChordDetail = () => {
 }
 
 const ChordKeyboard = () => {
-	const { taps, player, boardOptions, resumePlayer } = useBoardContext()
+	const { taps, player, boardOptions } = useBoardContext()
 	const { isAllKey } = boardOptions
 	const levels = isAllKey ? [2, 3, 4, 5] : [3]
 	const notes = taps.map(
 		(point) => `${point.toneSchema.note}${isAllKey ? point.toneSchema.level : 3}`
 	)
-	return <PianoBoard player={player} resumePlayer={resumePlayer} checked={notes} levels={levels} />
+	return <PianoBoard player={player} checked={notes} levels={levels} />
 }

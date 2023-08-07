@@ -4,5 +4,9 @@ export type GuitarBoardOptionsKey =
 	| 'hasLevel'
 	| 'isNote'
 	| 'hasTag'
+	| 'numTag'
 	| 'isAllKey'
-export type GuitarBoardOptions = { [key in GuitarBoardOptionsKey]: boolean }
+
+export type GuitarBoardThemeKey = 'default' | 'fender'
+
+export type GuitarBoardOptions = Record<GuitarBoardOptionsKey, boolean>

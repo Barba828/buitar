@@ -25,32 +25,45 @@
 		.frets {
 			display: flex;
 			flex-direction: column;
+			position: relative;
 			margin: 0%;
 			padding: 0%;
 			height: fit-content;
 
 			.frets-dot {
 				font-size: 30px;
-				height: 20px;
+				height: calc($btn-size / 2);
 				width: calc($btn-size * 2);
 				background: $gray-second;
 				line-height: 100%;
 				position: relative;
 				@include flex-center();
+
 				&:hover {
 					background: $gray-primary;
 					.frets-dot-text {
 						opacity: 0.6;
 						transform: translateX(-50%);
 					}
+					.frets-dot-num {
+						opacity: 0.8;
+						transform: scale(1.15);
+					}
 				}
 
 				.frets-dot-text {
 					opacity: 0;
-					font-size: 12px;
+					font-size: $font-12;
 					font-weight: 700;
 					right: calc($btn-margin * 2);
 					position: absolute;
+					transition: all 0.15s ease-in-out;
+				}
+
+				.frets-dot-num {
+					opacity: 0.6;
+					font-size: $font-16;
+					font-weight: bold;
 					transition: all 0.15s ease-in-out;
 				}
 			}
@@ -58,6 +71,7 @@
 			.frets-hidden {
 				height: 0px;
 				margin: 0px;
+				opacity: 0;
 			}
 		}
 	}
@@ -78,10 +92,12 @@
 		opacity: 0.6;
 		font-size: 12px;
 		transform: translate(2px, 2px);
+		pointer-events: none;
 	}
 
 	.level-dot {
 		line-height: 2px;
+		pointer-events: none;
 	}
 
 	&.empty-point {
