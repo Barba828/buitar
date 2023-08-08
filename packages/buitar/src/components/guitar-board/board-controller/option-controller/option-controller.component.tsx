@@ -43,7 +43,11 @@ export const BoardController: FC<
  * @returns
  */
 export const BoardOptionsController: FC<
-	ControllerListProps<keyof GuitarBoardOptions> & { ignore?: boolean }
+	ControllerListProps<keyof GuitarBoardOptions> & {
+		ignore?: boolean
+		/** 手动传入可选择的配置 */
+		list?: GuitarBoardOptionsKey[] 
+	}
 > = (props) => {
 	const { boardOptions, dispatchBoardOptions } = useBoardContext()
 	const { menus } = useMenuContext()
@@ -83,7 +87,7 @@ export const BoardOptionsController: FC<
 		)
 	}
 
-	const list = Object.keys(optionsUIConfig) as GuitarBoardOptionsKey[]
+	const list = props.list || (Object.keys(optionsUIConfig) as GuitarBoardOptionsKey[])
 	// 默认展示选中的option，若全都未选中，则展示「isShowSemitone」
 	const checkedList = list.filter((option) => boardOptions[option])
 	return (
@@ -158,7 +162,9 @@ export const BoardThemeController: FC<
 			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
 				<span>{boardStyleConfig[theme].name}</span>
 				<div className={styles['controller-inner-unchecked']}>{theme}</div>
-				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>指板风格</div>
+				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
+					指板风格
+				</div>
 			</div>
 		)
 	}

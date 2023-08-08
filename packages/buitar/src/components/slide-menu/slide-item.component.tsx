@@ -1,19 +1,24 @@
-import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-
-import cx from 'classnames'
-import styles from './slide-item.module.scss'
+import { useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/icon'
 import { useMenuContext } from './index'
 import { routeConfig, routeMap } from '@/pages/router'
 import { menuConfig } from './menu-provider/menu-config'
 import { Switch } from '../index'
 import { clearStore } from '@/utils/hooks/use-store'
+import { useRouterItem } from '@/utils/hooks/use-routers'
+
+import cx from 'classnames'
+import styles from './slide-item.module.scss'
 
 export const SlideMenu = () => {
 	const { menus, dispatchMenus } = useMenuContext()
 	const { pathname } = useLocation()
+	const navigate = useNavigate()
 	const [extend, setExtend] = useState<boolean>(false)
+	const curRoute = useRouterItem()
+	
+	const isChildren = !curRoute // 当前页面不在一级页面，则是子页面 -> 显示返回父页面
 
 	const header = (
 		<Link
@@ -41,7 +46,7 @@ export const SlideMenu = () => {
 					setExtend(false)
 				}}
 			>
-				{route.name_zh}
+				{route.name}
 			</Link>
 		))
 
@@ -50,7 +55,7 @@ export const SlideMenu = () => {
 		const checked = !!menus[item.key]
 		return (
 			<div className={cx(styles['slide-menu-tab-item'])} key={`${index}`}>
-				{item.name_zh}
+				{item.name}
 				<Switch
 					defaultValue={checked}
 					onChange={(value) => {
@@ -86,20 +91,31 @@ export const SlideMenu = () => {
 			id="slide-menu"
 			className={cx(styles['slide-menu'], extend && styles['slide-menu__extend'])}
 		>
-			<div
-				className={styles['slide-menu-bar']}
-				onClick={() => {
-					setExtend(!extend)
-				}}
-			>
-				<Icon name="icon-option" size={26} className={styles['slide-menu-bar-icon']} />
-			</div>
-			<div className={styles['slide-menu-tab']}>
+			{isChildren ? (
+				<div
+					className={styles['slide-menu-bar']}
+					onClick={() => {
+						navigate(-1)
+					}}
+				>
+					<Icon name="icon-back" size={26} className={styles['slide-menu-bar-icon']} />
+				</div>
+			) : (
+				<div
+					className={styles['slide-menu-bar']}
+					onClick={() => {
+						setExtend(!extend)
+					}}
+				>
+					<Icon name="icon-option" size={26} className={styles['slide-menu-bar-icon']} />
+				</div>
+			)}
+			<nav className={styles['slide-menu-tab']}>
 				{header}
 				{links}
 				{options}
 				{footer}
-			</div>
+			</nav>
 			<div
 				onClick={() => {
 					setExtend(!extend)

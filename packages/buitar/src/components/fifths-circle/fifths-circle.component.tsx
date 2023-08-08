@@ -26,7 +26,7 @@ const angle = [
 const OUTER_TONES = transFifthsCircle('C')
 const INNER_TONES = transFifthsCircle('A')
 
-export const FifthsCircle: FC<{
+export type FifthCircleProps = {
 	/**
 	 * svg尺寸，不能超过父容器大小
 	 */
@@ -39,10 +39,22 @@ export const FifthsCircle: FC<{
 	 * 是否展示小调五度圈
 	 */
 	minor?: boolean
+	/**
+	 * 默认选中下标
+	 */
 	defaultIndex?: number
 	onClick?: ({ tone, mode }: { tone: ToneSchema; mode: ModeType }) => void
 	[x: string]: any
-}> = ({ size = 400, thin = 60, minor = true, defaultIndex = -1, onClick, ...props }) => {
+}
+
+export const FifthsCircle: FC<FifthCircleProps> = ({
+	size = 400,
+	thin = 60,
+	minor = true,
+	defaultIndex = -1,
+	onClick,
+	...props
+}) => {
 	const { boardOptions } = useBoardContext()
 	const [checked, setChecked] = useState<number>(defaultIndex)
 	const toneType = getBoardOptionsToneType(boardOptions)

@@ -29,7 +29,10 @@ export const TabSwitch: <T>(props: ControllerListProps<T>) => JSX.Element = ({
 				<div
 					key={index}
 					onClick={() => handleChange(item, index)}
-					className={cx(styles['tab-switch-item'], item === value && styles['tab-switch-item__active'])}
+					className={cx(
+						styles['tab-switch-item'],
+						item === value && styles['tab-switch-item__active']
+					)}
 				>
 					{renderTabItem ? renderTabItem(item, item === value) : item}
 				</div>
@@ -39,6 +42,7 @@ export const TabSwitch: <T>(props: ControllerListProps<T>) => JSX.Element = ({
 				style={{
 					width: `calc(${100 / values.length}% - 4px)`,
 					left: `${(values.indexOf(value) / values.length) * 100}%`,
+					display: values.indexOf(value) > -1 ? 'block' : 'none',
 				}}
 			></div>
 		</div>

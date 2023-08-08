@@ -66,3 +66,45 @@
 		opacity: 0.7;
 	}
 }
+
+$route-size: calc($btn-size * 3);
+
+.menu-container {
+	display: flex;
+	flex-wrap: wrap;
+	.main-route {
+		font-size: $font-22;
+		display: block;
+		color: $white-01;
+		text-decoration: none;
+		width: $route-size;
+		height: $route-size;
+		@include touch-color;
+		> :first-child {
+			margin: calc($btn-size * 0.2);
+		}
+	}
+	.sub-route-wrap {
+		width: $route-size;
+		height: $route-size;
+		margin: $btn-margin;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+
+		.sub-route {
+			font-size: $font-14;
+			display: block;
+			color: $white-01;
+			text-decoration: none;
+			width: calc($route-size / 2 - $btn-margin);
+			height: calc($route-size / 2 - $btn-margin);
+			@include touch-color;
+			margin: 0 0 calc($btn-margin * 2) !important;
+
+			> :first-child {
+				margin: calc($btn-margin * 2);
+			}
+		}
+	}
+}
