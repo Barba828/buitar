@@ -1,28 +1,28 @@
-import { useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/icon'
 import { useMenuContext } from './index'
-import { routeConfig, routeMap } from '@/pages/router'
+import { routeConfig } from '@/pages/router'
 import { menuConfig } from './menu-provider/menu-config'
 import { Switch } from '../index'
 import { clearStore } from '@/utils/hooks/use-store'
-import { useRouterItem } from '@/utils/hooks/use-routers'
+import { useRouteFind, useRouteMatch } from '@/utils/hooks/use-routers'
 
 import cx from 'classnames'
 import styles from './slide-item.module.scss'
 
-export const SlideMenu = () => {
+export const SlideMenu = memo(() => {
 	const { menus, dispatchMenus } = useMenuContext()
 	const { pathname } = useLocation()
 	const navigate = useNavigate()
 	const [extend, setExtend] = useState<boolean>(false)
-	const curRoute = useRouterItem()
-	
-	const isChildren = !curRoute // 当前页面不在一级页面，则是子页面 -> 显示返回父页面
+	const curRoute = useRouteMatch()
+	const homeRoute = useRouteFind('Home')
+	const showBack = useMemo(() => !!curRoute?.meta?.back, [curRoute])
 
 	const header = (
 		<Link
-			to={routeMap.home.path}
+			to={homeRoute.path}
 			className={cx(styles['slide-menu-tab-title'])}
 			onClick={() => {
 				setExtend(false)
@@ -91,7 +91,7 @@ export const SlideMenu = () => {
 			id="slide-menu"
 			className={cx(styles['slide-menu'], extend && styles['slide-menu__extend'])}
 		>
-			{isChildren ? (
+			{showBack ? (
 				<div
 					className={styles['slide-menu-bar']}
 					onClick={() => {
@@ -124,4 +124,4 @@ export const SlideMenu = () => {
 			></div>
 		</div>
 	)
-}
+})

@@ -16,6 +16,20 @@ export const optionsUIConfig: Record<GuitarBoardOptionsKey, any> = {
 			intro_en: 'Guitar Display',
 		},
 	},
+	isStickyZero: {
+		checked: {
+			name_zh: '固定 0 品',
+			name_en: 'Sticky Zero Fret',
+		},
+		unchecked: {
+			name_zh: '滚动指板',
+			name_en: 'Scroll Fret',
+		},
+		others: {
+			intro_zh: '',
+			intro_en: '',
+		},
+	},
 	isSharpSemitone: {
 		checked: {
 			name_zh: '#',

@@ -17,6 +17,11 @@ body {
 	&::-webkit-scrollbar {
 		display: none; /* Chrome Safari */
 	}
+
+	a {
+		text-decoration: none;
+		color: inherit;
+	}
 }
 
 .app {
@@ -32,6 +37,9 @@ body {
 
 		@media #{$mobileLayout} {
 			padding-left: 20px;
+			> :first-child {
+				margin-top: 80px;
+			}
 		}
 
 		> :first-child {

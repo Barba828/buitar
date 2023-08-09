@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import cx from 'classnames'
 import styles from './tab-switch.module.scss'
 
@@ -17,9 +17,9 @@ export const TabSwitch: <T>(props: ControllerListProps<T>) => JSX.Element = ({
 	renderTabItem,
 	className,
 }) => {
-	const [value, setValue] = useState(defaultValue || values[0])
+	const [checkedIndex, setCheckedIndex] = useState(defaultValue ? values.indexOf(defaultValue) : 0)
 	const handleChange = (item: any, index: number) => {
-		setValue(item)
+		setCheckedIndex(index)
 		onChange?.(item, index)
 	}
 
@@ -31,18 +31,18 @@ export const TabSwitch: <T>(props: ControllerListProps<T>) => JSX.Element = ({
 					onClick={() => handleChange(item, index)}
 					className={cx(
 						styles['tab-switch-item'],
-						item === value && styles['tab-switch-item__active']
+						checkedIndex === index && styles['tab-switch-item__active']
 					)}
 				>
-					{renderTabItem ? renderTabItem(item, item === value) : item}
+					{renderTabItem ? renderTabItem(item, checkedIndex === index) : item}
 				</div>
 			))}
 			<div
 				className={cx(styles['tab-switch-item__cursor'])}
 				style={{
 					width: `calc(${100 / values.length}% - 4px)`,
-					left: `${(values.indexOf(value) / values.length) * 100}%`,
-					display: values.indexOf(value) > -1 ? 'block' : 'none',
+					left: `${(checkedIndex / values.length) * 100}%`,
+					display: checkedIndex > -1 ? 'block' : 'none',
 				}}
 			></div>
 		</div>

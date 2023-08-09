@@ -1,7 +1,13 @@
+import { RouteObject } from 'react-router-dom'
+
 import { HomePage } from './home'
 import { ChordAnalyzer } from './chord-analyzer'
 import { ChordPlayer } from './chord-player'
-import { GuitarTableture } from './guitar-tableture'
+import {
+	GuitarBoardTabletureList,
+	GuitarTableture,
+	TapedGuitarBoardTableture,
+} from './guitar-tableture'
 import { ChordProgressions } from './chord-progressions'
 import { Collections } from './collections'
 import { InstrumentPlayer } from './instrument-player'
@@ -17,96 +23,139 @@ export const baseUrl = import.meta.env.BASE_URL || '/buitar/'
 
 export type RouteType = {
 	name: string
-	name_en?: string
+	id: string
 	path: string
 	type?: '' | 'menu' | 'children'
-	Component: any
 	children?: RouteType[]
+	meta?: Record<string, any>
+	Component: RouteObject['Component']
 }
 
-export const routeMap: Record<string, RouteType> = {
-	home: {
+export const routeConfig: Array<RouteType> = [
+	{
 		name: '首页',
-		name_en: 'Home',
+		id: 'Home',
 		path: baseUrl,
 		type: '',
 		Component: HomePage,
 	},
-	chordLib: {
+	{
 		name: '和弦库',
-		name_en: 'Chord Library',
+		id: 'ChordLibrary',
 		path: `${baseUrl}library`,
 		type: 'menu',
 		Component: ChordPlayer,
 	},
-	chordAnalyzer: {
+	{
 		name: '和弦编辑',
-		name_en: 'Chord Analyzer',
+		id: 'ChordAnalyzer',
 		path: `${baseUrl}analyzer`,
 		type: 'menu',
 		Component: ChordAnalyzer,
 	},
-	guitarTableture: {
+	{
 		name: '吉他指型',
-		name_en: 'Guitar Tableture',
+		id: 'GuitarTableture',
 		path: `${baseUrl}tableture`,
 		type: 'menu',
 		Component: GuitarTableture,
+		children: [
+			{
+				name: '',
+				id: 'GuitarTabletureSingleHome',
+				path: `${baseUrl}tableture`,
+				Component: TapedGuitarBoardTableture,
+			},
+			{
+				name: '指板分析',
+				id: 'GuitarTabletureSingle',
+				path: `${baseUrl}tableture/single`,
+				Component: TapedGuitarBoardTableture,
+				meta: {},
+			},
+			{
+				name: '固定区域指型', // 多指型
+				id: 'GuitarTabletureMulti',
+				path: `${baseUrl}tableture/multi`,
+				Component: GuitarBoardTabletureList,
+			},
+		],
 	},
-	progressions: {
+	{
 		name: '和弦进行',
-		name_en: 'Chord Progressions',
+		id: 'ChordProgressions',
 		path: `${baseUrl}progressions`,
 		type: 'menu',
 		Component: ChordProgressions,
 	},
-	collections: {
+	{
 		name: '和弦收藏',
-		name_en: 'Chord Collections',
+		id: 'ChordCollections',
 		path: `${baseUrl}collections`,
 		type: 'menu',
 		Component: Collections,
 	},
-	tools: {
+	{
 		name: '工具',
-		name_en: 'Play Tools',
+		id: 'PlayTools',
 		path: `${baseUrl}tools`,
 		type: 'menu',
 		Component: PlayToolsHome,
 		children: [
 			{
 				name: '五度圈',
-				path: `fifth`,
+				id: 'PlayToolsFifth',
+				path: `${baseUrl}tools/fifth`,
 				Component: FifthCircleTool,
+				meta: {
+					back: true,
+				},
 			},
 			{
 				name: '节拍器',
-				path: `metronome`,
+				id: 'PlayToolsMetronome',
+				path: `${baseUrl}tools/metronome`,
 				Component: Metronome,
+				meta: {
+					back: true,
+				},
 			},
 		],
 	},
-	instrument: {
+	{
 		name: '乐器',
-		name_en: 'Instrument',
+		id: 'Instrument',
 		path: `${baseUrl}instrument`,
 		type: 'menu',
 		Component: InstrumentPlayer,
 	},
-	creation: {
+	{
 		name: '创造',
-		name_en: 'Creation',
+		id: 'Creation',
 		path: `${baseUrl}creation`,
 		type: 'menu',
 		Component: SequencerPlayer,
 	},
-	settings: {
+	{
 		name: '设置',
-		name_en: 'Settings',
+		id: 'Settings',
 		path: `${baseUrl}settings`,
 		type: 'menu',
 		Component: SettingsPage,
 	},
+]
+
+const flattenRoutes = (routes: Array<RouteType>) => {
+	let result = new Array<RouteType>()
+
+	for (let i = 0; i < routes.length; i++) {
+		result.push(routes[i])
+
+		if (routes[i].children) {
+			result = result.concat(flattenRoutes(routes[i].children!))
+		}
+	}
+	return result
 }
 
-export const routeConfig = Object.values(routeMap)
+export const flatRouteConfig: Array<RouteType> = flattenRoutes(routeConfig)

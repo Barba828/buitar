@@ -1,15 +1,20 @@
 import { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { ControllerList } from '@/components/controller'
-import { routeMap } from '@/pages/router'
+import { useRouteFind, useRouteMatch } from '@/utils/hooks/use-routers'
 
 import styles from './play-tools.module.scss'
 
 export const PlayToolsHome: FC = () => {
-	return (
+	const toolsRoute = useRouteFind('PlayTools') // 工具菜单页路由
+	const curRoute = useRouteMatch() // 当前页面一级路由
+
+	const isToolsHome = toolsRoute === curRoute // 当前在菜单主页
+
+	return isToolsHome ? (
 		<ControllerList
 			size="large"
-			list={routeMap['tools'].children}
+			list={toolsRoute.children || []}
 			renderListItem={(route) => (
 				<Link to={route.path} className={styles['route-item']}>
 					{route.name}
@@ -17,5 +22,7 @@ export const PlayToolsHome: FC = () => {
 			)}
 			checkedItem={() => true}
 		/>
+	) : (
+		<Outlet></Outlet>
 	)
 }

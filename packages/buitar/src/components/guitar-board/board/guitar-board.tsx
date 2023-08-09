@@ -11,9 +11,7 @@ import styles from './guitar-board.module.scss'
 import fretStyles from './guitar-board-fret.module.scss'
 
 interface GuitarBoardProps {
-	/**
-	 * 渲染吉他品数范围
-	 */
+	/**渲染吉他品数范围 */
 	range?: [number, number]
 	/**
 	 * 选中指位 callback
@@ -38,7 +36,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 }) => {
 	const {
 		guitarBoardOption: { keyboard },
-		boardOptions: { hasTag },
+		boardOptions: { hasTag, isStickyZero = true },
 		boardTheme,
 		taps,
 		emphasis,
@@ -145,10 +143,18 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	})
 
 	return (
-		<div id="fret-board" className={cx(styles.board, boardTheme !== 'default' && fretStyles['board'])} {...handler} {...keyHandler}>
-			<div className={styles['board-view']}>{zeroView}</div>
+		<div
+			id="fret-board"
+			className={cx(styles.board, boardTheme !== 'default' && fretStyles['board'])}
+			{...handler}
+			{...keyHandler}
+		>
+			{isStickyZero && <div className={styles['board-view']}>{zeroView}</div>}
 			<div ref={scrollRef} className={'scroll-without-bar'}>
-				<div className={styles['board-view']}>{boardView}</div>
+				<div className={styles['board-view']}>
+					{!isStickyZero && zeroView}
+					{boardView}
+				</div>
 			</div>
 		</div>
 	)

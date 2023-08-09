@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NOTE_LIST } from '@buitar/to-guitar'
-import { useIsMobile } from '@/utils/hooks/use-device'
+import { useIsTouch } from '@/utils/hooks/use-device'
 
 export const useBoardTouch = (
 	/**
@@ -19,7 +19,7 @@ export const useBoardTouch = (
 	}
 ) => {
 	const isTouched = useRef(false)
-	const isMobile = useIsMobile()
+	const isTouchDevice = useIsTouch()
 
 	const onMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
 		isTouched.current = true
@@ -43,7 +43,7 @@ export const useBoardTouch = (
 		isTouched.current = false
 	}
 
-	const handler = isMobile
+	const handler = isTouchDevice
 		? {
 				// Mobile
 				onTouchEnd: onMouseUp,

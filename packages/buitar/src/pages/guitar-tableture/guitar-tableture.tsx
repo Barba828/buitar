@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import {
 	BoardProvider,
 	GuitarBoard,
@@ -9,11 +9,13 @@ import { TabSwitch, RangeSlider, usePagesIntro, Icon } from '@/components'
 import type { RangeSliderProps } from '@/components'
 import { ModeType, Pitch, Point, getModeFregTaps, getModeRangeTaps } from '@buitar/to-guitar'
 import { ToneModeController } from '@/components/guitar-board/board-controller/tone-mode-controller/tone-mode-controller.component'
+import { useDebounce } from '@/utils/hooks/use-debouce'
+import { useStore } from '@/utils/hooks/use-store'
+import { Link, Outlet } from 'react-router-dom'
+import { useRouteFind, useRouteMatch } from '@/utils/hooks/use-routers'
 import cx from 'classnames'
 
 import styles from './guitar-tableture.module.scss'
-import { useDebounce } from '@/utils/hooks/use-debouce'
-import { useStore } from '@/utils/hooks/use-store'
 
 const TABLETURES_KEY = 'tabletures'
 const TABLETRUE_CONFIG: TabletrueItemConfig = {
@@ -24,8 +26,13 @@ const TABLETRUE_CONFIG: TabletrueItemConfig = {
 
 export const GuitarTableture: FC = () => {
 	const intro = usePagesIntro()
-	const [tabIndex, setTabIndex] = useState(0)
-	const tabList = ['指板分析', '固定区域指型']
+	const { children = [] } = useRouteFind('GuitarTableture')
+	const { path } = useRouteMatch()
+	const tabList = useMemo(() => children.filter((route) => route.name), [children])
+	const defaultTab = useMemo(
+		() => tabList.find((route) => route.path === path) || tabList[0],
+		[tabList]
+	)
 
 	return (
 		<BoardProvider>
@@ -33,13 +40,14 @@ export const GuitarTableture: FC = () => {
 			<TabSwitch
 				className={cx(styles['tableture-tab'])}
 				values={tabList}
-				defaultValue={tabList[tabIndex]}
-				onChange={(value, index) => {
-					setTabIndex(index)
-				}}
+				defaultValue={defaultTab}
+				renderTabItem={(route) => (
+					<Link to={route.path} className="flex-center">
+						{route.name}
+					</Link>
+				)}
 			/>
-			{tabIndex === 0 && <TapedGuitarBoardTableture />}
-			{tabIndex === 1 && <GuitarBoardTabletureList />}
+			<Outlet />
 		</BoardProvider>
 	)
 }
@@ -48,9 +56,23 @@ export const GuitarTableture: FC = () => {
  * 点击获取该位置的任一指型
  * @returns
  */
-const TapedGuitarBoardTableture = () => {
+export const TapedGuitarBoardTableture = () => {
+	const tabList = [
+		{
+			key: 'all',
+			label: '全指板',
+		},
+		{
+			key: 'up',
+			label: '上行',
+		},
+		{
+			key: 'down',
+			label: '下行',
+		},
+	]
 	const { setTaps, setHighFixedTaps, guitarBoardOption, guitar } = useBoardContext()
-	const [isUp, setIsUp] = useState(false) // 是否上行音阶指型
+	const [tab, setTab] = useState(tabList[0]) // 是否上行音阶指型
 	const [rootPoint, setRootPoint] = useState<Point>() // 根音
 
 	const handleCheckedPoint = (points: Point[]) => {
@@ -69,26 +91,42 @@ const TapedGuitarBoardTableture = () => {
 		if (!rootPoint) {
 			return
 		}
-		const fregTaps = getModeFregTaps(rootPoint, guitarBoardOption.keyboard, guitarBoardOption.mode)
-		const taps = isUp ? fregTaps.up : fregTaps.down
+		let taps = []
+		if (tab.key === 'all') {
+			// 获取range全指板的指型
+			taps = getModeRangeTaps(rootPoint, {
+				board: guitarBoardOption.keyboard,
+				mode: guitarBoardOption.mode,
+				range: [0, guitar.board.baseFret - 1],
+				ignorePitch: false,
+			})
+		} else {
+			// 获取改品位的上下行指型
+			const fregTaps = getModeFregTaps(
+				rootPoint,
+				guitarBoardOption.keyboard,
+				guitarBoardOption.mode
+			)
+			taps = tab.key === 'up' ? fregTaps.up : fregTaps.down
+		}
 		const highFixedTaps = taps.filter((tap) => tap.tone === rootPoint.tone)
 		// 设置指位
 		setTaps(taps)
 		// 设置根音高亮
 		setHighFixedTaps(highFixedTaps)
-	}, [rootPoint, isUp, guitarBoardOption.mode])
+	}, [rootPoint, tab, guitarBoardOption.mode])
 
 	return (
 		<>
 			<ToneModeController mode={guitar.board.mode} onClick={handleCheckedMode} />
 			<TabSwitch
-				values={['上行', '下行']}
-				defaultValue={'下行'}
-				onChange={(value) => {
-					setIsUp(value === '上行')
-				}}
+				values={tabList}
+				defaultValue={tabList[0]}
+				onChange={(tab) => setTab(tab)}
+				renderTabItem={(tab) => tab.label}
+				className={cx(styles['tableture-tab'])}
 			/>
-			<GuitarBoard onCheckedPoints={handleCheckedPoint} />
+			<GuitarBoard stickyZero={false} onCheckedPoints={handleCheckedPoint} />
 		</>
 	)
 }
@@ -97,7 +135,7 @@ const TapedGuitarBoardTableture = () => {
  * 指型列表展示
  * @returns
  */
-const GuitarBoardTabletureList = () => {
+export const GuitarBoardTabletureList = () => {
 	const [tabletrues, dispatchTabletrues] = useStore<TabletrueItemConfig[]>(TABLETURES_KEY, [
 		TABLETRUE_CONFIG,
 	])
@@ -213,7 +251,12 @@ const GuitarBoardTabletureItem = ({
 
 	// 监听变化，更改指型
 	useEffect(() => {
-		const taps = getModeRangeTaps(rootNote, guitarBoardOption.keyboard, mode, deboucedRange)
+		const taps = getModeRangeTaps(rootNote, {
+			board: guitarBoardOption.keyboard,
+			mode: mode,
+			range: deboucedRange,
+			ignorePitch: false
+		})
 		const highFixedTaps = taps.filter((tap) => tap.tone === rootPitch)
 		// 设置指位
 		setTaps(taps)
@@ -306,7 +349,7 @@ const GuitarBoardTabletureItem = ({
 				/>
 			)}
 
-			<GuitarBoard range={[range[0], range[1]]} onCheckedPoints={handleCheckedPoint} />
+			<GuitarBoard range={[range[0], range[1]]} stickyZero={false} onCheckedPoints={handleCheckedPoint}/>
 		</div>
 	)
 }

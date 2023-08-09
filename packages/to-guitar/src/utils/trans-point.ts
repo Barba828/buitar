@@ -1,4 +1,11 @@
-import { DEFAULT_LEVEL, DEFAULT_TUNE, FINGER_GRADE_NUMS, GRADE_NUMS, NOTE_LIST, degreeMap } from '../config'
+import {
+	DEFAULT_LEVEL,
+	DEFAULT_TUNE,
+	FINGER_GRADE_NUMS,
+	GRADE_NUMS,
+	NOTE_LIST,
+	degreeMap,
+} from '../config'
 import type { Tone, Point, GuitarBoard, GuitarString, ModeType, Pitch } from '../interface'
 import { transChordType } from './trans'
 import { transTone, transNote, transToneNum } from './trans-tone'
@@ -44,7 +51,11 @@ const getAdditionPitchs = (zeroTones: Tone[] = DEFAULT_TUNE) => {
  * @param baseLevel 基准音高
  * @returns Point[][]
  */
-const transBoard = (zeroTones: Tone[] = DEFAULT_TUNE, GradeLength: number = GRADE_NUMS, baseLevel: number = DEFAULT_LEVEL) => {
+const transBoard = (
+	zeroTones: Tone[] = DEFAULT_TUNE,
+	GradeLength: number = GRADE_NUMS,
+	baseLevel: number = DEFAULT_LEVEL
+) => {
 	const zeroPitchs = getAdditionPitchs(zeroTones)
 
 	const boardNums = zeroPitchs.map((zeroPitch, stringIndex) => {
@@ -80,7 +91,11 @@ const transBoard = (zeroTones: Tone[] = DEFAULT_TUNE, GradeLength: number = GRAD
  * @param board 指板数组
  * @param fingerSpan 手指品位跨度
  */
-const transChordTaps = (tones: Tone[], board: GuitarBoard = transBoard(), fingerSpan: number = FINGER_GRADE_NUMS) => {
+const transChordTaps = (
+	tones: Tone[],
+	board: GuitarBoard = transBoard(),
+	fingerSpan: number = FINGER_GRADE_NUMS
+) => {
 	const chords = transNote(tones)
 	const root = chords[0] //当前根音
 	const roots: Point[] = [] // 指板上的所有根音 数组
@@ -119,7 +134,10 @@ const transChordTaps = (tones: Tone[], board: GuitarBoard = transBoard(), finger
 		grades.forEach((point) => {
 			if (chords.includes(point.toneSchema.note)) {
 				// 若和其他按位品位不超过4，或者该品是0品，则加入指位
-				if (taps.every((tap) => Math.abs(tap.grade - point.grade) < fingerSpan) || point.grade === 0) {
+				if (
+					taps.every((tap) => Math.abs(tap.grade - point.grade) < fingerSpan) ||
+					point.grade === 0
+				) {
 					findNextString(stringIndex + 1, [...taps, point])
 				}
 			}
@@ -175,13 +193,28 @@ const transChordTaps = (tones: Tone[], board: GuitarBoard = transBoard(), finger
 	return { chordType, chordList }
 }
 
+interface TapsRangeProps {
+	/**指板实例 */
+	board?: GuitarBoard
+	/**指板范围 */
+	range?: number[]
+	/**忽略绝对音高相同的指位 */
+	ignorePitch?: boolean
+	/**调式 */
+	mode?: ModeType
+}
+
 /**
  * 获取调式音阶基础指法(上行 & 下行)
  * @param root 根音
  * @param board 指板
  * @param mode 调式
  */
-const getModeFregTaps = (root: Point, board: GuitarBoard = transBoard(), mode: ModeType = 'minor-pentatonic') => {
+const getModeFregTaps = (
+	root: Point,
+	board: GuitarBoard = transBoard(),
+	mode: ModeType = 'minor-pentatonic'
+) => {
 	let up: Point[] = [],
 		down: Point[] = []
 	// 获取该调式音程关系
@@ -198,15 +231,15 @@ const getModeFregTaps = (root: Point, board: GuitarBoard = transBoard(), mode: M
 	const rootGrade = root.grade // 根音品位置
 	// 音阶上行指法
 	if (mode.includes('major') && (root.string === 1 || root.string === 5 || root.string === 6)) {
-		up = getTapsFromBoard(toneList, board, [rootGrade - 4, rootGrade])
+		up = getTapsFromBoard(toneList, { board, range: [rootGrade - 4, rootGrade] })
 	} else {
-		up = getTapsFromBoard(toneList, board, [rootGrade - 3, rootGrade + 1])
+		up = getTapsFromBoard(toneList, { board, range: [rootGrade - 3, rootGrade + 1] })
 	}
 	// 音阶下行指法
 	if (mode.includes('minor') && (root.string === 2 || root.string === 4)) {
-		down = getTapsFromBoard(toneList, board, [rootGrade, rootGrade + 4])
+		down = getTapsFromBoard(toneList, { board, range: [rootGrade, rootGrade + 4] })
 	} else {
-		down = getTapsFromBoard(toneList, board, [rootGrade - 1, rootGrade + 3])
+		down = getTapsFromBoard(toneList, { board, range: [rootGrade - 1, rootGrade + 3] })
 	}
 	return { up, down }
 }
@@ -219,12 +252,8 @@ const getModeFregTaps = (root: Point, board: GuitarBoard = transBoard(), mode: M
  * @param range
  * @returns
  */
-const getModeRangeTaps = (
-	root: Point | Tone,
-	board: GuitarBoard = transBoard(),
-	mode: ModeType = 'minor-pentatonic',
-	range: [number, number] = [0, 5]
-) => {
+const getModeRangeTaps = (root: Point | Tone, options: TapsRangeProps) => {
+	const { board = transBoard(), mode = 'minor-pentatonic', range = [0, 5], ignorePitch } = options
 	const intervals = degreeMap.get(mode)?.map((item) => item.interval)
 	if (!intervals) {
 		return []
@@ -234,7 +263,7 @@ const getModeRangeTaps = (
 	// 音阶相对音高
 	const toneList = intervals.map((interval) => (interval + rootTone) % 12)
 
-	return getTapsFromBoard(toneList, board, range)
+	return getTapsFromBoard(toneList, { board, range, ignorePitch })
 }
 
 /**
@@ -244,14 +273,21 @@ const getModeRangeTaps = (
  * @param range 指板范围
  * @returns
  */
-const getTapsFromBoard = (tones: Pitch[], board: GuitarBoard = transBoard(), range: number[] = []) => {
+const getTapsFromBoard = (tones: Pitch[], options: TapsRangeProps) => {
+	const { board = transBoard(), range = [], ignorePitch = true } = options
 	const points: Point[] = []
 	// 默认范围取 0 ～ 指板长度
-	let [start = 0, end = board[0].length - 1] = range
+	const [start = 0, end = board[0].length - 1] = range
 	for (let string = 0; string < 6; string++) {
 		for (let grade = start; grade <= end; grade++) {
 			const point = board[string][grade]
-			if (point && tones.includes(point.tone) && !points.find((p) => p.pitch === point.pitch)) {
+			if (!point){
+				continue
+			}
+			if (ignorePitch && points.find((p) => p.pitch === point.pitch)) {
+				continue
+			}
+			if (tones.includes(point.tone)) {
 				points.push(point)
 			}
 		}

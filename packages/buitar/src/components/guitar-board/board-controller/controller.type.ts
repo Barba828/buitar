@@ -1,6 +1,7 @@
 export type GuitarBoardOptionsKey =
 	| 'isShowSemitone'
 	| 'isSharpSemitone'
+	| 'isStickyZero'
 	| 'hasLevel'
 	| 'isNote'
 	| 'hasTag'
