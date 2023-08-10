@@ -2,7 +2,7 @@
 
 ![star](https://img.shields.io/github/stars/Barba828/buitar?style=social)
 
-[English Docs](./README_en.md)
+[English Docs](./docs/README_en.md)
 
 **Buitar**，一个基于[tone.js](https://github.com/Tonejs/Tone.js)控制器乐，React绘制UI的吉他学习工具
 
