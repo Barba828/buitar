@@ -41,6 +41,7 @@ $black-height: calc($btn-size * 3);
 	.sharp {
 		height: $black-height;
 		background: #444;
+		margin-top: 0px;
 		margin-left: calc($btn-size / (-2));
 		margin-right: calc($btn-size / (-2));
 		z-index: 1;

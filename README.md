@@ -31,9 +31,9 @@ GitHub Pages[前往体验](https://barba828.github.io/buitar/)
     点击安装到桌面 | 桌面打开应用
 
 2. 如果你使用的Safari，可以点击安装到桌面（移动端）
-    ![pwa](./docs/assets/safari_1.jpg) | ![pwa](./docs/assets/safari_2.jpg) | ![pwa](./docs/assets/safari_pwa.jpg)
-    ---|---|---
-    点击底部分享按钮 | 点击添加到桌面(Home Screen) | 桌面打开应用
+    ![pwa](./docs/assets/safari_1.jpg) | ![pwa](./docs/assets/safari_2.jpg) | ![pwa](./docs/assets/safari_3.jpg) | ![pwa](./docs/assets/safari_pwa.jpg)
+    ---|---|---|---
+    点击底部分享按钮 | 点击添加到桌面(Home Screen) | 确认添加 | 桌面打开应用
 
 
 预览截图
