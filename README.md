@@ -2,43 +2,60 @@
 
 ![star](https://img.shields.io/github/stars/Barba828/buitar?style=social)
 
-[中文介绍](./README_zh.md)
+[English Docs](./README_en.md)
 
-Welcone to Buitar! A guitar and chord leaning tool based on [to-guitar.js](https://github.com/Barba828/to-guitar) and [tone.js](https://github.com/Tonejs/Tone.js).
+**Buitar**，一个基于[tone.js](https://github.com/Tonejs/Tone.js)控制器乐，React绘制UI的吉他学习工具
 
-So [Enjoy it!](https://barba828.github.io/buitar/) on Github Pages
+GitHub Pages[前往体验](https://barba828.github.io/buitar/)
 
-- Complete chord learning toolset
-- Complete instrument set
-- Freely matched chord progressions
-- Flexible guitar fretboard/keyboard
-- Fun sequencer
+- 完善的和弦学习工具集
+- 完备的乐器搭配
+- 自由搭配的和弦进行
+- 灵活使用的吉他指板/键盘指板
+- 趣味无限的音序机
 
-And the instruments used in it refer to [tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments)
+使用的乐器参考[tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments)
 
-- acoustic guitar
-- nylon guitar
-- electric guitar
-- electric bass
-- piano
+- 原声吉他
+- 尼龙吉他
+- 电吉他
+- 贝斯
+- 钢琴
 
-And preview screenshots
+## PWA支持（推荐使用）
+
+1. 如果你使用的是Chrome，那你应该注意到打开页面时弹出的安装到本地的标记（PC｜移动端同理）
+
+    ![pwa](./docs/assets/chrome_install.png) | ![pwa](./docs/assets/chrome_pwa.png)
+    ---|--- 
+    点击安装到桌面 | 桌面打开应用
+
+2. 如果你使用的Safari，可以点击安装到桌面（移动端）
+    ![pwa](./docs/assets/safari_1.jpg) | ![pwa](./docs/assets/safari_2.jpg) | ![pwa](./docs/assets/safari_pwa.jpg)
+    ---|---|---
+    点击底部分享按钮 | 点击添加到桌面(Home Screen) | 桌面打开应用
+
+
+预览截图
 ![screen](./docs/assets/screen1.png)
 ![screen](./docs/assets/screen2.png)
 ![screen](./docs/assets/screen3.png)
 
-## About
+## 关于
 
-I have always been troubled by the knowledge of guitar music theory such as guitar chord conversion. Of course, I have also seen some guitar learning tools on the Internet, but I think these tools are a bit too many and messy, and finally I plan to make one by myself during the epidemic prevention days at home. Set of tools. At the same time, I also learned the knowledge of guitar music theory again, including the circle of fifths, the twelve equal temperament, the harmony system... and some Web Audio exploration.
+我一直饱受吉他和弦转换等吉他乐理知识的困扰，当然，我也曾经在网上看到过一些吉他学习工具，但是我觉得这些工具有一点多和杂乱，打算自己搞一套工具集。同时也再次学习了吉他乐理知识，包括五度圈、十二平均律、和声系统...以及一些对 Web Audio 的探索。
 
-In fact, there are still many deficiencies in the function and music theory. You are welcome to make comments and suggestions. I will improve it as soon as possible.
+关于功能和乐理仍有很多不足，欢迎提 Issue，我会尽快完善。
 
-Finally, I have to continue to practice the guitar. I like to practice the fingerstyle of Oshio Kotaro and Kishibe Maaki. Finally, when will I be able to play jazz?
 
-If you have any questions or ideas, please submit your issue
+## 开发
 
-## ToDo
+```sh
+pnpm i
 
-- Collection
-- Guitar Rhythm
-- Metronome
+# 本地开发(localhost:8282)
+pnpm dev
+
+# 构建
+pnpm build
+```
