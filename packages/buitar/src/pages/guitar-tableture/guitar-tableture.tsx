@@ -126,7 +126,7 @@ export const TapedGuitarBoardTableture = () => {
 				renderTabItem={(tab) => tab.label}
 				className={cx(styles['tableture-tab'])}
 			/>
-			<GuitarBoard stickyZero={false} onCheckedPoints={handleCheckedPoint} />
+			<GuitarBoard onCheckedPoints={handleCheckedPoint} />
 		</>
 	)
 }
@@ -349,7 +349,7 @@ const GuitarBoardTabletureItem = ({
 				/>
 			)}
 
-			<GuitarBoard range={[range[0], range[1]]} stickyZero={false} onCheckedPoints={handleCheckedPoint}/>
+			<GuitarBoard range={[range[0], range[1]]} onCheckedPoints={handleCheckedPoint}/>
 		</div>
 	)
 }

@@ -21,6 +21,7 @@ $side-width: 60px;
 
 		.slide-menu-tab {
 			width: $side-width * 5;
+			height: 100%;
 
 			@media #{$mobileLayout} {
 				padding-left: 20px;

@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/icon'
 import { useMenuContext } from './index'
@@ -19,6 +19,10 @@ export const SlideMenu = memo(() => {
 	const curRoute = useRouteMatch()
 	const homeRoute = useRouteFind('Home')
 	const showBack = useMemo(() => !!curRoute?.meta?.back, [curRoute])
+
+	const toggleExtend = useCallback(()=>{
+		setExtend(!extend)
+	}, [extend])
 
 	const header = (
 		<Link
@@ -103,23 +107,20 @@ export const SlideMenu = memo(() => {
 			) : (
 				<div
 					className={styles['slide-menu-bar']}
-					onClick={() => {
-						setExtend(!extend)
-					}}
+					onClick={toggleExtend}
 				>
 					<Icon name="icon-option" size={26} className={styles['slide-menu-bar-icon']} />
 				</div>
 			)}
-			<nav className={styles['slide-menu-tab']}>
+			<nav className={cx(styles['slide-menu-tab'], 'scroll-without-bar')}>
 				{header}
 				{links}
 				{options}
 				{footer}
 			</nav>
 			<div
-				onClick={() => {
-					setExtend(!extend)
-				}}
+				onClick={toggleExtend}
+				onTouchStart={toggleExtend}
 				className={styles['slide-menu-intro']}
 			></div>
 		</div>

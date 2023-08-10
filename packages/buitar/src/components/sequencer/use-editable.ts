@@ -30,7 +30,7 @@ export const useEditable = ({
 
 	onChange?: (sounds: Sound) => void
 }) => {
-	const isMobile = useIsTouch()
+	const isTouchDevice = useIsTouch()
 	const [soundList, setSoundList] = useState(sounds)
 
 	const start = useRef<[number, number]>([0, 0]) // 音序图左上起始坐标
@@ -57,12 +57,15 @@ export const useEditable = ({
 	}, [sounds])
 
 	useEffect(() => {
+		if (!editable) {
+			return
+		}
 		const handler = (e: TouchEvent) => {
 			e.preventDefault()
 		}
 		container.current?.addEventListener('touchmove', handler)
 		return () => container.current?.removeEventListener('touchmove', handler)
-	}, [container.current])
+	}, [container.current, editable])
 
 	if (!editable) {
 		return { handler: {}, ghost }
@@ -221,7 +224,7 @@ export const useEditable = ({
 		dragable.current = false
 	}
 
-	const handler = isMobile
+	const handler = isTouchDevice
 		? {
 				onTouchStart: onMouseDown,
 				onTouchMove: onMouseMove,

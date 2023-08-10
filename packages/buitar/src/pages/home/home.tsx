@@ -14,7 +14,7 @@ export const HomePage = () => {
 	const isMobile = useIsMobile()
 	return (
 		<div className={styles.container}>
-			{/* <Title /> */}
+			<Title />
 			{isMobile ? <MobileHome /> : <PcHome />}
 		</div>
 	)
