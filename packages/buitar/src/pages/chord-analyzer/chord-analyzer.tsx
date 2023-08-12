@@ -1,51 +1,56 @@
-import React, { useEffect } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	GuitarBoard,
 	ChordCard,
 	BoardProvider,
 	useBoardContext,
-	getChordName,
+	getBoardChordName,
 	BoardController,
 	DetailCard,
 } from '@/components/guitar-board'
 import { FifthsCircle } from '@/components/fifths-circle'
-import { Point, Note, transChordType, ToneSchema, ChordType } from '@buitar/to-guitar'
+import type { Point, Note, ToneSchema, ChordType } from '@buitar/to-guitar'
+import { transChordType } from '@buitar/to-guitar'
 import { AddTextInput } from '@/components/basic'
 import { usePagesIntro } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
-
 import cx from 'classnames'
 
 import styles from './chord-analyzer.module.scss'
 
 export const ChordAnalyzer = () => {
 	const intro = usePagesIntro()
+	const [chordTypes, setChordTypes] = useState<ChordType[]>([])
+
+	const handleChangeTaps = useCallback((taps: Point[]) => {
+		const notes = taps
+			.sort((a, b) => a.pitch - b.pitch)
+			.map((tap) => tap.toneSchema.note)
+			.reduce((pre: Note[], cur) => (pre.includes(cur) ? pre : [...pre, cur]), [])
+		const chordTypes = transChordType(notes)
+		setChordTypes(chordTypes)
+	}, [])
 
 	return (
 		<BoardProvider>
 			{intro}
-			<BoardController extendItem={false}/>
-			<TapedGuitarBoard />
-			<TapedChordCard />
+			<BoardController extendItem={false} />
+			<TapedGuitarBoard onChange={handleChangeTaps} />
+			{chordTypes && <TapedChordCard chordTypes={chordTypes} />}
 		</BoardProvider>
 	)
 }
 
-const TapedGuitarBoard = () => {
-	const { taps, setTaps, setChordTaps } = useBoardContext()
+const TapedGuitarBoard: FC<{ onChange?(taps: Point[]): void }> = ({ onChange }) => {
+	const { taps, setTaps } = useBoardContext()
 
 	useEffect(() => {
-		const notes = taps
-			.sort((a, b) => a.index - b.index)
-			.map((tap) => tap.toneSchema.note)
-			.reduce((pre: Note[], cur) => (pre.includes(cur) ? pre : [...pre, cur]), [])
-		const chords = transChordType(notes)
-		setChordTaps({ chordType: chords, chordList: [] })
+		onChange?.(taps)
 	}, [taps])
 
 	/**
 	 * 选择 point 加入指板按键
-	 * @param points 
+	 * @param points
 	 */
 	const handleCheckedPoint = (points: Point[]) => {
 		const point = points[0]
@@ -67,63 +72,48 @@ const TapedGuitarBoard = () => {
 	return <GuitarBoard onCheckedPoints={handleCheckedPoint} />
 }
 
-const TapedChordCard = () => {
+const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultChordTypes }) => {
 	const isMobile = useIsMobile()
-	const { taps, chordTaps, setChordTaps, boardOptions, setFixedTaps, guitarBoardOption } =
-		useBoardContext()
+	const { taps, boardOptions, setFixedTaps, guitarBoardOption } = useBoardContext()
+	const [chordTypes, setChordTypes] = useState(defaultChordTypes)
+
+	useEffect(() => {
+		setChordTypes([...defaultChordTypes])
+	}, [defaultChordTypes])
+
+	const checkedChordType = useMemo(() => chordTypes[0], [chordTypes])
+	const extraChordTypes = useMemo(() => chordTypes.slice(1), [chordTypes])
+	const title = useMemo(
+		() => getBoardChordName(checkedChordType, boardOptions),
+		[checkedChordType, boardOptions]
+	)
 
 	const changeChordTapName = (index: number) => {
-		if (!chordTaps?.chordType) {
+		if (!chordTypes.length) {
 			return
 		}
-		const chordType = [...chordTaps.chordType]
-		const temp = chordType[0]
-		chordType[0] = chordType[index]
-		chordType[index] = temp
-		setChordTaps({ ...chordTaps, chordType })
+		const temp = { ...chordTypes[0] }
+		chordTypes[0] = chordTypes[index]
+		chordTypes[index] = temp
+		
+		setChordTypes([...chordTypes])
 	}
 
+	/**新增自定义Chord详情 */
 	const addChordTapName = (name: string) => {
-		let type: ChordType = {
+		const type: ChordType = {
+			...checkedChordType,
 			tag: '*',
 			name: name,
 			name_zh: '',
 		}
-		if (chordTaps?.chordType) {
-			type = { ...chordTaps.chordType[0], ...type }
-		} else if (taps) {
+		// 获取最低根音
+		if (taps) {
 			const tone = taps.sort((a, b) => a.index - b.index)[0].toneSchema
 			type.tone = tone
 		}
-
-		setChordTaps({
-			chordList: [],
-			chordType: chordTaps?.chordType ? [type, ...chordTaps?.chordType] : [type],
-		})
+		setChordTypes([...chordTypes, type])
 	}
-
-	/**
-	 * 设置和弦多名称展示
-	 */
-	const extra: JSX.Element[] = []
-	if (chordTaps?.chordType && chordTaps.chordType.length > 1) {
-		const names = chordTaps.chordType.slice(1).map((chordType, index) => {
-			return (
-				<div
-					onClick={() => {
-						changeChordTapName(index + 1)
-					}}
-					key={index}
-					className={cx('buitar-primary-button', styles['type-item'])}
-				>
-					{getChordName(chordType, boardOptions)}
-				</div>
-			)
-		})
-		extra.push(...names)
-	}
-
-	extra.push(<AddTextInput key="add-text-input" onConfirm={addChordTapName} />)
 
 	/**
 	 * 根据五度圈，设置指板强调按钮
@@ -152,17 +142,42 @@ const TapedChordCard = () => {
 
 	return (
 		<div className={styles['taped-container']}>
-			{!isMobile && <FifthsCircle
-				size={280}
-				thin={70}
-				minor={false}
-				onClick={handleClickFifths}
-				className={cx('buitar-primary-button', styles['fifth-circle'])}
-			/>}
-			<ChordCard size={isMobile ? 160 : 200} className={styles['svg-chord']} taps={taps} />
+			{/* 五度圈 */}
+			{!isMobile && (
+				<FifthsCircle
+					size={280}
+					thin={70}
+					minor={false}
+					onClick={handleClickFifths}
+					className={cx('buitar-primary-button', styles['fifth-circle'])}
+				/>
+			)}
+			{/* 和弦大图卡片 */}
+			<ChordCard
+				size={isMobile ? 160 : 200}
+				className={styles['svg-chord']}
+				taps={taps}
+				title={title}
+			/>
 			<div>
-				<DetailCard />
-				<div className={styles['type-list']}>{extra}</div>
+				{/* 和弦详细信息 */}
+				<DetailCard chordType={checkedChordType} />
+				<div className={styles['type-list']}>
+					{/* 和弦其他over转位和弦信息 */}
+					{extraChordTypes.length > 0 &&
+						extraChordTypes.map((chordType, index) => (
+							<div
+								onClick={() => {
+									changeChordTapName(index + 1)
+								}}
+								key={index}
+								className={cx('buitar-primary-button', styles['type-item'])}
+							>
+								{getBoardChordName(chordType, boardOptions)}
+							</div>
+						))}
+					<AddTextInput key="add-text-input" onConfirm={addChordTapName} />
+				</div>
 			</div>
 		</div>
 	)

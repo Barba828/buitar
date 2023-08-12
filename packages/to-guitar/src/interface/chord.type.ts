@@ -1,4 +1,4 @@
-import type { IntervalAll, Note, ToneSchema } from './tone.type'
+import type { IntervalAll, Note, Point, ToneSchema } from './tone.type'
 
 export type ChordType = {
 	/**
@@ -62,9 +62,16 @@ export type DegreeType = {
 	roll: RollType
 }
 
+/**级数和弦 */
 export type Chord = {
 	degree: DegreeType
 	tone: ToneSchema
 	chord: Note[]
 	chordType: ChordType[]
+}
+
+/**指板和弦 */
+export type BoardChord = {
+	chordType: ChordType
+	chordTaps: Point[]
 }

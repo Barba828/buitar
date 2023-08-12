@@ -23,31 +23,33 @@ export const HomePage = () => {
 const MobileHome = () => {
 	return (
 		<div className={cx(styles['menu-container'])}>
-			{routeConfig.map((route) => {
-				return route.children ? (
-					<div className={cx(styles['sub-route-wrap'])} key={route.path}>
-						{route.children
-							.filter((route) => !!route.name)
-							.map((subRoute) => (
-								<Link
-									key={subRoute.path}
-									to={subRoute.path}
-									className={cx('buitar-primary-button', styles['sub-route'])}
-								>
-									<div>{subRoute.name}</div>
-								</Link>
-							))}
-					</div>
-				) : (
-					<Link
-						key={route.path}
-						to={route.path}
-						className={cx('buitar-primary-button', styles['main-route'])}
-					>
-						<span>{route.name}</span>
-					</Link>
-				)
-			})}
+			{routeConfig
+				.filter((route) => route.id !== 'Home')
+				.map((route) => {
+					return route.children ? (
+						<div className={cx(styles['sub-route-wrap'])} key={route.path}>
+							{route.children
+								.filter((route) => !!route.name)
+								.map((subRoute) => (
+									<Link
+										key={subRoute.path}
+										to={subRoute.path}
+										className={cx('buitar-primary-button', styles['sub-route'])}
+									>
+										<div>{subRoute.name}</div>
+									</Link>
+								))}
+						</div>
+					) : (
+						<Link
+							key={route.path}
+							to={route.path}
+							className={cx('buitar-primary-button', styles['main-route'])}
+						>
+							<span>{route.name}</span>
+						</Link>
+					)
+				})}
 		</div>
 	)
 }
@@ -104,20 +106,21 @@ const Title = () => (
 )
 
 const Example = () => {
-	const { taps, guitarBoardOption, setTaps, setChordTaps } = useBoardContext()
+	const { taps, guitarBoardOption, setTaps, setChordTap, setChordTaps } = useBoardContext()
 
 	if (!guitarBoardOption.keyboard) return null
 
-	const GChordTaps = transChordTaps(['G', 'B', 'D'], guitarBoardOption.keyboard)
+	const GChordTaps = transChordTaps(['G', 'B', 'D'], guitarBoardOption)
 
 	useEffect(() => {
-		setTaps(GChordTaps.chordList[0])
 		setChordTaps(GChordTaps)
+		setChordTap(GChordTaps[0])
+		setTaps(GChordTaps[0].chordTaps)
 	}, [])
 	return (
 		<>
 			<GuitarBoard />
-			<ChordCard taps={taps} />
+			<ChordCard taps={taps} title='G' />
 		</>
 	)
 }

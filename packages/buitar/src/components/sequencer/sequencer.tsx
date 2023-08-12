@@ -8,7 +8,7 @@ import styles from './sequencer.module.scss'
 import { Switch } from '../ui'
 import { TonePlayer } from '@buitar/tone-player'
 import { useSequencerContext } from './sequencer-provider'
-import { InstrumentColor } from '@/components/guitar-board/board-controller/option-controller/controller.config'
+import { InstrumentColor } from '@/pages/settings/config/controller.config'
 import { useIsMobile } from '@/utils/hooks/use-device'
 
 /**

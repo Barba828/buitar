@@ -162,7 +162,7 @@ const transScaleDegree = ({
  * @param calGrades 升降度数 默认不变调
  */
 const transChordType = (chords: Tone[], calGrades?: number) => {
-	let chordNotes = transNote(chords)
+	let chordNotes = Array.from(new Set(transNote(chords)))
 
 	if (calGrades) {
 		chordNotes = chordNotes

@@ -40,12 +40,12 @@ const ChordPicker = () => {
 		if (soundListIndex < 0) {
 			return
 		}
-		setChordTaps(transChordTaps(chord, guitarBoardOption.keyboard))
+		setChordTaps(transChordTaps(chord, guitarBoardOption))
 	}, [chord, soundListIndex])
 
 	// 指板更新：清除和弦指位列表
 	useEffect(() => {
-		setChordTaps(null)
+		setChordTaps([])
 	}, [guitarBoardOption])
 
 	useEffect(() => {

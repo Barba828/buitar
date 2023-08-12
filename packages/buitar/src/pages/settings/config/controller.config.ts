@@ -1,5 +1,17 @@
 import { Instrument } from '@buitar/tone-player/instrument.type'
-import { GuitarBoardOptionsKey, GuitarBoardThemeKey } from '../controller.type'
+import {
+	GuitarBoardOptionsKey,
+	GuitarBoardThemeKey,
+	InstrumentColor,
+	InstrumentKeyboardKey,
+} from './controller.type'
+import type { BoardOption } from '@buitar/to-guitar'
+
+/**useStore Keys*/
+export const OPTIONS_KEY = 'options'
+export const INSTRUMENT_KEY = 'instrument'
+export const BOARD_THEME_KEY = 'board_theme'
+export const INSTRUMENT_KEYBOARD_KEY = 'instrument_keyboard'
 
 export const optionsUIConfig: Record<GuitarBoardOptionsKey, any> = {
 	isShowSemitone: {
@@ -116,8 +128,6 @@ export const optionsUIConfig: Record<GuitarBoardOptionsKey, any> = {
 	},
 }
 
-export type InstrumentColor = 'yellow' | 'blue' | 'green' | 'cyan' | 'purple'
-
 export const instrumentUIConfig: {
 	[K in Instrument]: {
 		name_en: string
@@ -170,5 +180,32 @@ export const boardStyleConfig: Record<GuitarBoardThemeKey, any> = {
 	},
 	fender: {
 		name: '芬达',
+	},
+}
+
+export const instrumentKeyboardConfig: Record<
+	InstrumentKeyboardKey,
+	{ key: InstrumentKeyboardKey; name: string } & Partial<BoardOption>
+> = {
+	guitar: {
+		key: 'guitar',
+		name: '吉他',
+		baseFret: 17, // 0~16品
+		baseLevel: 2, // 基础音高 E2
+		baseTone: ['E', 'A', 'D', 'G', 'B', 'E'], // 0 品调音
+	},
+	bass: {
+		key: 'bass',
+		name: '贝斯',
+		baseFret: 17, // 0~16品
+		baseLevel: 1, // 基础音高 E2
+		baseTone: ['E', 'A', 'D', 'G'], // 0 品调音
+	},
+	ukulele: {
+		key: 'ukulele',
+		name: '尤克里里',
+		baseFret: 17, // 0~16品
+		baseTone: ['G3', 'C3', 'E3', 'A3'], // 0 品调音
+		chordOver: true, // 需要带转位和弦
 	},
 }

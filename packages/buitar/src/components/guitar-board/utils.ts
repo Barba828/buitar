@@ -1,13 +1,12 @@
 import {
 	INTERVAL_FALLING_LIST,
 	INTERVAL_LIST,
-	ModeType,
 	NOTE_FALLING_LIST,
 	NOTE_LIST,
 	ToneSchema,
 	ToneTypeName,
 } from '@buitar/to-guitar'
-import { GuitarBoardOptions } from './board-controller/controller.type'
+import { GuitarBoardOptions } from '../../pages/settings/config/controller.type'
 
 /**
  * 根据指板设置获取 Tone 值
@@ -54,7 +53,10 @@ export const getBoardOptionsNote = (
 export const getBoardOptionsToneType = (
 	options: Pick<GuitarBoardOptions, 'isSharpSemitone' | 'isNote'>
 ): ToneTypeName => {
-	const { isSharpSemitone, isNote } = options
+	if (!options) {
+		return 'note'
+	}
+	const { isSharpSemitone = true, isNote = true } = options
 	return isSharpSemitone
 		? isNote
 			? 'note'

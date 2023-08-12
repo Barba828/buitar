@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useMemo, useRef } from 'react'
 import type { Point, ToneSchema } from '@buitar/to-guitar'
 import { useBoardContext } from '../board-provider'
 import { getBoardOptionsTone } from '../utils'
-import { GuitarBoardOptions } from '../board-controller/controller.type'
+import { GuitarBoardOptions } from '../../../pages/settings/config/controller.type'
 import { useBoardTouch, useGuitarKeyDown } from '@/utils/hooks/use-board-event'
 import { useDebounce } from '@/utils/hooks/use-debouce'
 import { Icon } from '@/components'
@@ -36,7 +36,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 }) => {
 	const {
 		guitarBoardOption: { keyboard },
-		boardOptions: { hasTag, isStickyZero = true },
+		boardOptions: { hasTag, numTag, isStickyZero = true },
 		boardTheme,
 		taps,
 		emphasis,
@@ -121,15 +121,11 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 				<BoardBtnComponent key={stringIndex} point={point} visible={true} stringVisible={false} />
 			))
 
-		const playButton = (
+		// 存在数字标记才显示播放按钮
+		const playButton = hasTag && numTag && (
 			<div
 				onClick={handlePlayArpeggio}
-				className={cx(
-					'buitar-primary-button',
-					styles['frets-dot'],
-					!hasTag && styles['frets-hidden'],
-					styles['point']
-				)}
+				className={cx('buitar-primary-button', styles['frets-dot'], styles['point'])}
 			>
 				<Icon name="icon-eighth-note" color="#fff8" size={16} />
 			</div>
@@ -205,22 +201,17 @@ const BoardDots = ({ index }: { index: number }) => {
 		boardOptions: { hasTag, numTag },
 	} = useBoardContext()
 
-	const dotsArr = [...Array(FRET_DOT[index - 1]?.length || 0)]
+	if (!hasTag) {
+		return <></>
+	}
+
+	const dotsArr = [...Array(FRET_DOT[index - 1]?.length || 0)] // 当前标记点个数
 	return numTag ? (
-		<li
-			className={cx(
-				'flex-center',
-				fretStyles['fret-num-dots'],
-				styles['frets-dot'],
-				!hasTag && styles['frets-hidden']
-			)}
-		>
-			{index}
-		</li>
+		<li className={cx('flex-center', fretStyles['fret-num-dots'], styles['frets-dot'])}>{index}</li>
 	) : (
 		<div className={cx('flex-center', fretStyles['fret-dots'])}>
-			{dotsArr.map(() => (
-				<div className={fretStyles['fret-dots-item']}></div>
+			{dotsArr.map((_, index) => (
+				<div className={fretStyles['fret-dots-item']} key={index}></div>
 			))}
 		</div>
 	)
@@ -276,14 +267,12 @@ const BoardDotsOriginal = ({ index }: { index: number }) => {
 		boardOptions: { hasTag, numTag },
 	} = useBoardContext()
 
+	if (!hasTag) {
+		return <></>
+	}
+
 	return (
-		<div
-			className={cx(
-				'buitar-primary-button',
-				styles['frets-dot'],
-				!hasTag && styles['frets-hidden']
-			)}
-		>
+		<div className={cx('buitar-primary-button', styles['frets-dot'])}>
 			{numTag ? (
 				<div className={styles['frets-dot-num']}>{index}</div>
 			) : (

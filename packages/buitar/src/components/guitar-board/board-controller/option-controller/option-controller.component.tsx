@@ -3,7 +3,7 @@ import { useBoardContext } from '@/components/guitar-board/index'
 import { instrumentConfig } from '@buitar/tone-player/tone.config'
 import { Instrument } from '@buitar/tone-player/instrument.type'
 import { Icon } from '@/components/icon'
-import { optionsUIConfig, instrumentUIConfig, boardStyleConfig } from './controller.config'
+import { optionsUIConfig, instrumentUIConfig, boardStyleConfig } from '../../../../pages/settings/config/controller.config'
 import {
 	GuitarBoardOptions,
 	GuitarBoardOptionsKey,
@@ -14,10 +14,6 @@ import { useMenuContext } from '@/components/slide-menu/menu-provider'
 import cx from 'classnames'
 
 import styles from './option-controller.module.scss'
-
-export const OPTIONS_KEY = 'options'
-export const INSTRUMENT_KEY = 'instrument'
-export const BOARD_THEME_KEY = 'board_theme'
 
 export const BoardController: FC<
 	ControllerListProps<any> & {

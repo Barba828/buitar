@@ -1,5 +1,5 @@
 import { transBoard, transScaleDegree } from '../index'
-import type { Chord, ChordDegreeNum, ModeType, Point, Tone } from '../interface'
+import type { Chord, ChordDegreeNum, GuitarBoard, ModeType, Point, Tone } from '../interface'
 import { DEFAULT_LEVEL, DEFAULT_TUNE, GRADE_NUMS } from '../config'
 import { OnChange } from '../utils/on-change'
 
@@ -17,6 +17,10 @@ type BoardOption = {
 	 */
 	chordNumType: ChordDegreeNum
 	/**
+	 * chords是否包含转位和弦「C/E」
+	 */
+	chordOver: boolean
+	/**
 	 * 调内顺阶和弦「 C Dm Em ... 」
 	 */
 	chords: Chord[]
@@ -24,12 +28,12 @@ type BoardOption = {
 	 * 指板
 	 * 「弦数」 * 「品数」
 	 */
-	keyboard: Point[][]
+	keyboard: GuitarBoard
 	/**
-	 * 调音「 EADGBE 」
+	 * 调音「 EADGBE 」「E2 A2 D3 ...」
 	 * 数组长度也表示了指板「弦数」
 	 */
-	baseTone: Tone[]
+	baseTone: Tone[] | string[]
 	/**
 	 * 指板「品数」
 	 */
@@ -41,12 +45,13 @@ type BoardOption = {
 	baseLevel: number
 }
 
-type BoardOptionProps = Pick<BoardOption, 'mode' | 'scale' | 'chordNumType' | 'baseTone' | 'baseFret' | 'baseLevel'>
+type BoardOptionProps = Pick<BoardOption, 'mode' | 'scale' | 'chordNumType' | 'chordOver' |'baseTone' | 'baseFret' | 'baseLevel'>
 
 const defaultOptions: BoardOptionProps = {
 	mode: 'major',
 	scale: 'C',
 	chordNumType: 3,
+	chordOver: false,
 	baseTone: DEFAULT_TUNE,
 	baseFret: GRADE_NUMS,
 	baseLevel: DEFAULT_LEVEL,
@@ -92,7 +97,7 @@ class Board {
 		/**
 		 * 更新 options 需要更新 顺阶和弦
 		 */
-		if (keys.includes('mode') || keys.includes('scale') || keys.includes('chordNumType')) {
+		if (keys.includes('mode') || keys.includes('scale') || keys.includes('chordNumType') || keys.includes('chordOver')) {
 			const chords = this.getChords(_options)
 			_options.chords = chords
 		}
@@ -107,10 +112,20 @@ class Board {
 		Object.assign(this._board, _options)
 	}
 
+	/**
+	 * 获取当前设置的指板
+	 * @param options 
+	 * @returns 
+	 */
 	private getKeyBoard = (options: BoardOptionProps) => {
 		return transBoard(options.baseTone, options.baseFret, options.baseLevel)
 	}
 
+	/**
+	 * 获取当前调式 & 音阶的顺阶和弦
+	 * @param options 
+	 * @returns 
+	 */
 	private getChords = (options: BoardOptionProps) => {
 		return transScaleDegree({ mode: options.mode, scale: options.scale, chordNumType: options.chordNumType })
 	}

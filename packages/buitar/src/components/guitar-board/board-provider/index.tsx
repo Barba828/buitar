@@ -1,10 +1,20 @@
 import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
 import { Instrument } from '@buitar/tone-player/instrument.type'
-import { GuitarBoardOptions, GuitarBoardThemeKey } from '@/components/guitar-board/board-controller/controller.type'
-import { Board, BoardOption, Point, Tone, transChordTaps } from '@buitar/to-guitar'
+import {
+	GuitarBoardOptions,
+	GuitarBoardThemeKey,
+	InstrumentKeyboardKey,
+} from '@/pages/settings/config/controller.type'
+import {
+	OPTIONS_KEY,
+	INSTRUMENT_KEY,
+	BOARD_THEME_KEY,
+	INSTRUMENT_KEYBOARD_KEY,
+	instrumentKeyboardConfig,
+} from '@/pages/settings/config/controller.config'
+import { Board, BoardChord, BoardOption, Point, Tone } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
 import { useStore } from '@/utils/hooks/use-store'
-import { OPTIONS_KEY, INSTRUMENT_KEY, BOARD_THEME_KEY } from '@/components/guitar-board/board-controller'
 import { COLLECTIONS_KEY, CollectionType } from '@/pages/collections'
 
 /**
@@ -39,6 +49,10 @@ const defaultBoardOptions: GuitarBoardOptions = {
 	 * 是否全部展示键盘
 	 */
 	isAllKey: true,
+	/**
+	 * 是否固定 0 品
+	 */
+	isStickyZero: true,
 }
 /**
  * 默认收藏
@@ -81,6 +95,11 @@ type BoardContextType = {
 	instrument: Instrument
 	dispatchInstrument: Dispatch<Instrument>
 	/**
+	 *
+	 */
+	instrumentKeyboard: InstrumentKeyboardKey
+	dispatchInstrumentKeyboard: Dispatch<InstrumentKeyboardKey>
+	/**
 	 * 指板UI主题
 	 */
 	boardTheme: GuitarBoardThemeKey
@@ -95,22 +114,27 @@ type BoardContextType = {
 	/**
 	 * 大调音阶和弦
 	 */
-	chord: Tone[] 
+	chord: Tone[]
 	setChord: SetState<Tone[]>
 	/**
 	 * 音阶和弦指位列表
 	 */
-	chordTaps: ReturnType<typeof transChordTaps> | null
-	setChordTaps: SetState<ReturnType<typeof transChordTaps> | null>
+	chordTaps: BoardChord[]
+	setChordTaps: SetState<BoardChord[]>
+	/**
+	 * 当前和弦指位
+	 */
+	chordTap: BoardChord | undefined
+	setChordTap: SetState<BoardChord | undefined>
 	/**
 	 * 指板选中高亮展示Point
 	 */
-	taps: Point[] 
+	taps: Point[]
 	setTaps: SetState<Point[]>
 	/**
 	 * 指板固定高亮Point
 	 */
-	fixedTaps: Point[] 
+	fixedTaps: Point[]
 	setFixedTaps: SetState<Point[]>
 	/**
 	 * 指板交互强调反馈Point
@@ -137,14 +161,22 @@ export const BoardProvider: FC = (props) => {
 		OPTIONS_KEY,
 		defaultBoardOptions
 	)
-	const [instrument, dispatchInstrument] = useStore<Instrument>(INSTRUMENT_KEY, player.getInstrument())
+	const [instrument, dispatchInstrument] = useStore<Instrument>(
+		INSTRUMENT_KEY,
+		player.getInstrument()
+	)
+	const [instrumentKeyboard, dispatchInstrumentKeyboard] = useStore<InstrumentKeyboardKey>(
+		INSTRUMENT_KEYBOARD_KEY,
+		'guitar'
+	)
 	const [boardTheme, dispatchBoardTheme] = useStore<GuitarBoardThemeKey>(BOARD_THEME_KEY, 'default')
 	const [collection, dispatchCollection] = useStore<CollectionType[]>(
 		COLLECTIONS_KEY,
 		defaultCollection
 	)
 	const [chord, setChord] = useState<Tone[]>([])
-	const [chordTaps, setChordTaps] = useState<ReturnType<typeof transChordTaps> | null>(null)
+	const [chordTaps, setChordTaps] = useState<BoardChord[]>([])
+	const [chordTap, setChordTap] = useState<BoardChord>()
 	const [taps, setTaps] = useState<Point[]>([])
 	const [fixedTaps, setFixedTaps] = useState<Point[]>([])
 	const [highFixedTaps, setHighFixedTaps] = useState<Point[]>([])
@@ -166,10 +198,15 @@ export const BoardProvider: FC = (props) => {
 		return _board
 	}, [setGuitarBoardOption])
 
-	// 切换乐器：加载乐器音源
+	// 切换乐器音色：加载乐器音源
 	useEffect(() => {
 		player.dispatchInstrument(instrument)
 	}, [instrument])
+
+	// 切换乐器指板：更新guitar实例
+	useEffect(() => {
+		guitar.setOptions(instrumentKeyboardConfig[instrumentKeyboard])
+	}, [instrumentKeyboard])
 
 	const boardValue = {
 		player,
@@ -181,7 +218,9 @@ export const BoardProvider: FC = (props) => {
 		dispatchBoardOptions,
 		instrument,
 		dispatchInstrument,
-		boardTheme, 
+		instrumentKeyboard,
+		dispatchInstrumentKeyboard,
+		boardTheme,
 		dispatchBoardTheme,
 		collection,
 		dispatchCollection,
@@ -190,6 +229,9 @@ export const BoardProvider: FC = (props) => {
 		setChord,
 		chordTaps,
 		setChordTaps,
+		chordTap,
+		setChordTap,
+
 		taps,
 		setTaps,
 		fixedTaps,
@@ -199,5 +241,9 @@ export const BoardProvider: FC = (props) => {
 		emphasis,
 		setEmphasis,
 	}
-	return <BoardContext.Provider value={boardValue}>{props.children}</BoardContext.Provider>
+	return (
+		<BoardContext.Provider value={boardValue}>
+			{guitarBoardOption && boardOptions && props.children}
+		</BoardContext.Provider>
+	)
 }

@@ -1,17 +1,21 @@
-import React, { FC, useMemo, useState } from 'react'
+import React, { FC, useMemo, useState, memo } from 'react'
 import { useBoardContext } from '../../board-provider'
 import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
 import { Icon } from '@/components/icon'
 import { getBoardOptionsNote } from '@/components/guitar-board/utils'
 import { Portal } from '@/components'
-import { ChordType, Point, getDegreeTag } from '@buitar/to-guitar'
-import { GuitarBoardOptions } from '../controller.type'
+import { BoardChord, Point, Tone, getDegreeTag } from '@buitar/to-guitar'
+import { GuitarBoardOptions } from '../../../../pages/settings/config/controller.type'
 import { CardCollector } from './card-collector.component'
 import cx from 'classnames'
 import styles from './chord-card.module.scss'
 
 export const ChordCard: FC<{
 	taps: Point[]
+	/**
+	 * Chord标题
+	 */
+	title: string
 	/**
 	 * 是否显示收藏/移除按钮
 	 */
@@ -20,15 +24,17 @@ export const ChordCard: FC<{
 	 * 有移除函数则为移除按钮
 	 */
 	onRemoveCollection?: () => void
-	/**
-	 * 自定义Chord标题
-	 */
-	title?: string
 	className?: string
 	size?: number
 	extra?: JSX.Element | JSX.Element[]
-}> = ({ taps, title, className, size = 160, extra, disableCollect, onRemoveCollection }) => {
-	const { player } = useBoardContext()
+}> = memo(({ taps, title, className, size = 160, extra, disableCollect, onRemoveCollection }) => {
+	if (title.length === 0) {
+		title = ' '
+	}
+	const {
+		player,
+		guitarBoardOption: { keyboard },
+	} = useBoardContext()
 	const [collectionVisible, setCollectionVisible] = useState(false)
 
 	const cls = cx(
@@ -37,6 +43,8 @@ export const ChordCard: FC<{
 		className,
 		taps.length === 0 && styles['chord-card-hidden']
 	)
+
+	const svgPoints = useMemo(() => transToSvgPoints(taps, keyboard?.length), [taps])
 
 	const handleClick = () => {
 		player.triggerPointArpeggio(taps)
@@ -58,17 +66,15 @@ export const ChordCard: FC<{
 		onRemoveCollection?.()
 	}
 
-	const chordName = useChordName()
-	const chordTitle = title || chordName
 	const collectionData = {
 		taps,
-		title: chordTitle,
+		title,
 	}
 
 	const card = (
 		<div className={styles.container}>
 			<div onClick={handleClick} className={cls} style={{ width: size * 1.2, height: size * 1.2 }}>
-				<SvgChord points={transToSvgPoints(taps)} size={size} title={chordTitle} />
+				<SvgChord points={svgPoints} size={size} title={title} />
 				<div className={styles['chord-card-dot']} />
 				<div className={styles['chord-card-icons']}>
 					<div className={styles['chord-card-sounds']} onClick={handleSoundClick}>
@@ -98,18 +104,7 @@ export const ChordCard: FC<{
 	) : (
 		card
 	)
-}
-
-export const useChordName = (index: number = 0) => {
-	const { chordTaps, boardOptions } = useBoardContext()
-
-	return useMemo(() => {
-		if (!chordTaps?.chordType[index]) {
-			return ' '
-		}
-		return getChordName(chordTaps.chordType[index], boardOptions)
-	}, [chordTaps?.chordType])
-}
+})
 
 /**
  * 根据 chordType 获取和弦名称
@@ -117,10 +112,13 @@ export const useChordName = (index: number = 0) => {
  * @param boardOptions
  * @returns
  */
-export const getChordName = (
-	chordType: ChordType,
+export const getBoardChordName = (
+	chordType?: BoardChord['chordType'],
 	boardOptions?: Pick<GuitarBoardOptions, 'isSharpSemitone'>
 ) => {
+	if (!chordType) {
+		return ''
+	}
 	// 自定义名称直接返回
 	if (chordType.tag === '*') {
 		return chordType.name
@@ -144,27 +142,29 @@ export const getChordName = (
 	}
 }
 
-export const DetailCard: FC<{ index?: number }> = ({ index = 0 }) => {
-	const { chord, chordTaps } = useBoardContext()
-	const chordName = useChordName(index)
-	const chordTypeItem = chordTaps?.chordType[index]
-	
-	if (!chordTypeItem) {
+export const DetailCard: FC<{ chordType?: BoardChord['chordType'], chord?: Tone[] }> = ({ chordType, chord }) => {
+	const { boardOptions } = useBoardContext()
+	const chordName = getBoardChordName(chordType, boardOptions)
+
+	if (!chordType) {
 		return null
 	}
 
-	const constitute = chordTaps.chordType[0].constitute
-	const constituteTag = constitute?.map(item => getDegreeTag(item))
-	const chordList = chord.map((note, index) => {
-		return {
-			note, 
+	const constitute = chordType.constitute
+	const constituteTag = constitute?.map((item) => getDegreeTag(item))
+	const chordList = constitute?.map((_, index) => {
+		return chord ? {
+			note: chord[index],
 			degreeTag: constituteTag?.[index],
-			degree: constitute?.[index]
+			degree: constitute?.[index],
+		} : {
+			note: constituteTag?.[index],
+			degree: constitute?.[index],	
 		}
 	})
-	const title = chordTypeItem.name
-	const subTitle =
-	chordTypeItem.tag !== '*' ? chordTypeItem.name_zh : '自定义'
+
+	const title = chordType.name
+	const subTitle = chordType.tag !== '*' ? chordType.name_zh : '自定义'
 	return (
 		<div className={cx(styles['detail-card'])}>
 			<div className={cx('buitar-primary-button', styles['detail-view'])}>
@@ -175,11 +175,16 @@ export const DetailCard: FC<{ index?: number }> = ({ index = 0 }) => {
 				</div>
 			</div>
 			<div className={styles['detail-chord']}>
-				{chordList.map(({note, degree, degreeTag}, index) => (
-					<div key={index} className={cx('buitar-primary-button', styles['detail-chord-note'], 'flex-center')}>
+				{chordList?.length && chordList.map(({ note, degree, degreeTag }, index) => (
+					<div
+						key={index}
+						className={cx('buitar-primary-button', styles['detail-chord-note'], 'flex-center')}
+					>
 						<div className={styles['detail-chord-tag']}>{degreeTag}</div>
 						<div className={styles['detail-chord-title']}>{note}</div>
-						<div className={cx(styles['detail-chord-tag'], styles['detail-chord-tag__end'])}>{degree}</div>
+						<div className={cx(styles['detail-chord-tag'], styles['detail-chord-tag__end'])}>
+							{degree}
+						</div>
 					</div>
 				))}
 			</div>

@@ -246,7 +246,7 @@ export const DegreeChordController: FC<ControllerListProps<any>> = () => {
 
 	useEffect(() => {
 		const soundList = chords.map((item) => {
-			return transChordTaps(item.chord, guitarBoardOption.keyboard).chordList[0]
+			return transChordTaps(item.chord, guitarBoardOption)[0].chordTaps
 		})
 		setSoundList(soundList)
 	}, [guitarBoardOption.chords])
@@ -256,7 +256,7 @@ export const DegreeChordController: FC<ControllerListProps<any>> = () => {
 			// 点击相同的级数和弦，收起指法列表
 			if (index === soundListIndex) {
 				setSoundListIndex(-1)
-				setChordTaps(null)
+				setChordTaps([])
 				return
 			}
 

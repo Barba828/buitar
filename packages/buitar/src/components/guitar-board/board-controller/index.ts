@@ -5,4 +5,4 @@ export * from './degree-controller'
 export * from './fifth-circle-controller'
 export * from './option-controller'
 
-export * from './controller.type'
+export * from '../../../pages/settings/config/controller.type'

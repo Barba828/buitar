@@ -39,6 +39,10 @@ const StorageCollection = () => {
 	)
 }
 
+/**
+ * @todo 默认收藏改为svg识别格式，勿用算法实现
+ * @returns 
+ */
 const DefaultCollection = () => {
 	const LIST_1 = [
 		{ tone: 'E', tag: '', index: 0 },
@@ -62,7 +66,7 @@ const DefaultCollection = () => {
 		return list.map((item) => {
 			const chord = transChord(item.tone as Tone, item.tag)!
 			const title = item.tone + item.tag
-			const taps = transChordTaps(chord.chord).chordList[item.index]
+			const taps = transChordTaps(chord.chord)[item.index].chordTaps
 
 			return {
 				title,
