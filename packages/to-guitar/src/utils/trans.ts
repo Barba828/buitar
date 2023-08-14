@@ -49,11 +49,8 @@ const getDegreeTag = (degree: string | number) => {
 	if (!numStr) {
 		return ''
 	}
-	let num = Number(numStr) as IntervalNum
-	if (num > 7) {
-		num = (num % 7) as IntervalNum
-	}
-	return DEGREE_TAG_MAP[num]
+	const num = Number(numStr) % 7
+	return DEGREE_TAG_MAP[num  as IntervalNum]
 }
 
 /**

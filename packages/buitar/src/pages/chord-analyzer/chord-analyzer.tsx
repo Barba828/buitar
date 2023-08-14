@@ -2,9 +2,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	GuitarBoard,
 	ChordCard,
-	BoardProvider,
 	useBoardContext,
-	getBoardChordName,
 	BoardController,
 	DetailCard,
 } from '@/components/guitar-board'
@@ -14,6 +12,7 @@ import { transChordType } from '@buitar/to-guitar'
 import { AddTextInput } from '@/components/basic'
 import { usePagesIntro } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
+import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
 import cx from 'classnames'
 
 import styles from './chord-analyzer.module.scss'
@@ -32,12 +31,12 @@ export const ChordAnalyzer = () => {
 	}, [])
 
 	return (
-		<BoardProvider>
+		<>
 			{intro}
 			<BoardController extendItem={false} />
 			<TapedGuitarBoard onChange={handleChangeTaps} />
 			{chordTypes && <TapedChordCard chordTypes={chordTypes} />}
-		</BoardProvider>
+		</>
 	)
 }
 

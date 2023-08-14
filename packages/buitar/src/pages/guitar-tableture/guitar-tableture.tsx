@@ -35,7 +35,7 @@ export const GuitarTableture: FC = () => {
 	)
 
 	return (
-		<BoardProvider>
+		<>
 			{intro}
 			<TabSwitch
 				className={cx(styles['tableture-tab'])}
@@ -48,7 +48,7 @@ export const GuitarTableture: FC = () => {
 				)}
 			/>
 			<Outlet />
-		</BoardProvider>
+		</>
 	)
 }
 
@@ -162,9 +162,6 @@ export const GuitarBoardTabletureList = () => {
 			{/* 指板列表 */}
 			<div className={cx(styles['tableture-list'], isEdit && styles['tableture-list__edit'])}>
 				{tabletrues.map((config, index) => (
-					/**
-					 * @todo 优化只存在单个BoardProvider
-					 */
 					<BoardProvider key={config.mode + index}>
 						<GuitarBoardTabletureItem
 							range={config.range}
@@ -258,7 +255,7 @@ const GuitarBoardTabletureItem = ({
 			board: guitarBoardOption.keyboard,
 			mode: mode,
 			range: deboucedRange,
-			ignorePitch: false
+			ignorePitch: false,
 		})
 		const highFixedTaps = taps.filter((tap) => tap.tone === rootPitch)
 		// 设置指位
@@ -352,7 +349,7 @@ const GuitarBoardTabletureItem = ({
 				/>
 			)}
 
-			<GuitarBoard range={[range[0], range[1]]} onCheckedPoints={handleCheckedPoint}/>
+			<GuitarBoard range={[range[0], range[1]]} onCheckedPoints={handleCheckedPoint} />
 		</div>
 	)
 }

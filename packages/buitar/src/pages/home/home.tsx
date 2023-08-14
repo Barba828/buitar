@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { GuitarBoard, ChordCard, BoardProvider, useBoardContext } from '@/components/guitar-board'
+import { GuitarBoard, ChordCard, useBoardContext } from '@/components/guitar-board'
 import { Link } from 'react-router-dom'
 import { transChordTaps } from '@buitar/to-guitar'
 import { Icon } from '@/components'
@@ -58,7 +58,7 @@ const PcHome = () => {
 	const ChordLibrary = useRouteFind('ChordLibrary')
 	const ChordAnalyzer = useRouteFind('ChordAnalyzer')
 	return (
-		<BoardProvider>
+		<>
 			<p className={styles.intro}>
 				<span>同步的音频和完善的吉他指板信息</span>
 				<span>真正懂理论的算法实时计算和弦</span>
@@ -94,7 +94,7 @@ const PcHome = () => {
 				和弦开始吧！点击指板即可发出悦耳弦音，若需要更改指板显示方式或者演奏乐器，可在左栏详细设置。点击和弦图卡片还能演奏琶音。
 			</div>
 			<Example />
-		</BoardProvider>
+		</>
 	)
 }
 

@@ -1,6 +1,5 @@
 import {
 	BoardController,
-	BoardProvider,
 	InstrumentKeyboardKey,
 	useBoardContext,
 } from '@/components/guitar-board'
@@ -12,7 +11,7 @@ import { instrumentKeyboardConfig } from './config/controller.config'
 
 export const SettingsPage: FC = () => {
 	return (
-		<BoardProvider>
+		<>
 			<BoardController
 				controllerClassName={styles['board-settings']}
 				scrollable={false}
@@ -20,7 +19,7 @@ export const SettingsPage: FC = () => {
 				ignore={true}
 			/>
 			<KeyBoardInstrument />
-		</BoardProvider>
+		</>
 	)
 }
 

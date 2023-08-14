@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import {
 	BoardController,
-	BoardProvider,
 	GuitarBoard,
 	PianoBoard,
 	useBoardContext,
@@ -14,12 +13,12 @@ export const InstrumentPlayer = () => {
 	const [level, setPianoPart] = useState(false)
 
 	return (
-		<BoardProvider>
+		<>
 			{intro}
 			<BoardController extendItem={false}/>
 			<GuitarBoard onChangePart={setPart} />
 			<PianoBoards onChangePart={setPianoPart} />
-		</BoardProvider>
+		</>
 	)
 }
 

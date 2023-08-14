@@ -1,4 +1,4 @@
-import { BoardProvider, RangeSlider, useBoardContext, usePagesIntro } from '@/components'
+import { RangeSlider, useBoardContext, usePagesIntro } from '@/components'
 import { ChordList } from '@/components/chord-list'
 import { Tone, getTapsOnBoard, transToneOffset } from '@buitar/to-guitar'
 import { CagedBaseType, GuitarCagedBaseConfig } from './caged.config'
@@ -12,10 +12,10 @@ import styles from './collections.module.scss'
 export const Collections: FC = () => {
 	const intro = usePagesIntro()
 	return (
-		<BoardProvider>
-			{intro}
+		<>
+			{/* {intro} */}
 			<Outlet />
-		</BoardProvider>
+		</>
 	)
 }
 
@@ -31,10 +31,6 @@ export const StorageCollection: FC = () => {
 	)
 }
 
-/**
- * @todo 默认收藏改为svg识别格式，勿用算法实现
- * @returns
- */
 export const CagedCollection: FC = () => {
 	const {
 		guitarBoardOption: { keyboard },
@@ -42,7 +38,7 @@ export const CagedCollection: FC = () => {
 	} = useBoardContext()
 	const myCollectionsRoute = useRouteFind('ChordCollectionsOfMine')
 
-	const [startGrade, setStartGrade] = useState(2)
+	const [startGrade, setStartGrade] = useState(0)
 
 	const config = useMemo(() => {
 		if (instrumentKeyboard === 'guitar') {
@@ -58,6 +54,9 @@ export const CagedCollection: FC = () => {
 			})
 			return GuitarCagedBaseConfig
 		}
+		/**
+		 * @ToDo 贝斯和尤克里里的默认指法
+		 */
 		return {} as CagedBaseType
 	}, [startGrade])
 

@@ -3,25 +3,24 @@ import {
 	ChordController,
 	GuitarBoard,
 	ChordCard,
-	BoardProvider,
 	useBoardContext,
 	BoardController,
 	DetailCard,
-	getBoardChordName,
 } from '@/components/guitar-board'
 import { transChordTaps } from '@buitar/to-guitar'
 import { PianoBoard } from '@/components/piano-board'
 import { usePagesIntro } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
+import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
 
 export const ChordPlayer = () => {
 	const intro = usePagesIntro()
 
 	return (
-		<BoardProvider>
+		<>
 			{intro}
 			<ChordPlayerInner />
-		</BoardProvider>
+		</>
 	)
 }
 

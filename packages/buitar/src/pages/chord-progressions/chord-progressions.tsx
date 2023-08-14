@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import {
 	ChordTapsController,
-	BoardProvider,
 	useBoardContext,
 	DegreeController,
 	DegreeChordController,
@@ -19,15 +18,13 @@ import styles from './chord-progressions.module.scss'
 export const ChordProgressions = () => {
 	const intro = usePagesIntro()
 	return (
-		<BoardProvider>
-			<PlayerProvider>
-				{intro}
-				<DegreeController />
-				<ChordPicker />
-				<TapsViewer />
-				<SoundBoard />
-			</PlayerProvider>
-		</BoardProvider>
+		<PlayerProvider>
+			{intro}
+			<DegreeController />
+			<ChordPicker />
+			<TapsViewer />
+			<SoundBoard />
+		</PlayerProvider>
 	)
 }
 
