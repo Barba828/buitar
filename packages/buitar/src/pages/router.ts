@@ -97,15 +97,9 @@ export const routeConfig: Array<RouteType> = [
 		Component: Collections,
 		children: [
 			{
-				name: '',
-				id: 'ChordCollectionsCagedHome',
-				path: `${baseUrl}collections`,
-				Component: CagedCollection,
-			},
-			{
 				name: 'Caged系统',
 				id: 'ChordCollectionsCaged',
-				path: `${baseUrl}collections/caged`,
+				path: `${baseUrl}collections`,
 				Component: CagedCollection,
 			},
 			{

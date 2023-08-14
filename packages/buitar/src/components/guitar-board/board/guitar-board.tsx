@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useMemo, useRef } from 'react'
 import type { Point, ToneSchema } from '@buitar/to-guitar'
 import { useBoardContext } from '../board-provider'
 import { getBoardOptionsTone } from '../utils'
-import { GuitarBoardOptions } from '../../../pages/settings/config/controller.type'
+import { GuitarBoardOptions } from '@/pages/settings/config/controller.type'
 import { useBoardTouch, useGuitarKeyDown } from '@/utils/hooks/use-board-event'
 import { useDebounce } from '@/utils/hooks/use-debouce'
 import { Icon } from '@/components'
@@ -62,7 +62,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	}, [keyboard])
 
 	// 指位停留 30 ms以上 => play & checked
-	const debouceEmphasis = useDebounce(emphasis, 30)
+	const debouceEmphasis = useDebounce(emphasis, 20)
 	useEffect(() => {
 		if (debouceEmphasis.length <= 0 || !boardList) {
 			return

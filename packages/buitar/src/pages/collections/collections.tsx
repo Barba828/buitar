@@ -5,15 +5,19 @@ import { CagedBaseType, GuitarCagedBaseConfig } from './caged.config'
 import { FC, useCallback, useMemo, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { useRouteFind } from '@/utils/hooks/use-routers'
+import { useRouteFind, useRouteMatch } from '@/utils/hooks/use-routers'
+import cx from 'classnames'
 
 import styles from './collections.module.scss'
 
 export const Collections: FC = () => {
 	const intro = usePagesIntro()
+	const CollectionsHomeRoute = useRouteFind('ChordCollections') // 工具菜单页路由
+	const curRoute = useRouteMatch() // 当前页面一级路由
+
 	return (
 		<>
-			{/* {intro} */}
+			{CollectionsHomeRoute === curRoute && intro}
 			<Outlet />
 		</>
 	)
@@ -69,13 +73,17 @@ export const CagedCollection: FC = () => {
 			<Link to={myCollectionsRoute.path} className={styles['my-collections-link']}>
 				我的收藏〉
 			</Link>
-			<RangeSlider
-				size={2}
-				range={[0, 12]}
-				onChange={handleChangeSlider}
-				className={styles['caged-range-slider']}
-			/>
-
+			<div className={styles['caged-range']}>
+				<div className={cx('buitar-primary-button', 'flex-center', styles['caged-range-title'])}>
+					品位 {startGrade}
+				</div>
+				<RangeSlider
+					size={2}
+					range={[0, 12]}
+					onChange={handleChangeSlider}
+					className={styles['caged-range-slider']}
+				/>
+			</div>
 			{Object.keys(config).map((key) => (
 				<ChordList
 					key={key}
@@ -84,6 +92,8 @@ export const CagedCollection: FC = () => {
 						taps: getTapsOnBoard(item.tapPositions as any, keyboard),
 					}))}
 					title={key}
+					disableCollect
+					titleClassName={styles['caged-title']}
 				/>
 			))}
 		</>

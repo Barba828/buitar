@@ -1,15 +1,37 @@
-.caged-range-slider {
-    margin-bottom: calc($btn-margin * 2);
-	:global(.buitar-primary-range) {
-		width: 80vw !important;
+.caged-range {
+	display: flex;
+	.caged-range-slider {
+		margin-bottom: calc($btn-margin * 2);
+		:global(.buitar-primary-range) {
+			width: 80vw !important;
+		}
+	}
+	.caged-range-title {
+		flex: 1;
+		height: auto !important;
+		font-size: $font-12;
+		font-weight: bold;
+		opacity: 0.8;
+	}
+}
+
+.caged-title {
+	font-size: 60px;
+	@media (any-hover: hover) {
+		&:hover {
+			font-size: 72px;
+		}
+	}
+	@media #{$mobileLayout} {
+		font-size: 48px;
 	}
 }
 
 .my-collections-link {
 	text-align: right;
-    display: block;
-    font-size: $font-16;
+	display: block;
+	font-size: $font-16;
 	font-weight: bold;
 	opacity: 0.8;
-    margin: 20px;
+	margin: 20px;
 }

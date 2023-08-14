@@ -18,7 +18,8 @@ export const ChordList: FC<{
 	title?: string
 	intro?: string
 	disableCollect?: boolean
-}> = ({ data, title, intro, disableCollect }) => {
+	titleClassName?: string
+}> = ({ data, title, intro, disableCollect, titleClassName }) => {
 	const { collection, dispatchCollection } = useBoardContext()
 	const isMobile = useIsMobile()
 
@@ -50,7 +51,7 @@ export const ChordList: FC<{
 
 	return (
 		<div className={styles.list}>
-			<div className={cx('buitar-primary-button', styles['title-view'], 'touch-yellow')}>
+			<div className={cx('buitar-primary-button', styles['title-view'], 'touch-yellow', titleClassName)}>
 				{title}
 				<div>{intro}</div>
 				{!disableCollect && (

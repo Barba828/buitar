@@ -46,8 +46,12 @@ export const useBoardTouch = (
 	const handler = isTouchDevice
 		? {
 				// Mobile
+				onTouchStart: onMouseDown,
+				// onTouchMove: onMouseOver, // Touch设置TouchMove事件响应页面滚动，暂不用于指板响应
+				onTouchCancel: onMouseLeave,
 				onTouchEnd: onMouseUp,
-				onClick: onMouseDown,
+				// default
+				onClick: onMouseOver,
 		  }
 		: {
 				// PC

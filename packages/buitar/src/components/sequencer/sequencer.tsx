@@ -8,7 +8,7 @@ import styles from './sequencer.module.scss'
 import { Switch } from '../ui'
 import { TonePlayer } from '@buitar/tone-player'
 import { useSequencerContext } from './sequencer-provider'
-import { InstrumentColor } from '@/pages/settings/config/controller.config'
+import { InstrumentColor } from '@/pages/settings/config/controller.type'
 import { useIsMobile } from '@/utils/hooks/use-device'
 
 /**
@@ -115,7 +115,7 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 	}, [sounds, m, isPlaying])
 
 	// /**
-	//  * old 方案 Tone.Transport.scheduleRepeat 实现音序机Looper
+	//  * deprecate 方案 Tone.Transport.scheduleRepeat 实现音序机Looper
 	//  *
 	//  * scheduleId保存这个组件实例上一次的音序，并更新本次sounds生成的音序
 	//  * （不能直接Tone.Transport.clear，因为会导致其他音序机实例的内容被清除）
@@ -171,7 +171,8 @@ export const SequencerController: FC<{
 	editVisible?: boolean
 	mVisible?: boolean
 	onSave?(): void
-}> = ({ editVisible = true, mVisible = true, onSave }) => {
+	onRandom?(): void
+}> = ({ editVisible = true, mVisible = true, onSave, onRandom, children }) => {
 	const { isPlaying, setIsPlaying, editable, setEditable, bpm, setBpm, m, setM } =
 		useSequencerContext()
 
@@ -238,6 +239,13 @@ export const SequencerController: FC<{
 					<Icon size={24} name="icon-save" />
 				</div>
 			)}
+
+			{onRandom && (
+				<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={onRandom}>
+					<Icon size={24} name="icon-random"></Icon>
+				</div>
+			)}
+			{children}
 		</div>
 	)
 }

@@ -202,6 +202,23 @@ const instrumentConfig: {
 		G5: 'G5.mp3',
 	},
 
+	'ukulele': {
+		A5: 'A5.mp3',
+		B5: 'B5.mp3',
+		Bb5: 'Bb5.mp3',
+		C4: 'C4.mp3',
+		C5: 'C5.mp3',
+		'C#4': 'Cs4.mp3',
+		'C#5': 'Cs5.mp3',
+		D4: 'D4.mp3',
+		'D#4': 'Ds4.mp3',
+		E4: 'E4.mp3',
+		F4: 'F4.mp3',
+		'F#4': 'Fs4.mp3',
+		G4: 'G4.mp3',
+		'G#4': 'Gs4.mp3',
+	},
+
 	default: undefined,
 }
 

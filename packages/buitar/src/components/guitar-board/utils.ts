@@ -6,7 +6,7 @@ import {
 	ToneSchema,
 	ToneTypeName,
 } from '@buitar/to-guitar'
-import { GuitarBoardOptions } from '../../pages/settings/config/controller.type'
+import { GuitarBoardOptions } from '@/pages/settings/config/controller.type'
 
 /**
  * 根据指板设置获取 Tone 值

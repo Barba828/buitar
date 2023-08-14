@@ -166,6 +166,12 @@ export const instrumentUIConfig: {
 		icon: 'icon-piano',
 		color: 'purple',
 	},
+	ukulele: {
+		name_en: 'Ukulele',
+		name_zh: '尤克里里',
+		icon: 'icon-ukulele',
+		color: 'green'
+	},
 	default: {
 		name_en: 'synth',
 		name_zh: '合成音',
@@ -205,7 +211,7 @@ export const instrumentKeyboardConfig: Record<
 		key: 'ukulele',
 		name: '尤克里里',
 		baseFret: 17, // 0~16品
-		baseTone: ['G3', 'C3', 'E3', 'A3'], // 0 品调音
+		baseTone: ['G4', 'C4', 'E4', 'A4'], // 0 品调音
 		chordOver: true, // 需要带转位和弦
 	},
 }
