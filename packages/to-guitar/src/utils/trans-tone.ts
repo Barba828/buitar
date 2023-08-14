@@ -1,5 +1,13 @@
 import { NOTE_LIST, NOTE_FALLING_LIST, INTERVAL_LIST, INTERVAL_FALLING_LIST } from '../config'
-import type { Tone, Note, Interval, ToneSchema, NoteFalling, IntervalFalling, ToneTypeName, Pitch } from '../interface'
+import type {
+	Tone,
+	Note,
+	Interval,
+	ToneSchema,
+	NoteFalling,
+	IntervalFalling,
+	Pitch,
+} from '../interface'
 
 // overload
 function transNote(x: Tone): Note
@@ -24,9 +32,6 @@ function transNote(x: Tone | Tone[]) {
 		: NOTE_LIST[INTERVAL_FALLING_LIST.indexOf(x)]
 }
 
-// overload
-function transTone(note: Note): ToneSchema
-function transTone(note: number): ToneSchema
 /**
  * Note or NoteIndex => Tone所有类型字符
  * @param note
@@ -60,8 +65,20 @@ function transToneNum(x: Tone | Tone[]) {
 	if (x instanceof Array) {
 		return x.map((x) => transToneNum(x as Tone))
 	}
-	const note  = transNote(x)
+	const note = transNote(x)
 	return NOTE_LIST.indexOf(note)
+}
+
+/**
+ * Tone音字符变调
+ * @param x
+ */
+function transToneOffset(x: Tone, offset: number = 0) {
+	if (offset === 0) {
+		return x
+	}
+	const base = transToneNum(x)
+	return NOTE_LIST[(base + offset) % NOTE_LIST.length]
 }
 
 const isNote = (x: any): x is Note => {
@@ -80,4 +97,4 @@ const isIntervalFalling = (x: any): x is IntervalFalling => {
 	return INTERVAL_FALLING_LIST.includes(x)
 }
 
-export { transTone, transNote, transToneNum }
+export { transTone, transNote, transToneNum, transToneOffset }

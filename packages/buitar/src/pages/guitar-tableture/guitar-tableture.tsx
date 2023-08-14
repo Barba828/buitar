@@ -162,6 +162,9 @@ export const GuitarBoardTabletureList = () => {
 			{/* 指板列表 */}
 			<div className={cx(styles['tableture-list'], isEdit && styles['tableture-list__edit'])}>
 				{tabletrues.map((config, index) => (
+					/**
+					 * @todo 优化只存在单个BoardProvider
+					 */
 					<BoardProvider key={config.mode + index}>
 						<GuitarBoardTabletureItem
 							range={config.range}

@@ -29,6 +29,7 @@ const getChordType = (chords: Note[]): ChordType[] => {
 		const chordItem = chordMap.get(key)
 		if (chordItem) {
 			chordList.push({
+				key,
 				tone,
 				over: transTone(NOTE_LIST[offset]),
 				...chordItem,

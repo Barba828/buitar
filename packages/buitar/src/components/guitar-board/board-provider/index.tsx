@@ -15,7 +15,7 @@ import {
 import { Board, BoardChord, BoardOption, Point, Tone } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
 import { useStore } from '@/utils/hooks/use-store'
-import { COLLECTIONS_KEY, CollectionType } from '@/pages/collections'
+import { COLLECTIONS_KEY, CollectionType } from '@/pages/collections/collections.config'
 
 /**
  * 吉他指板默认配置

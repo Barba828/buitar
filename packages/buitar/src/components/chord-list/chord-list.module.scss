@@ -6,7 +6,7 @@
 		height: auto;
 		min-width: 80px;
 		padding: 10px;
-		font-weight: 600;
+		font-weight: bold;
 		@include flex-center;
 		&:hover {
 			.list-remove {
@@ -18,15 +18,16 @@
 			position: absolute;
 			right: 4px;
 			top: 4px;
-			font-size: 18px;
+			font-size: $font-18;
 			opacity: 0;
+		}
+		@media #{$mobileLayout} {
+			min-width: 30px;
 		}
 	}
 }
 
 .card {
-	width: 130px !important;
-	height: 130px !important;
 }
 
 .data-list {

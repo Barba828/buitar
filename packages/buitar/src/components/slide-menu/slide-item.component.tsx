@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/icon'
 import { useMenuContext } from './index'
@@ -11,7 +11,7 @@ import { useRouteFind, useRouteMatch } from '@/utils/hooks/use-routers'
 import cx from 'classnames'
 import styles from './slide-item.module.scss'
 
-export const SlideMenu = memo(() => {
+export const SlideMenu = () => {
 	const { menus, dispatchMenus } = useMenuContext()
 	const { pathname } = useLocation()
 	const navigate = useNavigate()
@@ -20,7 +20,7 @@ export const SlideMenu = memo(() => {
 	const homeRoute = useRouteFind('Home')
 	const showBack = useMemo(() => !!curRoute?.meta?.back, [curRoute])
 
-	const toggleExtend = useCallback(()=>{
+	const toggleExtend = useCallback(() => {
 		setExtend(!extend)
 	}, [extend])
 
@@ -105,10 +105,7 @@ export const SlideMenu = memo(() => {
 					<Icon name="icon-back" size={26} className={styles['slide-menu-bar-icon']} />
 				</div>
 			) : (
-				<div
-					className={styles['slide-menu-bar']}
-					onClick={toggleExtend}
-				>
+				<div className={styles['slide-menu-bar']} onClick={toggleExtend}>
 					<Icon name="icon-option" size={26} className={styles['slide-menu-bar-icon']} />
 				</div>
 			)}
@@ -125,4 +122,4 @@ export const SlideMenu = memo(() => {
 			></div>
 		</div>
 	)
-})
+}

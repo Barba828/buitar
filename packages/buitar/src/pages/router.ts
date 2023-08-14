@@ -9,7 +9,7 @@ import {
 	TapedGuitarBoardTableture,
 } from './guitar-tableture'
 import { ChordProgressions } from './chord-progressions'
-import { Collections } from './collections'
+import { Collections, CagedCollection, StorageCollection } from './collections'
 import { InstrumentPlayer } from './instrument-player'
 import { SequencerPlayer } from './sequencer-player'
 
@@ -28,7 +28,8 @@ export type RouteType = {
 	type?: '' | 'menu' | 'children'
 	children?: RouteType[]
 	meta?: Record<string, any>
-	Component: RouteObject['Component']
+	element?: RouteObject['element']
+	Component?: RouteObject['Component']
 }
 
 export const routeConfig: Array<RouteType> = [
@@ -89,11 +90,34 @@ export const routeConfig: Array<RouteType> = [
 		Component: ChordProgressions,
 	},
 	{
-		name: '和弦收藏',
+		name: '和弦卡片',
 		id: 'ChordCollections',
 		path: `${baseUrl}collections`,
 		type: 'menu',
 		Component: Collections,
+		children: [
+			{
+				name: '',
+				id: 'ChordCollectionsCagedHome',
+				path: `${baseUrl}collections`,
+				Component: CagedCollection,
+			},
+			{
+				name: 'Caged系统',
+				id: 'ChordCollectionsCaged',
+				path: `${baseUrl}collections/caged`,
+				Component: CagedCollection,
+			},
+			{
+				name: '我的收藏',
+				id: 'ChordCollectionsOfMine',
+				path: `${baseUrl}collections/mine`,
+				Component: StorageCollection,
+				meta: {
+					back: true,
+				},
+			},
+		],
 	},
 	{
 		name: '工具',

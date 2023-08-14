@@ -17,6 +17,7 @@ import type {
 	Pitch,
 	ChordType,
 	BoardChord,
+	BoardPosition,
 } from '../interface'
 import { transChordType } from './trans'
 import { transTone, transNote, transToneNum } from './trans-tone'
@@ -480,9 +481,7 @@ const getModeFregTaps = (
 /**
  * 获取指板某范围内某调式音阶
  * @param root
- * @param board
- * @param mode
- * @param range
+ * @param options
  * @returns
  */
 const getModeRangeTaps = (root: Point | Tone, options: TapsRangeProps) => {
@@ -502,8 +501,7 @@ const getModeRangeTaps = (root: Point | Tone, options: TapsRangeProps) => {
 /**
  * 通过相对音高获取指板范围内所有符合音高的指位
  * @param tones 相对音高
- * @param board 吉他指板
- * @param range 指板范围
+ * @param options
  * @returns
  */
 const getTapsFromBoard = (tones: Pitch[], options: TapsRangeProps) => {
@@ -511,7 +509,7 @@ const getTapsFromBoard = (tones: Pitch[], options: TapsRangeProps) => {
 	const points: Point[] = []
 	// 默认范围取 0 ～ 指板长度
 	const [start = 0, end = board[0].length - 1] = range
-	for (let string = 0; string < 6; string++) {
+	for (let string = 0; string < board.length; string++) {
 		for (let grade = start; grade <= end; grade++) {
 			const point = board[string][grade]
 			if (!point) {
@@ -528,6 +526,11 @@ const getTapsFromBoard = (tones: Pitch[], options: TapsRangeProps) => {
 	return points
 }
 
+/**根据指位获取Taps */
+const getTapsOnBoard = (positions: BoardPosition[], keyboard: BoardOption['keyboard']) => {
+	return positions.map(({ string, grade }) => keyboard[string - 1][grade])
+}
+
 const isPoint = (x: any): x is Point => {
 	if (typeof x !== 'object') {
 		return false
@@ -538,7 +541,7 @@ const isPoint = (x: any): x is Point => {
 export {
 	transBoard, // 二维指板数组
 	transChordTaps, // 和弦指板位置
-	// transChordTaps1,
 	getModeFregTaps, // 获取调式音阶基础指法(上行 & 下行)
 	getModeRangeTaps, // 获取指板某范围内某调式音阶
+	getTapsOnBoard, // 根据指位获取Taps
 }

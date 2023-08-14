@@ -1,10 +1,11 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { ChordType, Point } from '@buitar/to-guitar'
 import { ChordCard, useBoardContext } from '../guitar-board'
+import { Icon } from '@/components/icon'
+import { useIsMobile } from '@/utils/hooks/use-device'
 import cx from 'classnames'
 
 import styles from './chord-list.module.scss'
-import { Icon } from '..'
 
 export type CollectionChord = {
 	taps: Point[]
@@ -19,6 +20,7 @@ export const ChordList: FC<{
 	disableCollect?: boolean
 }> = ({ data, title, intro, disableCollect }) => {
 	const { collection, dispatchCollection } = useBoardContext()
+	const isMobile = useIsMobile()
 
 	const handleRemoveChord = () => {
 		const index = collection.findIndex((x) => x.title === title)
@@ -39,9 +41,9 @@ export const ChordList: FC<{
 				disableCollect={disableCollect}
 				onRemoveCollection={handleRemoveChord}
 				className={styles.card}
-				size={100}
+				size={isMobile ? 72 : 100}
 				taps={item.taps}
-				title={item.title}
+				title={item.title || ' '}
 			/>
 		)
 	})

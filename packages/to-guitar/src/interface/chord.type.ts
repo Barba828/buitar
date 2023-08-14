@@ -29,6 +29,10 @@ export type ChordType = {
 	 * C/E ("C over E")
 	 */
 	over?: ToneSchema
+	/**
+	 * chordMap key，实际表示和弦内音程关系
+	 */
+	key?: number
 }
 /**
  * 和弦级数

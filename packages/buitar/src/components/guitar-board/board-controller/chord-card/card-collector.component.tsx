@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { AddTextInput, CollectionSelecter } from '@/components/basic'
-import { CollectionType, COLLECTIONS_KEY, CollectionChord } from '@/pages/collections'
+import { CollectionType, COLLECTIONS_KEY, CollectionChord } from '@/pages/collections/collections.config'
 import { useStore } from '@/utils/hooks/use-store'
 import { Icon } from '@/components'
 
