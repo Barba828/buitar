@@ -15,7 +15,10 @@ import {
 import { Board, BoardChord, BoardOption, Point, Tone } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
 import { useStore } from '@/utils/hooks/use-store'
-import { COLLECTIONS_KEY, CollectionType } from '@/pages/collections/collections.config'
+import {
+	COLLECTIONS_KEY,
+	CollectionMapType,
+} from '@/pages/collections/collections.config'
 
 /**
  * 吉他指板默认配置
@@ -57,13 +60,29 @@ const defaultBoardOptions: GuitarBoardOptions = {
 /**
  * 默认收藏
  */
-const defaultCollection = [
-	{
-		title: 'Collection 1',
-		intro: '',
-		data: [],
-	},
-]
+const defaultCollection: CollectionMapType = {
+	guitar: [
+		{
+			title: 'Collection 1',
+			intro: '',
+			data: [],
+		},
+	],
+	ukulele: [
+		{
+			title: 'Collection 1',
+			intro: '',
+			data: [],
+		},
+	],
+	bass: [
+		{
+			title: 'Collection 1',
+			intro: '',
+			data: [],
+		},
+	],
+}
 
 type BoardContextType = {
 	/**
@@ -107,8 +126,8 @@ type BoardContextType = {
 	/**
 	 * 收藏和弦
 	 */
-	collection: CollectionType[]
-	dispatchCollection: Dispatch<CollectionType[]>
+	collection: CollectionMapType
+	dispatchCollection: Dispatch<CollectionMapType>
 
 	// 乐理内容
 	/**
@@ -170,7 +189,7 @@ export const BoardProvider: FC = (props) => {
 		'guitar'
 	)
 	const [boardTheme, dispatchBoardTheme] = useStore<GuitarBoardThemeKey>(BOARD_THEME_KEY, 'default')
-	const [collection, dispatchCollection] = useStore<CollectionType[]>(
+	let [collection, dispatchCollection] = useStore<CollectionMapType>(
 		COLLECTIONS_KEY,
 		defaultCollection
 	)
@@ -193,6 +212,7 @@ export const BoardProvider: FC = (props) => {
 			// board对象更新时，emit执行setState
 			setGuitarBoardOption(board)
 		})
+		window.guitar = _board
 		// 实际上初始化 guitarBoardOption
 		setGuitarBoardOption(_board.board)
 		return _board
@@ -241,9 +261,5 @@ export const BoardProvider: FC = (props) => {
 		emphasis,
 		setEmphasis,
 	}
-	return (
-		<BoardContext.Provider value={boardValue}>
-			{guitarBoardOption && boardOptions && props.children}
-		</BoardContext.Provider>
-	)
+	return <BoardContext.Provider value={boardValue}>{props.children}</BoardContext.Provider>
 }

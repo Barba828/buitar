@@ -25,7 +25,7 @@ export const useStore = <T>(key: string, defaultValue: T) => {
 				type: 'set' | 'init' | 'reset'
 				payload: T
 			}
-		) => {
+		) => {					
 			switch (action.type) {
 				case 'set':
 					let value = action.payload

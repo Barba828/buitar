@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState, memo } from 'react'
+import React, { FC, useMemo, useState, memo, useCallback } from 'react'
 import { useBoardContext } from '../../board-provider'
 import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
 import { Icon } from '@/components/icon'
@@ -45,19 +45,13 @@ export const ChordCard: FC<{
 
 	const svgPoints = useMemo(() => transToSvgPoints(taps, keyboard?.length), [taps])
 
-	const handleClick = () => {
+	const handleClick = useCallback(() => {
 		player.triggerPointArpeggio(taps)
-		setCollectionVisible(false)
-	}
+	}, [taps])
 
 	const handleSoundClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.stopPropagation()
 		player.triggerPointRelease(taps)
-	}
-
-	const handleCollectionVisible = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		e?.stopPropagation()
-		setCollectionVisible(!collectionVisible)
 	}
 
 	const handleRemoveCollection = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -84,16 +78,18 @@ export const ChordCard: FC<{
 							<Icon name="icon-delete" size={16} />
 						</div>
 					) : (
-						<div className={styles['chord-card-sounds']} onClick={handleCollectionVisible}>
+						<div className={styles['chord-card-sounds']} onClick={() => setCollectionVisible(true)}>
 							<Icon name="icon-collection" size={16} />
 						</div>
 					)}
 				</div>
 			</div>
 
-			{collectionVisible && (
-				<CardCollector data={collectionData} onCancel={handleCollectionVisible} />
-			)}
+			<CardCollector
+				visible={collectionVisible}
+				data={collectionData}
+				onCancel={() => setCollectionVisible(false)}
+			/>
 		</div>
 	)
 	return extra ? (

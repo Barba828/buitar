@@ -12,14 +12,9 @@ export const menuConfig: MenuItem[] = [
 		name_en: 'Board setting',
 		key: 'board_setting',
 	},
-	{
-		name: '显示乐器选择',
-		name_en: 'Instrument setting',
-		key: 'instrument_setting',
-	},
 ]
 
 export const defaultMenuSetting = {
 	board_setting: true,
-	instrument_setting: true,
+	// instrument_setting: true,
 }

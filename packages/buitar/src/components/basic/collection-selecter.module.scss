@@ -5,7 +5,8 @@
 		border: none;
 		border-radius: 2px;
 		height: $btn-size;
-		width: calc($btn-size * 2);
+		min-width: calc($btn-size * 2);
+		width: -webkit-fill-available;
 		margin: $btn-margin;
 		padding: 4px 10px;
 		color: $white-01;

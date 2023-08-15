@@ -35,7 +35,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	onChangePart,
 }) => {
 	const {
-		guitarBoardOption: { keyboard },
+		guitarBoardOption: { keyboard, baseFret },
 		boardOptions: { hasTag, numTag, isStickyZero = true },
 		boardTheme,
 		taps,
@@ -50,7 +50,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	// 鼠标事件监听
 	const { handler } = useBoardTouch(emphasis, setEmphasis)
 	// 键盘事件监听
-	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis)
+	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis, baseFret)
 	// 滚轮事件监听
 	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
 

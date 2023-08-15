@@ -13,10 +13,12 @@
 	border: 0px;
 	outline: 0px;
 	background: none;
-	width: calc($btn-size * 2) !important;
+	min-width: calc($btn-size * 2);
+	width: 50% !important;
 	padding: 0px 10px;
 	&:focus {
-		width: calc($btn-size * 3) !important;
+		width: 80% !important;
+		min-width: calc($btn-size * 3) !important;
 	}
 }
 .type-input-controller {

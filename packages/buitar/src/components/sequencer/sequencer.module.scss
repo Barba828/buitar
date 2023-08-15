@@ -15,7 +15,6 @@ $sound-height: 30;
 		font-size: 12px;
 		font-weight: 700;
 		opacity: 0.8;
-		width: $btn-size !important;
 		letter-spacing: 1.5px;
 	}
 
@@ -70,7 +69,7 @@ $sound-height: 30;
 		width: $sound-margin * 2 + px;
 		top: 0px;
 		z-index: -1;
-		background: #222c;
+		background: $gray-07;
 	}
 
 	.sound-time-line {

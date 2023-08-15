@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import cx from 'classnames'
 import styles from './portal.module.scss'
 
-const PortalInner: FC<{ container?: Element | null }> = (props) =>
+export const PortalInner: FC<{ container?: Element | null }> = (props) =>
 	createPortal(props.children, props.container || document.body)
 
 interface PortalProps {

@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import styles from './collection-selecter.module.scss'
 
-export const CollectionSelecter: FC<{ list: string[]; onChange?: (x: string) => void }> = ({
+export const CollectionSelecter: FC<{ list: string[]; onChange?: (x: string, index: number) => void }> = ({
 	list,
 	onChange,
 }) => {
@@ -9,7 +9,7 @@ export const CollectionSelecter: FC<{ list: string[]; onChange?: (x: string) => 
 		<div className={styles.selector}>
 			<select
 				onChange={(e) => {
-					onChange?.(e.target.value)
+					onChange?.(e.target.value, e.target.selectedIndex)
 				}}
 			>
 				{list.map((item) => (

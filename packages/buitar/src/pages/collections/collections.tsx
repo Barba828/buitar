@@ -24,12 +24,12 @@ export const Collections: FC = () => {
 }
 
 export const StorageCollection: FC = () => {
-	const { collection } = useBoardContext()
+	const { collection, instrumentKeyboard } = useBoardContext()
 
 	return (
 		<>
-			{collection.map((item, index) => (
-				<ChordList key={index} data={item.data} title={item.title} />
+			{collection[instrumentKeyboard].map((item, index) => (
+				<ChordList key={index} data={item.data} title={item.title} index={index}/>
 			))}
 		</>
 	)
@@ -84,13 +84,14 @@ export const CagedCollection: FC = () => {
 					className={styles['caged-range-slider']}
 				/>
 			</div>
-			{Object.keys(config).map((key) => (
+			{Object.keys(config).map((key, index) => (
 				<ChordList
 					key={key}
 					data={config[key].map((item) => ({
 						title: `${item.tone}${item.tag}`,
 						taps: getTapsOnBoard(item.tapPositions as any, keyboard),
 					}))}
+					index={index}
 					title={key}
 					disableCollect
 					titleClassName={styles['caged-title']}
