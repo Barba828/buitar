@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { GuitarBoard, ChordCard, BoardProvider, useBoardContext } from '@/components/guitar-board'
+import { GuitarBoard, ChordCard, useBoardContext } from '@/components/guitar-board'
 import { Link } from 'react-router-dom'
 import { transChordTaps } from '@buitar/to-guitar'
 import { Icon } from '@/components'
@@ -23,31 +23,33 @@ export const HomePage = () => {
 const MobileHome = () => {
 	return (
 		<div className={cx(styles['menu-container'])}>
-			{routeConfig.map((route) => {
-				return route.children ? (
-					<div className={cx(styles['sub-route-wrap'])} key={route.path}>
-						{route.children
-							.filter((route) => !!route.name)
-							.map((subRoute) => (
-								<Link
-									key={subRoute.path}
-									to={subRoute.path}
-									className={cx('buitar-primary-button', styles['sub-route'])}
-								>
-									<div>{subRoute.name}</div>
-								</Link>
-							))}
-					</div>
-				) : (
-					<Link
-						key={route.path}
-						to={route.path}
-						className={cx('buitar-primary-button', styles['main-route'])}
-					>
-						<span>{route.name}</span>
-					</Link>
-				)
-			})}
+			{routeConfig
+				.filter((route) => route.id !== 'Home')
+				.map((route) => {
+					return route.children ? (
+						<div className={cx(styles['sub-route-wrap'])} key={route.path}>
+							{route.children
+								.filter((route) => !!route.name)
+								.map((subRoute) => (
+									<Link
+										key={subRoute.path}
+										to={subRoute.path}
+										className={cx('buitar-primary-button', styles['sub-route'])}
+									>
+										<div>{subRoute.name}</div>
+									</Link>
+								))}
+						</div>
+					) : (
+						<Link
+							key={route.path}
+							to={route.path}
+							className={cx('buitar-primary-button', styles['main-route'])}
+						>
+							<span>{route.name}</span>
+						</Link>
+					)
+				})}
 		</div>
 	)
 }
@@ -56,7 +58,7 @@ const PcHome = () => {
 	const ChordLibrary = useRouteFind('ChordLibrary')
 	const ChordAnalyzer = useRouteFind('ChordAnalyzer')
 	return (
-		<BoardProvider>
+		<>
 			<p className={styles.intro}>
 				<span>同步的音频和完善的吉他指板信息</span>
 				<span>真正懂理论的算法实时计算和弦</span>
@@ -92,7 +94,7 @@ const PcHome = () => {
 				和弦开始吧！点击指板即可发出悦耳弦音，若需要更改指板显示方式或者演奏乐器，可在左栏详细设置。点击和弦图卡片还能演奏琶音。
 			</div>
 			<Example />
-		</BoardProvider>
+		</>
 	)
 }
 
@@ -104,20 +106,21 @@ const Title = () => (
 )
 
 const Example = () => {
-	const { taps, guitarBoardOption, setTaps, setChordTaps } = useBoardContext()
+	const { taps, guitarBoardOption, setTaps, setChordTap, setChordTaps } = useBoardContext()
 
 	if (!guitarBoardOption.keyboard) return null
 
-	const GChordTaps = transChordTaps(['G', 'B', 'D'], guitarBoardOption.keyboard)
+	const GChordTaps = transChordTaps(['G', 'B', 'D'], guitarBoardOption)
 
 	useEffect(() => {
-		setTaps(GChordTaps.chordList[0])
 		setChordTaps(GChordTaps)
+		setChordTap(GChordTaps[0])
+		setTaps(GChordTaps[0].chordTaps)
 	}, [])
 	return (
 		<>
 			<GuitarBoard />
-			<ChordCard taps={taps} />
+			<ChordCard taps={taps} title='G' />
 		</>
 	)
 }

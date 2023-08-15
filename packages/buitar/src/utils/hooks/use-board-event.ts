@@ -46,8 +46,12 @@ export const useBoardTouch = (
 	const handler = isTouchDevice
 		? {
 				// Mobile
+				onTouchStart: onMouseDown,
+				// onTouchMove: onMouseOver, // Touch设置TouchMove事件响应页面滚动，暂不用于指板响应
+				onTouchCancel: onMouseLeave,
 				onTouchEnd: onMouseUp,
-				onClick: onMouseDown,
+				// default
+				onClick: onMouseOver,
 		  }
 		: {
 				// PC
@@ -124,52 +128,39 @@ export const usePianoKeyDown = (touched: string[], setTouched: SetState<string[]
 	return { part, keyHandler }
 }
 
-export const useGuitarKeyDown = (touched: string[], setTouched: SetState<string[]>) => {
+export const useGuitarKeyDown = (
+	touched: string[],
+	setTouched: SetState<string[]>,
+	gradeLength: number = 17
+) => {
 	const [part, setPart] = useState(false)
-	const baseIndex = part ? 48 : 0
+	const baseIndex = part ? gradeLength * 3 : 0
+
+	const getKeyboardNote = (code: string) => {
+		if (GuitarKeyConfig.has(code)) {
+			const [string, index] = GuitarKeyConfig.get(code)!
+			return `${string * gradeLength + index + baseIndex}`
+		}
+	}
 
 	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-		if (GuitarKeyConfig.has(e.code)) {
-			const index = GuitarKeyConfig.get(e.code)!
-			const note = `${index + baseIndex}`
-
-			if (!touched.includes(note)) {
-				touched.push(note)
-				setTouched([...touched])
-			}
+		const note = getKeyboardNote(e.code)
+		if (note && !touched.includes(note)) {
+			touched.push(note)
+			setTouched([...touched])
 		} else if (e.code.includes('Shift')) {
 			setPart(!part)
 		}
 	}
 
 	const onKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
-		if (GuitarKeyConfig.has(e.code)) {
-			const index = GuitarKeyConfig.get(e.code)!
-			const note = `${index + baseIndex}`
-			if (touched.includes(note)) {
-				const index = touched.indexOf(note)
-				touched.splice(index, 1)
-				setTouched([...touched])
-			}
+		const note = getKeyboardNote(e.code)
+		if (note && touched.includes(note)) {
+			const index = touched.indexOf(note)
+			touched.splice(index, 1)
+			setTouched([...touched])
 		}
 	}
-
-	// useEffect(() => {
-	// 	if (disable) {
-	// 		return () => {
-	// 			window.removeEventListener('keydown', onKeyDown)
-	// 			window.removeEventListener('keyup', onKeyUp)
-	// 		}
-	// 	}
-
-	// 	window.addEventListener('keydown', onKeyDown)
-	// 	window.addEventListener('keyup', onKeyUp)
-
-	// 	return () => {
-	// 		window.removeEventListener('keydown', onKeyDown)
-	// 		window.removeEventListener('keyup', onKeyUp)
-	// 	}
-	// }, [part, disable])
 
 	const keyHandler = {
 		onKeyDown,
@@ -208,40 +199,40 @@ const PianoKeyConfig = new Map([
 	['BracketRight', 23],
 ])
 const GuitarKeyConfig = new Map([
-	['KeyZ', 0],
-	['KeyX', 1],
-	['KeyC', 2],
-	['KeyV', 3],
-	['KeyB', 4],
-	['KeyN', 5],
-	['KeyM', 6],
-	['Comma', 7],
-	['Period', 8],
-	['Slash', 9],
+	['KeyZ', [0, 0]],
+	['KeyX', [0, 1]],
+	['KeyC', [0, 2]],
+	['KeyV', [0, 3]],
+	['KeyB', [0, 4]],
+	['KeyN', [0, 5]],
+	['KeyM', [0, 6]],
+	['Comma', [0, 7]],
+	['Period', [0, 8]],
+	['Slash', [0, 9]],
 
-	['KeyA', 16],
-	['KeyS', 17],
-	['KeyD', 18],
-	['KeyF', 19],
-	['KeyG', 20],
-	['KeyH', 21],
-	['KeyJ', 22],
-	['KeyK', 23],
-	['KeyL', 24],
-	['Semicolon', 25],
-	['Quote', 26],
+	['KeyA', [1, 0]],
+	['KeyS', [1, 1]],
+	['KeyD', [1, 2]],
+	['KeyF', [1, 3]],
+	['KeyG', [1, 4]],
+	['KeyH', [1, 5]],
+	['KeyJ', [1, 6]],
+	['KeyK', [1, 7]],
+	['KeyL', [1, 8]],
+	['Semicolon', [1, 9]],
+	['Quote', [1, 10]],
 
-	['KeyQ', 32],
-	['KeyW', 33],
-	['KeyE', 34],
-	['KeyR', 35],
-	['KeyT', 36],
-	['KeyY', 37],
-	['KeyU', 38],
-	['KeyI', 39],
-	['KeyO', 40],
-	['KeyP', 41],
-	['BracketLeft', 42],
-	['BracketRight', 43],
-	['BackSlash', 44],
+	['KeyQ', [2, 0]],
+	['KeyW', [2, 1]],
+	['KeyE', [2, 2]],
+	['KeyR', [2, 3]],
+	['KeyT', [2, 4]],
+	['KeyY', [2, 5]],
+	['KeyU', [2, 6]],
+	['KeyI', [2, 7]],
+	['KeyO', [2, 8]],
+	['KeyP', [2, 9]],
+	['BracketLeft', [2, 10]],
+	['BracketRight', [2, 11]],
+	['BackSlash', [2, 12]],
 ])

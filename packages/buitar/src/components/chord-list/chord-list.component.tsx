@@ -1,10 +1,11 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { ChordType, Point } from '@buitar/to-guitar'
 import { ChordCard, useBoardContext } from '../guitar-board'
+import { Icon } from '@/components/icon'
 import cx from 'classnames'
 
 import styles from './chord-list.module.scss'
-import { Icon } from '..'
+import { useMenuContext } from '..'
 
 export type CollectionChord = {
 	taps: Point[]
@@ -14,41 +15,49 @@ export type CollectionChord = {
 
 export const ChordList: FC<{
 	data: CollectionChord[]
+	index: number
 	title?: string
 	intro?: string
 	disableCollect?: boolean
-}> = ({ data, title, intro, disableCollect }) => {
-	const { collection, dispatchCollection } = useBoardContext()
+	titleClassName?: string
+}> = ({ data, title, intro, disableCollect, titleClassName, index }) => {
+	const { collection, dispatchCollection, instrumentKeyboard } = useBoardContext()
+	const {isMobileDevice} = useMenuContext()
 
-	const handleRemoveChord = () => {
-		const index = collection.findIndex((x) => x.title === title)
-		collection[index].data.splice(index, 1)
+	const handleRemoveChord = (dataIndex: number) => {
+		collection[instrumentKeyboard][index].data.splice(dataIndex, 1)
 		dispatchCollection({ type: 'set', payload: collection })
 	}
 
 	const handleRemoveCollection = () => {
-		const index = collection.findIndex((x) => x.title === title)
-		collection.splice(index, 1)
+		collection[instrumentKeyboard].splice(index, 1)
 		dispatchCollection({ type: 'set', payload: collection })
 	}
 
-	const dataView = data.map((item, index) => {
+	const dataView = data.map((item, dataIndex) => {
 		return (
 			<ChordCard
-				key={index}
+				key={dataIndex}
 				disableCollect={disableCollect}
-				onRemoveCollection={handleRemoveChord}
+				onRemoveCollection={()=>handleRemoveChord(dataIndex)}
 				className={styles.card}
-				size={100}
+				size={isMobileDevice ? 72 : 100}
 				taps={item.taps}
-				title={item.title}
+				title={item.title || ' '}
 			/>
 		)
 	})
 
 	return (
 		<div className={styles.list}>
-			<div className={cx('buitar-primary-button', styles['title-view'], 'touch-yellow')}>
+			<div
+				className={cx(
+					'buitar-primary-button',
+					styles['title-view'],
+					'touch-yellow',
+					titleClassName
+				)}
+			>
 				{title}
 				<div>{intro}</div>
 				{!disableCollect && (

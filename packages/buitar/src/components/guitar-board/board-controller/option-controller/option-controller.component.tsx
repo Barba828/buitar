@@ -3,36 +3,34 @@ import { useBoardContext } from '@/components/guitar-board/index'
 import { instrumentConfig } from '@buitar/tone-player/tone.config'
 import { Instrument } from '@buitar/tone-player/instrument.type'
 import { Icon } from '@/components/icon'
-import { optionsUIConfig, instrumentUIConfig, boardStyleConfig } from './controller.config'
+import {
+	optionsUIConfig,
+	instrumentUIConfig,
+	boardStyleConfig,
+	instrumentKeyboardConfig,
+} from '@/pages/settings/config/controller.config'
 import {
 	GuitarBoardOptions,
 	GuitarBoardOptionsKey,
 	GuitarBoardThemeKey,
-} from '@/components/guitar-board/board-controller'
+	InstrumentKeyboardKey,
+} from '@/pages/settings/config/controller.type'
 import { ControllerList, ControllerListProps } from '@/components/controller'
-import { useMenuContext } from '@/components/slide-menu/menu-provider'
 import cx from 'classnames'
 
 import styles from './option-controller.module.scss'
 
-export const OPTIONS_KEY = 'options'
-export const INSTRUMENT_KEY = 'instrument'
-export const BOARD_THEME_KEY = 'board_theme'
-
 export const BoardController: FC<
 	ControllerListProps<any> & {
 		controllerClassName?: string
-		/**
-		 * 可见（忽略menu设置）
-		 */
-		ignore?: boolean
 	}
-> = (props) => {
+> = ({ controllerClassName, ...props }) => {
 	return (
-		<div className={cx(styles['container'], props.controllerClassName)}>
+		<div className={cx(styles['container'], controllerClassName)}>
 			<BoardOptionsController {...props} />
 			<BoardInstrumentController {...props} />
 			<BoardThemeController {...props} />
+			<KeyBoardInstrument {...props} />
 		</div>
 	)
 }
@@ -44,17 +42,10 @@ export const BoardController: FC<
  */
 export const BoardOptionsController: FC<
 	ControllerListProps<keyof GuitarBoardOptions> & {
-		ignore?: boolean
-		/** 手动传入可选择的配置 */
-		list?: GuitarBoardOptionsKey[] 
+		list?: GuitarBoardOptionsKey[]
 	}
 > = (props) => {
 	const { boardOptions, dispatchBoardOptions } = useBoardContext()
-	const { menus } = useMenuContext()
-
-	if (!menus.board_setting && !props.ignore) {
-		return null
-	}
 
 	const handleClick = (option: keyof GuitarBoardOptions) => {
 		dispatchBoardOptions({
@@ -108,21 +99,17 @@ export const BoardOptionsController: FC<
  * @param props
  * @returns
  */
-export const BoardInstrumentController: FC<
-	ControllerListProps<Instrument> & { ignore?: boolean }
-> = (props) => {
+export const BoardInstrumentController: FC<ControllerListProps<Instrument>> = (props) => {
 	const { instrument, dispatchInstrument } = useBoardContext()
-	const { menus } = useMenuContext()
-
-	if (!menus.instrument_setting && !props.ignore) {
-		return null
-	}
 
 	const renderInstrumentItem = (instrument: Instrument) => {
 		return (
 			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
 				<span>{instrumentUIConfig[instrument].name_zh}</span>
 				<Icon name={instrumentUIConfig[instrument].icon} size={props.size === 'small' ? 16 : 30} />
+				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
+					音色
+				</div>
 			</div>
 		)
 	}
@@ -138,6 +125,7 @@ export const BoardInstrumentController: FC<
 			onClickItem={handleClick}
 			checkedItem={(item) => item === instrument}
 			renderListItem={renderInstrumentItem}
+			itemClassName={() => styles['controller-inner-option']}
 		/>
 	)
 }
@@ -147,15 +135,8 @@ export const BoardInstrumentController: FC<
  * @param props
  * @returns
  */
-export const BoardThemeController: FC<
-	ControllerListProps<GuitarBoardThemeKey> & { ignore?: boolean }
-> = (props) => {
+export const BoardThemeController: FC<ControllerListProps<GuitarBoardThemeKey>> = (props) => {
 	const { boardTheme, dispatchBoardTheme } = useBoardContext()
-	const { menus } = useMenuContext()
-
-	if (!menus.instrument_setting && !props.ignore) {
-		return null
-	}
 
 	const renderThemeItem = (theme: GuitarBoardThemeKey) => {
 		return (
@@ -163,7 +144,7 @@ export const BoardThemeController: FC<
 				<span>{boardStyleConfig[theme].name}</span>
 				<div className={styles['controller-inner-unchecked']}>{theme}</div>
 				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
-					指板风格
+					乐器外观
 				</div>
 			</div>
 		)
@@ -182,5 +163,30 @@ export const BoardThemeController: FC<
 			renderListItem={renderThemeItem}
 			itemClassName={() => styles['controller-inner-option']}
 		/>
+	)
+}
+
+export const KeyBoardInstrument: FC<ControllerListProps<InstrumentKeyboardKey>> = (props) => {
+	const { instrumentKeyboard, dispatchInstrumentKeyboard } = useBoardContext()
+
+	const renderThemeItem = (key: InstrumentKeyboardKey) => {
+		return (
+			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
+				<span>{instrumentKeyboardConfig[key].name}</span>
+				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
+					乐器指板
+				</div>
+			</div>
+		)
+	}
+	return (
+		<ControllerList
+			{...props}
+			list={Object.keys(instrumentKeyboardConfig) as InstrumentKeyboardKey[]}
+			renderListItem={renderThemeItem}
+			onClickItem={(key) => dispatchInstrumentKeyboard({ type: 'set', payload: key })}
+			checkedItem={(key) => key === instrumentKeyboard}
+			itemClassName={() => styles['controller-inner-option']}
+		></ControllerList>
 	)
 }

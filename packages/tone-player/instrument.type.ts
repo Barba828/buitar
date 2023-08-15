@@ -5,3 +5,4 @@ export type Instrument =
 	| 'guitar-electric'
 	| 'guitar-nylon'
 	| 'piano'
+	| 'ukulele'

@@ -9,7 +9,7 @@ import {
 	TapedGuitarBoardTableture,
 } from './guitar-tableture'
 import { ChordProgressions } from './chord-progressions'
-import { Collections } from './collections'
+import { Collections, CagedCollection, StorageCollection } from './collections'
 import { InstrumentPlayer } from './instrument-player'
 import { SequencerPlayer } from './sequencer-player'
 
@@ -28,7 +28,8 @@ export type RouteType = {
 	type?: '' | 'menu' | 'children'
 	children?: RouteType[]
 	meta?: Record<string, any>
-	Component: RouteObject['Component']
+	element?: RouteObject['element']
+	Component?: RouteObject['Component']
 }
 
 export const routeConfig: Array<RouteType> = [
@@ -89,11 +90,28 @@ export const routeConfig: Array<RouteType> = [
 		Component: ChordProgressions,
 	},
 	{
-		name: '和弦收藏',
+		name: '和弦卡片',
 		id: 'ChordCollections',
 		path: `${baseUrl}collections`,
 		type: 'menu',
 		Component: Collections,
+		children: [
+			{
+				name: 'Caged系统',
+				id: 'ChordCollectionsCaged',
+				path: `${baseUrl}collections`,
+				Component: CagedCollection,
+			},
+			{
+				name: '我的收藏',
+				id: 'ChordCollectionsOfMine',
+				path: `${baseUrl}collections/mine`,
+				Component: StorageCollection,
+				meta: {
+					back: true,
+				},
+			},
+		],
 	},
 	{
 		name: '工具',
@@ -115,6 +133,15 @@ export const routeConfig: Array<RouteType> = [
 				name: '节拍器',
 				id: 'PlayToolsMetronome',
 				path: `${baseUrl}tools/metronome`,
+				Component: Metronome,
+				meta: {
+					back: true,
+				},
+			},
+			{
+				name: '和弦图生成',
+				id: 'PlayToolsSvgSave',
+				path: `${baseUrl}tools/svg-save`,
 				Component: Metronome,
 				meta: {
 					back: true,

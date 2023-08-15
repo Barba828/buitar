@@ -1,0 +1,24 @@
+.modal-container {
+	max-width: 600px;
+	width: 80vw;
+	max-height: 92vh;
+	background: $gray-01;
+    padding: $btn-margin;
+
+	.modal-options {
+		display: flex;
+		justify-content: end;
+		font-size: $font-18;
+		:global(.buitar-primary-button) {
+			height: calc($btn-size);
+			flex: 1;
+		}
+	}
+
+	.modal-title {
+		font-size: $font-20;
+		font-weight: bold;
+		opacity: 0.8;
+		margin: calc($btn-margin * 4) calc($btn-margin * 2);
+	}
+}

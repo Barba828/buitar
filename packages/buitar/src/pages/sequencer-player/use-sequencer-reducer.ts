@@ -1,11 +1,11 @@
 import { Sound } from '@/components'
 import {
-	InstrumentColor,
 	instrumentUIConfig,
-} from '@/components/guitar-board/board-controller/option-controller/controller.config'
+} from '@/pages/settings/config/controller.config'
 import { TonePlayer } from '@buitar/tone-player'
 import { Instrument } from '@buitar/tone-player/instrument.type'
 import { useCallback, useReducer } from 'react'
+import { InstrumentColor } from '@/pages/settings/config/controller.type'
 
 export type SequencersState = {
 	sequencerPlayer: TonePlayer

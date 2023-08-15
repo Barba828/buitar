@@ -1,15 +1,15 @@
 import { FC, forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
 import * as Tone from 'tone'
-import { Icon } from '../icon'
+import { Icon } from '@/components/icon'
 import { useEditable } from './use-editable'
+import { Switch } from '@/components/ui'
+import { TonePlayer } from '@buitar/tone-player'
+import { useSequencerContext } from './sequencer-provider'
+import { InstrumentColor } from '@/pages/settings/config/controller.type'
+import { useIsMobile } from '@/utils/hooks/use-device'
 import cx from 'classnames'
 
 import styles from './sequencer.module.scss'
-import { Switch } from '../ui'
-import { TonePlayer } from '@buitar/tone-player'
-import { useSequencerContext } from './sequencer-provider'
-import { InstrumentColor } from '@/components/guitar-board/board-controller/option-controller/controller.config'
-import { useIsMobile } from '@/utils/hooks/use-device'
 
 /**
  * 单序列active的音符
@@ -92,21 +92,23 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 				})
 			})
 		})
+
 		// 播放时间片
 		tonePart.current = new Tone.Part((time, { key, duration }) => {
-			player.getContext().triggerAttackRelease(key, duration, time)
+			// player.getContext().triggerAttackRelease(key, duration, time)
+			player.getContext().triggerAttackRelease(key, duration)
+
 		}, partNotes)
 		// 循环
 		tonePart.current.loop = true
 		tonePart.current.loopEnd = `${m}m`
 
+		const nowTime = Tone.Transport.seconds + 0.01
 		const looper = new Tone.Loop((time) => {
 			sequencerList.current?.playTimeline(Tone.Transport.toSeconds(`${m}m`))
-		}, `${m}m`).start(0)
+		}, `${m}m`).start(nowTime)
 
-		tonePart?.current?.start()
-		Tone.Transport.start()
-
+		tonePart?.current?.start(nowTime)
 		return () => {
 			looper.cancel()
 			tonePart.current?.clear()
@@ -115,7 +117,7 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 	}, [sounds, m, isPlaying])
 
 	// /**
-	//  * old 方案 Tone.Transport.scheduleRepeat 实现音序机Looper
+	//  * deprecate 方案 Tone.Transport.scheduleRepeat 实现音序机Looper
 	//  *
 	//  * scheduleId保存这个组件实例上一次的音序，并更新本次sounds生成的音序
 	//  * （不能直接Tone.Transport.clear，因为会导致其他音序机实例的内容被清除）
@@ -171,7 +173,8 @@ export const SequencerController: FC<{
 	editVisible?: boolean
 	mVisible?: boolean
 	onSave?(): void
-}> = ({ editVisible = true, mVisible = true, onSave }) => {
+	onRandom?(): void
+}> = ({ editVisible = true, mVisible = true, onSave, onRandom, children }) => {
 	const { isPlaying, setIsPlaying, editable, setEditable, bpm, setBpm, m, setM } =
 		useSequencerContext()
 
@@ -181,7 +184,10 @@ export const SequencerController: FC<{
 	 * 播放按钮
 	 */
 	const handlePlay = useCallback(async () => {
+		const player = (window.tonePlayer as TonePlayer)?.getContext()
+		player?.triggerAttackRelease('A1', '16n')
 		await Tone.start()
+
 		Tone.Transport.toggle()
 		setIsPlaying(!isPlaying)
 	}, [isPlaying])
@@ -238,6 +244,13 @@ export const SequencerController: FC<{
 					<Icon size={24} name="icon-save" />
 				</div>
 			)}
+
+			{onRandom && (
+				<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={onRandom}>
+					<Icon size={24} name="icon-random"></Icon>
+				</div>
+			)}
+			{children}
 		</div>
 	)
 }
@@ -268,16 +281,16 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 		const container = useRef<HTMLDivElement>(null)
 		const timeline = useRef<HTMLDivElement>(null)
 
-		const itemSize = 2 * Number(styles.sound_margin) + itemWidth // 格子宽度
+		const itemSizeX = 2 * Number(styles.sound_margin) + itemWidth // 格子宽度
 		const itemSizeY = 2 * Number(styles.sound_margin) + Number(styles.sound_height) // 格子高度
-		const headSize = 2 * Number(styles.sound_margin) + Number(styles.button_size) // 音符格子宽度
-		const soundSize = headSize + itemSize * maxLength // 格子行总宽度
+		const headItemWidth = 2 * Number(styles.sound_margin) + Number(styles.button_size) // 音符格子宽度
+		const soundWidth = headItemWidth + itemSizeX * maxLength // 格子行总宽度
 
 		/**
 		 * 幽灵条设置 & 事件监听
 		 */
 		const { ghost, handler } = useEditable({
-			itemSize,
+			itemSizeX,
 			itemSizeY,
 			soundList,
 			maxLength,
@@ -296,7 +309,9 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 				return (
 					<div
 						key={index}
-						style={{ left: headSize + itemSize * 4 * (index + 1) - Number(styles.sound_margin) }}
+						style={{
+							left: headItemWidth + itemSizeX * 4 * (index + 1) + Number(styles.sound_margin),
+						}}
 						className={styles['sound-line']}
 					></div>
 				)
@@ -352,8 +367,8 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 								)}
 								style={{
 									opacity: block[2] === 'translucent' ? 0.4 : 1,
-									transform: `translateX(${block[0] * itemSize}px)`,
-									width: itemSize * (block[1] - block[0]) + itemWidth,
+									transform: `translateX(${block[0] * itemSizeX}px)`,
+									width: itemSizeX * (block[1] - block[0]) + itemWidth,
 								}}
 								onClick={handleClick}
 							>
@@ -376,8 +391,8 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 								styles['sound-item-ghost']
 							)}
 							style={{
-								transform: `translateX(${ghost[1] * itemSize}px)`,
-								width: itemSize * ghost[2] + itemWidth,
+								transform: `translateX(${ghost[1] * itemSizeX}px)`,
+								width: itemSizeX * ghost[2] + itemWidth,
 							}}
 						>
 							<div data-sq={`${keyIndex}-ghost-handler`} className={styles['sound-item-handler']}>
@@ -400,7 +415,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 			}
 
 			timeline.current.style.transition = ''
-			timeline.current.style.left = `${headSize}px`
+			timeline.current.style.left = `${headItemWidth}px`
 
 			// 10ms 防止页面left未复原
 			setTimeout(() => {
@@ -408,7 +423,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 					return
 				}
 				timeline.current.style.transition = `left ${time}s linear`
-				timeline.current.style.left = `${soundSize}px`
+				timeline.current.style.left = `${soundWidth}px`
 			}, 10)
 		}
 
@@ -424,6 +439,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 						<div className={styles['sound']} key={key} data-sound={key}>
 							<div
 								className={cx('buitar-primary-button', styles['sound-item'], styles['sound-head'])}
+								style={{ width: headItemWidth }}
 							>
 								{key}
 							</div>

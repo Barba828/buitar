@@ -1,81 +1,102 @@
-import React, { useCallback } from 'react'
-import { BoardProvider, useBoardContext, usePagesIntro } from '@/components'
+import { RangeSlider, useBoardContext, usePagesIntro } from '@/components'
 import { ChordList } from '@/components/chord-list'
-import { ChordType, Point, Tone, transChord, transChordTaps } from '@buitar/to-guitar'
+import { Tone, getTapsOnBoard, transToneOffset } from '@buitar/to-guitar'
+import { CagedBaseType, GuitarCagedBaseConfig } from './caged.config'
+import { FC, useCallback, useMemo, useState } from 'react'
+import { Outlet } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { useRouteFind, useRouteMatch } from '@/utils/hooks/use-routers'
+import cx from 'classnames'
 
-export type CollectionChord = {
-	taps: Point[]
-	title?: string
-	chordType?: ChordType
-}
-export const COLLECTIONS_KEY = 'collections'
-export type CollectionType = {
-	title: string
-	intro: string
-	data: CollectionChord[]
-}
+import styles from './collections.module.scss'
 
-export const Collections = () => {
+export const Collections: FC = () => {
 	const intro = usePagesIntro()
-
-	return (
-		<BoardProvider>
-			{intro}
-			<DefaultCollection />
-			<StorageCollection />
-		</BoardProvider>
-	)
-}
-
-const StorageCollection = () => {
-	const { collection } = useBoardContext()
+	const CollectionsHomeRoute = useRouteFind('ChordCollections') // 工具菜单页路由
+	const curRoute = useRouteMatch() // 当前页面一级路由
 
 	return (
 		<>
-			{collection.map((item, index) => (
-				<ChordList key={index} data={item.data} title={item.title} />
+			{CollectionsHomeRoute === curRoute && intro}
+			<Outlet />
+		</>
+	)
+}
+
+export const StorageCollection: FC = () => {
+	const { collection, instrumentKeyboard } = useBoardContext()
+
+	return (
+		<>
+			{collection[instrumentKeyboard].map((item, index) => (
+				<ChordList key={index} data={item.data} title={item.title} index={index}/>
 			))}
 		</>
 	)
 }
 
-const DefaultCollection = () => {
-	const LIST_1 = [
-		{ tone: 'E', tag: '', index: 0 },
-		{ tone: 'F', tag: '', index: 0 },
-		{ tone: 'G', tag: '', index: 4 },
-		{ tone: 'A', tag: '', index: 3 },
-		{ tone: 'B', tag: '', index: 3 },
-		{ tone: 'C', tag: '', index: 5 },
-		{ tone: 'D', tag: '', index: 5 },
-	]
-	const LIST_2 = [
-		{ tone: 'A', tag: 'm', index: 0 },
-		{ tone: 'B', tag: 'm', index: 0 },
-		{ tone: 'C', tag: 'm', index: 1 },
-		{ tone: 'D', tag: 'm', index: 1 },
-		{ tone: 'E', tag: 'm', index: 10 },
-		{ tone: 'F', tag: 'm', index: 5 },
-		{ tone: 'G', tag: 'm', index: 6 },
-	]
-	const getChordListDatas = useCallback((list: any[]) => {
-		return list.map((item) => {
-			const chord = transChord(item.tone as Tone, item.tag)!
-			const title = item.tone + item.tag
-			const taps = transChordTaps(chord.chord).chordList[item.index]
+export const CagedCollection: FC = () => {
+	const {
+		guitarBoardOption: { keyboard },
+		instrumentKeyboard,
+	} = useBoardContext()
+	const myCollectionsRoute = useRouteFind('ChordCollectionsOfMine')
 
-			return {
-				title,
-				taps,
-			}
-		})
+	const [startGrade, setStartGrade] = useState(0)
+
+	const config = useMemo(() => {
+		if (instrumentKeyboard === 'guitar') {
+			Object.keys(GuitarCagedBaseConfig).forEach((cagedKey) => {
+				const chords = GuitarCagedBaseConfig[cagedKey]
+				const offsetTone = transToneOffset(cagedKey as Tone, startGrade)
+				chords.forEach((chord) => {
+					chord.tone = offsetTone
+					chord.tapPositions.forEach(
+						(position) => (position.grade = position.baseGrade + startGrade)
+					)
+				})
+			})
+			return GuitarCagedBaseConfig
+		}
+		/**
+		 * @ToDo 贝斯和尤克里里的默认指法
+		 */
+		return {} as CagedBaseType
+	}, [startGrade])
+
+	const handleChangeSlider = useCallback(([start]) => {
+		setStartGrade(start)
 	}, [])
-	const data_1 = getChordListDatas(LIST_1)
-	const data_2 = getChordListDatas(LIST_2)
+
 	return (
 		<>
-			<ChordList data={data_1} title="Fingering1" disableCollect />
-			<ChordList data={data_2} title="Fingering2" disableCollect />
+			<Link to={myCollectionsRoute.path} className={styles['my-collections-link']}>
+				我的收藏〉
+			</Link>
+			<div className={styles['caged-range']}>
+				<div className={cx('buitar-primary-button', 'flex-center', styles['caged-range-title'])}>
+					品位 {startGrade}
+				</div>
+				<RangeSlider
+					size={2}
+					range={[0, 12]}
+					onChange={handleChangeSlider}
+					className={styles['caged-range-slider']}
+				/>
+			</div>
+			{Object.keys(config).map((key, index) => (
+				<ChordList
+					key={key}
+					data={config[key].map((item) => ({
+						title: `${item.tone}${item.tag}`,
+						taps: getTapsOnBoard(item.tapPositions as any, keyboard),
+					}))}
+					index={index}
+					title={key}
+					disableCollect
+					titleClassName={styles['caged-title']}
+				/>
+			))}
 		</>
 	)
 }

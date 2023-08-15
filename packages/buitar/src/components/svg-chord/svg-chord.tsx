@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react'
+import { FC, memo, useMemo } from 'react'
 
 export type SvgChordPoint = {
 	/**
@@ -35,7 +35,7 @@ interface SvgChordProps {
 
 const FINGER_NUMS = 5
 
-export const SvgChord: FC<SvgChordProps> = (props) => {
+export const SvgChord: FC<SvgChordProps> = memo((props) => {
 	const { size = 300, color = 'white', points, concise, title } = props
 
 	const radius = size * 0.05
@@ -273,4 +273,4 @@ export const SvgChord: FC<SvgChordProps> = (props) => {
 			{dotPoints.map(drawPoint)}
 		</svg>
 	)
-}
+})

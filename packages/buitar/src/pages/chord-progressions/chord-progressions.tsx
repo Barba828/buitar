@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import {
 	ChordTapsController,
-	BoardProvider,
 	useBoardContext,
 	DegreeController,
 	DegreeChordController,
@@ -19,15 +18,13 @@ import styles from './chord-progressions.module.scss'
 export const ChordProgressions = () => {
 	const intro = usePagesIntro()
 	return (
-		<BoardProvider>
-			<PlayerProvider>
-				{intro}
-				<DegreeController />
-				<ChordPicker />
-				<TapsViewer />
-				<SoundBoard />
-			</PlayerProvider>
-		</BoardProvider>
+		<PlayerProvider>
+			{intro}
+			<DegreeController />
+			<ChordPicker />
+			<TapsViewer />
+			<SoundBoard />
+		</PlayerProvider>
 	)
 }
 
@@ -40,12 +37,12 @@ const ChordPicker = () => {
 		if (soundListIndex < 0) {
 			return
 		}
-		setChordTaps(transChordTaps(chord, guitarBoardOption.keyboard))
+		setChordTaps(transChordTaps(chord, guitarBoardOption))
 	}, [chord, soundListIndex])
 
 	// 指板更新：清除和弦指位列表
 	useEffect(() => {
-		setChordTaps(null)
+		setChordTaps([])
 	}, [guitarBoardOption])
 
 	useEffect(() => {

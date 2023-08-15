@@ -21,7 +21,7 @@ export const AudioBtn: FC = memo(() => {
 
 	const toggleAudioContext = useCallback(async () => {
 		const player = (window.tonePlayer as TonePlayer)?.getContext()
-        player?.triggerAttackRelease('A3', '2n')
+        player?.triggerAttackRelease('A3', '16n')
 		
 		await Tone.start()
 		console.log(

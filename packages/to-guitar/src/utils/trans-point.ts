@@ -1,12 +1,24 @@
+import type { BoardOption } from 'src/board'
 import {
 	DEFAULT_LEVEL,
 	DEFAULT_TUNE,
+	DEFAULT_ABSOLUTE_TUNE,
 	FINGER_GRADE_NUMS,
 	GRADE_NUMS,
 	NOTE_LIST,
 	degreeMap,
 } from '../config'
-import type { Tone, Point, GuitarBoard, GuitarString, ModeType, Pitch } from '../interface'
+import type {
+	Tone,
+	Point,
+	GuitarBoard,
+	GuitarString,
+	ModeType,
+	Pitch,
+	ChordType,
+	BoardChord,
+	BoardPosition,
+} from '../interface'
 import { transChordType } from './trans'
 import { transTone, transNote, transToneNum } from './trans-tone'
 
@@ -21,7 +33,15 @@ import { transTone, transNote, transToneNum } from './trans-tone'
  */
 
 /**
- * 调音 => 绝对音高 (单调递增)
+ * 判断是否 'E2', 'A2' 等形式的音符
+ * @param note
+ * @returns
+ */
+const matchPitchNote = (note: string) => note.match(/^(.*?)(\d)$/)
+
+/**
+ * 根据相对音高获取pitchs，调音 => 绝对音高 (单调递增)
+ * ['E', 'A', 'D', 'G', 'B', 'E'] -> ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
  * @param zeroTones 0品调音
  * @returns pitchs 绝对音高数组
  */
@@ -45,18 +65,60 @@ const getAdditionPitchs = (zeroTones: Tone[] = DEFAULT_TUNE) => {
 }
 
 /**
+ * 根据绝对音高获取pitchs
+ * @param zeroTones
+ * @returns
+ */
+const getAbsolutePitchs = (zeroTones: string[] = DEFAULT_ABSOLUTE_TUNE) => {
+	let lowest = Infinity
+	const pitchsNote = zeroTones.map((str, index) => {
+		let matchs = matchPitchNote(str)
+
+		// 使用默认0品设置兜底
+		if (!matchs) {
+			matchs = matchPitchNote(DEFAULT_ABSOLUTE_TUNE[index])!
+		}
+
+		const note = transNote(matchs[1] as Tone)
+		const base = Number(matchs[2]) || 0
+		if (base < lowest) {
+			lowest = base
+		}
+		return { note, base }
+	})
+
+	return {
+		pitchs: pitchsNote.map(
+			({ note, base }) => NOTE_LIST.indexOf(note) + (base - lowest) * NOTE_LIST.length
+		),
+		baseLevel: lowest,
+	}
+}
+
+/**
  * 0品调音 => 指板二维数组
+ * ['E', 'A', 'D', 'G', 'B', 'E'] 默认根音升高方式排列
+ * ['G3', 'C3', 'E3', 'A4'] 可以手动设置音高，会覆盖 baseLevel 基准音高
  * @param zeroGrades 指板0品调音
  * @param GradeLength 指板品数
  * @param baseLevel 基准音高
  * @returns Point[][]
  */
 const transBoard = (
-	zeroTones: Tone[] = DEFAULT_TUNE,
+	zeroTones: Tone[] | string[] = DEFAULT_TUNE,
 	GradeLength: number = GRADE_NUMS,
 	baseLevel: number = DEFAULT_LEVEL
 ) => {
-	const zeroPitchs = getAdditionPitchs(zeroTones)
+	let zeroPitchs = []
+	if (matchPitchNote(String(zeroTones[0]))) {
+		// 匹配 E2 A2 0品绝对音高
+		const absolutePitchs = getAbsolutePitchs(zeroTones as string[])
+		zeroPitchs = absolutePitchs.pitchs
+		baseLevel = absolutePitchs.baseLevel
+	} else {
+		// 匹配 E A 相对单增音高
+		zeroPitchs = getAdditionPitchs(zeroTones as Tone[])
+	}
 
 	const boardNums = zeroPitchs.map((zeroPitch, stringIndex) => {
 		const stringNums: GuitarString = []
@@ -91,7 +153,7 @@ const transBoard = (
  * @param board 指板数组
  * @param fingerSpan 手指品位跨度
  */
-const transChordTaps = (
+const transChordTapsDeprecate = (
 	tones: Tone[],
 	board: GuitarBoard = transBoard(),
 	fingerSpan: number = FINGER_GRADE_NUMS
@@ -101,16 +163,25 @@ const transChordTaps = (
 	const roots: Point[] = [] // 指板上的所有根音 数组
 	const tapsList: Point[][] = [] // 指板上所有的符合的和弦 数组
 
+	// 无效和弦组成音
+	if (!chords.length) {
+		return {
+			chordType: [] as ChordType[],
+			chordList: [] as Point[][],
+		}
+	}
+
 	// 检索根音位置
 	board.forEach((grades, stringIndex) => {
 		// 有几根弦 > 和弦音数
-		if (stringIndex > board.length - chords.length || stringIndex > 2) {
+		if (stringIndex > board.length - chords.length) {
 			// 遍历到四弦返回（一般不参考只有三根弦的和弦）
 			return
 		}
 		grades.forEach((point) => {
 			// 根音位置也在第一个八度内（12品）
-			if (point.toneSchema.note === root && point.grade < 12) {
+			if (chords.includes(point.toneSchema.note) && point.grade < 12) {
+				// if (point.toneSchema.note === root && point.grade < 12) {
 				roots.push(point)
 			}
 		})
@@ -164,7 +235,7 @@ const transChordTaps = (
 				fingerNums++
 			}
 		})
-		return fingerNums <= fingerSpan && fingerNums > 1 && minGrade < 12
+		return fingerNums <= fingerSpan && fingerNums >= 1 && minGrade < 12
 	}
 
 	/**
@@ -191,6 +262,169 @@ const transChordTaps = (
 	const chordList = tapsList.filter(integrityFilter).filter(fingersFilter).sort(gradeSorter)
 
 	return { chordType, chordList }
+}
+
+/**
+ * 和弦音名数组 + 指板 => 和弦指法
+ * @param chords 和弦音数组
+ * @param board 指板数组
+ * @param fingerSpan 手指品位跨度
+ */
+const transChordTaps = (
+	tones: Tone[],
+	options: {
+		/**手指品位跨度 */
+		fingerSpan?: number
+	} & Partial<Pick<BoardOption, 'keyboard' | 'chordOver'>> = {}
+) => {
+	const { fingerSpan = FINGER_GRADE_NUMS, keyboard = transBoard(), chordOver = false } = options
+	const chords = transNote(tones)
+	// 无效和弦组成音
+	if (!chords.length) {
+		return []
+	}
+
+	// 指板上的所有根音
+	const overRoots = chordOver
+		? // 根音包括chords里所有音（转位和弦）
+		  chords.map((chord) => ({
+				chordType: transChordType([chord, ...chords])[0],
+				chordTapsList: [] as Point[][],
+		  }))
+		: // 仅以chords第一个音为根音
+		  [
+				{
+					chordType: transChordType(chords)[0],
+					chordTapsList: [] as Point[][],
+				},
+		  ]
+	let tapsList: BoardChord[] = [] // 指板上所有的符合的和弦 数组
+	let list: Point[][] = []
+
+	/**
+	 * 递归获取当前弦之后所有符合和弦音的和弦列表
+	 * @param stringIndex 当前弦下标
+	 * @param taps 递归当前和弦列表
+	 */
+	const findNextString = (stringIndex: number, taps: Point[], allTaps: Point[][]) => {
+		// 遍历完所有弦，递归结束
+		if (stringIndex >= keyboard.length) {
+			allTaps.push(taps)
+			return
+		}
+
+		// 暂不考虑跳过当前弦选下一根弦的情况
+		// findNextString(stringIndex + 1, [...taps])
+		const grades = keyboard[stringIndex]
+		grades.forEach((point) => {
+			if (chords.includes(point.toneSchema.note)) {
+				// 若和其他按位品位不超过4，或者该品是0品，则加入指位
+				if (
+					taps.every((tap) => Math.abs(tap.grade - point.grade) < fingerSpan) ||
+					point.grade === 0
+				) {
+					findNextString(stringIndex + 1, [...taps, point], allTaps)
+				}
+			}
+		})
+	}
+
+	/**
+	 * 过滤 和弦指法手指按位超过 fingerSpan（正常指法不超过4根手指）
+	 * 		& 手指不超过 1
+	 * 		& 最小品不超过 12 （超过12品重复的八度音高）
+	 * @param taps
+	 */
+	const fingersFilter = (taps: Point[]) => {
+		// 最小品位（最小品位超过1，则为横按指法）
+		const minGrade = Math.min(...taps.map((tap) => tap.grade))
+		let fingerNums = minGrade > 0 ? 1 : 0
+		taps.forEach((tap) => {
+			if (tap.grade > minGrade) {
+				fingerNums++
+			}
+		})
+		return fingerNums <= fingerSpan && fingerNums >= 1 && minGrade < 12
+	}
+
+	/**
+	 * 过滤 非完整和弦音组成
+	 * @param taps
+	 */
+	const integrityFilter = (taps: Point[]) => {
+		const notes = new Set(taps.map((tap) => tap.toneSchema.note))
+		return notes.size === chords.length
+	}
+
+	/**
+	 * 排序 根据该和弦品位从低至高
+	 * @param tapsA
+	 * @param tapsB
+	 */
+	const gradeSorter = (chordA: BoardChord, chordB: BoardChord) => {
+		const maxGradeA = Math.max(...chordA.chordTaps.map((tap) => tap.grade))
+		const maxGradeB = Math.max(...chordB.chordTaps.map((tap) => tap.grade))
+		return maxGradeA - maxGradeB
+	}
+
+	// 检索根音位置
+	keyboard.forEach((grades, stringIndex) => {
+		// 有几根弦 > 和弦音数
+		if (stringIndex > keyboard.length - chords.length) {
+			return
+		}
+		grades.forEach((point) => {
+			// 多个转位获取根音位置
+			overRoots.forEach((root) => {
+				// 获取指板上Point音等于根音的位置，在一个八度内（12品）
+				if (root.chordType.tone?.note === point.toneSchema.note && point.grade < 12) {
+					list = []
+					// 获取该根音下所有和弦
+					findNextString(point.string, [point], list)
+					// 过滤无效和弦
+					list = list.filter(integrityFilter).filter(fingersFilter)
+					root.chordTapsList.push(...list)
+				}
+			})
+		})
+	})
+
+	// 扁平化多转位和弦
+	overRoots.forEach((item) =>
+		tapsList.push(
+			...item.chordTapsList.map(
+				(taps) => ({ chordType: item.chordType, chordTaps: taps } as BoardChord)
+			)
+		)
+	)
+
+	// 移除重复和弦（指型覆盖）
+	tapsList = tapsList.reduce(
+		(prevArr, curChord) => {
+			// 遍历已选的无重复的指型
+			for (let i = 0; i < prevArr.length; i++) {
+				const prevChord = prevArr[i]
+
+				if (prevChord.chordTaps.every((prevPoint) => curChord.chordTaps.includes(prevPoint))) {
+					// 1.当前指型可以覆盖已选的指型，则替换该已选指型
+					prevArr[i] = curChord
+					return prevArr
+				} else if (curChord.chordTaps.every((curPoint) => prevChord.chordTaps.includes(curPoint))) {
+					// 2.当前指型可以被已选指型覆盖，则跳出本次循环
+					return prevArr
+				}
+			}
+			// 3.指型不能互相覆盖，则加入新指型
+			prevArr.push(curChord)
+			return prevArr
+		},
+		[tapsList[0]]
+	)
+
+	// 排序输出
+	tapsList = tapsList.sort(gradeSorter)
+
+	return tapsList
 }
 
 interface TapsRangeProps {
@@ -247,9 +481,7 @@ const getModeFregTaps = (
 /**
  * 获取指板某范围内某调式音阶
  * @param root
- * @param board
- * @param mode
- * @param range
+ * @param options
  * @returns
  */
 const getModeRangeTaps = (root: Point | Tone, options: TapsRangeProps) => {
@@ -269,8 +501,7 @@ const getModeRangeTaps = (root: Point | Tone, options: TapsRangeProps) => {
 /**
  * 通过相对音高获取指板范围内所有符合音高的指位
  * @param tones 相对音高
- * @param board 吉他指板
- * @param range 指板范围
+ * @param options
  * @returns
  */
 const getTapsFromBoard = (tones: Pitch[], options: TapsRangeProps) => {
@@ -278,10 +509,10 @@ const getTapsFromBoard = (tones: Pitch[], options: TapsRangeProps) => {
 	const points: Point[] = []
 	// 默认范围取 0 ～ 指板长度
 	const [start = 0, end = board[0].length - 1] = range
-	for (let string = 0; string < 6; string++) {
+	for (let string = 0; string < board.length; string++) {
 		for (let grade = start; grade <= end; grade++) {
 			const point = board[string][grade]
-			if (!point){
+			if (!point) {
 				continue
 			}
 			if (ignorePitch && points.find((p) => p.pitch === point.pitch)) {
@@ -293,6 +524,11 @@ const getTapsFromBoard = (tones: Pitch[], options: TapsRangeProps) => {
 		}
 	}
 	return points
+}
+
+/**根据指位获取Taps */
+const getTapsOnBoard = (positions: BoardPosition[], keyboard: BoardOption['keyboard']) => {
+	return positions.map(({ string, grade }) => keyboard[string - 1][grade])
 }
 
 const isPoint = (x: any): x is Point => {
@@ -307,4 +543,5 @@ export {
 	transChordTaps, // 和弦指板位置
 	getModeFregTaps, // 获取调式音阶基础指法(上行 & 下行)
 	getModeRangeTaps, // 获取指板某范围内某调式音阶
+	getTapsOnBoard, // 根据指位获取Taps
 }

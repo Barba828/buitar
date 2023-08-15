@@ -1,9 +1,9 @@
-import { BrowserRouter, Routes, Route, useRoutes, Outlet } from 'react-router-dom'
-import { MenuProvider, SlideMenu, AudioBtn } from '@/components'
-import { RouteType, routeConfig, routeList } from '@/pages/router'
+import { BrowserRouter, useRoutes } from 'react-router-dom'
+import { MenuProvider, SlideMenu, AudioBtn, BoardProvider } from '@/components'
+import { routeConfig } from '@/pages/router'
+import { Suspense } from 'react'
 import cx from 'classnames'
 import styles from './style.module.scss'
-import { Fragment, memo } from 'react'
 
 export const App = () => {
 	return (
@@ -38,11 +38,13 @@ export const App = () => {
 // 	)
 // })
 
-const Board = memo(() => {
-	let element = useRoutes(routeConfig)
+const Board = () => {
+	const element = useRoutes(routeConfig)
 	return (
-		<div id="board" className={cx(styles.board)}>
-			{element}
-		</div>
+		<BoardProvider>
+			<div id="board" className={cx(styles.board)}>
+				<Suspense fallback={<div>Loading...</div>}>{element}</Suspense>
+			</div>
+		</BoardProvider>
 	)
-})
+}

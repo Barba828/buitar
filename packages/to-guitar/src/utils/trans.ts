@@ -29,6 +29,7 @@ const getChordType = (chords: Note[]): ChordType[] => {
 		const chordItem = chordMap.get(key)
 		if (chordItem) {
 			chordList.push({
+				key,
 				tone,
 				over: transTone(NOTE_LIST[offset]),
 				...chordItem,
@@ -48,11 +49,8 @@ const getDegreeTag = (degree: string | number) => {
 	if (!numStr) {
 		return ''
 	}
-	let num = Number(numStr) as IntervalNum
-	if (num > 7) {
-		num = (num % 7) as IntervalNum
-	}
-	return DEGREE_TAG_MAP[num]
+	const num = Number(numStr) % 7
+	return DEGREE_TAG_MAP[num  as IntervalNum]
 }
 
 /**
@@ -162,7 +160,7 @@ const transScaleDegree = ({
  * @param calGrades 升降度数 默认不变调
  */
 const transChordType = (chords: Tone[], calGrades?: number) => {
-	let chordNotes = transNote(chords)
+	let chordNotes = Array.from(new Set(transNote(chords)))
 
 	if (calGrades) {
 		chordNotes = chordNotes
