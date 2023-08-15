@@ -1,7 +1,7 @@
-import { FC, ReactNode, useCallback, useEffect, useState } from 'react'
+import { FC, ReactNode } from 'react'
 import { PortalInner } from './portal.component'
 import { Icon } from '@/components/icon'
-import styles from './modal.module.scss'
+import styles from './portal-modal.module.scss'
 import cx from 'classnames'
 
 export interface ModalProps {

@@ -1,9 +1,9 @@
 import { FC, useState } from 'react'
 import { AddTextInput, CollectionSelecter } from '@/components/basic'
 import { CollectionChord } from '@/pages/collections/collections.config'
-import cx from 'classnames'
-import { Modal, ModalProps } from '@/components/portal/Modal.component'
+import { Modal, ModalProps } from '@/components/portal'
 import { useBoardContext } from '@/components/guitar-board'
+import cx from 'classnames'
 
 import styles from './chord-card.module.scss'
 
