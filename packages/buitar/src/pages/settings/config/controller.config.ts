@@ -200,13 +200,6 @@ export const instrumentKeyboardConfig: Record<
 		baseLevel: 2, // 基础音高 E2
 		baseTone: ['E', 'A', 'D', 'G', 'B', 'E'], // 0 品调音
 	},
-	bass: {
-		key: 'bass',
-		name: '贝斯',
-		baseFret: 17, // 0~16品
-		baseLevel: 1, // 基础音高 E2
-		baseTone: ['E', 'A', 'D', 'G'], // 0 品调音
-	},
 	ukulele: {
 		key: 'ukulele',
 		name: '尤克里里',
@@ -214,4 +207,19 @@ export const instrumentKeyboardConfig: Record<
 		baseTone: ['G4', 'C4', 'E4', 'A4'], // 0 品调音
 		chordOver: true, // 需要带转位和弦
 	},
+	bass: {
+		key: 'bass',
+		name: '贝斯',
+		baseFret: 17, // 0~16品
+		baseLevel: 1, // 基础音高 E2
+		baseTone: ['E', 'A', 'D', 'G'], // 0 品调音
+	},
 }
+
+export const instrumentKeyboardMap = new Map<InstrumentKeyboardKey, Instrument>(
+	[
+		['guitar', 'guitar-acoustic'],
+		['ukulele', 'ukulele'],
+		['bass', 'bass-electric'],
+	]
+)

@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { Chord, chordDegreeMap, ChordDegreeNum, transChord, getDegreeTag } from '@buitar/to-guitar'
 import { useBoardContext, ChordTapsController } from '@/components/guitar-board'
 import { FifthCircleController } from '../fifth-circle-controller'

@@ -1,4 +1,4 @@
-import { chordMap, DegreeTag } from '@buitar/to-guitar'
+import { chordMap } from '@buitar/to-guitar'
 
 export const tagList = Array.from(chordMap.values()).map((item) => item.tag)
 export const tagTypedList = Array.from(chordMap.values()).reduce((prev: string[][], curr) => {

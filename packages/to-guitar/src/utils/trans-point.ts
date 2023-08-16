@@ -267,8 +267,7 @@ const transChordTapsDeprecate = (
 /**
  * 和弦音名数组 + 指板 => 和弦指法
  * @param chords 和弦音数组
- * @param board 指板数组
- * @param fingerSpan 手指品位跨度
+ * @param options 指板配置
  */
 const transChordTaps = (
 	tones: Tone[],
@@ -357,6 +356,19 @@ const transChordTaps = (
 	}
 
 	/**
+	 * 过滤 连续两根弦 重复的和弦音
+	 * @param taps
+	 */
+	const repeatingPitchFilter = (taps: Point[]) => {
+		for (let i = 0; i < taps.length - 1; i++) {
+			if (taps[i].pitch === taps[i + 1].pitch) {
+				return false
+			}
+		}
+		return true
+	}
+
+	/**
 	 * 排序 根据该和弦品位从低至高
 	 * @param tapsA
 	 * @param tapsB
@@ -367,7 +379,38 @@ const transChordTaps = (
 		return maxGradeA - maxGradeB
 	}
 
-	// 检索根音位置
+	/**
+	 * 移除重复和弦（指型覆盖）
+	 * @param list
+	 * @returns
+	 */
+	const coverTapsReduce = (list: BoardChord[]) => {
+		return list.reduce(
+			(prevArr, curChord) => {
+				// 遍历已选的无重复的指型
+				for (let i = 0; i < prevArr.length; i++) {
+					const prevChord = prevArr[i]
+
+					if (prevChord.chordTaps.every((prevPoint) => curChord.chordTaps.includes(prevPoint))) {
+						// 1.当前指型可以覆盖已选的指型，则替换该已选指型
+						prevArr[i] = curChord
+						return prevArr
+					} else if (
+						curChord.chordTaps.every((curPoint) => prevChord.chordTaps.includes(curPoint))
+					) {
+						// 2.当前指型可以被已选指型覆盖，则跳出本次循环
+						return prevArr
+					}
+				}
+				// 3.指型不能互相覆盖，则加入新指型
+				prevArr.push(curChord)
+				return prevArr
+			},
+			[list[0]]
+		)
+	}
+
+	// 检索根音位置，获取该根音匹配的所有和弦指位
 	keyboard.forEach((grades, stringIndex) => {
 		// 有几根弦 > 和弦音数
 		if (stringIndex > keyboard.length - chords.length) {
@@ -382,7 +425,7 @@ const transChordTaps = (
 					// 获取该根音下所有和弦
 					findNextString(point.string, [point], list)
 					// 过滤无效和弦
-					list = list.filter(integrityFilter).filter(fingersFilter)
+					list = list.filter(integrityFilter).filter(fingersFilter).filter(repeatingPitchFilter)
 					root.chordTapsList.push(...list)
 				}
 			})
@@ -390,40 +433,18 @@ const transChordTaps = (
 	})
 
 	// 扁平化多转位和弦
-	overRoots.forEach((item) =>
-		tapsList.push(
-			...item.chordTapsList.map(
-				(taps) => ({ chordType: item.chordType, chordTaps: taps } as BoardChord)
-			)
+	overRoots.forEach((item) => {
+		// 格式化当前转位的所有和弦
+		let tempList = item.chordTapsList.map(
+			(taps) => ({ chordType: item.chordType, chordTaps: taps } as BoardChord)
 		)
-	)
+		// 所有和弦指位去重
+		tempList = coverTapsReduce(tempList)
+		tapsList.push(...tempList)
+	})
 
-	// 移除重复和弦（指型覆盖）
-	tapsList = tapsList.reduce(
-		(prevArr, curChord) => {
-			// 遍历已选的无重复的指型
-			for (let i = 0; i < prevArr.length; i++) {
-				const prevChord = prevArr[i]
-
-				if (prevChord.chordTaps.every((prevPoint) => curChord.chordTaps.includes(prevPoint))) {
-					// 1.当前指型可以覆盖已选的指型，则替换该已选指型
-					prevArr[i] = curChord
-					return prevArr
-				} else if (curChord.chordTaps.every((curPoint) => prevChord.chordTaps.includes(curPoint))) {
-					// 2.当前指型可以被已选指型覆盖，则跳出本次循环
-					return prevArr
-				}
-			}
-			// 3.指型不能互相覆盖，则加入新指型
-			prevArr.push(curChord)
-			return prevArr
-		},
-		[tapsList[0]]
-	)
-
-	// 排序输出
-	tapsList = tapsList.sort(gradeSorter)
-
+	// 根据品位排序
+	tapsList = tapsList.sort(gradeSorter).filter((item)=>!!item)
 	return tapsList
 }
 

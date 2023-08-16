@@ -11,14 +11,12 @@ import {
 	BOARD_THEME_KEY,
 	INSTRUMENT_KEYBOARD_KEY,
 	instrumentKeyboardConfig,
+	instrumentKeyboardMap,
 } from '@/pages/settings/config/controller.config'
 import { Board, BoardChord, BoardOption, Point, Tone } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
 import { useStore } from '@/utils/hooks/use-store'
-import {
-	COLLECTIONS_KEY,
-	CollectionMapType,
-} from '@/pages/collections/collections.config'
+import { COLLECTIONS_KEY, CollectionMapType } from '@/pages/collections/collections.config'
 
 /**
  * 吉他指板默认配置
@@ -226,6 +224,11 @@ export const BoardProvider: FC = (props) => {
 	// 切换乐器指板：更新guitar实例
 	useEffect(() => {
 		guitar.setOptions(instrumentKeyboardConfig[instrumentKeyboard])
+		// 切换指板默认切换音色
+		const adjustInstrument = instrumentKeyboardMap.get(instrumentKeyboard)
+		if (adjustInstrument) {
+			dispatchInstrument({ type: 'set', payload: adjustInstrument })
+		}
 	}, [instrumentKeyboard])
 
 	const boardValue = {
