@@ -39,9 +39,12 @@ export const getBoardOptionsTone = (
  * @returns
  */
 export const getBoardOptionsNote = (
-	tone: ToneSchema,
+	tone: ToneSchema | number,
 	options: Pick<GuitarBoardOptions, 'isSharpSemitone'>
 ) => {
+	if (typeof tone === 'number') {
+		return options.isSharpSemitone ? NOTE_LIST[tone] : NOTE_FALLING_LIST[tone]
+	}
 	return options.isSharpSemitone ? tone.note : tone.noteFalling
 }
 

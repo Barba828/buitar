@@ -1,6 +1,45 @@
-import { NOTE_LIST, chordMap, degreeMap, chordDegreeMap, DEGREE_TAG_MAP } from '../config'
-import type { Note, Tone, ChordType, ChordDegreeNum, ModeType, Chord, IntervalNum } from '../interface'
+import {
+	NOTE_LIST,
+	chordMap,
+	degreeMap,
+	chordDegreeMap,
+	DEGREE_TAG_MAP,
+	intervalMap,
+} from '../config'
+import type {
+	Note,
+	Tone,
+	ChordType,
+	ChordDegreeNum,
+	ModeType,
+	Chord,
+	IntervalNum,
+	IntervalAll,
+} from '../interface'
 import { transNote, transTone } from './trans-tone'
+
+/**
+ * 度数 => 半音程
+ * 2# 大二度 => 3
+ * 5b 减五度 => 6
+ * 11 完全十一度 => 17
+ * @param interval
+ */
+const transInterval = (interval: IntervalAll) => {
+	const match = interval.match(/(\d+)(\D*)/)
+	if (!match) {
+		return 0
+	}
+	const pitchNum = Number(match[1]) // 总度数
+	const semitonesTag = match[2] // 半音标记
+
+	const intervalNum = pitchNum % 7 // 有效度数
+	const size = Math.floor(pitchNum / 7) // 差多少个八度
+	const halfPicth = semitonesTag === '#' ? 1 : semitonesTag === 'b' ? -1 : 0
+
+	const basePitch = intervalMap.get(intervalNum as IntervalNum) || 0
+	return size * 12 + basePitch + halfPicth
+}
 
 /**
  * 和弦音 => 和弦名称[]
@@ -19,12 +58,17 @@ const getChordType = (chords: Note[]): ChordType[] => {
 		// 放置根音并对后面的音进行排序（设置offset便于排序，即排序结果根音恒在数组首位）
 		const intervals = [chord, ...rest]
 			.map((item) =>
-				NOTE_LIST.indexOf(item) - offset >= 0 ? NOTE_LIST.indexOf(item) - offset : NOTE_LIST.indexOf(item) - offset + NOTE_LIST.length
+				NOTE_LIST.indexOf(item) - offset >= 0
+					? NOTE_LIST.indexOf(item) - offset
+					: NOTE_LIST.indexOf(item) - offset + NOTE_LIST.length
 			)
 			.sort((a, b) => a - b)
 
 		// 排序完成根据音程计算key
-		const key = intervals.reduce((pre, cur, curIndex) => pre * 10 + (cur - intervals[curIndex - 1] || 0), 0)
+		const key = intervals.reduce(
+			(pre, cur, curIndex) => pre * 10 + (cur - intervals[curIndex - 1] || 0),
+			0
+		)
 
 		const chordItem = chordMap.get(key)
 		if (chordItem) {
@@ -49,8 +93,11 @@ const getDegreeTag = (degree: string | number) => {
 	if (!numStr) {
 		return ''
 	}
-	const num = Number(numStr) % 7
-	return DEGREE_TAG_MAP[num  as IntervalNum]
+	let num = Number(numStr)
+	if (num > 7) {
+		num = num % 7
+	}
+	return DEGREE_TAG_MAP[num as IntervalNum]
 }
 
 /**
@@ -61,7 +108,9 @@ const getDegreeTag = (degree: string | number) => {
  */
 const transChord = (tone: Tone, chordTypeTag: string = '') => {
 	const note = transNote(tone)
-	const chordTypeItem = Array.from(chordMap.entries()).find(([_key, value]) => value.tag === chordTypeTag)
+	const chordTypeItem = Array.from(chordMap.entries()).find(
+		([_key, value]) => value.tag === chordTypeTag
+	)
 	if (!chordTypeItem) {
 		return null
 	}
@@ -94,7 +143,13 @@ const transChord = (tone: Tone, chordTypeTag: string = '') => {
  * }
  * @returns 大调音阶顺阶音调 数组
  */
-const transScale = ({ mode = 'major', scale = 'C' }: { mode?: ModeType; scale?: Tone }): Chord[] => {
+const transScale = ({
+	mode = 'major',
+	scale = 'C',
+}: {
+	mode?: ModeType
+	scale?: Tone
+}): Chord[] => {
 	const note = transNote(scale)
 	const degreeArr = degreeMap.get(mode)
 
@@ -187,4 +242,12 @@ const transFifthsCircle = (root: Tone = 'C') => {
 	})
 }
 
-export { getDegreeTag, transChord, transChordType, transScale, transScaleDegree, transFifthsCircle }
+export {
+	getDegreeTag,
+	transInterval,
+	transChord,
+	transChordType,
+	transScale,
+	transScaleDegree,
+	transFifthsCircle,
+}

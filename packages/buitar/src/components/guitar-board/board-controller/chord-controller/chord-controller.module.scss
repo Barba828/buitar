@@ -14,8 +14,8 @@
 	}
 
 	.fifth-circle {
-		height: calc($btn-size * 6  + $btn-margin * 4) !important;
-		min-width: calc($btn-size * 6  + $btn-margin * 4) !important;
+		height: calc($btn-size * 6 + $btn-margin * 4) !important;
+		min-width: calc($btn-size * 6 + $btn-margin * 4) !important;
 	}
 
 	.chord-controllers {
@@ -80,10 +80,14 @@
 
 	.tags-item {
 		@include flex-center;
-		width: calc($btn-size * 1.5);
+		width: calc($btn-size * 1.6);
 		height: calc($btn-size * 0.8);
-		font-size: 14px;
+		font-size: $font-12;
 		font-weight: 500;
 		color: $white-02;
 	}
+}
+
+.chord-type-tabs {
+	width: 98%
 }

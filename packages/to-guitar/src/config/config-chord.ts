@@ -1,7 +1,7 @@
 /**
  * 和弦配置
  */
-import type { ChordDegreeNum, ChordType, DegreeType, ModeType } from '../interface'
+import type { ChordDegreeNum, ChordType, DegreeType, IntervalNum, ModeType } from '../interface'
 
 /**
  * 和弦乐理配置
@@ -195,9 +195,27 @@ const chordDegreeMap = new Map<ChordDegreeNum, { name: string; interval: number[
 		9,
 		{
 			name: 'ninth chord',
-			interval: [1, 3, 5, 7, 9], // 九音是严格的根音的大二度
+			interval: [1, 3, 5, 7, 9], // 这里的9并不严谨，九音是严格的根音的大二度
 		},
 	],
 ])
 
-export { chordMap, degreeMap, chordDegreeMap }
+/**
+ * 度数=>半音程转换映射
+ */
+const intervalMap = new Map<IntervalNum, number>([
+	[1, 0], // 一度音程 0 
+	[2, 2], // 大二度 2（大/小：可能垮半音）-> 小二度 1
+	[3, 4], // 大三度	4（大/小：可能垮半音）-> 小三度 3
+	[4, 5], // 完全四度 5 （一定跨半音） -> 增四度 6
+	[5, 7], // 完全五度 7 （一定跨半音） -> 减五度 6
+	[6, 9], // 大六度 9（大/小：可能垮两个半音）	-> 小六度 8
+	[7, 10], // 大七度 11（大/小：可能垮两个半音）-> 小七度 10
+	// 复合音程(+八度，算法实现)
+	// ['8', 12], // 八度
+	// ['9', 14], // 大九度
+	// ['10', 16], // 大十度
+	// ['11', 17], // 完全十一度
+])
+
+export { chordMap, degreeMap, chordDegreeMap, intervalMap }

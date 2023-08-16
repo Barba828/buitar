@@ -20,13 +20,13 @@ export type ChordType = {
 	 */
 	constitute?: IntervalAll[]
 	/**
-	 * 和弦根音名
+	 * 和弦最低音名（一般是根音，除非存在转位和弦）
 	 * C|D|...
 	 */
 	tone?: ToneSchema
 	/**
-	 * 转位和弦 即实际和弦名称over/note
-	 * C/E ("C over E")
+	 * 转位和弦根音（即实际和弦名称over/note）
+	 * C/E ("C over E"｜"C slash E"｜"C on E")
 	 */
 	over?: ToneSchema
 	/**

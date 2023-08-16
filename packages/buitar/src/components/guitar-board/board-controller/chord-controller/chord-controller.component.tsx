@@ -74,22 +74,49 @@ const ChordTypePicker = () => {
 		setChord(_chord.chord)
 	}, [type, guitarBoardOption.scale])
 
+	return <ChordTagPicker onChange={setType} />
+}
+
+const ChordTagPicker: FC<{ onChange(tag: string): void }> = () => {
+	const [type, setType] = useState('')
+	const [list, setList] = useState(tagList)
+	const tabQuery = ['all', '3', '7', '9', 'm', 'maj', 'sus', 'aug']
+
+	const handleChangeQuery = useCallback((query: string) => {
+		let tempList = tagList
+		if (query === 'all') {
+			/**do nothing */
+		} else if (query === 'm') {
+			tempList = tagList.filter((tag) => tag.includes('m') && !tag.includes('maj'))
+		} else {
+			tempList = tagList.filter((tag) => tag.includes(query))
+		}
+		setList(tempList)
+		return
+	}, [])
 	return (
-		<div className={styles['chord-type']}>
-			{tagList.map((tag) => (
-				<div
-					key={tag}
-					onClick={() => setType(tag)}
-					className={cx(
-						'buitar-primary-button',
-						styles['tags-item'],
-						tag === type && 'touch-yellow'
-					)}
-				>
-					{tag}
-				</div>
-			))}
-		</div>
+		<>
+			<TabSwitch
+				className={styles['chord-type-tabs']}
+				values={tabQuery}
+				onChange={handleChangeQuery}
+			></TabSwitch>
+			<div className={styles['chord-type']}>
+				{list.map((tag) => (
+					<div
+						key={tag}
+						onClick={() => setType(tag)}
+						className={cx(
+							'buitar-primary-button',
+							styles['tags-item'],
+							tag === type && 'touch-yellow'
+						)}
+					>
+						{tag}
+					</div>
+				))}
+			</div>
+		</>
 	)
 }
 
@@ -159,7 +186,7 @@ const ChordPickerController: FC<ControllerListProps<Chord>> = ({ ...props }) => 
 						<span className={styles['chord-item-note']}>
 							{isSharpSemitone ? item.tone.note : item.tone.noteFalling}
 						</span>
-						<span className={styles['chord-item-tag']}>{item.chordType?.[0].tag}</span>
+						<span className={styles['chord-item-tag']}>{item.chordType?.[0]?.tag}</span>
 						<div className={styles['chord-item-scale']}>{item.degree.scale}</div>
 					</div>
 				)

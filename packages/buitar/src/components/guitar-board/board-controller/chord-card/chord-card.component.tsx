@@ -2,8 +2,8 @@ import React, { FC, useMemo, useState, memo, useCallback } from 'react'
 import { useBoardContext } from '../../board-provider'
 import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
 import { Icon } from '@/components/icon'
-import { Portal } from '@/components'
-import { BoardChord, NOTE_LIST, Point, Tone, getDegreeTag } from '@buitar/to-guitar'
+import { Portal, getBoardOptionsNote } from '@/components'
+import { BoardChord, NOTE_LIST, Point, Tone, getDegreeTag, transInterval } from '@buitar/to-guitar'
 import { CardCollector } from './card-collector.component'
 import { getBoardChordName } from './utils'
 import cx from 'classnames'
@@ -101,33 +101,21 @@ export const ChordCard: FC<{
 	)
 })
 
-export const DetailCard: FC<{ chordType?: BoardChord['chordType']; chord?: Tone[] }> = ({
-	chordType,
-}) => {
+export const DetailCard: FC<{ chordType?: BoardChord['chordType'] }> = ({ chordType }) => {
 	const { boardOptions } = useBoardContext()
 	const chordName = getBoardChordName(chordType, boardOptions)
 
-	const notes = useMemo(() => {
-		if (!chordType?.tone?.note || !chordType?.key) {
-			return []
-		}
-		const offset = NOTE_LIST.indexOf(chordType.tone.note)
-		const intervals = chordType.key
-			.toString()
-			.split('')
-			.reduce((prev, str) => [...prev, Number(str) + prev[prev.length - 1]], [offset])
-		return intervals.map((interval) => NOTE_LIST[interval % NOTE_LIST.length])
-	}, [chordType])
-
-	if (!chordType) {
+	if (!chordType || !chordType.tone) {
 		return null
 	}
 
+	const offset = NOTE_LIST.indexOf(chordType?.over?.note || chordType.tone.note)
 	const constitute = chordType.constitute
 	const constituteTag = constitute?.map((item) => getDegreeTag(item))
-	const chordList = constitute?.map((_, index) => {
+	const chordList = constitute?.map((pitch, index) => {
+		const noteIndex = (offset + transInterval(pitch)) % NOTE_LIST.length
 		return {
-			note: notes[index],
+			note: getBoardOptionsNote(noteIndex, boardOptions),
 			degreeTag: constituteTag?.[index],
 			degree: constitute?.[index],
 		}
