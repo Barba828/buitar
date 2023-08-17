@@ -1,7 +1,8 @@
 .modal-container {
 	max-width: 600px;
-	width: 80vw;
+	width: 92vw;
 	max-height: 92vh;
+	overflow-y: scroll;
 	background: $gray-01;
     padding: $btn-margin;
 

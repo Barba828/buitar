@@ -3,38 +3,40 @@ $degree-btn-size: calc($btn-size * 1.6);
 .degree-controller {
 	display: flex;
 	flex-wrap: wrap;
+}
 
-	.degree-expand {
-		min-width: calc($btn-size * 0.4);
-		width: calc($btn-size * 0.4);
-		height: $degree-btn-size;
-		@include flex-center;
+.degree-expand {
+	min-width: calc($btn-size * 0.4);
+	width: calc($btn-size * 0.4);
+	height: $degree-btn-size;
+	@include flex-center;
+}
+
+.degree-btn {
+	width: $degree-btn-size;
+	height: $degree-btn-size;
+	min-width: $degree-btn-size !important;
+	min-height: $degree-btn-size !important;
+	@include flex-center;
+
+	:global(.icon-back) {
+		transform: rotate(-90deg);
+		transition: transform 0.3s ease-in-out;
+	}
+	&.icon-expand {
+		:global(.icon-back) {
+			transform: rotate(90deg);
+		}
 	}
 
-	.degree-btn {
-		width: $degree-btn-size;
-		height: $degree-btn-size;
-		@include flex-center;
-
-		:global(.icon-back) {
-			transform: rotate(-90deg);
-			transition: transform 0.3s ease-in-out;
-		}
-		&.icon-expand {
-			:global(.icon-back) {
-				transform: rotate(90deg);
-			}
-		}
-		
-		:global(.icon) {
-			font-size: $font-22;
-			opacity: 0.4;
-		}
-		@media (any-hover: hover) {
-			&:hover {
-				:global(.icon) {
-					opacity: 0.6;
-				}
+	:global(.icon) {
+		font-size: $font-22;
+		opacity: 0.4;
+	}
+	@media (any-hover: hover) {
+		&:hover {
+			:global(.icon) {
+				opacity: 0.6;
 			}
 		}
 	}
@@ -60,6 +62,7 @@ $degree-btn-size: calc($btn-size * 1.6);
 			&:hover {
 				.degree-item-remove {
 					opacity: 0.8;
+					pointer-events: all;
 				}
 			}
 
@@ -70,6 +73,7 @@ $degree-btn-size: calc($btn-size * 1.6);
 			}
 
 			.degree-item-remove {
+				pointer-events: none;
 				transition: all 0.15s ease-in-out;
 				opacity: 0;
 				position: absolute;
@@ -139,6 +143,19 @@ $degree-btn-size: calc($btn-size * 1.6);
 			@include touch-color;
 		}
 	}
+
+	.degree-input {
+		width: 80%;
+		font-size: $font-22;
+		&:focus {
+			width: 100%;
+		}
+	}
+}
+
+.degree-modal-container {
+	height: 60vh;
+	overflow-y: scroll;
 }
 
 .chord-list {

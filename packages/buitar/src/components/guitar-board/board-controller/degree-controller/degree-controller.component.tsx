@@ -2,9 +2,15 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	ProgressionItem,
 	ProgressionsConfig,
-	tagList,
 } from '@/pages/chord-progressions/progressions.config'
-import { Icon, useBoardContext, usePlayerContext } from '@/components'
+import {
+	ChordTagPicker,
+	Icon,
+	Modal,
+	useBoardContext,
+	useMenuContext,
+	usePlayerContext,
+} from '@/components'
 import { transChord, transChordTaps, DEGREE_TAG_LIST } from '@buitar/to-guitar'
 import { ControllerList, ControllerListProps } from '@/components/controller'
 import cx from 'classnames'
@@ -20,6 +26,7 @@ export const DegreeController = () => {
 		usePlayerContext()
 	const [expand, setExpand] = useState(false)
 	const [edit, setEdit] = useState(false)
+	const [editProgression, setEditProgression] = useState<ProgressionsConfig>()
 	const toggleExpande = () => {
 		setExpand(!expand)
 	}
@@ -28,9 +35,18 @@ export const DegreeController = () => {
 		setEdit(!edit)
 	}
 
-	const handleSubmit = (progression: ProgressionsConfig) => {
-		dispatchProgressions({ type: 'set', payload: [...progressions, progression] })
-		setProgressionIndex(progressions.length)
+	const handleSubmit = () => {
+		if (!editProgression) {
+			return
+		}
+		const payload = [...progressions, editProgression]
+		dispatchProgressions({ type: 'set', payload  })
+		setProgressionIndex(payload.length - 1)
+		toggleEdit()
+	}
+
+	const handleEdit = (progression: ProgressionsConfig) => {
+		setEditProgression(progression)
 	}
 
 	const handleRemove = (index: number) => {
@@ -81,28 +97,24 @@ export const DegreeController = () => {
 
 	return (
 		<div className={styles['degree-controller']}>
-			{edit ? (
-				<>
-					<DegreeEditor onClose={toggleEdit} onSubmit={handleSubmit} />
-				</>
-			) : (
-				<>
-					<div className={styles['degree-container']}>{expand ? list : item}</div>
-					<div
-						className={cx(
-							'buitar-primary-button',
-							styles['degree-btn'],
-							expand && styles['icon-expand']
-						)}
-						onClick={toggleExpande}
-					>
-						<Icon name="icon-back" />
-					</div>
-					<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={toggleEdit}>
-						<Icon name="icon-add" />
-					</div>
-				</>
-			)}
+			<Modal visible={edit} onCancel={toggleEdit} onConfirm={handleSubmit}>
+				<DegreeEditor onChange={handleEdit} />
+			</Modal>
+			<div className={styles['degree-container']}>{expand ? list : item}</div>
+
+			<div
+				className={cx(
+					'buitar-primary-button',
+					styles['degree-btn'],
+					expand && styles['icon-expand']
+				)}
+				onClick={toggleExpande}
+			>
+				<Icon name="icon-back" />
+			</div>
+			<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={toggleEdit}>
+				<Icon name="icon-add" />
+			</div>
 		</div>
 	)
 }
@@ -114,75 +126,96 @@ const defaultTag = {
 }
 
 export const DegreeEditor: FC<{
-	onClose: () => void
-	onSubmit: (x: ProgressionsConfig) => void
-}> = ({ onClose, onSubmit }) => {
+	onChange: (x: ProgressionsConfig) => void
+}> = ({ onChange }) => {
 	const [procession, setProcession] = useState<ProgressionItem[]>([{ ...defaultTag }])
-	const [checked, setChecked] = useState<number>(procession.length - 1)
+	const [checkedIndex, setCheckedIndex] = useState<number>(procession.length - 1)
+	const [processionName, setProcessionName] = useState<string>('')
+	const { isHoverDevice } = useMenuContext()
+
+	useEffect(() => {
+		onChange({
+			procession: procession,
+			name: processionName,
+			introduction: '',
+		})
+	}, [procession, processionName])
 
 	const handleAdd = useCallback(() => {
 		procession.push({ ...defaultTag })
-		setChecked(procession.length - 1)
+		setCheckedIndex(procession.length - 1)
 		setProcession([...procession])
-	}, [procession])
-
-	const handleSubmit = useCallback(() => {
-		onSubmit({
-			procession: procession,
-			name: '',
-			introduction: '',
-		})
-		onClose()
 	}, [procession])
 
 	const handleRemove = (index: number) => {
 		procession.splice(index, 1)
+		if (index === checkedIndex) {
+			setCheckedIndex(procession.length - 1)
+		}
 		setProcession([...procession])
 	}
 
+	const handleCheckTag = useCallback(
+		(tag: string) => {
+			procession[checkedIndex].tag = tag
+			setProcession([...procession])
+		},
+		[procession, checkedIndex]
+	)
+
+	const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setProcessionName(e.target.value)
+	}
+
 	return (
-		<div className={styles['degree-container']}>
-			<div className={styles['degree-view']}>
+		<div className={cx(styles['degree-container'])}>
+			{/* 选中的级数列表 */}
+			<div className={cx('scroll-without-bar', styles['degree-view'])}>
 				{procession.map((degree, index) => (
 					<div
 						key={index}
 						className={cx(
 							'buitar-primary-button',
 							styles['degree-item'],
-							index === checked && 'touch-yellow'
+							index === checkedIndex && 'touch-yellow'
 						)}
-						onClick={() => setChecked(index)}
+						onClick={() => setCheckedIndex(index)}
 					>
 						{DEGREE_TAG_LIST[degree.name - 1]}
 						<span className={styles['degree-item-tag']}>{degree.tag}</span>
-						<div
-							onClick={() => {
-								handleRemove(index)
-							}}
-							className={cx(styles['degree-item-remove'])}
-						>
-							<Icon name="icon-close" />
-						</div>
+						{/* hover删除按钮 */}
+						{isHoverDevice && (
+							<div
+								onClick={() => {
+									handleRemove(index)
+								}}
+								className={cx(styles['degree-item-remove'])}
+							>
+								<Icon name="icon-close" />
+							</div>
+						)}
 					</div>
 				))}
+
+				{/* 级数操作按钮s */}
 				<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={handleAdd}>
 					<Icon name="icon-add" size={24} />
 				</div>
-
-				<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={handleSubmit}>
-					<Icon name="icon-confirm" size={28}/>
-				</div>
-				<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={onClose}>
-					<Icon name="icon-close" size={30}/>
+				<div
+					className={cx('buitar-primary-button', styles['degree-btn'])}
+					onClick={() => handleRemove(checkedIndex)}
+				>
+					<Icon name="icon-delete" size={24} />
 				</div>
 			</div>
 
-			<div className={styles['degree-view']}>
+			{/* 可选级数列表 */}
+			<div className={cx('scroll-without-bar', styles['degree-view'])}>
 				{DEGREE_TAG_LIST.map((degree, index) => (
 					<div
 						key={index}
 						onClick={() => {
-							procession[checked].name = index + 1
+							procession[checkedIndex].name = index + 1
 							setProcession([...procession])
 						}}
 						className={cx(
@@ -196,20 +229,14 @@ export const DegreeEditor: FC<{
 				))}
 			</div>
 
-			<div className={cx(styles['degree-view'], styles['tags-view'])}>
-				{tagList.map((tag) => (
-					<div
-						key={tag}
-						onClick={() => {
-							procession[checked].tag = tag
-							setProcession([...procession])
-						}}
-						className={cx('buitar-primary-button', styles['tags-item'])}
-					>
-						{tag}
-					</div>
-				))}
-			</div>
+			{/* 和弦类型 */}
+			<ChordTagPicker onChange={handleCheckTag} tag={procession?.[checkedIndex]?.tag} />
+
+			<input
+				placeholder={'和弦进行名称'}
+				onChange={handleChangeName}
+				className={cx('buitar-primary-button', 'text-input', styles['degree-input'])}
+			></input>
 		</div>
 	)
 }

@@ -105,3 +105,14 @@
 	backdrop-filter: blur(10px);
 	background-color: rgba(0, 0, 0, 0.5);
 }
+
+.text-input {
+	@include flex-center;
+	font-size: $font-14;
+	color: $white-01;
+	border: 0px;
+	outline: 0px;
+	background: $gray-01;
+	min-width: calc($btn-size * 2);
+	padding: 0px 10px;
+}

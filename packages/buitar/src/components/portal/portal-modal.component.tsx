@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useEffect } from 'react'
 import { PortalInner } from './portal.component'
 import { Icon } from '@/components/icon'
 import styles from './portal-modal.module.scss'
@@ -12,14 +12,19 @@ export interface ModalProps {
 	onConfirm?(): void
 }
 
-export const Modal: FC<ModalProps> = ({
-	visible,
-	pure,
-	title,
-	children,
-	onConfirm,
-	onCancel,
-}) => {
+export const Modal: FC<ModalProps> = ({ visible, pure, title, children, onConfirm, onCancel }) => {
+	useEffect(() => {
+		const container = document.body
+		if (visible) {
+			container.style.overflow = 'hidden'
+		} else {
+			container.style.overflow = 'auto'
+		}
+		return () => {
+			container.style.overflow = 'auto'
+		}
+	}, [visible])
+
 	if (!visible) {
 		return null
 	}

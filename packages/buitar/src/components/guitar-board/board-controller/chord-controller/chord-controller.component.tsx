@@ -77,9 +77,9 @@ const ChordTypePicker = () => {
 	return <ChordTagPicker onChange={setType} tag={type} />
 }
 
-const ChordTagPicker: FC<{ onChange(tag: string): void; tag: string }> = ({
+export const ChordTagPicker: FC<{ onChange(tag: string): void; tag?: string }> = ({
 	onChange,
-	tag = '',
+	tag,
 }) => {
 	const [list, setList] = useState(tagList)
 	const tabQuery = ['all', '3', '7', '9', 'm', 'maj', 'sus', 'aug']
