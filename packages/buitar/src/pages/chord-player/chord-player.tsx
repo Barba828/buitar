@@ -15,17 +15,8 @@ import { getBoardChordName } from '@/components/guitar-board/board-controller/ch
 
 export const ChordPlayer = () => {
 	const intro = usePagesIntro()
-
-	return (
-		<>
-			{intro}
-			<ChordPlayerInner />
-		</>
-	)
-}
-
-const ChordPlayerInner = () => {
-	const { chord, chordTap, chordTaps, guitarBoardOption, setChordTaps, setTaps } = useBoardContext()
+	const { chord, chordTap, chordTaps, guitarBoardOption, setChordTaps, setTaps, clearTaps } =
+		useBoardContext()
 	const { menus } = useMenuContext()
 
 	// 指板更新：清除和弦指位列表
@@ -50,13 +41,20 @@ const ChordPlayerInner = () => {
 		}
 	}, [chordTap])
 
+	useEffect(() => {
+		return () => {
+			clearTaps()
+		}
+	}, [])
+	
 	return (
 		<>
+			{intro}
 			<ChordController />
 			<ChordDetail />
 			<GuitarBoard />
 			<ChordKeyboard />
-			{menus.board_setting && <BoardOptionsController extendItem={false}/>}
+			{menus.board_setting && <BoardOptionsController extendItem={false} />}
 		</>
 	)
 }
@@ -73,7 +71,7 @@ const ChordDetail = memo(() => {
 	return (
 		<div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
 			<ChordCard taps={chordTap?.chordTaps} title={title} size={isMobile ? 120 : 160} />
-			<DetailCard chordType={chordTap.chordType}/>
+			<DetailCard chordType={chordTap.chordType} />
 		</div>
 	)
 })

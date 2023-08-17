@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import { Chord, chordDegreeMap, ChordDegreeNum, transChord, getDegreeTag } from '@buitar/to-guitar'
 import { useBoardContext, ChordTapsController } from '@/components/guitar-board'
 import { FifthCircleController } from '../fifth-circle-controller'
-import { tagList } from '@/pages/chord-progressions/progressions.config'
+import { tagList, tagTypedList } from '@/pages/chord-progressions/progressions.config'
 import { chordControllConfig } from './chord-controll.config'
 import { TabSwitch } from '@/components/ui'
 import { ControllerList, ControllerListProps } from '@/components/controller'
@@ -74,22 +74,37 @@ const ChordTypePicker = () => {
 		setChord(_chord.chord)
 	}, [type, guitarBoardOption.scale])
 
-	return <ChordTagPicker onChange={setType} />
+	return <ChordTagPicker onChange={setType} tag={type} />
 }
 
-const ChordTagPicker: FC<{ onChange(tag: string): void }> = () => {
-	const [type, setType] = useState('')
+const ChordTagPicker: FC<{ onChange(tag: string): void; tag: string }> = ({
+	onChange,
+	tag = '',
+}) => {
 	const [list, setList] = useState(tagList)
 	const tabQuery = ['all', '3', '7', '9', 'm', 'maj', 'sus', 'aug']
 
 	const handleChangeQuery = useCallback((query: string) => {
 		let tempList = tagList
-		if (query === 'all') {
-			/**do nothing */
-		} else if (query === 'm') {
-			tempList = tagList.filter((tag) => tag.includes('m') && !tag.includes('maj'))
-		} else {
-			tempList = tagList.filter((tag) => tag.includes(query))
+		switch (query) {
+			case 'all':
+				/**do nothing */
+				break
+			case 'm':
+				tempList = tagList.filter((tag) => tag.includes('m') && !tag.includes('maj'))
+				break
+			case '3':
+				tempList = tagTypedList[0]
+				break
+			case '7':
+				tempList = tagTypedList[1]
+				break
+			case '9':
+				tempList = tagTypedList[2]
+				break
+			default:
+				tempList = tagList.filter((tag) => tag.includes(query))
+				break
 		}
 		setList(tempList)
 		return
@@ -102,17 +117,17 @@ const ChordTagPicker: FC<{ onChange(tag: string): void }> = () => {
 				onChange={handleChangeQuery}
 			></TabSwitch>
 			<div className={styles['chord-type']}>
-				{list.map((tag) => (
+				{list.map((tagItem) => (
 					<div
-						key={tag}
-						onClick={() => setType(tag)}
+						key={tagItem}
+						onClick={() => onChange(tagItem)}
 						className={cx(
 							'buitar-primary-button',
 							styles['tags-item'],
-							tag === type && 'touch-yellow'
+							tag === tagItem && 'touch-yellow'
 						)}
 					>
-						{tag}
+						{tagItem}
 					</div>
 				))}
 			</div>

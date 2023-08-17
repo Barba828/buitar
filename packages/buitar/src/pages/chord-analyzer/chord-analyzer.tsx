@@ -22,6 +22,13 @@ export const ChordAnalyzer = () => {
 	const intro = usePagesIntro()
 	const [chordTypes, setChordTypes] = useState<ChordType[]>([])
 	const { menus } = useMenuContext()
+	const { clearTaps } = useBoardContext()
+
+	useEffect(() => {
+		return () => {
+			clearTaps()
+		}
+	}, [])
 
 	const handleChangeTaps = useCallback((taps: Point[]) => {
 		const notes = taps

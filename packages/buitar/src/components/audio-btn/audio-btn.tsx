@@ -16,19 +16,19 @@ export const AudioBtn: FC = memo(() => {
 	useEffect(() => {
 		context.on('statechange', (state) => {
 			setMute(state !== 'running')
+			console.log(
+				'%c AudioContext ',
+				'color:white; background:rgb(199, 156, 15);border-radius: 2px',
+				state
+			)
 		})
 	})
 
 	const toggleAudioContext = useCallback(async () => {
 		const player = (window.tonePlayer as TonePlayer)?.getContext()
-        player?.triggerAttackRelease('A3', '16n')
+        player?.triggerAttackRelease('A2', '16n')
 		
 		await Tone.start()
-		console.log(
-			'%c AudioContext ',
-			'color:white; background:rgb(199, 156, 15);border-radius: 2px',
-			player.context.state
-		)
 	}, [])
 
 	return (

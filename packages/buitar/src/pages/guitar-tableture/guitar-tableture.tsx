@@ -26,6 +26,7 @@ const TABLETRUE_CONFIG: TabletrueItemConfig = {
 
 export const GuitarTableture: FC = () => {
 	const intro = usePagesIntro()
+	const { clearTaps } = useBoardContext()
 	const { children = [] } = useRouteFind('GuitarTableture')
 	const { path } = useRouteMatch()
 	const tabList = useMemo(() => children.filter((route) => route.name), [children])
@@ -33,6 +34,12 @@ export const GuitarTableture: FC = () => {
 		() => tabList.find((route) => route.path === path) || tabList[0],
 		[tabList]
 	)
+
+	useEffect(() => {
+		return () => {
+			clearTaps()
+		}
+	}, [])
 
 	return (
 		<>

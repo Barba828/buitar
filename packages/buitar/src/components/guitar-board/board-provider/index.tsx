@@ -91,10 +91,6 @@ type BoardContextType = {
 	 * to-guitar.js指板
 	 */
 	guitar: Board
-	/**
-	 * 重置播放player
-	 */
-	resumePlayer(): void
 
 	// 指板内容
 	/**
@@ -163,6 +159,8 @@ type BoardContextType = {
 	 */
 	highFixedTaps: Point[]
 	setHighFixedTaps: SetState<Point[]>
+	/**清理全部指位 */
+	clearTaps(): void
 }
 const BoardContext = React.createContext<BoardContextType>({} as any)
 
@@ -199,11 +197,6 @@ export const BoardProvider: FC = (props) => {
 	const [highFixedTaps, setHighFixedTaps] = useState<Point[]>([])
 	const [emphasis, setEmphasis] = useState<string[]>([])
 
-	// 手动出发tonePlayer播放（某些浏览器会自动静音Audio）
-	const resumePlayer = useCallback(async () => {
-		await player.resume()
-	}, [])
-
 	// 吉他指板实例化对象
 	const guitar = useMemo(() => {
 		const _board = new Board((board) => {
@@ -231,10 +224,16 @@ export const BoardProvider: FC = (props) => {
 		}
 	}, [instrumentKeyboard])
 
+	const clearTaps = useCallback(()=>{
+		setTaps([])
+		setEmphasis([])
+		setFixedTaps([])
+		setHighFixedTaps([])
+	}, [])
+
 	const boardValue = {
 		player,
 		guitar,
-		resumePlayer,
 
 		guitarBoardOption,
 		boardOptions,
@@ -263,6 +262,7 @@ export const BoardProvider: FC = (props) => {
 		setHighFixedTaps,
 		emphasis,
 		setEmphasis,
+		clearTaps
 	}
 	return <BoardContext.Provider value={boardValue}>{props.children}</BoardContext.Provider>
 }

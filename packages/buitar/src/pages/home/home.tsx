@@ -12,6 +12,7 @@ import styles from './home.module.scss'
 
 export const HomePage = () => {
 	const isMobile = useIsMobile()
+
 	return (
 		<div className={styles.container}>
 			<Title />
@@ -106,7 +107,8 @@ const Title = () => (
 )
 
 const Example = () => {
-	const { taps, guitarBoardOption, setTaps, setChordTap, setChordTaps } = useBoardContext()
+	const { taps, guitarBoardOption, setTaps, setChordTap, setChordTaps, clearTaps } =
+		useBoardContext()
 
 	if (!guitarBoardOption.keyboard) return null
 
@@ -116,11 +118,14 @@ const Example = () => {
 		setChordTaps(GChordTaps)
 		setChordTap(GChordTaps[0])
 		setTaps(GChordTaps[0].chordTaps)
+		return () => {
+			clearTaps()
+		}
 	}, [])
 	return (
 		<>
 			<GuitarBoard />
-			<ChordCard taps={taps} title='G' />
+			<ChordCard taps={taps} title="G" />
 		</>
 	)
 }
