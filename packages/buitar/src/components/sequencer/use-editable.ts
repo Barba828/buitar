@@ -12,7 +12,7 @@ type DivTouchEvent = BaseTouchEvent<HTMLDivElement>
  * @returns
  */
 export const useEditable = ({
-	itemSize,
+	itemSizeX,
 	itemSizeY,
 	soundList: sounds,
 	maxLength,
@@ -21,7 +21,7 @@ export const useEditable = ({
 
 	onChange,
 }: {
-	itemSize: number
+	itemSizeX: number
 	itemSizeY: number
 	soundList: Sound[]
 	maxLength: number
@@ -82,7 +82,7 @@ export const useEditable = ({
 		const [x, y] = start.current
 		const [offsetX] = offset.current
 		const yIndex = Math.floor((clientY - y) / itemSizeY)
-		const zIndex = Math.floor((clientX - x - offsetX) / itemSize)
+		const zIndex = Math.floor((clientX - x - offsetX) / itemSizeX)
 
 		// 更新幽灵条位置
 		setGhost([yIndex, zIndex, ghost[2]])
@@ -96,8 +96,8 @@ export const useEditable = ({
 	const handleResizeGhost = (e: DivTouchEvent) => {
 		const clientX = e?.clientX || e?.touches[0]?.clientX
 		const [x] = start.current
-		const left = ghost[1] * itemSize + x
-		const length = Math.floor((clientX - left) / itemSize)
+		const left = ghost[1] * itemSizeX + x
+		const length = Math.floor((clientX - left) / itemSizeX)
 		length >= 0 && (ghost[2] = length)
 
 		// 更新幽灵条位置
