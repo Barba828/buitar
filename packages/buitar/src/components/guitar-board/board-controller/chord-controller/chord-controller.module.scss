@@ -44,29 +44,32 @@
 			text-transform: capitalize;
 		}
 	}
+}
 
-	.chord-item {
-		padding: 2px;
+.chord-item {
+	padding: 2px;
+	white-space: nowrap;
+	&-grade {
+		opacity: 0.8;
+		font-size: $font-12;
+		font-weight: 500;
+		margin: 0 $btn-margin;
+	}
+
+	&-note {
+		font-size: calc($font-22 * 1.2);
+		font-weight: bold;
+	}
+
+	&-tag {
+		font-size: $font-18;
+		font-weight: bold;
+	}
+
+	&-scale {
+		opacity: 0.8;
+		font-size: $font-10;
 		white-space: nowrap;
-		&-grade {
-			opacity: 0.8;
-			font-size: $font-12;
-		}
-
-		&-note {
-			font-size: $font-22;
-			line-height: 32px;
-		}
-
-		&-tag {
-			font-size: $font-16;
-		}
-
-		&-scale {
-			opacity: 0.8;
-			font-size: $font-10;
-			white-space: nowrap;
-		}
 	}
 }
 

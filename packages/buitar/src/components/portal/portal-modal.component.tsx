@@ -8,8 +8,8 @@ export interface ModalProps {
 	visible?: boolean
 	pure?: boolean
 	title?: ReactNode
-	onCancel?(): void
-	onConfirm?(): void
+	onCancel?: React.MouseEventHandler<HTMLDivElement>
+	onConfirm?: React.MouseEventHandler<HTMLDivElement>
 }
 
 export const Modal: FC<ModalProps> = ({ visible, pure, title, children, onConfirm, onCancel }) => {

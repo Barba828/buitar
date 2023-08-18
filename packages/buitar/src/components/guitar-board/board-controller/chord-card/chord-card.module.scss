@@ -81,7 +81,7 @@
 
 	.detail-chord {
 		display: flex;
-		
+
 		&-note {
 			width: calc($btn-size * 1.2);
 			height: calc($btn-size * 1.2);
@@ -121,5 +121,34 @@
 		> svg {
 			opacity: 0.8;
 		}
+	}
+}
+
+.download-container {
+	display: flex;
+	justify-content: space-between;
+
+	.download-option-switch {
+		width: calc($btn-size * 3) !important;
+	}
+	.download-option-item {
+		flex: 1;
+		height: calc($btn-size * 0.8) !important;
+		background-color: $gray-primary;
+	}
+
+	.download-preview {
+		flex: 1;
+		margin: $btn-margin $btn-size;
+	}
+
+	.download-desc {
+		// flex: 1;
+		margin: $btn-margin;
+		padding: 0 calc($btn-size * 0.2);
+		height: calc($btn-size * 0.8) !important;
+		border-radius: $btn-margin;
+		font-size: $font-12;
+		@include flex-center();
 	}
 }

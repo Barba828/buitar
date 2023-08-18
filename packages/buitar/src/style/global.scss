@@ -18,7 +18,7 @@
 	transition: all 0.15s linear;
 	overflow: hidden;
 	cursor: pointer;
-	
+
 	@include touch-color($gray-primary, $gray-second);
 }
 
@@ -92,6 +92,10 @@
 	width: 100%;
 }
 
+.flex {
+	display: flex;
+}
+
 .modal {
 	position: fixed;
 	top: 0;
@@ -107,8 +111,8 @@
 .toast {
 	position: fixed;
 	bottom: 20%;
-    left: 50%;
-    transform: translateX(-50%);
+	left: 50%;
+	transform: translateX(-50%);
 	z-index: 199;
 	background-color: rgba($gray-third, 0.8);
 	padding: calc($btn-margin * 5) calc($btn-margin * 10);
@@ -125,4 +129,20 @@
 	background: $gray-01;
 	min-width: calc($btn-size * 2);
 	padding: 0px 10px;
+}
+
+.color-input {
+	@include flex-center;
+	border: 0px;
+	outline: 0px;
+	min-width: calc($btn-size * 2);
+	padding: 0;
+	height: calc($btn-size * 0.8);
+	border-radius: $btn-margin;
+	&::-webkit-color-swatch-wrapper {
+		padding: 0;
+	}
+	&::-webkit-color-swatch {
+		border: none;
+	}
 }

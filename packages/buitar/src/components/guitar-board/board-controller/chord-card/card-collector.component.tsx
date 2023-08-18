@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, MouseEvent, useState } from 'react'
 import { AddTextInput, CollectionSelecter } from '@/components/basic'
 import { CollectionChord } from '@/pages/collections/collections.config'
 import { Modal, ModalProps, toast } from '@/components/portal'
@@ -21,11 +21,11 @@ export const CardCollector: FC<
 		dispatchCollection({ type: 'set', payload: collection })
 	}
 
-	const handleConfirm = () => {
+	const handleConfirm = (e: any) => {
 		collection[instrumentKeyboard][collectionIndex].data.push(data)
 		dispatchCollection({ type: 'set', payload: collection })
 		toast('已加入收藏夹' + collection[instrumentKeyboard][collectionIndex].title)
-		restProps.onCancel?.()
+		restProps.onCancel?.(e)
 	}
 
 	return (
@@ -42,3 +42,4 @@ export const CardCollector: FC<
 		</Modal>
 	)
 }
+

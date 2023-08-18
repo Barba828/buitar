@@ -10,12 +10,13 @@ export type RangeInputProps = {
 	backgoundColor?: string
 	highLightColor?: string
 	className?: string
+	inputClassName?: string
 }
 
 /**
  * 带左右范围的range input选择器
- * @param param0 
- * @returns 
+ * @param param0
+ * @returns
  */
 export const RangeInput = ({
 	range: [min, max] = [0, 100],
@@ -24,6 +25,7 @@ export const RangeInput = ({
 	backgoundColor = '#eee4',
 	highLightColor = '#ccc',
 	className,
+	inputClassName,
 }: RangeInputProps) => {
 	const [start, setStart] = useState(defaultStart)
 	const [end, setEnd] = useState(defaultEnd)
@@ -52,7 +54,7 @@ export const RangeInput = ({
 			<input
 				ref={refStart}
 				type="range"
-				className="buitar-primary-range"
+				className={cx('buitar-primary-range', inputClassName)}
 				min={min}
 				max={max}
 				step={1}
@@ -70,7 +72,7 @@ export const RangeInput = ({
 			<input
 				ref={refEnd}
 				type="range"
-				className={cx('buitar-primary-range', styles['input-hidden'])}
+				className={cx('buitar-primary-range', styles['input-hidden'], inputClassName)}
 				min={min}
 				max={max}
 				step={1}

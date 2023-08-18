@@ -1,4 +1,4 @@
-import { FC, memo, useMemo } from 'react'
+import { FC, forwardRef, memo, useMemo } from 'react'
 
 export type SvgChordPoint = {
 	/**
@@ -10,7 +10,7 @@ export type SvgChordPoint = {
 	color?: string
 }
 
-interface SvgChordProps {
+export interface SvgChordProps {
 	/**
 	 * 按钮数组，数组长度表示弦数
 	 */
@@ -35,9 +35,11 @@ interface SvgChordProps {
 
 const FINGER_NUMS = 5
 
-export const SvgChord: FC<SvgChordProps> = memo((props) => {
-	const { size = 300, color = 'white', points, concise, title } = props
-
+export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) => {
+	let { size = 300, color = 'white', points, concise, title = ' ' } = props
+	if (title.length === 0) {
+		title = ' '
+	}
 	const radius = size * 0.05
 	const width = size * 0.7
 	const stringDistance = width / (points.length - 1) // 两根弦之间距离
@@ -261,10 +263,16 @@ export const SvgChord: FC<SvgChordProps> = memo((props) => {
 			></rect>
 		)
 		return lines
-	}, [size])
+	}, [size, color])
 
 	return (
-		<svg width={size} height={size + titleHeight} xmlns="http://www.w3.org/2000/svg" version="1.1">
+		<svg
+			ref={ref}
+			width={size}
+			height={size + titleHeight}
+			xmlns="http://www.w3.org/2000/svg"
+			version="1.1"
+		>
 			{drawLines}
 			{drawTone()}
 			{drawBarre()}

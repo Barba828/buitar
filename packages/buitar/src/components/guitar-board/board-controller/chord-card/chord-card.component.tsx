@@ -1,13 +1,15 @@
-import React, { FC, useMemo, useState, memo, useCallback } from 'react'
+import React, { FC, useMemo, useState, memo, useCallback, useRef } from 'react'
 import { useBoardContext } from '../../board-provider'
 import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
 import { Icon } from '@/components/icon'
 import { Portal, getBoardOptionsNote } from '@/components'
 import { BoardChord, NOTE_LIST, Point, Tone, getDegreeTag, transInterval } from '@buitar/to-guitar'
 import { CardCollector } from './card-collector.component'
+import { CardDownloader } from './card-downloader.component'
 import { getBoardChordName } from './utils'
 import cx from 'classnames'
 import styles from './chord-card.module.scss'
+import { downloadSVG, downloadSvgToImg } from '@/utils/download'
 
 export const ChordCard: FC<{
 	taps: Point[]
@@ -27,14 +29,13 @@ export const ChordCard: FC<{
 	size?: number
 	extra?: JSX.Element | JSX.Element[]
 }> = memo(({ taps, title, className, size = 160, extra, disableCollect, onRemoveCollection }) => {
-	if (title.length === 0) {
-		title = ' '
-	}
+	
 	const {
 		player,
 		guitarBoardOption: { keyboard },
 	} = useBoardContext()
 	const [collectionVisible, setCollectionVisible] = useState(false)
+	const [downloadVisible, setDownloadVisible] = useState(false)
 
 	const cls = cx(
 		'buitar-primary-button',
@@ -54,6 +55,20 @@ export const ChordCard: FC<{
 		player.triggerPointRelease(taps)
 	}
 
+	const toggleDownloadVisible = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		e.stopPropagation()
+		setDownloadVisible(!downloadVisible)
+		// if (!svgRef.current) {
+		// 	return
+		// }
+		// downloadSvgToImg(svgRef.current, 'test')
+		// downloadSVG(svgRef.current, 'test')
+	}
+	const toggleCollectionVisible = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		e.stopPropagation()
+		setCollectionVisible(!collectionVisible)
+	}
+
 	const handleRemoveCollection = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e?.stopPropagation()
 		onRemoveCollection?.()
@@ -64,32 +79,47 @@ export const ChordCard: FC<{
 		title,
 	}
 
+	const svgData = {
+		points: svgPoints,
+		size,
+		title,
+	}
+
 	const card = (
 		<div className={styles.container}>
 			<div onClick={handleClick} className={cls} style={{ width: size * 1.2, height: size * 1.2 }}>
-				<SvgChord points={svgPoints} size={size} title={title} />
+				<SvgChord {...svgData} />
 				<div className={styles['chord-card-dot']} />
 				<div className={styles['chord-card-icons']}>
+					{/* 琶音 */}
 					<div className={styles['chord-card-sounds']} onClick={handleSoundClick}>
 						<Icon name="icon-eighth-note" size={16} />
 					</div>
+
+					{/* 收藏/移除收藏 */}
 					{disableCollect ? null : onRemoveCollection ? (
 						<div className={styles['chord-card-sounds']} onClick={handleRemoveCollection}>
 							<Icon name="icon-delete" size={16} />
 						</div>
 					) : (
-						<div className={styles['chord-card-sounds']} onClick={() => setCollectionVisible(true)}>
+						<div className={styles['chord-card-sounds']} onClick={toggleCollectionVisible}>
 							<Icon name="icon-collection" size={16} />
 						</div>
 					)}
+
+					{/* 下载 */}
+					<div className={styles['chord-card-sounds']} onClick={toggleDownloadVisible}>
+						<Icon name="icon-download" size={16} />
+					</div>
 				</div>
 			</div>
 
 			<CardCollector
 				visible={collectionVisible}
 				data={collectionData}
-				onCancel={() => setCollectionVisible(false)}
+				onCancel={toggleCollectionVisible}
 			/>
+			<CardDownloader visible={downloadVisible} onCancel={toggleDownloadVisible} {...svgData} />
 		</div>
 	)
 	return extra ? (

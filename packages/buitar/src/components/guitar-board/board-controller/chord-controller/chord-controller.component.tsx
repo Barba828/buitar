@@ -194,19 +194,25 @@ const ChordPickerController: FC<ControllerListProps<Chord>> = ({ ...props }) => 
 			{...props}
 			list={guitarBoardOption.chords || []}
 			onClickItem={handleClick}
-			renderListItem={(item) => {
-				return (
-					<div className={styles['chord-item']}>
-						<div className={styles['chord-item-grade']}>{getDegreeTag(item.degree.degreeNum)}</div>
-						<span className={styles['chord-item-note']}>
-							{isSharpSemitone ? item.tone.note : item.tone.noteFalling}
-						</span>
-						<span className={styles['chord-item-tag']}>{item.chordType?.[0]?.tag}</span>
-						<div className={styles['chord-item-scale']}>{item.degree.scale}</div>
-					</div>
-				)
-			}}
+			renderListItem={(item) => <DegreeChordItem item={item} isSharpSemitone={isSharpSemitone}/>}
 			checkedItem={(item) => item.chord === chord}
 		/>
+	)
+}
+
+export const DegreeChordItem: FC<{ item: Chord; isSharpSemitone?: boolean; withtag?: boolean }> = ({
+	item,
+	isSharpSemitone = true,
+	withtag = true,
+}) => {
+	return (
+		<div className={styles['chord-item']}>
+			<div className={styles['chord-item-grade']}>{getDegreeTag(item.degree.degreeNum)}</div>
+			<span className={styles['chord-item-note']}>
+				{isSharpSemitone ? item.tone.note : item.tone.noteFalling}
+			</span>
+			{withtag && <span className={styles['chord-item-tag']}>{item.chordType?.[0]?.tag}</span>}
+			<div className={styles['chord-item-scale']}>{item.degree.scale}</div>
+		</div>
 	)
 }

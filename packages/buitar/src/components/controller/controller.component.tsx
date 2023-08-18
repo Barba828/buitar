@@ -1,12 +1,12 @@
 import cx from 'classnames'
 import styles from './controller.module.scss'
 import { Icon } from '@/components/icon'
-import { FC, memo, useCallback, useEffect, useState } from 'react'
+import { FC, ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import { useIsHoverable } from '@/utils/hooks/use-device'
 
 export interface ControllerProps<T> {
 	onClickItem?: (item: T, index?: number) => void
-	renderListItem?: (item: T, checked?: boolean) => JSX.Element
+	renderListItem?: (item: T, checked?: boolean) => ReactNode
 	size?: 'small' | 'medium' | 'large'
 
 	checkedItem?: (item: T) => boolean

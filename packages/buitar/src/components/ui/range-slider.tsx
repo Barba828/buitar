@@ -10,7 +10,7 @@ export type RangeSliderProps = Omit<RangeInputProps, 'defaultValue'> & {
 }
 
 /**
- * 带左右范围的range input选择器
+ * 固定宽度的拖拽范围选择器
  * @param param0
  * @returns
  */
@@ -22,6 +22,7 @@ export const RangeSlider = ({
 	backgoundColor = 'rgb(94, 101, 105)',
 	highLightColor = '#ccc',
 	className,
+	inputClassName,
 }: RangeSliderProps) => {
 	const [value, setValue] = useState(defaultValue)
 	const ref = useRef(null)
@@ -48,7 +49,7 @@ export const RangeSlider = ({
 			<input
 				ref={ref}
 				type="range"
-				className="buitar-primary-range"
+				className={cx('buitar-primary-range', inputClassName)}
 				min={min}
 				max={max}
 				step={((max - min) / 100).toFixed(1)}

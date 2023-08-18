@@ -1,10 +1,9 @@
-.fifth-tool{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    .fifth-tool__circle {
-        width: calc($btn-size * 9) !important;
-        height: calc($btn-size * 9) !important;
-    }
+.fifth-tool {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	.fifth-tool__circle {
+		width: calc($btn-size * 9) !important;
+		height: calc($btn-size * 9) !important;
+	}
 }
-
