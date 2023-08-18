@@ -113,6 +113,15 @@ export class TonePlayer extends Tone.Sampler {
 		const notes = point.map(this.transPoint)
 		this.triggerAttackArpeggio(notes)
 	}
+	
+	/**
+	 * 播放to-guitar point 扫弦音
+	 * @param point
+	 */
+	public triggerPointSweeps = (point: Point[]) => {
+		const notes = point.map(this.transPoint)
+		this.triggerAttackArpeggio(notes, 0.03)
+	}
 
 	/**
 	 * 播放to-guitar point 音（1/2拍后自动释放）

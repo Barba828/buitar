@@ -95,9 +95,7 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 
 		// 播放时间片
 		tonePart.current = new Tone.Part((time, { key, duration }) => {
-			// player.getContext().triggerAttackRelease(key, duration, time)
-			player.getContext().triggerAttackRelease(key, duration)
-
+			player.getContext().triggerAttackRelease(key, duration, time)
 		}, partNotes)
 		// 循环
 		tonePart.current.loop = true
@@ -115,44 +113,6 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 			Tone.Transport.cancel().stop()
 		}
 	}, [sounds, m, isPlaying])
-
-	// /**
-	//  * deprecate 方案 Tone.Transport.scheduleRepeat 实现音序机Looper
-	//  *
-	//  * scheduleId保存这个组件实例上一次的音序，并更新本次sounds生成的音序
-	//  * （不能直接Tone.Transport.clear，因为会导致其他音序机实例的内容被清除）
-	//  * Tone.Draw.schedule：Tone重复的动画interval函数
-	//  */
-	// const scheduleId = useRef<number>() // 当前组件循环播放ID
-	// useEffect(() => {
-	// 	if (!isPlaying || !player.loaded) {
-	// 		return
-	// 	}
-
-	// 	// 清理并重置 scheduleRepeat
-	// 	scheduleId.current && Tone.Transport.clear(scheduleId.current)
-	// 	scheduleId.current = Tone.Transport.scheduleRepeat((startTime) => {
-	// 		// 十六分音符时间长度
-	// 		const itemTime = Tone.Transport.toSeconds('16n')
-	// 		sounds.forEach((sound) => {
-	// 			const { key, blocks } = sound
-	// 			blocks.forEach((block) => {
-	// 				const start = block[0] * itemTime // 在一拍中的开始时间
-	// 				const duration = 8 / (block[1] - block[0] + 1) + 'n' //在一拍中的持续时间
-	// 				player.getContext().triggerAttackRelease(key, duration, startTime + start)
-	// 			})
-	// 		})
-
-	// 		Tone.Draw.schedule(() => {
-	// 			// 每次循环滚动时间线
-	// 			setIsPlaying(true)
-	// 			sequencerList.current?.playTimeline(Tone.Transport.toSeconds(`${m}m`))
-	// 		}, startTime)
-	// 	}, `${m}m`)
-	// 	return () => {
-	// 		Tone.Transport.cancel().stop()
-	// 	}
-	// }, [sounds, m, isPlaying])
 
 	/**
 	 * 音序条改变时提示
@@ -184,9 +144,11 @@ export const SequencerController: FC<{
 	 * 播放按钮
 	 */
 	const handlePlay = useCallback(async () => {
-		const player = (window.tonePlayer as TonePlayer)?.getContext()
-		player?.triggerAttackRelease('A1', '16n')
-		await Tone.start()
+		if (isPlaying) {
+			const player = (window.tonePlayer as TonePlayer)?.getContext()
+			player?.triggerAttackRelease('A1', '16n')
+			await Tone.start()
+		}
 
 		Tone.Transport.toggle()
 		setIsPlaying(!isPlaying)

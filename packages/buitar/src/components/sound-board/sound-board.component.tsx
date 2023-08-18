@@ -11,7 +11,6 @@ import {
 import { useBoardContext } from '../guitar-board'
 import cx from 'classnames'
 import styles from './sound-board.module.scss'
-import { Icon } from '..'
 
 export const SoundBoard: FC = () => {
 	return (
@@ -24,7 +23,7 @@ export const SoundBoard: FC = () => {
 const SoundBoardInner = () => {
 	const { player } = useBoardContext()
 	const { soundList } = usePlayerContext()
-	const { setM } = useSequencerContext()
+	const { setM, setIsPlaying } = useSequencerContext()
 	const [sounds, setSounds] = useState<Sound[]>([])
 	const [isSplit, setIsSplit] = useState<boolean>(false)
 
@@ -35,12 +34,12 @@ const SoundBoardInner = () => {
 
 	const handleChange = useCallback(() => {
 		setIsSplit(!isSplit)
+		setIsPlaying(false)
 	}, [isSplit])
 
 	return (
 		<>
-			<SequencerController mVisible={false} onRandom={handleChange}>
-			</SequencerController>
+			<SequencerController mVisible={false} onRandom={handleChange}></SequencerController>
 			<Sequencer player={player} sounds={sounds} />
 		</>
 	)

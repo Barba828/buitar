@@ -10,14 +10,14 @@ export const CardDownloader: FC<
 		className?: string
 	} & Partial<ModalProps> &
 		SvgChordProps
-> = ({ className, points, title, ...restProps }) => {
+> = ({ className, points, title, onCancel ,...restProps }) => {
 	const [downloadTitle, setDownloadTitle] = useState(title || 'buitar_chord')
 	const [color, setColor] = useState('#ffffff')
 	const [downloadRate, setDownloadRate] = useState(3)
 	const [downloadType, setDownloadType] = useState('png')
 	const svgRef = useRef<SVGSVGElement>(null)
 
-	const handleConfirm = () => {
+	const handleConfirm = (e: any) => {
 		if (!svgRef.current) {
 			return
 		}
@@ -28,6 +28,7 @@ export const CardDownloader: FC<
 		} else {
 			downloadSVG(svgRef.current, filename)
 		}
+		onCancel?.(e)
         toast('下载成功')
 	}
 
