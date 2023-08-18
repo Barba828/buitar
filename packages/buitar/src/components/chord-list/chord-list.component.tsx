@@ -2,10 +2,10 @@ import { FC } from 'react'
 import { ChordType, Point } from '@buitar/to-guitar'
 import { ChordCard, useBoardContext } from '../guitar-board'
 import { Icon } from '@/components/icon'
+import { useMenuContext } from '../slide-menu/config-provider'
 import cx from 'classnames'
 
 import styles from './chord-list.module.scss'
-import { useMenuContext } from '..'
 
 export type CollectionChord = {
 	taps: Point[]
@@ -19,10 +19,11 @@ export const ChordList: FC<{
 	title?: string
 	intro?: string
 	disableCollect?: boolean
+	className?: string
 	titleClassName?: string
-}> = ({ data, title, intro, disableCollect, titleClassName, index }) => {
+}> = ({ data, title, intro, disableCollect, titleClassName, className, index }) => {
 	const { collection, dispatchCollection, instrumentKeyboard } = useBoardContext()
-	const {isMobileDevice} = useMenuContext()
+	const { isMobileDevice } = useMenuContext()
 
 	const handleRemoveChord = (dataIndex: number) => {
 		collection[instrumentKeyboard][index].data.splice(dataIndex, 1)
@@ -39,7 +40,7 @@ export const ChordList: FC<{
 			<ChordCard
 				key={dataIndex}
 				disableCollect={disableCollect}
-				onRemoveCollection={()=>handleRemoveChord(dataIndex)}
+				onRemoveCollection={() => handleRemoveChord(dataIndex)}
 				className={styles.card}
 				size={isMobileDevice ? 72 : 100}
 				taps={item.taps}
@@ -49,28 +50,19 @@ export const ChordList: FC<{
 	})
 
 	return (
-		<div className={styles.list}>
-			<div
-				className={cx(
-					'buitar-primary-button',
-					styles['title-view'],
-					'touch-yellow',
-					titleClassName
-				)}
-			>
-				{title}
-				<div>{intro}</div>
+		<div className={cx(styles.list, className)}>
+			<div className={cx(styles['title-view'], titleClassName)}>
+				<div className={cx(styles['title-text'], 'buitar-primary-button', 'touch-yellow')}>
+					{title}
+				</div>
 				{!disableCollect && (
-					<Icon
-						name="icon-close"
-						className={styles['list-remove']}
-						onClick={handleRemoveCollection}
-					/>
+					<div className={cx(styles['title-btn'], 'buitar-primary-button', 'touch-primary')}>
+						<Icon name="icon-delete" onClick={handleRemoveCollection} />
+					</div>
 				)}
+				{intro && <div className={cx(styles['title-sub-text'])}>{intro}</div>}
 			</div>
-			<div className={cx('scroll-without-bar')}>
-				<div className={styles['data-list']}>{dataView}</div>
-			</div>
+			<div className={cx(styles['data-list'], 'scroll-without-bar')}>{dataView}</div>
 		</div>
 	)
 }

@@ -1,28 +1,33 @@
 .list {
-	display: flex;
+	// display: flex;
 
 	.title-view {
 		position: relative;
-		height: auto;
-		min-width: 80px;
-		padding: 10px;
-		font-weight: bold;
-		@include flex-center;
-		&:hover {
-			.list-remove {
-				opacity: 0.8;
-			}
+		display: flex;
+
+		.title-text {
+			padding: 0 calc($btn-size * 0.4);
+			font-weight: bold;
+			white-space: nowrap;
+			flex: 1;
+			@include flex-center();
 		}
 
-		.list-remove {
-			position: absolute;
-			right: 4px;
-			top: 4px;
-			font-size: $font-18;
-			opacity: 0;
+		.title-btn {
+			min-width: calc($btn-size);
+			margin-left: $btn-margin;
+			@include flex-center();
 		}
-		@media #{$mobileLayout} {
-			min-width: 30px;
+
+		.title-sub-text {
+			margin-left: calc($btn-size * 0.2);
+			font-weight: 300;
+			font-size: $font-14;
+			white-space: nowrap;
+			flex: 1;
+			display: flex;
+			align-items: end;
+			justify-content: start;
 		}
 	}
 }

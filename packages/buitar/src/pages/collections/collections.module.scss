@@ -15,15 +15,15 @@
 	}
 }
 
-.caged-title {
-	font-size: 60px;
-	@media (any-hover: hover) {
-		&:hover {
-			font-size: 72px;
+.caged-list {
+	display: flex;
+	.caged-title {
+		height: auto;
+		:global(.touch-yellow) {
+			height: inherit;
+			max-width: calc($btn-size * 2);
+			font-size: calc($font-22 * 2);
 		}
-	}
-	@media #{$mobileLayout} {
-		font-size: 48px;
 	}
 }
 

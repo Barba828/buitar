@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { useStore } from '@/utils/hooks/use-store'
 import { defaultMenuSetting, MenuKeys } from './menu-config'
 import { useIsHoverable, useIsMobile, useIsTouch } from '@/utils/hooks/use-device'

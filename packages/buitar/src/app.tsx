@@ -7,36 +7,17 @@ import styles from './style.module.scss'
 
 export const App = () => {
 	return (
-		<div className={styles.app}>
-			<BrowserRouter>
-				<MenuProvider>
+		<BrowserRouter>
+			<MenuProvider>
+				<div className={styles.app}>
 					<SlideMenu />
 					<Board />
 					<AudioBtn />
-				</MenuProvider>
-			</BrowserRouter>
-		</div>
+				</div>
+			</MenuProvider>
+		</BrowserRouter>
 	)
 }
-
-// const useRoutes = (routes: RouteType[]): JSX.Element[] =>
-// 	routes.map((route, index) => (
-// 		<Fragment key={`${route.path}-${index}`}>
-// 			<Route path={route.path} element={<route.Component route={route} />} />
-// 			{route.children && (
-// 				<Route path={`${route.path}*`} element={<Routes>{useRoutes(route.children)}</Routes>} />
-// 			)}
-// 		</Fragment>
-// 	))
-
-// const Board = memo(() => {
-// 	const routes = useRoutes(routeConfig)
-// 	return (
-// 		<div id="board" className={cx(styles.board)}>
-// 			<Routes>{routes}</Routes>
-// 		</div>
-// 	)
-// })
 
 const Board = () => {
 	const element = useRoutes(routeConfig)

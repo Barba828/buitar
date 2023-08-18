@@ -29,7 +29,7 @@ export const StorageCollection: FC = () => {
 	return (
 		<>
 			{collection[instrumentKeyboard].map((item, index) => (
-				<ChordList key={index} data={item.data} title={item.title} index={index}/>
+				<ChordList key={index} data={item.data} title={item.title} index={index} />
 			))}
 		</>
 	)
@@ -94,6 +94,7 @@ export const CagedCollection: FC = () => {
 					index={index}
 					title={key}
 					disableCollect
+					className={styles['caged-list']}
 					titleClassName={styles['caged-title']}
 				/>
 			))}

@@ -1,2 +1,2 @@
 export * from './slide-item.component'
-export * from './menu-provider'
+export * from './config-provider'
