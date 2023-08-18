@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/icon'
-import { useMenuContext } from './index'
+import { useConfigContext } from './index'
 import { routeConfig } from '@/pages/router'
 import { menuConfig } from './config-provider/menu-config'
 import { Switch } from '../index'
@@ -12,7 +12,7 @@ import cx from 'classnames'
 import styles from './slide-item.module.scss'
 
 export const SlideMenu = () => {
-	const { menus, dispatchMenus } = useMenuContext()
+	const { menus, dispatchMenus } = useConfigContext()
 	const { pathname } = useLocation()
 	const navigate = useNavigate()
 	const [extend, setExtend] = useState<boolean>(false)

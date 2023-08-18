@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { ChordType, Point } from '@buitar/to-guitar'
 import { ChordCard, useBoardContext } from '../guitar-board'
 import { Icon } from '@/components/icon'
-import { useMenuContext } from '../slide-menu/config-provider'
+import { useConfigContext } from '../slide-menu/config-provider'
 import cx from 'classnames'
 
 import styles from './chord-list.module.scss'
@@ -23,7 +23,7 @@ export const ChordList: FC<{
 	titleClassName?: string
 }> = ({ data, title, intro, disableCollect, titleClassName, className, index }) => {
 	const { collection, dispatchCollection, instrumentKeyboard } = useBoardContext()
-	const { isMobileDevice } = useMenuContext()
+	const { isMobileDevice } = useConfigContext()
 
 	const handleRemoveChord = (dataIndex: number) => {
 		collection[instrumentKeyboard][index].data.splice(dataIndex, 1)

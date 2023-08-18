@@ -4,7 +4,7 @@ import {
 	GuitarBoard,
 	PianoBoard,
 	useBoardContext,
-	useMenuContext,
+	useConfigContext,
 	usePagesIntro,
 } from '@/components'
 
@@ -12,7 +12,7 @@ export const InstrumentPlayer = () => {
 	const intro = usePagesIntro()
 	const [part, setPart] = useState(false)
 	const [level, setPianoPart] = useState(false)
-	const { menus } = useMenuContext()
+	const { menus } = useConfigContext()
 
 	return (
 		<>

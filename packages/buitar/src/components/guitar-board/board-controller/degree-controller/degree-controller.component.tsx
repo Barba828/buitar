@@ -7,8 +7,9 @@ import {
 	ChordTagPicker,
 	Icon,
 	Modal,
+	toast,
 	useBoardContext,
-	useMenuContext,
+	useConfigContext,
 	usePlayerContext,
 } from '@/components'
 import { transChord, transChordTaps, DEGREE_TAG_LIST } from '@buitar/to-guitar'
@@ -42,6 +43,7 @@ export const DegreeController = () => {
 		const payload = [...progressions, editProgression]
 		dispatchProgressions({ type: 'set', payload  })
 		setProgressionIndex(payload.length - 1)
+		toast('新增和弦进行' + editProgression.name)
 		toggleEdit()
 	}
 
@@ -131,7 +133,7 @@ export const DegreeEditor: FC<{
 	const [procession, setProcession] = useState<ProgressionItem[]>([{ ...defaultTag }])
 	const [checkedIndex, setCheckedIndex] = useState<number>(procession.length - 1)
 	const [processionName, setProcessionName] = useState<string>('')
-	const { isHoverDevice } = useMenuContext()
+	const { isHoverDevice } = useConfigContext()
 
 	useEffect(() => {
 		onChange({

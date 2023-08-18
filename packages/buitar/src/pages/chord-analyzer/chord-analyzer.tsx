@@ -11,7 +11,7 @@ import { FifthsCircle } from '@/components/fifths-circle'
 import type { Point, Note, ToneSchema, ChordType } from '@buitar/to-guitar'
 import { transChordType } from '@buitar/to-guitar'
 import { AddTextInput } from '@/components/basic'
-import { useMenuContext, usePagesIntro } from '@/components'
+import { useConfigContext, usePagesIntro } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
 import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
 import cx from 'classnames'
@@ -21,7 +21,7 @@ import styles from './chord-analyzer.module.scss'
 export const ChordAnalyzer = () => {
 	const intro = usePagesIntro()
 	const [chordTypes, setChordTypes] = useState<ChordType[]>([])
-	const { menus } = useMenuContext()
+	const { menus } = useConfigContext()
 	const { clearTaps } = useBoardContext()
 
 	useEffect(() => {

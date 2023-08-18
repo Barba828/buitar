@@ -5,7 +5,7 @@ import { useIsHoverable, useIsMobile, useIsTouch } from '@/utils/hooks/use-devic
 
 type MenuList = Partial<Record<MenuKeys, boolean>>
 
-type MenuContextType = {
+type ConfigContextType = {
 	menus: MenuList
 	isMobileDevice: boolean
 	isHoverDevice: boolean
@@ -13,23 +13,27 @@ type MenuContextType = {
 	dispatchMenus: Dispatch<MenuList>
 }
 
-const MenuContext = React.createContext<MenuContextType>({} as any)
+const ConfigContext = React.createContext<ConfigContextType>({} as any)
 
-export const useMenuContext = () => React.useContext(MenuContext)
+export const useConfigContext = () => React.useContext(ConfigContext)
 
-export const MenuProvider: FC = (props) => {
+export const ConfigProvider: FC = (props) => {
 	const [menus, dispatchMenus] = useStore<MenuList>('menus', defaultMenuSetting)
 
 	const isMobileDevice = useIsMobile()
 	const isHoverDevice = useIsHoverable()
 	const isTouchDevice = useIsTouch()
 
-	const MenuValue = {
+	const ConfigValue = {
 		isMobileDevice,
 		isHoverDevice,
 		isTouchDevice,
 		menus,
 		dispatchMenus,
 	}
-	return <MenuContext.Provider value={MenuValue}>{props.children}</MenuContext.Provider>
+	return (
+		<ConfigContext.Provider value={ConfigValue}>
+			{props.children}
+		</ConfigContext.Provider>
+	)
 }

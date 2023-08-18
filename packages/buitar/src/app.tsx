@@ -1,5 +1,5 @@
 import { BrowserRouter, useRoutes } from 'react-router-dom'
-import { MenuProvider, SlideMenu, AudioBtn, BoardProvider } from '@/components'
+import { ConfigProvider, SlideMenu, AudioBtn, BoardProvider } from '@/components'
 import { routeConfig } from '@/pages/router'
 import { Suspense } from 'react'
 import cx from 'classnames'
@@ -8,13 +8,13 @@ import styles from './style.module.scss'
 export const App = () => {
 	return (
 		<BrowserRouter>
-			<MenuProvider>
+			<ConfigProvider>
 				<div className={styles.app}>
 					<SlideMenu />
 					<Board />
 					<AudioBtn />
 				</div>
-			</MenuProvider>
+			</ConfigProvider>
 		</BrowserRouter>
 	)
 }

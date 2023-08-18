@@ -9,7 +9,7 @@ import {
 } from '@/components/guitar-board'
 import { transChordTaps } from '@buitar/to-guitar'
 import { PianoBoard } from '@/components/piano-board'
-import { useMenuContext, usePagesIntro } from '@/components'
+import { useConfigContext, usePagesIntro } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
 import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
 
@@ -17,7 +17,7 @@ export const ChordPlayer = () => {
 	const intro = usePagesIntro()
 	const { chord, chordTap, chordTaps, guitarBoardOption, setChordTaps, setTaps, clearTaps } =
 		useBoardContext()
-	const { menus } = useMenuContext()
+	const { menus } = useConfigContext()
 
 	// 指板更新：清除和弦指位列表
 	useEffect(() => {

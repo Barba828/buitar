@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { AddTextInput, CollectionSelecter } from '@/components/basic'
 import { CollectionChord } from '@/pages/collections/collections.config'
-import { Modal, ModalProps } from '@/components/portal'
+import { Modal, ModalProps, toast } from '@/components/portal'
 import { useBoardContext } from '@/components/guitar-board'
 import cx from 'classnames'
 
@@ -24,6 +24,7 @@ export const CardCollector: FC<
 	const handleConfirm = () => {
 		collection[instrumentKeyboard][collectionIndex].data.push(data)
 		dispatchCollection({ type: 'set', payload: collection })
+		toast('已加入收藏夹' + collection[instrumentKeyboard][collectionIndex].title)
 		restProps.onCancel?.()
 	}
 
