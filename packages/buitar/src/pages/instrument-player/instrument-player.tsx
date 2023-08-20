@@ -3,34 +3,34 @@ import {
 	BoardOptionsController,
 	GuitarBoard,
 	PianoBoard,
+	DrumBoard,
 	useBoardContext,
 	useConfigContext,
 	usePagesIntro,
 } from '@/components'
+import { DrumPlayer } from '@buitar/tone-player'
+
 
 export const InstrumentPlayer = () => {
 	const intro = usePagesIntro()
+	const { menus } = useConfigContext()
+	const { player } = useBoardContext()
 	const [part, setPart] = useState(false)
 	const [level, setPianoPart] = useState(false)
-	const { menus } = useConfigContext()
+	let drumPlayer: DrumPlayer = new DrumPlayer('drum')
+
+	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		console.log('eee onKeyDownonKeyDown', );
+	}
 
 	return (
 		<>
 			{intro}
-			{menus.board_setting && <BoardOptionsController extendItem={false}/>}
+			{menus.board_setting && <BoardOptionsController extendItem={false} />}
 			<GuitarBoard onChangePart={setPart} />
-			<PianoBoards onChangePart={setPianoPart} />
+			<PianoBoard onChangePart={setPianoPart} player={player}></PianoBoard>
+			<DrumBoard player={drumPlayer}/>
 		</>
-	)
-}
 
-const PianoBoards = (props: any) => {
-	const { player } = useBoardContext()
-
-	return (
-		<PianoBoard
-			player={player}
-			onChangePart={props.onChangePart}
-		></PianoBoard>
 	)
 }

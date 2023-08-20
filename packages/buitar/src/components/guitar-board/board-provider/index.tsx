@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
-import { Instrument } from '@buitar/tone-player/instrument.type'
+import { Instrument } from '@buitar/tone-player'
 import {
 	GuitarBoardOptions,
 	GuitarBoardThemeKey,

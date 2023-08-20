@@ -1,0 +1,18 @@
+.drum-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 600px;
+    outline: none;
+    .drum-item {
+        flex: 1;
+        height: calc($btn-size * 2);
+        min-width: 24%;
+        transition: all 0.05s linear;
+        // &:active{
+        //     background-color: $yellow-primary;
+        // }
+    }
+    .drum-item__active {
+        background-color: $yellow-primary !important;
+    }
+}

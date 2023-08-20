@@ -7,7 +7,7 @@ import copy from 'rollup-plugin-copy'
 
 export default [
 	{
-		input: 'index.ts',
+		input: 'src/index.ts',
 		output: [
 			{
 				file: './dist/index.esm.js',
@@ -25,7 +25,7 @@ export default [
 		],
 	},
 	{
-		input: ['index.ts'],
+		input: 'src/index.ts',
 		output: [{ file: 'dist/index.d.ts', format: 'esm' }],
 		plugins: [dts()],
 	},
