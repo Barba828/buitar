@@ -47,19 +47,33 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	const scrollRef = useRef<HTMLDivElement>(null)
 	const BoardBtnComponent = boardTheme === 'default' ? BoardButtonOriginal : BoardButton
 
-	// 鼠标事件监听
-	const { handler, active } = useBoardTouch(emphasis, setEmphasis)
-	// 键盘事件监听
-	const { part, keyHandler, keyActive } = useGuitarKeyDown(emphasis, setEmphasis, baseFret)
-	// 滚轮事件监听
-	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
-
+	/**扁平化指板二维数组 */
 	const boardList = useMemo(() => {
 		if (!keyboard) {
 			return null
 		}
 		return exchangeBoardList(keyboard)
 	}, [keyboard])
+	/**指板点击事件回调 */
+	const handleChangeKey = useCallback(
+		(key: string) => {
+			if (key.length && boardList) {
+				const point = boardList[Number(key)]
+				player.triggerPointRelease(point)
+			}
+		},
+		[boardList]
+	)
+	
+	// 鼠标事件监听
+	const { handler } = useBoardTouch(emphasis, setEmphasis, { onChange: handleChangeKey })
+	// 键盘事件监听
+	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis, {
+		gradeLength: baseFret,
+		onChange: handleChangeKey,
+	})
+	// 滚轮事件监听
+	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
 
 	// 指位停留 30 ms以上 => play & checked
 	const debouceEmphasis = useDebounce(emphasis, 30)
@@ -76,26 +90,6 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		)
 		onCheckedPoints?.(points)
 	}, [debouceEmphasis])
-
-	useEffect(() => {
-		if (!active && !keyActive) {
-			return
-		}
-
-		if (!boardList) {
-			return
-		}
-
-		if (active.length) {
-			const point =  boardList[Number(active)]
-			player.triggerPointRelease(point)
-		}
-
-		if (keyActive.length) {
-			const point =  boardList[Number(keyActive)]
-			player.triggerPointRelease(point)
-		}
-	}, [active, keyActive])
 
 	useEffect(() => {
 		onChangePart?.(part)

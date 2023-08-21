@@ -15,8 +15,18 @@ export const DrumBoard: FC<DrumBoardProps> = ({ player }) => {
 		return Object.keys(drumConfig)
 	}, [player.getInstrument()])
 
-	const { active, handler } = useBoardTouch(keys, setKeys)
-	const { keyActive, keyHandler } = useDrumKeyDown(keys, setKeys, drumKeyList)
+	const handleDrumActiveChange = (key: string) => {
+		if (key.length) {			
+			player.triggerDrum(key)
+		}
+	}
+
+	const { handler } = useBoardTouch(keys, setKeys, {
+		onChange: handleDrumActiveChange,
+	})
+	const { keyHandler } = useDrumKeyDown(keys, setKeys, drumKeyList, {
+		onChange: handleDrumActiveChange,
+	})
 
 	useEffect(() => {
 		if (keys.length === 0) {
@@ -28,20 +38,6 @@ export const DrumBoard: FC<DrumBoardProps> = ({ player }) => {
 			keys
 		)
 	}, [keys])
-
-	useEffect(() => {
-		if (!active && !keyActive) {
-			return
-		}
-		if (active.length) {
-			console.log('triggerDrum', active);
-			
-			player.triggerDrum(active)
-		}
-		if (keyActive.length) {
-			player.triggerDrum(keyActive)
-		}
-	}, [keyActive, active])
 
 	return (
 		<div id="drum-board" className={cx(styles['drum-wrap'])} {...handler} {...keyHandler}>

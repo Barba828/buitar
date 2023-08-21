@@ -29,10 +29,17 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 }) => {
 	const [touched, setTouched] = useState<string[]>(defaultTouched)
 	const scrollRef = useRef<HTMLDivElement>(null)
+	const handleChangeKey = (key: string) => {
+		if (key.length) {
+			console.log('handleChangeKey', key);
+			
+			player.getContext().triggerAttackRelease(key, '2n')
+		}
+	}
 	// 鼠标事件
-	const { active, handler } = useBoardTouch(touched, setTouched)
+	const { handler } = useBoardTouch(touched, setTouched, { onChange: handleChangeKey })
 	// 按钮事件
-	const { part, keyActive, keyHandler } = usePianoKeyDown(touched, setTouched)
+	const { part, keyHandler } = usePianoKeyDown(touched, setTouched, { onChange: handleChangeKey })
 	// 滚轮事件监听
 	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
 
@@ -49,20 +56,6 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 
 		onChangeKey?.(debouceTouched)
 	}, [debouceTouched])
-
-	useEffect(() => {
-		if (!active && !keyActive) {
-			return
-		}
-
-		if (active.length) {
-			player.getContext().triggerAttackRelease(active, '2n')
-		}
-		
-		if (keyActive.length) {
-			player.getContext().triggerAttackRelease(keyActive, '2n')
-		}
-	}, [active, keyActive])
 
 	useEffect(() => {
 		onChangePart?.(part)

@@ -235,17 +235,17 @@ const instrumentConfig: Record<Instrument, Record<string, string>> = {
 	},
 
 	'drum-acounstic': {
-		Snare: 'snare-sessiondry-stick-hit-hard.mp3',
-		Kick: 'kick-sessiondry-felt-hard.mp3',
-		ClosedHat: 'ClosedHat.mp3',
-		OpenHat: 'OpenHat.mp3',
+		Snare: 'snare.mp3',
+		Kick: 'kick.mp3',
+		ClosedHat: 'hihat-close.mp3',
+		OpenHat: 'hihat-open.mp3',
 	},
 
 	'drum-electronic': {
 		Clap: 'Clap.mp3',
 		Kick: 'Kick.mp3',
-		ClosedHat: 'hihat-sessiondry-stick-tip-001-medium.mp3',
-		OpenHat: 'hihat-sessiondry-stick-tip-003-hard.mp3',
+		ClosedHat: 'ClosedHat.mp3',
+		OpenHat: 'OpenHat.mp3',
 	},
 
 	metronome: {
@@ -265,7 +265,7 @@ const instrumentType: Record<string, Instrument[]> = {
 		'piano',
 		'ukulele',
 	],
-	players: ['drum-acounstic', 'drum-electronic', 'metronome'],
+	players: ['drum', 'drum-acounstic', 'drum-electronic', 'metronome'],
 }
 
 export { instrumentConfig, instrumentType }

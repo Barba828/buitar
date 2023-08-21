@@ -14,10 +14,12 @@ export const useBoardTouch = (
 	/**
 	 * 手动设置Touch事件
 	 */
-	options?: {
+	options: {
 		onClick?(): void
-	}
+		onChange?(item: string): void
+	} = {}
 ) => {
+	const { onClick, onChange } = options
 	const [active, setActive] = useState<string>('')
 	const isTouched = useRef(false)
 	const isTouchDevice = useIsTouch()
@@ -28,12 +30,14 @@ export const useBoardTouch = (
 		touched.splice(index, 1)
 		setTouched([...touched])
 		setActive('')
+		onChange?.('')
 	}
 
 	const onMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
 		isTouched.current = true
 		const targetData = (e.target as HTMLDivElement).dataset.key
 		if (targetData) {
+			onChange?.(targetData)
 			setActive(targetData)
 			// 更新Touched
 			if (touched.indexOf(targetData) === -1) {
@@ -46,6 +50,7 @@ export const useBoardTouch = (
 		if (targetData && isTouched.current) {
 			removeActiveFromTouched() // Touched中移除原active
 			setActive(targetData)
+			onChange?.(targetData)
 			// 更新Touched
 			if (touched.indexOf(targetData) === -1) {
 				setTouched([...touched, targetData])
@@ -55,7 +60,7 @@ export const useBoardTouch = (
 	const onMouseUp = () => {
 		removeActiveFromTouched()
 		isTouched.current = false
-		options?.onClick?.()
+		onClick?.()
 	}
 	const onMouseLeave = () => {
 		isTouched.current = false
@@ -109,10 +114,13 @@ export const useBoardWheel = (element?: HTMLDivElement | null) => {
 export const useGuitarKeyDown = (
 	touched: string[],
 	setTouched: SetState<string[]>,
-	gradeLength: number = 17
+	options: {
+		gradeLength?: number
+		onChange?(item: string): void
+	} = {}
 ) => {
+	const { gradeLength = 17, onChange } = options
 	const [part, setPart] = useState(false)
-	const [active, setActive] = useState<string>('')
 	const baseIndex = part ? gradeLength * 3 : 0
 
 	const getKeyboardNote = (code: string) => {
@@ -125,8 +133,8 @@ export const useGuitarKeyDown = (
 	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		const note = getKeyboardNote(e.code)
 		if (note) {
-			setActive(note)
 			if (!touched.includes(note)) {
+				onChange?.(note)
 				setTouched([...touched, note])
 			}
 		} else if (e.code.includes('Shift')) {
@@ -138,9 +146,9 @@ export const useGuitarKeyDown = (
 		const note = getKeyboardNote(e.code)
 
 		if (note) {
-			setActive('')
 			const index = touched.indexOf(note)
 			if (touched.includes(note)) {
+				onChange?.('')
 				touched.splice(index, 1)
 				setTouched([...touched])
 			}
@@ -153,12 +161,18 @@ export const useGuitarKeyDown = (
 		tabIndex: 0,
 	}
 
-	return { part, keyHandler, keyActive: active }
+	return { part, keyHandler }
 }
 
-export const usePianoKeyDown = (touched: string[], setTouched: SetState<string[]>) => {
+export const usePianoKeyDown = (
+	touched: string[],
+	setTouched: SetState<string[]>,
+	options: {
+		onChange?(item: string): void
+	} = {}
+) => {
+	const { onChange } = options
 	const [part, setPart] = useState(false)
-	const [active, setActive] = useState<string>('')
 	const baseIndex = part ? 4 : 2 //默认是C2 => B4 共四个八度
 
 	const getNode = useCallback(
@@ -173,9 +187,8 @@ export const usePianoKeyDown = (touched: string[], setTouched: SetState<string[]
 	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (PianoKeyConfig.has(e.code)) {
 			const note = getNode(PianoKeyConfig.get(e.code)!)
-			setActive(note)
-
 			if (!touched.includes(note)) {
+				onChange?.(note)
 				setTouched([...touched, note])
 			}
 		} else if (e.code.includes('Shift')) {
@@ -186,9 +199,8 @@ export const usePianoKeyDown = (touched: string[], setTouched: SetState<string[]
 	const onKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (PianoKeyConfig.has(e.code)) {
 			const note = getNode(PianoKeyConfig.get(e.code)!)
-			setActive('')
-
 			if (touched.includes(note)) {
+				onChange?.('')
 				const index = touched.indexOf(note)
 				touched.splice(index, 1)
 				setTouched([...touched])
@@ -202,15 +214,18 @@ export const usePianoKeyDown = (touched: string[], setTouched: SetState<string[]
 		tabIndex: 0,
 	}
 
-	return { part, keyHandler, keyActive: active }
+	return { part, keyHandler }
 }
 
 export const useDrumKeyDown = (
 	touched: string[],
 	setTouched: SetState<string[]>,
-	touchList: string[]
+	touchList: string[],
+	options: {
+		onChange?(item: string): void
+	} = {}
 ) => {
-	const [active, setActive] = useState<string>('')
+	const { onChange } = options
 
 	const getKeyboardKey = (code: string) => {
 		if (GuitarKeyConfig.has(code)) {
@@ -221,14 +236,14 @@ export const useDrumKeyDown = (
 	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		const key = getKeyboardKey(e.code)
 		if (key && !touched.includes(key)) {
-			setActive(key)
+			onChange?.(key)
 			setTouched([...touched, key])
 		}
 	}
 
 	const onKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		const key = getKeyboardKey(e.code)
-		setActive('')
+		onChange?.('')
 
 		if (key && touched.includes(key)) {
 			const index = touched.indexOf(key)
@@ -243,7 +258,7 @@ export const useDrumKeyDown = (
 		tabIndex: 0,
 	}
 
-	return { keyActive: active, keyHandler }
+	return { keyHandler }
 }
 
 const PianoKeyConfig = new Map([
