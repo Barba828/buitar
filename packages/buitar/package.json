@@ -15,7 +15,7 @@
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
-		"@vite-pwa/assets-generator": "^0.0.4",
+		"@vite-pwa/assets-generator": "^0.0.7",
 		"@vitejs/plugin-react": "^4.0.3",
 		"classnames": "^2.3.1",
 		"eslint": "^8.45.0",

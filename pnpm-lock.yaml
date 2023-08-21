@@ -58,8 +58,8 @@ importers:
         specifier: ^6.0.0
         version: 6.2.0(eslint@8.45.0)(typescript@5.1.6)
       '@vite-pwa/assets-generator':
-        specifier: ^0.0.4
-        version: 0.0.4
+        specifier: ^0.0.7
+        version: 0.0.7
       '@vitejs/plugin-react':
         specifier: ^4.0.3
         version: 4.0.3(vite@4.4.7)
@@ -2327,8 +2327,8 @@ packages:
       eslint-visitor-keys: 3.4.1
     dev: true
 
-  /@vite-pwa/assets-generator@0.0.4:
-    resolution: {integrity: sha512-zcJFI4i1tZ/GeChxFvrDMY+QzT2PkFS1AHIIWomYM5o75F3ENEF5mIlU6TLkKW5nqLDxeFB1NCTydKam8qV15A==}
+  /@vite-pwa/assets-generator@0.0.7:
+    resolution: {integrity: sha512-3K3mGuWEgaMtYwFlKD7i74M0ylwJRMW5HCz84w8Toh1kkNfVvRuxrSf+1sCiCP2mcA2mRq6w9yqmXdGMZirnLw==}
     engines: {node: '>=16.14.0'}
     hasBin: true
     dependencies:

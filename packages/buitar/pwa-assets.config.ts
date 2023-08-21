@@ -1,4 +1,8 @@
-import { Preset, defineConfig } from '@vite-pwa/assets-generator/config'
+import {
+	Preset,
+	defineConfig,
+	createAppleSplashScreens,
+} from '@vite-pwa/assets-generator/config'
 
 /**
  * 插件生成icons
@@ -25,6 +29,29 @@ const minimalPreset: Preset = {
 		padding: 0,
 	},
 	// assetName: (type: AssetType, size: ResolvedAssetSize) => defaultAssetName(type, size),
+
+	appleSplashScreens: createAppleSplashScreens(
+		{
+			padding: 0.3,
+			linkMediaOptions: {
+				log: true,
+				addMediaScreen: true,
+				basePath: '/',
+				xhtml: true,
+			},
+			resizeOptions: {
+				background: 'rgb(63, 67, 69)',
+				width: 200,
+				height: 200,
+			}
+			// name: (landscape, size, dark) => {
+			// 	return `apple-splash-${landscape ? 'landscape' : 'portrait'}-${
+			// 		typeof dark === 'boolean' ? (dark ? 'dark-' : 'light-') : ''
+			// 	}${size.width}x${size.height}.png`
+			// },
+		},
+		['iPad Air 9.7"', 'iPhone 14 Pro']
+	),
 }
 
 export default defineConfig({
