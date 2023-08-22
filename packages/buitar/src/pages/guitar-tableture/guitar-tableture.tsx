@@ -1,11 +1,12 @@
 import { FC, useEffect, useMemo, useState } from 'react'
 import {
+	BoardOptionsController,
 	BoardProvider,
 	GuitarBoard,
 	getBoardOptionsList,
 	useBoardContext,
 } from '@/components/guitar-board'
-import { TabSwitch, RangeSlider, usePagesIntro, Icon } from '@/components'
+import { TabSwitch, RangeSlider, usePagesIntro, Icon, useConfigContext } from '@/components'
 import type { RangeSliderProps } from '@/components'
 import { ModeType, Pitch, Point, getModeFregTaps, getModeRangeTaps } from '@buitar/to-guitar'
 import { ToneModeController } from '@/components/guitar-board/board-controller/tone-mode-controller/tone-mode-controller.component'
@@ -78,9 +79,11 @@ export const TapedGuitarBoardTableture = () => {
 			label: '下行',
 		},
 	]
+	const { menus } = useConfigContext()
 	const { setTaps, setHighFixedTaps, guitarBoardOption, guitar } = useBoardContext()
 	const [tab, setTab] = useState(tabList[0]) // 是否上行音阶指型
 	const [rootPoint, setRootPoint] = useState<Point>() // 根音
+	const [locked, setLocked] = useState(false) // 锁定指板
 
 	const handleCheckedPoint = (points: Point[]) => {
 		if (!points) {
@@ -96,6 +99,9 @@ export const TapedGuitarBoardTableture = () => {
 	// 监听变化，更改指型
 	useEffect(() => {
 		if (!rootPoint) {
+			return
+		}
+		if (locked) {
 			return
 		}
 		let taps = []
@@ -126,14 +132,27 @@ export const TapedGuitarBoardTableture = () => {
 	return (
 		<>
 			<ToneModeController mode={guitar.board.mode} onClick={handleCheckedMode} />
-			<TabSwitch
-				values={tabList}
-				defaultValue={tabList[0]}
-				onChange={(tab) => setTab(tab)}
-				renderItem={(tab) => tab.label}
-				className={cx(styles['tableture-tab'])}
-			/>
+			<div className={cx(styles['tableture-tab-wrap'])}>
+				<TabSwitch
+					values={tabList}
+					defaultValue={tabList[0]}
+					onChange={(tab) => setTab(tab)}
+					renderItem={(tab) => tab.label}
+					className={cx(styles['tableture-tab'])}
+				/>
+				<div
+					className={cx(
+						'primary-button',
+						styles['tableture-lock'],
+						locked && styles['tableture-locked']
+					)}
+					onClick={() => setLocked(!locked)}
+				>
+					<Icon name="icon-suoding" />
+				</div>
+			</div>
 			<GuitarBoard onCheckedPoints={handleCheckedPoint} />
+			{menus.board_setting && <BoardOptionsController extendItem={false}/>}
 		</>
 	)
 }
@@ -157,11 +176,7 @@ export const GuitarBoardTabletureList = () => {
 		<>
 			{/* 编辑模式 */}
 			<div
-				className={cx(
-					styles['tableture-list-button'],
-					isEdit && 'touch-yellow',
-					'primary-button'
-				)}
+				className={cx(styles['tableture-list-button'], isEdit && 'touch-yellow', 'primary-button')}
 				onClick={handleSaveTableture}
 			>
 				<Icon name={isEdit ? 'icon-confirm' : 'icon-edit'} />
@@ -333,11 +348,7 @@ const GuitarBoardTabletureItem = ({
 				{/* 删除 */}
 				{isEdit && (
 					<div
-						className={cx(
-							styles['tableture-options-button'],
-							'touch-purple',
-							'primary-button'
-						)}
+						className={cx(styles['tableture-options-button'], 'touch-purple', 'primary-button')}
 						onClick={onRemove}
 					>
 						<Icon name="icon-delete" />
