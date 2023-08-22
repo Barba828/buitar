@@ -31,8 +31,6 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 	const scrollRef = useRef<HTMLDivElement>(null)
 	const handleChangeKey = (key: string) => {
 		if (key.length) {
-			console.log('handleChangeKey', key);
-			
 			player.getContext().triggerAttackRelease(key, '2n')
 		}
 	}

@@ -52,7 +52,7 @@ export const SequencerPlayer = memo(() => {
 				)
 			})}
 			<div
-				className={cx('buitar-primary-button', styles['add'])}
+				className={cx('primary-button', styles['add'])}
 				onClick={() => {
 					dispatchSequencers({
 						type: 'add',
@@ -114,7 +114,7 @@ const SequencerOptionController = ({
 			<div
 				key={index}
 				className={cx(
-					'buitar-primary-button',
+					'primary-button',
 					`touch-${item.color}`,
 					styles['instrument-item'],
 					!extended && styles['instrument-item-hidden']
@@ -136,7 +136,7 @@ const SequencerOptionController = ({
 	return (
 		<div className={styles['picker']}>
 			{pickerView}
-			<div className={cx('buitar-primary-button', styles['options-item'])}>
+			<div className={cx('primary-button', styles['options-item'])}>
 				<Icon
 					onClick={() => {
 						setMute(!mute)
@@ -149,7 +149,7 @@ const SequencerOptionController = ({
 					onChange={(e) => {
 						setVolume(Number(e.target.value))
 					}}
-					className={cx('buitar-primary-range', styles['options-item-input'])}
+					className={cx('primary-range', styles['options-item-input'])}
 					min={volumeRange[0]}
 					max={volumeRange[1]}
 					step={1}
@@ -158,7 +158,7 @@ const SequencerOptionController = ({
 				<span className={styles['options-item-span']}>{volume}</span>
 			</div>
 			<div
-				className={cx('buitar-primary-button', styles['options-item'])}
+				className={cx('primary-button', styles['options-item'])}
 				onClick={() => {
 					onChange?.('delete')
 				}}

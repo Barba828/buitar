@@ -39,7 +39,7 @@ export class DrumPlayer extends TonePlayer {
 		return { ...instrumentConfig[this.getInstrument()] }
 	}
 
-	public triggerDrum = async  (note: string | string[]) => {
+	public triggerDrum = async  (note: string | string[], time?: number) => {
 		if (!this.loaded) {
 			return
 		}
@@ -47,7 +47,7 @@ export class DrumPlayer extends TonePlayer {
 		await Tone.loaded()
 
 		if (typeof note === 'string') {
-			this._players.player(note).start()
+			this._players.player(note).start(time)
 		} else {
 			note.forEach((key) => {
 				this._players.player(key).start()

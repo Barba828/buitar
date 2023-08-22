@@ -21,6 +21,7 @@ export const RangeSlider = ({
 	onChange,
 	backgoundColor = 'rgb(94, 101, 105)',
 	highLightColor = '#ccc',
+	step,
 	className,
 	inputClassName,
 }: RangeSliderProps) => {
@@ -49,10 +50,10 @@ export const RangeSlider = ({
 			<input
 				ref={ref}
 				type="range"
-				className={cx('buitar-primary-range', inputClassName)}
+				className={cx('primary-range', inputClassName)}
 				min={min}
 				max={max}
-				step={((max - min) / 100).toFixed(1)}
+				step={step ? step : ((max - min) / 100).toFixed(1)}
 				defaultValue={value}
 				style={{ background: backgoundColor }}
 				onChange={handleChange}

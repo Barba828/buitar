@@ -38,7 +38,7 @@ export const ChordCard: FC<{
 	const [downloadVisible, setDownloadVisible] = useState(false)
 
 	const cls = cx(
-		'buitar-primary-button',
+		'primary-button',
 		styles['chord-card'],
 		className,
 		taps.length === 0 && styles['chord-card-hidden']
@@ -58,11 +58,6 @@ export const ChordCard: FC<{
 	const toggleDownloadVisible = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.stopPropagation()
 		setDownloadVisible(!downloadVisible)
-		// if (!svgRef.current) {
-		// 	return
-		// }
-		// downloadSvgToImg(svgRef.current, 'test')
-		// downloadSVG(svgRef.current, 'test')
 	}
 	const toggleCollectionVisible = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.stopPropagation()
@@ -155,7 +150,7 @@ export const DetailCard: FC<{ chordType?: BoardChord['chordType'] }> = ({ chordT
 	const subTitle = chordType.tag !== '*' ? chordType.name_zh : '自定义'
 	return (
 		<div className={cx(styles['detail-card'])}>
-			<div className={cx('buitar-primary-button', styles['detail-view'])}>
+			<div className={cx('primary-button', styles['detail-view'])}>
 				<div className={styles['detail-title']}>{chordName}</div>
 				<div className={styles['detail-name']}>
 					{title}
@@ -167,7 +162,7 @@ export const DetailCard: FC<{ chordType?: BoardChord['chordType'] }> = ({ chordT
 					chordList.map(({ note, degree, degreeTag }, index) => (
 						<div
 							key={index}
-							className={cx('buitar-primary-button', styles['detail-chord-note'], 'flex-center')}
+							className={cx('primary-button', styles['detail-chord-note'], 'flex-center')}
 						>
 							<div className={styles['detail-chord-tag']}>{degreeTag}</div>
 							<div className={styles['detail-chord-title']}>{note}</div>

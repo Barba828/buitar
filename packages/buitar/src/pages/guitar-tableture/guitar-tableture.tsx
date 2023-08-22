@@ -48,7 +48,7 @@ export const GuitarTableture: FC = () => {
 				className={cx(styles['tableture-tab'])}
 				values={tabList}
 				defaultValue={defaultTab}
-				renderTabItem={(route) => (
+				renderItem={(route) => (
 					<Link to={route.path} className="flex-center">
 						{route.name}
 					</Link>
@@ -130,7 +130,7 @@ export const TapedGuitarBoardTableture = () => {
 				values={tabList}
 				defaultValue={tabList[0]}
 				onChange={(tab) => setTab(tab)}
-				renderTabItem={(tab) => tab.label}
+				renderItem={(tab) => tab.label}
 				className={cx(styles['tableture-tab'])}
 			/>
 			<GuitarBoard onCheckedPoints={handleCheckedPoint} />
@@ -160,7 +160,7 @@ export const GuitarBoardTabletureList = () => {
 				className={cx(
 					styles['tableture-list-button'],
 					isEdit && 'touch-yellow',
-					'buitar-primary-button'
+					'primary-button'
 				)}
 				onClick={handleSaveTableture}
 			>
@@ -189,7 +189,7 @@ export const GuitarBoardTabletureList = () => {
 			</div>
 			{/* 新增指板 */}
 			<div
-				className={cx(styles['tableture-list-button'], 'buitar-primary-button')}
+				className={cx(styles['tableture-list-button'], 'primary-button')}
 				onClick={() => {
 					dispatchTabletrues({ type: 'set', payload: [...tabletrues, TABLETRUE_CONFIG] })
 				}}
@@ -294,7 +294,7 @@ const GuitarBoardTabletureItem = ({
 					className={cx(
 						styles['tableture-options-mode'],
 						isEdit && 'touch-yellow',
-						'buitar-primary-button'
+						'primary-button'
 					)}
 					onClick={() => handleCheckedOption(1)}
 				>
@@ -315,7 +315,7 @@ const GuitarBoardTabletureItem = ({
 					className={cx(
 						styles['tableture-options-range'],
 						isEdit && 'touch-yellow',
-						'buitar-primary-button'
+						'primary-button'
 					)}
 					onClick={() => handleCheckedOption(2)}
 				>
@@ -336,7 +336,7 @@ const GuitarBoardTabletureItem = ({
 						className={cx(
 							styles['tableture-options-button'],
 							'touch-purple',
-							'buitar-primary-button'
+							'primary-button'
 						)}
 						onClick={onRemove}
 					>
@@ -374,11 +374,11 @@ const GuitarRangeSlider = ({
 	const [size, setSize] = useState(defaultSize)
 	return (
 		<div className={className}>
-			<div className={cx(styles['guitar-size-slider'], 'buitar-primary-button')}>
+			<div className={cx(styles['guitar-size-slider'], 'primary-button')}>
 				指板宽度 {size}
 				<input
 					type="range"
-					className="buitar-primary-range"
+					className="primary-range"
 					min={2}
 					max={8}
 					step={0.1}

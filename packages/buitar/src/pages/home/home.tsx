@@ -35,7 +35,7 @@ const MobileHome = () => {
 									<Link
 										key={subRoute.path}
 										to={subRoute.path}
-										className={cx('buitar-primary-button', styles['sub-route'])}
+										className={cx('primary-button', styles['sub-route'])}
 									>
 										<div>{subRoute.name}</div>
 									</Link>
@@ -45,7 +45,7 @@ const MobileHome = () => {
 						<Link
 							key={route.path}
 							to={route.path}
-							className={cx('buitar-primary-button', styles['main-route'])}
+							className={cx('primary-button', styles['main-route'])}
 						>
 							<span>{route.name}</span>
 						</Link>
@@ -72,13 +72,13 @@ const PcHome = () => {
 			<div className={styles.links}>
 				<Link
 					to={ChordLibrary.path}
-					className={cx('buitar-primary-button', styles['links-button'])}
+					className={cx('primary-button', styles['links-button'])}
 				>
 					先从顺阶和弦开始
 				</Link>
 				<Link
 					to={ChordAnalyzer.path}
-					className={cx('buitar-primary-button', styles['links-button'])}
+					className={cx('primary-button', styles['links-button'])}
 				>
 					定义我的和弦
 				</Link>

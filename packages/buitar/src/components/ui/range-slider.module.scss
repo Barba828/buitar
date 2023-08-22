@@ -1,6 +1,8 @@
 .range-slider {
 	height: calc($btn-size * 0.8);
-	:global(.buitar-primary-range) {
+	margin: $btn-margin;
+	:global(.primary-range) {
+		margin: 0;
 		width: calc($btn-size * 4);
 		border-radius: 2px;
         height: inherit;

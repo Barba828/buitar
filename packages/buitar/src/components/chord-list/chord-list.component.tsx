@@ -52,11 +52,11 @@ export const ChordList: FC<{
 	return (
 		<div className={cx(styles.list, className)}>
 			<div className={cx(styles['title-view'], titleClassName)}>
-				<div className={cx(styles['title-text'], 'buitar-primary-button', 'touch-yellow')}>
+				<div className={cx(styles['title-text'], 'primary-button', 'touch-yellow')}>
 					{title}
 				</div>
 				{!disableCollect && (
-					<div className={cx(styles['title-btn'], 'buitar-primary-button', 'touch-primary')}>
+					<div className={cx(styles['title-btn'], 'primary-button', 'touch-primary')}>
 						<Icon name="icon-delete" onClick={handleRemoveCollection} />
 					</div>
 				)}

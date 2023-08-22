@@ -1,0 +1,56 @@
+.metronome-wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: end;
+	width: auto;
+	max-width: 600px;
+	margin-right: calc($btn-size * 0.5);
+	.metronome-item {
+		flex: 1;
+		// width: calc($btn-size * 2);
+		height: calc($btn-size * 4);
+	}
+	.metronome-item__up {
+		height: calc($btn-size * 6);
+	}
+}
+
+.metronome-option {
+	display: flex;
+	.metronome-option-item {
+		min-width: calc($btn-size * 2);
+		font-weight: bold;
+		font-size: $font-14;
+		@include flex-center();
+	}
+	.metronome-option__slider {
+		height: $btn-size;
+		::-webkit-slider-thumb {
+			height: calc($btn-size * 1);
+		}
+		:active::-webkit-slider-thumb {
+			height: calc($btn-size * 1);
+		}
+	}
+}
+
+.metronome-info {
+	display: flex;
+	width: calc($btn-size * 8);
+	.metronome-info-item {
+		flex: 1;
+		font-weight: bold;
+		font-size: $font-22;
+		height: calc($btn-size * 2);
+		@include flex-center();
+	}
+}
+
+.metronome-btn {
+	width: calc($btn-size * 4) !important;
+	height: calc($btn-size * 2) !important;
+	> svg {
+		font-size: 40px;
+	}
+	@include flex-center();
+}

@@ -166,11 +166,11 @@ export const SequencerController: FC<{
 
 	return (
 		<div className={styles['player-controller']}>
-			<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={handlePlay}>
+			<div className={cx('primary-button', styles['player-icon'])} onClick={handlePlay}>
 				<Icon size={24} name={isPlaying ? 'icon-stop' : 'icon-play'} />
 			</div>
 
-			<div className={cx('buitar-primary-button', styles['player-range'])}>
+			<div className={cx('primary-button', styles['player-range'])}>
 				<span className={styles['player-range-text']}>
 					{!isMobile && 'Tempo'}
 					<span className={styles['player-range-bpm']}> {bpm} </span>
@@ -181,7 +181,7 @@ export const SequencerController: FC<{
 					onChange={(e) => {
 						setBpm(Number(e.target.value))
 					}}
-					className="buitar-primary-range"
+					className="primary-range"
 					min={30}
 					max={240}
 					step={1}
@@ -190,25 +190,25 @@ export const SequencerController: FC<{
 			</div>
 
 			{editVisible && (
-				<div className={cx('buitar-primary-button', styles['player-icon'])}>
+				<div className={cx('primary-button', styles['player-icon'])}>
 					<Switch defaultValue={editable} onChange={setEditable} />
 				</div>
 			)}
 
 			{mVisible && (
-				<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={handleChangeM}>
+				<div className={cx('primary-button', styles['player-icon'])} onClick={handleChangeM}>
 					<span className={styles['player-m']}> {m}m </span>
 				</div>
 			)}
 
 			{onSave && (
-				<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={onSave}>
+				<div className={cx('primary-button', styles['player-icon'])} onClick={onSave}>
 					<Icon size={24} name="icon-save" />
 				</div>
 			)}
 
 			{onRandom && (
-				<div className={cx('buitar-primary-button', styles['player-icon'])} onClick={onRandom}>
+				<div className={cx('primary-button', styles['player-icon'])} onClick={onRandom}>
 					<Icon size={24} name="icon-random"></Icon>
 				</div>
 			)}
@@ -295,7 +295,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 					<div
 						key={index}
 						data-sq={`${keyIndex}-${index}-empty`}
-						className={cx('buitar-primary-button', styles['sound-item'])}
+						className={cx('primary-button', styles['sound-item'])}
 						style={{ width: itemWidth }}
 						onClick={handleClick}
 					></div>
@@ -321,7 +321,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 								key={`${block[0]}-${index}`}
 								data-sq={`${keyIndex}-${index}-active`}
 								className={cx(
-									'buitar-primary-button',
+									'primary-button',
 									styles['sound-item'],
 									styles['sound-item-active'],
 									`touch-${color}`
@@ -348,7 +348,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 					{editable && keyIndex === ghost[0] && (
 						<div
 							className={cx(
-								'buitar-primary-button',
+								'primary-button',
 								styles['sound-item'],
 								styles['sound-item-ghost']
 							)}
@@ -400,7 +400,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 					return (
 						<div className={styles['sound']} key={key} data-sound={key}>
 							<div
-								className={cx('buitar-primary-button', styles['sound-item'], styles['sound-head'])}
+								className={cx('primary-button', styles['sound-item'], styles['sound-head'])}
 								style={{ width: headItemWidth }}
 							>
 								{key}

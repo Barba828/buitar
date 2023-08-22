@@ -157,7 +157,7 @@ const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultCh
 					thin={70}
 					minor={false}
 					onClick={handleClickFifths}
-					className={cx('buitar-primary-button', styles['fifth-circle'])}
+					className={cx('primary-button', styles['fifth-circle'])}
 				/>
 			)}
 			{/* 和弦大图卡片 */}
@@ -179,7 +179,7 @@ const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultCh
 									changeChordTapName(index + 1)
 								}}
 								key={index}
-								className={cx('buitar-primary-button', styles['type-item'])}
+								className={cx('primary-button', styles['type-item'])}
 							>
 								{getBoardChordName(chordType, boardOptions)}
 							</div>

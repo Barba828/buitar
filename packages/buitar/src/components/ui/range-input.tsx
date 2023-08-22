@@ -11,6 +11,7 @@ export type RangeInputProps = {
 	highLightColor?: string
 	className?: string
 	inputClassName?: string
+	step?: number
 }
 
 /**
@@ -54,7 +55,7 @@ export const RangeInput = ({
 			<input
 				ref={refStart}
 				type="range"
-				className={cx('buitar-primary-range', inputClassName)}
+				className={cx('primary-range', inputClassName)}
 				min={min}
 				max={max}
 				step={1}
@@ -72,7 +73,7 @@ export const RangeInput = ({
 			<input
 				ref={refEnd}
 				type="range"
-				className={cx('buitar-primary-range', styles['input-hidden'], inputClassName)}
+				className={cx('primary-range', styles['input-hidden'], inputClassName)}
 				min={min}
 				max={max}
 				step={1}

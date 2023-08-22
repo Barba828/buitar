@@ -45,11 +45,11 @@ export const Modal: FC<ModalProps> = ({ visible, pure, title, children, onConfir
 						{children}
 
 						<div className={styles['modal-options']}>
-							<div className={cx('buitar-primary-button', 'flex-center')} onClick={onCancel}>
+							<div className={cx('primary-button', 'flex-center')} onClick={onCancel}>
 								<Icon name="icon-close" />
 							</div>
 							<div
-								className={cx('buitar-primary-button', 'touch-yellow ', 'flex-center')}
+								className={cx('primary-button', 'touch-yellow ', 'flex-center')}
 								onClick={onConfirm}
 							>
 								<Icon name="icon-confirm" />

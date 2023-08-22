@@ -68,7 +68,7 @@
 	display: flex;
 	@include flex-center();
 	flex-direction: row;
-	:global(.buitar-primary-range) {
+	:global(.primary-range) {
 		margin-left: 12px;
 	}
 }
@@ -76,7 +76,7 @@
 .guitar-range-slider {
 	width: calc($btn-size * 6 + 24px) !important;
 	margin-bottom: calc($btn-margin * 2);
-	:global(.buitar-primary-range) {
+	:global(.primary-range) {
 		width: inherit;
 	}
 }

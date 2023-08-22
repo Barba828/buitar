@@ -138,15 +138,15 @@ export const routeConfig: Array<RouteType> = [
 					back: true,
 				},
 			},
-			{
-				name: '和弦图生成',
-				id: 'PlayToolsSvgSave',
-				path: `${baseUrl}tools/svg-save`,
-				Component: Metronome,
-				meta: {
-					back: true,
-				},
-			},
+			// {
+			// 	name: '和弦图生成',
+			// 	id: 'PlayToolsSvgSave',
+			// 	path: `${baseUrl}tools/svg-save`,
+			// 	Component: Metronome,
+			// 	meta: {
+			// 		back: true,
+			// 	},
+			// },
 		],
 	},
 	{

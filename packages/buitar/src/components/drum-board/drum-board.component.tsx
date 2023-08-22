@@ -48,7 +48,7 @@ export const DrumBoard: FC<DrumBoardProps> = ({ player }) => {
 					className={cx(
 						styles['drum-item'],
 						'touch-primary',
-						'buitar-primary-button',
+						'primary-button',
 						'flex-center',
 						keys.includes(key) && styles['drum-item__active']
 					)}

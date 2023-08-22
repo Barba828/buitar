@@ -138,7 +138,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		const playButton = hasTag && numTag && (
 			<div
 				onClick={handlePlayArpeggio}
-				className={cx('buitar-primary-button', styles['frets-dot'], styles['point'])}
+				className={cx('primary-button', styles['frets-dot'], styles['point'])}
 			>
 				<Icon name="icon-eighth-note" color="#fff8" size={16} />
 			</div>
@@ -253,7 +253,7 @@ const BoardButtonOriginal = ({
 	const level = tone && getLevel(point.toneSchema, boardOptions)
 
 	const cls = cx(
-		'buitar-primary-button',
+		'primary-button',
 		!tone && styles['empty-point'], // 隐藏半音
 		!isNote && hasLevel && point.toneSchema.level //处理数字显示时八度音高
 			? point.toneSchema.level > 3
@@ -285,7 +285,7 @@ const BoardDotsOriginal = ({ index }: { index: number }) => {
 	}
 
 	return (
-		<div className={cx('buitar-primary-button', styles['frets-dot'])}>
+		<div className={cx('primary-button', styles['frets-dot'])}>
 			{numTag ? (
 				<div className={styles['frets-dot-num']}>{index}</div>
 			) : (
@@ -355,7 +355,7 @@ const useBoardBtnContent = (point: Point) => {
 	return {
 		baseCls: cx(
 			userCls,
-			'buitar-primary-button',
+			'primary-button',
 			styles['point'],
 			!isNote && hasLevel && point.toneSchema.level //处理数字显示时八度音高
 				? point.toneSchema.level > 3

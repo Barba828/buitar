@@ -9,7 +9,7 @@
 	}
 }
 
-.buitar-primary-button {
+.primary-button {
 	margin: $btn-margin;
 	border-radius: $btn-margin;
 
@@ -22,7 +22,7 @@
 	@include touch-color($gray-primary, $gray-second);
 }
 
-.buitar-primary-range {
+.primary-range {
 	appearance: none;
 	flex: 1;
 	width: calc($btn-size * 6);
