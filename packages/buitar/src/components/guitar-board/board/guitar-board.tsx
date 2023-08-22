@@ -47,22 +47,36 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	const scrollRef = useRef<HTMLDivElement>(null)
 	const BoardBtnComponent = boardTheme === 'default' ? BoardButtonOriginal : BoardButton
 
-	// 鼠标事件监听
-	const { handler } = useBoardTouch(emphasis, setEmphasis)
-	// 键盘事件监听
-	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis, baseFret)
-	// 滚轮事件监听
-	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
-
+	/**扁平化指板二维数组 */
 	const boardList = useMemo(() => {
 		if (!keyboard) {
 			return null
 		}
 		return exchangeBoardList(keyboard)
 	}, [keyboard])
+	/**指板点击事件回调 */
+	const handleChangeKey = useCallback(
+		(key: string) => {
+			if (key.length && boardList) {
+				const point = boardList[Number(key)]
+				player.triggerPointRelease(point)
+			}
+		},
+		[boardList]
+	)
+	
+	// 鼠标事件监听
+	const { handler } = useBoardTouch(emphasis, setEmphasis, { onChange: handleChangeKey })
+	// 键盘事件监听
+	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis, {
+		gradeLength: baseFret,
+		onChange: handleChangeKey,
+	})
+	// 滚轮事件监听
+	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
 
 	// 指位停留 30 ms以上 => play & checked
-	const debouceEmphasis = useDebounce(emphasis, 20)
+	const debouceEmphasis = useDebounce(emphasis, 30)
 	useEffect(() => {
 		if (debouceEmphasis.length <= 0 || !boardList) {
 			return
@@ -74,7 +88,6 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 			'color:white; background:rgb(57, 167, 150);border-radius: 2px',
 			points
 		)
-		player.triggerPointRelease(points)
 		onCheckedPoints?.(points)
 	}, [debouceEmphasis])
 
@@ -125,7 +138,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		const playButton = hasTag && numTag && (
 			<div
 				onClick={handlePlayArpeggio}
-				className={cx('buitar-primary-button', styles['frets-dot'], styles['point'])}
+				className={cx('primary-button', styles['frets-dot'], styles['point'])}
 			>
 				<Icon name="icon-eighth-note" color="#fff8" size={16} />
 			</div>
@@ -240,7 +253,7 @@ const BoardButtonOriginal = ({
 	const level = tone && getLevel(point.toneSchema, boardOptions)
 
 	const cls = cx(
-		'buitar-primary-button',
+		'primary-button',
 		!tone && styles['empty-point'], // 隐藏半音
 		!isNote && hasLevel && point.toneSchema.level //处理数字显示时八度音高
 			? point.toneSchema.level > 3
@@ -272,7 +285,7 @@ const BoardDotsOriginal = ({ index }: { index: number }) => {
 	}
 
 	return (
-		<div className={cx('buitar-primary-button', styles['frets-dot'])}>
+		<div className={cx('primary-button', styles['frets-dot'])}>
 			{numTag ? (
 				<div className={styles['frets-dot-num']}>{index}</div>
 			) : (
@@ -342,7 +355,7 @@ const useBoardBtnContent = (point: Point) => {
 	return {
 		baseCls: cx(
 			userCls,
-			'buitar-primary-button',
+			'primary-button',
 			styles['point'],
 			!isNote && hasLevel && point.toneSchema.level //处理数字显示时八度音高
 				? point.toneSchema.level > 3

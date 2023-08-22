@@ -74,7 +74,7 @@ export const CagedCollection: FC = () => {
 				我的收藏〉
 			</Link>
 			<div className={styles['caged-range']}>
-				<div className={cx('buitar-primary-button', 'flex-center', styles['caged-range-title'])}>
+				<div className={cx('primary-button', 'flex-center', styles['caged-range-title'])}>
 					品位 {startGrade}
 				</div>
 				<RangeSlider

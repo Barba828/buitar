@@ -22,7 +22,7 @@ export const ChordController: FC = (props) => {
 				onChange={(value, index) => {
 					setTabIndex(index)
 				}}
-				renderTabItem={(item) => item.name_zh}
+				renderItem={(item) => item.name_zh}
 			/>
 			{tabIndex === 0 ? (
 				<ChordControllerInner>
@@ -122,7 +122,7 @@ export const ChordTagPicker: FC<{ onChange(tag: string): void; tag?: string }> =
 						key={tagItem}
 						onClick={() => onChange(tagItem)}
 						className={cx(
-							'buitar-primary-button',
+							'primary-button',
 							styles['tags-item'],
 							tag === tagItem && 'touch-yellow'
 						)}

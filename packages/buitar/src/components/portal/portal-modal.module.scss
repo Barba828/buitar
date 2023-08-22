@@ -10,7 +10,7 @@
 		display: flex;
 		justify-content: end;
 		font-size: $font-18;
-		:global(.buitar-primary-button) {
+		:global(.primary-button) {
 			height: calc($btn-size);
 			flex: 1;
 		}

@@ -1,8 +1,9 @@
 import { Instrument } from './instrument.type'
 
-const instrumentConfig: {
-	[K in Instrument]: any
-} = {
+/**
+ * 由于ogg格式在Safari中有部分兼容问题，采用mp3格式
+ */
+const instrumentConfig: Record<Instrument, Record<string, string>> = {
 	'guitar-acoustic': {
 		F3: 'F3.mp3',
 		'F#1': 'Fs1.mp3',
@@ -202,7 +203,7 @@ const instrumentConfig: {
 		G5: 'G5.mp3',
 	},
 
-	'ukulele': {
+	ukulele: {
 		A5: 'A5.mp3',
 		B5: 'B5.mp3',
 		Bb5: 'Bb5.mp3',
@@ -219,7 +220,52 @@ const instrumentConfig: {
 		'G#4': 'Gs4.mp3',
 	},
 
-	default: undefined,
+	drum: {
+		HiHat: 'hihat.mp3', // 高帽镲 close
+		HiHatOpen: 'hihat-open.mp3', // 高帽镲 open
+		HiHatFoot: 'hihat-foot.mp3', // 高帽镲 踩镲
+		Crash: 'crash.mp3', // 碎音镲/吊擦
+		Ride: 'ride.mp3', // 叠音镲/叮叮镲
+		Snare: 'snare.mp3', // 军鼓
+		SnareStick: 'snare-stick.mp3', // 军鼓边缘
+		Tom1: 'sidetamlys.mp3', // 中鼓
+		Tom2: 'sidetamdyb.mp3', // 中鼓2
+		Kick: 'bass.mp3', // 底鼓/大鼓
+		FloorTom: 'floor-tom.mp3', // 落地鼓
+	},
+
+	'drum-acounstic': {
+		Snare: 'snare.mp3',
+		Kick: 'kick.mp3',
+		ClosedHat: 'hihat-close.mp3',
+		OpenHat: 'hihat-open.mp3',
+	},
+
+	'drum-electronic': {
+		Clap: 'Clap.mp3',
+		Kick: 'Kick.mp3',
+		ClosedHat: 'ClosedHat.mp3',
+		OpenHat: 'OpenHat.mp3',
+	},
+
+	metronome: {
+		Metronome: 'Metronome.mp3',
+		MetronomeUp: 'MetronomeUp.mp3',
+	},
+
+	default: {},
 }
 
-export { instrumentConfig }
+const instrumentType: Record<string, Instrument[]> = {
+	samplers: [
+		'bass-electric',
+		'guitar-acoustic',
+		'guitar-electric',
+		'guitar-nylon',
+		'piano',
+		'ukulele',
+	],
+	players: ['drum', 'drum-acounstic', 'drum-electronic', 'metronome'],
+}
+
+export { instrumentConfig, instrumentType }

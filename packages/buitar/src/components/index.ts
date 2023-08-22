@@ -1,5 +1,6 @@
 export * from './guitar-board'
 export * from './piano-board'
+export * from './drum-board'
 export * from './sound-board'
 export * from './sequencer'
 export * from './guitar-player'

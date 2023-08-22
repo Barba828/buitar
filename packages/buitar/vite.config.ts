@@ -29,7 +29,7 @@ export default defineConfig({
 			workbox: {
 				clientsClaim: true,
 				skipWaiting: true,
-				globPatterns: ['**/*.{js,css,html,mp3,ico}'],
+				globPatterns: ['**/*.{js,css,html,mp3,ogg,ico}'],
 			},
 			manifest: {
 				name: 'Buitar',

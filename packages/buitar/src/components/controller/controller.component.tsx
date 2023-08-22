@@ -67,7 +67,7 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => any = memo(
 				: styles['controller-not-extend']
 
 			const cls = cx(
-				'buitar-primary-button',
+				'primary-button',
 				styles[`controller`],
 				styles[`controller-extend__${size}`],
 				itemExtendClass,
@@ -86,7 +86,7 @@ export const ControllerList: <T>(props: ControllerListProps<T>) => any = memo(
 		const trigger = !isHoverable && !extendItem && list.length > 0 && (
 			<div
 				className={cx(
-					'buitar-primary-button',
+					'primary-button',
 					'flex-center',
 					styles['controller'],
 					styles['controller-extend'],

@@ -28,7 +28,7 @@ export const AddTextInput: FC<{
 	const add = (
 		<div
 			onClick={handleClick}
-			className={cx('buitar-primary-button', styles['type-item'], className)}
+			className={cx('primary-button', styles['type-item'], className)}
 		>
 			<Icon name="icon-add" />
 		</div>
@@ -39,19 +39,19 @@ export const AddTextInput: FC<{
 			<input
 				placeholder={placeholder}
 				onChange={handleChange}
-				className={cx('buitar-primary-button', styles['type-input'])}
+				className={cx('primary-button', styles['type-input'])}
 			></input>
 			<div className={cx(styles['type-input-controller'])}>
 				<div
 					onClick={handleClick}
-					className={cx('buitar-primary-button', styles['type-input-item'])}
+					className={cx('primary-button', styles['type-input-item'])}
 				>
 					<Icon name="icon-back" size={14} />
 				</div>
 				{name.length > 0 && (
 					<div
 						onClick={handleConfirm}
-						className={cx('buitar-primary-button', styles['type-input-item'])}
+						className={cx('primary-button', styles['type-input-item'])}
 					>
 						<Icon name="icon-confirm" />
 					</div>

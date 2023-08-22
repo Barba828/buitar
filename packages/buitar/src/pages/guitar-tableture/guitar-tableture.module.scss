@@ -2,6 +2,20 @@
 	width: calc($btn-size * 8);
 }
 
+.tableture-tab-wrap {
+	display: flex;
+	.tableture-lock {
+		height: calc($btn-size * 0.8);
+		width: calc($btn-size * 0.8);
+		border-radius: calc($btn-margin * 2);
+		opacity: 0.4;
+		@include flex-center
+	}
+	.tableture-locked {
+		opacity: 1;
+	}
+}
+
 .tableture-list-options {
 	display: flex;
 	.tableture-options-mode {
@@ -68,7 +82,7 @@
 	display: flex;
 	@include flex-center();
 	flex-direction: row;
-	:global(.buitar-primary-range) {
+	:global(.primary-range) {
 		margin-left: 12px;
 	}
 }
@@ -76,7 +90,7 @@
 .guitar-range-slider {
 	width: calc($btn-size * 6 + 24px) !important;
 	margin-bottom: calc($btn-margin * 2);
-	:global(.buitar-primary-range) {
+	:global(.primary-range) {
 		width: inherit;
 	}
 }

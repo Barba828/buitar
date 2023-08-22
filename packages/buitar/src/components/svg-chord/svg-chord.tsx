@@ -36,10 +36,7 @@ export interface SvgChordProps {
 const FINGER_NUMS = 5
 
 export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) => {
-	let { size = 300, color = 'white', points, concise, title = ' ' } = props
-	if (title.length === 0) {
-		title = ' '
-	}
+	const { size = 300, color = 'white', points, concise, title } = props
 	const radius = size * 0.05
 	const width = size * 0.7
 	const stringDistance = width / (points.length - 1) // 两根弦之间距离
@@ -263,7 +260,7 @@ export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) =>
 			></rect>
 		)
 		return lines
-	}, [size, color])
+	}, [size, color, title]) // size color title都需要触发重渲染
 
 	return (
 		<svg

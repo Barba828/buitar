@@ -2,6 +2,7 @@ interface Window {
 	Tone: Tone
 	ToGuitar: toGuitar
 	tonePlayer: TonePlayer
+	drumPlayer: DrumPlayer
 	guitar: Board
 }
 

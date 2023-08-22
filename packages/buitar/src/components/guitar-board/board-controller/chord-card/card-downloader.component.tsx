@@ -39,7 +39,7 @@ export const CardDownloader: FC<
 		setColor(e.target.value)
 	}
 	return (
-		<Modal {...restProps} onConfirm={handleConfirm} title="下载设置">
+		<Modal {...restProps} onConfirm={handleConfirm} onCancel={onCancel} title="下载设置">
 			<div className={styles['download-container']}>
 				<div className="">
 					<div className="flex">
@@ -57,7 +57,7 @@ export const CardDownloader: FC<
 							type="color"
 							value={color}
 							onChange={handleChangeColor}
-							className={cx('buitar-primary-button', 'color-input')}
+							className={cx('primary-button', 'color-input')}
 						/>
 					</div>
 
@@ -67,7 +67,7 @@ export const CardDownloader: FC<
 							placeholder="名称"
 							value={downloadTitle}
 							onChange={handleChangeTitle}
-							className={cx('buitar-primary-button', 'text-input', styles['download-option-item'])}
+							className={cx('primary-button', 'text-input', styles['download-option-item'])}
 						></input>
 					</div>
 
@@ -79,7 +79,7 @@ export const CardDownloader: FC<
 							range={[1, 5]}
 							inputClassName={styles['download-option-item']}
 							defaultValue={downloadRate}
-							onChange={([_, size]) => {
+							onChange={([size]) => {
 								setDownloadRate(size)
 							}}
 						/>

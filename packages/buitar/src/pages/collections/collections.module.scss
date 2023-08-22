@@ -2,7 +2,7 @@
 	display: flex;
 	.caged-range-slider {
 		margin-bottom: calc($btn-margin * 2);
-		:global(.buitar-primary-range) {
+		:global(.primary-range) {
 			width: 80vw !important;
 		}
 	}

@@ -25,7 +25,7 @@ export const FifthCircleController: FC<
 			thin={50}
 			{...props}
 			onClick={handleClickFifths}
-			className={cx('buitar-primary-button', styles['fifth-circle'], props.className)}
+			className={cx('primary-button', styles['fifth-circle'], props.className)}
 		/>
 	)
 }

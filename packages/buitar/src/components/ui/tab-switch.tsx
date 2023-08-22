@@ -1,20 +1,20 @@
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import cx from 'classnames'
 import styles from './tab-switch.module.scss'
 
-interface ControllerListProps<T> {
+export interface TabSwitchProps<T> {
 	defaultValue?: T
 	values: T[]
 	onChange?: (value: T, index: number) => void
-	renderTabItem?: (item: T, checked?: boolean) => JSX.Element | string
+	renderItem?: (item: T, checked?: boolean) => ReactNode|JSX.Element
 	className?: string
 }
 
-export const TabSwitch: <T>(props: ControllerListProps<T>) => JSX.Element = ({
+export const TabSwitch: <T>(props: TabSwitchProps<T>) => JSX.Element = ({
 	defaultValue,
 	values,
 	onChange,
-	renderTabItem,
+	renderItem,
 	className,
 }) => {
 	const [checkedIndex, setCheckedIndex] = useState(defaultValue ? values.indexOf(defaultValue) : 0)
@@ -34,7 +34,7 @@ export const TabSwitch: <T>(props: ControllerListProps<T>) => JSX.Element = ({
 						checkedIndex === index && styles['tab-switch-item__active']
 					)}
 				>
-					{renderTabItem ? renderTabItem(item, checkedIndex === index) : item}
+					{renderItem ? renderItem(item, checkedIndex === index) : item}
 				</div>
 			))}
 			<div

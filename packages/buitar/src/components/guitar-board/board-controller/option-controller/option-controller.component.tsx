@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useBoardContext } from '@/components/guitar-board/index'
-import { instrumentConfig } from '@buitar/tone-player/tone.config'
-import { Instrument } from '@buitar/tone-player/instrument.type'
+import { instrumentConfig } from '@buitar/tone-player'
+import { Instrument } from '@buitar/tone-player'
 import { Icon } from '@/components/icon'
 import {
 	optionsUIConfig,

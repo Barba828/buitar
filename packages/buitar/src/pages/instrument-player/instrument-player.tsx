@@ -3,34 +3,29 @@ import {
 	BoardOptionsController,
 	GuitarBoard,
 	PianoBoard,
+	DrumBoard,
 	useBoardContext,
 	useConfigContext,
 	usePagesIntro,
 } from '@/components'
 
+
 export const InstrumentPlayer = () => {
 	const intro = usePagesIntro()
+	const { menus } = useConfigContext()
+	const { player } = useBoardContext()
+	const drumPlayer = window.drumPlayer
 	const [part, setPart] = useState(false)
 	const [level, setPianoPart] = useState(false)
-	const { menus } = useConfigContext()
 
 	return (
 		<>
 			{intro}
-			{menus.board_setting && <BoardOptionsController extendItem={false}/>}
+			{menus.board_setting && <BoardOptionsController extendItem={false} />}
 			<GuitarBoard onChangePart={setPart} />
-			<PianoBoards onChangePart={setPianoPart} />
+			<PianoBoard onChangePart={setPianoPart} player={player}></PianoBoard>
+			<DrumBoard player={drumPlayer}/>
 		</>
-	)
-}
 
-const PianoBoards = (props: any) => {
-	const { player } = useBoardContext()
-
-	return (
-		<PianoBoard
-			player={player}
-			onChangePart={props.onChangePart}
-		></PianoBoard>
 	)
 }

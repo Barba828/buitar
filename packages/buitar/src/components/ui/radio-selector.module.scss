@@ -1,0 +1,30 @@
+.radio-selector {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: calc($btn-size * 4);
+
+	.selector-content {
+		flex: 1;
+		height: $btn-size;
+		margin: $btn-margin;
+		border: $btn-margin;
+		background-color: $gray-second;
+		font-weight: 700;
+		@include flex-center();
+	}
+
+	.selector-btn {
+		@include flex-center();
+	}
+
+	.selector-btn__rotate {
+		transform: rotate(180deg);
+	}
+
+	.selector-btn__disabled {
+		opacity: 0.6;
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+}

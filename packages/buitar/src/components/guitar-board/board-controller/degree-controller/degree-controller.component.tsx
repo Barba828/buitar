@@ -61,7 +61,7 @@ export const DegreeController = () => {
 		const degreesView = progress.procession.map((degree, degreeIndex) => (
 			<div
 				key={degreeIndex}
-				className={cx('buitar-primary-button', styles['degree-item'])}
+				className={cx('primary-button', styles['degree-item'])}
 				onClick={() => {
 					setExpand(false)
 					setProgressionIndex(index)
@@ -73,7 +73,7 @@ export const DegreeController = () => {
 		))
 		const expandBtns = expand && (
 			<div
-				className={cx('buitar-primary-button', styles['degree-btn'], styles['degree-remove'])}
+				className={cx('primary-button', styles['degree-btn'], styles['degree-remove'])}
 				onClick={() => handleRemove(index)}
 			>
 				<Icon name="icon-close" />
@@ -106,7 +106,7 @@ export const DegreeController = () => {
 
 			<div
 				className={cx(
-					'buitar-primary-button',
+					'primary-button',
 					styles['degree-btn'],
 					expand && styles['icon-expand']
 				)}
@@ -114,7 +114,7 @@ export const DegreeController = () => {
 			>
 				<Icon name="icon-back" />
 			</div>
-			<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={toggleEdit}>
+			<div className={cx('primary-button', styles['degree-btn'])} onClick={toggleEdit}>
 				<Icon name="icon-add" />
 			</div>
 		</div>
@@ -177,7 +177,7 @@ export const DegreeEditor: FC<{
 					<div
 						key={index}
 						className={cx(
-							'buitar-primary-button',
+							'primary-button',
 							styles['degree-item'],
 							index === checkedIndex && 'touch-yellow'
 						)}
@@ -200,11 +200,11 @@ export const DegreeEditor: FC<{
 				))}
 
 				{/* 级数操作按钮s */}
-				<div className={cx('buitar-primary-button', styles['degree-btn'])} onClick={handleAdd}>
+				<div className={cx('primary-button', styles['degree-btn'])} onClick={handleAdd}>
 					<Icon name="icon-add" size={24} />
 				</div>
 				<div
-					className={cx('buitar-primary-button', styles['degree-btn'])}
+					className={cx('primary-button', styles['degree-btn'])}
 					onClick={() => handleRemove(checkedIndex)}
 				>
 					<Icon name="icon-delete" size={24} />
@@ -221,7 +221,7 @@ export const DegreeEditor: FC<{
 							setProcession([...procession])
 						}}
 						className={cx(
-							'buitar-primary-button',
+							'primary-button',
 							styles['degree-item'],
 							styles['degree-item-second']
 						)}
@@ -237,7 +237,7 @@ export const DegreeEditor: FC<{
 			<input
 				placeholder={'和弦进行名称'}
 				onChange={handleChangeName}
-				className={cx('buitar-primary-button', 'text-input', styles['degree-input'])}
+				className={cx('primary-button', 'text-input', styles['degree-input'])}
 			></input>
 		</div>
 	)

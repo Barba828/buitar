@@ -29,10 +29,15 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 }) => {
 	const [touched, setTouched] = useState<string[]>(defaultTouched)
 	const scrollRef = useRef<HTMLDivElement>(null)
+	const handleChangeKey = (key: string) => {
+		if (key.length) {
+			player.getContext().triggerAttackRelease(key, '2n')
+		}
+	}
 	// 鼠标事件
-	const { handler } = useBoardTouch(touched, setTouched)
+	const { handler } = useBoardTouch(touched, setTouched, { onChange: handleChangeKey })
 	// 按钮事件
-	const { part, keyHandler } = usePianoKeyDown(touched, setTouched)
+	const { part, keyHandler } = usePianoKeyDown(touched, setTouched, { onChange: handleChangeKey })
 	// 滚轮事件监听
 	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
 
@@ -46,9 +51,8 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 			'color:white; background:rgb(62, 148, 202);border-radius: 2px',
 			debouceTouched
 		)
-		
+
 		onChangeKey?.(debouceTouched)
-		player.getContext().triggerAttackRelease(debouceTouched, '2n')
 	}, [debouceTouched])
 
 	useEffect(() => {
@@ -56,7 +60,7 @@ export const PianoBoard: FC<PianoBoardProps> = ({
 	}, [part])
 
 	return (
-		<div className="scroll-without-bar" {...divProps} ref={scrollRef}>
+		<div id="piano-board" className="scroll-without-bar" {...divProps} ref={scrollRef}>
 			<div className={styles.piano} {...handler} {...keyHandler}>
 				{levels.map((level, index) => (
 					<PianoKeys key={index} level={level} touched={touched} checked={checked} />

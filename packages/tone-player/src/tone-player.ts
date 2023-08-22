@@ -1,10 +1,10 @@
 import * as Tone from 'tone'
-import { instrumentConfig } from './tone.config'
+import { instrumentConfig, instrumentType } from './tone.config'
 import type { PolySynth } from 'tone'
 import type { Instrument } from './instrument.type'
 import type { Point } from '@buitar/to-guitar'
 
-import './samples/index'
+// import '../samples/index'
 
 /**
  * time
@@ -16,7 +16,7 @@ import './samples/index'
  * Tone.Transport.timeSignature = 3 拍数（3/4拍）
  */
 export class TonePlayer extends Tone.Sampler {
-	private sampler: Tone.Sampler | PolySynth = new Tone.PolySynth(Tone.Synth).toDestination()
+	private _sampler: Tone.Sampler | PolySynth = new Tone.PolySynth(Tone.Synth).toDestination()
 	private instrument: Instrument = 'default'
 	static baseUrl: String = '/'
 
@@ -39,27 +39,28 @@ export class TonePlayer extends Tone.Sampler {
 		if (instrument === this.instrument) {
 			return Promise.resolve()
 		}
-		this.instrument = instrument
+		this.setInstrument(instrument)
 		TonePlayer.setBaseUrl(baseUrl) // 更新静态baseUrl
-		// 默认使用 复音合成器 播放
-		if (instrument === 'default') {
-			this.sampler = new Tone.PolySynth(Tone.Synth).toDestination()
+		if (instrumentType.samplers.includes(instrument)) {
+			// 选择乐器使用 Sampler取样器 播放
+			this._sampler = new Tone.Sampler({
+				urls: instrumentConfig[instrument],
+				baseUrl: `${TonePlayer.baseUrl}${instrument}/`,
+			}).toDestination()
+			this._sampler.context.resume()
+			return Tone.loaded()
+		} else {
+			// 默认使用 复音合成器 播放
+			this._sampler = new Tone.PolySynth(Tone.Synth).toDestination()
 			return Promise.resolve()
 		}
-		// 选择乐器使用 取样器 播放
-		this.sampler = new Tone.Sampler({
-			urls: instrumentConfig[instrument],
-			baseUrl: `${TonePlayer.baseUrl}${instrument}/`,
-		}).toDestination()
-		this.sampler.context.resume()
-		return Tone.loaded()
 	}
 
 	public get loaded(): boolean {
 		if (this.instrument === 'default') {
 			return true
 		}
-		return (this.sampler as Tone.Sampler).loaded
+		return (this._sampler as Tone.Sampler).loaded
 	}
 
 	static setBaseUrl(baseUrl?: string) {
@@ -70,19 +71,23 @@ export class TonePlayer extends Tone.Sampler {
 		return TonePlayer.baseUrl
 	}
 
+	public setInstrument(instrument: Instrument) {
+		this.instrument = instrument
+	}
+
 	public getInstrument() {
 		return this.instrument
 	}
 
 	public getContext() {
-		return this.sampler
+		return this._sampler
 	}
 
 	/**
 	 * 手动处理 invoke (默认静音)
 	 */
 	public async resume() {
-		await this.sampler.context.resume()
+		await this._sampler.context.resume()
 		await Tone.start()
 		await Tone.context.resume()
 	}
@@ -100,9 +105,9 @@ export class TonePlayer extends Tone.Sampler {
 
 		const now = Tone.now()
 		notes.forEach((note, index) => {
-			this.sampler.triggerAttack(note, now + index * duration)
+			this._sampler.triggerAttack(note, now + index * duration)
 		})
-		this.sampler.triggerRelease(notes, now + notes.length * 2 * 0.3)
+		this._sampler.triggerRelease(notes, now + notes.length * 2 * 0.3)
 	}
 
 	/**
@@ -113,7 +118,7 @@ export class TonePlayer extends Tone.Sampler {
 		const notes = point.map(this.transPoint)
 		this.triggerAttackArpeggio(notes)
 	}
-	
+
 	/**
 	 * 播放to-guitar point 扫弦音
 	 * @param point
@@ -136,7 +141,7 @@ export class TonePlayer extends Tone.Sampler {
 		}
 		const tones = Array.isArray(point) ? point : [point]
 		const notes = Array.from(new Set(tones.map(this.transPoint)))
-		this.sampler.triggerAttackRelease(notes, duration)
+		this._sampler.triggerAttackRelease(notes, duration)
 	}
 
 	private transPoint = (point: Point): Tone.Unit.Frequency => {

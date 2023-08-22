@@ -2,8 +2,7 @@ import { Sound } from '@/components'
 import {
 	instrumentUIConfig,
 } from '@/pages/settings/config/controller.config'
-import { TonePlayer } from '@buitar/tone-player'
-import { Instrument } from '@buitar/tone-player/instrument.type'
+import { Instrument, TonePlayer } from '@buitar/tone-player'
 import { useCallback, useReducer } from 'react'
 import { InstrumentColor } from '@/pages/settings/config/controller.type'
 
