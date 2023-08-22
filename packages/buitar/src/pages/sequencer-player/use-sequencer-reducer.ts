@@ -12,7 +12,7 @@ export type SequencersState = {
 	sounds: Sound[]
 }
 
-export type SequencerReducerType = 'add' | 'delete' | 'instrument' | 'mute' | 'sole' | 'volume'
+export type SequencerReducerType = 'add' | 'delete' | 'instrument' | 'mute' | 'solo' | 'volume'
 export type SequencerReducerPayload = {
 	index: number
 	instrument?: Instrument
@@ -76,7 +76,7 @@ export const useSequencerReducer = () => {
 					player.getContext().volume.value = action.payload.turn ? 0 : -Infinity
 					return [...sequencers]
 
-				case 'sole':
+				case 'solo':
 					if (!player) {
 						return sequencers
 					}

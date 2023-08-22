@@ -1,8 +1,9 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import * as Tone from 'tone'
 import { RangeSlider, RadioSelector } from '@/components/ui'
-import cx from 'classnames'
 import { Icon } from '@/components/icon'
+import { waitAudioContext } from '@/utils/audio-play'
+import cx from 'classnames'
 import toolsStyles from '../play-tools.module.scss'
 import styles from './metronome-tool.module.scss'
 
@@ -72,11 +73,12 @@ export const Metronome: FC = () => {
 	}
 
 	const play = async () => {
+		await waitAudioContext()
+
 		setIsPlaying(true)
 		clearMetronomeLooper()
 		updateMetronomeLooper()
 
-		await Tone.start()
 		Tone.Transport.start()
 	}
 

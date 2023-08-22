@@ -7,6 +7,7 @@ import { TonePlayer } from '@buitar/tone-player'
 import { useSequencerContext } from './sequencer-provider'
 import { InstrumentColor } from '@/pages/settings/config/controller.type'
 import { useIsMobile } from '@/utils/hooks/use-device'
+import { waitAudioContext } from '@/utils/audio-play'
 import cx from 'classnames'
 
 import styles from './sequencer.module.scss'
@@ -144,11 +145,7 @@ export const SequencerController: FC<{
 	 * 播放按钮
 	 */
 	const handlePlay = useCallback(async () => {
-		if (isPlaying) {
-			const player = (window.tonePlayer as TonePlayer)?.getContext()
-			player?.triggerAttackRelease('A1', '16n')
-			await Tone.start()
-		}
+		await waitAudioContext()
 
 		Tone.Transport.toggle()
 		setIsPlaying(!isPlaying)

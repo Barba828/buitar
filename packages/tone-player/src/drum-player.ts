@@ -43,8 +43,8 @@ export class DrumPlayer extends TonePlayer {
 		if (!this.loaded) {
 			return
 		}
-
-		await Tone.loaded()
+		await Tone.start()
+		// await Tone.loaded()
 
 		if (typeof note === 'string') {
 			this._players.player(note).start(time)
