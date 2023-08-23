@@ -1,7 +1,5 @@
 import { FC, useState } from 'react'
 import { ModeType, ToneSchema, transFifthsCircle } from '@buitar/to-guitar'
-import { getBoardOptionsToneType } from '../guitar-board/utils'
-import { useBoardContext } from '../index'
 import classnames from 'classnames'
 
 import styles from './fifths-circle.module.scss'
@@ -43,7 +41,7 @@ export type FifthCircleProps = {
 	 * 默认选中下标
 	 */
 	defaultIndex?: number
-	onClick?: ({ tone, mode }: { tone: ToneSchema; mode: ModeType }) => void
+	onClick?: (obj: { tone: ToneSchema; mode: ModeType }) => void
 	[x: string]: any
 }
 
@@ -55,14 +53,25 @@ export const FifthsCircle: FC<FifthCircleProps> = ({
 	onClick,
 	...props
 }) => {
-	const { boardOptions } = useBoardContext()
 	const [checked, setChecked] = useState<number>(defaultIndex)
-	const toneType = getBoardOptionsToneType(boardOptions)
 	const cx = size >> 1
 	const cy = size >> 1
 	const cr = size >> 1
-	const outerCircle = OUTER_TONES.map((tone) => tone[toneType])
-	const innerCircle = INNER_TONES.map((tone) => `${tone[toneType]}m`)
+	const outerCircle = OUTER_TONES.map((tone, index) => {
+		if (index === 6) {
+			return `${tone.note},${tone.noteFalling}`
+		}
+		return tone.noteFalling
+	})
+	const innerCircle = INNER_TONES.map((tone, index) => {
+		if (index === 6) {
+			return `${tone.note},${tone.noteFalling}m`
+		}
+		if (index === 7) {
+			return `${tone.noteFalling}m`
+		}
+		return `${tone.note}m`
+	})
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -89,8 +98,8 @@ export const FifthsCircle: FC<FifthCircleProps> = ({
 				cy={cy}
 				cr={cr - thin / 2}
 				list={outerCircle}
-				fill="#eeea"
-				style={{ fontSize: size / 12 }}
+				fill="#eeec"
+				fontSize={size / 12}
 			/>
 
 			{minor && (
@@ -113,8 +122,8 @@ export const FifthsCircle: FC<FifthCircleProps> = ({
 						cy={cy}
 						cr={cr - (thin * 3) / 2}
 						list={innerCircle}
-						fill="#eee9"
-						style={{ fontSize: size / 18 }}
+						fill="#eeeb"
+						fontSize={size / 18}
 					/>
 				</>
 			)}
@@ -136,6 +145,7 @@ const Text: FC<any> = ({
 			{(list as string[]).map((item, index) => {
 				const x = cr * Math.cos(angle[index]) + cx
 				const y = cr * Math.sin(angle[index]) + cy + fontSize / 3
+				const [text, text2] = item.split(',') // 两排展示
 				return (
 					<text
 						{...props}
@@ -144,9 +154,20 @@ const Text: FC<any> = ({
 						key={index}
 						x={x}
 						y={y}
-						style={{ fontSize, ...style }}
+						style={{ fontSize: text2 ? fontSize * 0.8 : fontSize, fontFamily: 'serif', ...style }}
 					>
-						{item}
+						{text2 ? (
+							<>
+								<tspan x={x} dy={-fontSize * 0.5}>
+									{text}
+								</tspan>
+								<tspan x={x} dy={fontSize * 0.8}>
+									{text2}
+								</tspan>
+							</>
+						) : (
+							item
+						)}
 					</text>
 				)
 			})}

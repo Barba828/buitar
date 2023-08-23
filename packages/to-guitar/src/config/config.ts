@@ -32,6 +32,7 @@ export const MODE_LIST: ModeType[] = [
 	'minor-blues',
 ]
 
+/**级数罗马数字映射 */
 export const DEGREE_TAG_MAP: Record<IntervalNum, DegreeTag> = {
 	1: 'Ⅰ',
 	2: 'Ⅱ',
