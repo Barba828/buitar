@@ -1,15 +1,16 @@
-import { Instrument } from '@buitar/tone-player'
+import { Instrument, StringsInstrument } from '@buitar/tone-player'
 import {
 	GuitarBoardOptionsKey,
 	GuitarBoardThemeKey,
-	InstrumentColor,
 	InstrumentKeyboardKey,
+	InstrumentUIOption,
 } from './controller.type'
 import type { BoardOption } from '@buitar/to-guitar'
 
 /**useStore Keys*/
 export const OPTIONS_KEY = 'options'
-export const INSTRUMENT_KEY = 'instrument'
+export const INSTRUMENT_STRINGS_KEY = 'instrument_strings'
+export const INSTRUMENT_PERCUSSION_KEY = 'instrument_percussion'
 export const BOARD_THEME_KEY = 'board_theme'
 export const INSTRUMENT_KEYBOARD_KEY = 'instrument_keyboard'
 
@@ -128,14 +129,7 @@ export const optionsUIConfig: Record<GuitarBoardOptionsKey, any> = {
 	},
 }
 
-export const instrumentUIConfig: {
-	[K in Instrument]: {
-		name_en: string
-		name_zh: string
-		icon: string
-		color: InstrumentColor
-	}
-} = {
+export const instrumentUIConfig: InstrumentUIOption = {
 	'guitar-acoustic': {
 		name_en: 'Acoustic Guitar',
 		name_zh: '木吉他',
@@ -178,6 +172,31 @@ export const instrumentUIConfig: {
 		icon: 'icon-synth',
 		color: 'yellow',
 	},
+
+	drum: {
+		name_en: 'Drum',
+		name_zh: '套鼓',
+		icon: 'icon-drumkit',
+		color: 'yellow',
+	},
+	'drum-acounstic': {
+		name_en: 'Acounstic Drum',
+		name_zh: '原声鼓',
+		icon: 'icon-drum',
+		color: 'blue',
+	},
+	'drum-electronic': {
+		name_en: 'Electronic Drum',
+		name_zh: '电音鼓',
+		icon: 'icon-drum-electronic',
+		color: 'green',
+	},
+	'metronome': {
+		name_en: 'Metronome',
+		name_zh: '节拍器',
+		icon: 'icon-metronome',
+		color: 'cyan',
+	},
 }
 
 export const boardStyleConfig: Record<GuitarBoardThemeKey, any> = {
@@ -189,6 +208,7 @@ export const boardStyleConfig: Record<GuitarBoardThemeKey, any> = {
 	},
 }
 
+/**默认弦乐指板设置 */
 export const instrumentKeyboardConfig: Record<
 	InstrumentKeyboardKey,
 	{ key: InstrumentKeyboardKey; name: string } & Partial<BoardOption>
@@ -216,7 +236,8 @@ export const instrumentKeyboardConfig: Record<
 	},
 }
 
-export const instrumentKeyboardMap = new Map<InstrumentKeyboardKey, Instrument>(
+/**默认乐器对应音色 */
+export const instrumentKeyboardMap = new Map<InstrumentKeyboardKey, StringsInstrument>(
 	[
 		['guitar', 'guitar-acoustic'],
 		['ukulele', 'ukulele'],

@@ -1,22 +1,23 @@
-import { DrumPlayer } from '@buitar/tone-player'
+import { DrumPlayer, PercussionInstrument } from '@buitar/tone-player'
 import { FC, useEffect, useMemo, useState } from 'react'
 import cx from 'classnames'
 import styles from './drum-board.module.scss'
 import { useBoardTouch, useDrumKeyDown } from '@/utils/hooks/use-board-event'
 
 export interface DrumBoardProps {
-	player: DrumPlayer
+	player: DrumPlayer,
+	instrument: PercussionInstrument
 }
 
-export const DrumBoard: FC<DrumBoardProps> = ({ player }) => {
+export const DrumBoard: FC<DrumBoardProps> = ({ player, instrument }) => {
 	const [keys, setKeys] = useState<string[]>([])
 	const drumKeyList = useMemo(() => {
-		const drumConfig = player.getDrumConfig()
+		const drumConfig = DrumPlayer.getDrumConfig(instrument)
 		return Object.keys(drumConfig)
-	}, [player.getInstrument()])
+	}, [instrument])
 
 	const handleDrumActiveChange = (key: string) => {
-		if (key.length) {			
+		if (key.length) {
 			player.triggerDrum(key)
 		}
 	}

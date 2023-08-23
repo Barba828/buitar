@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { useBoardContext } from '@/components/guitar-board/index'
-import { instrumentConfig } from '@buitar/tone-player'
-import { Instrument } from '@buitar/tone-player'
+import { PercussionInstrument, StringsInstrument, instrumentType } from '@buitar/tone-player'
 import { Icon } from '@/components/icon'
 import {
 	optionsUIConfig,
@@ -16,6 +15,7 @@ import {
 	InstrumentKeyboardKey,
 } from '@/pages/settings/config/controller.type'
 import { ControllerList, ControllerListProps } from '@/components/controller'
+import { useDrumBoardContext } from '@/components/drum-board/drum-provider'
 import cx from 'classnames'
 
 import styles from './option-controller.module.scss'
@@ -27,10 +27,12 @@ export const BoardController: FC<
 > = ({ controllerClassName, ...props }) => {
 	return (
 		<div className={cx(styles['container'], controllerClassName)}>
+			<KeyBoardInstrument {...props} />
+			<DrumInstrumentController {...props} />
+
 			<BoardOptionsController {...props} />
 			<BoardInstrumentController {...props} />
 			<BoardThemeController {...props} />
-			<KeyBoardInstrument {...props} />
 		</div>
 	)
 }
@@ -95,18 +97,21 @@ export const BoardOptionsController: FC<
 }
 
 /**
- * 指板播放乐器选项
+ * 指板播放乐器音色选项
  * @param props
  * @returns
  */
-export const BoardInstrumentController: FC<ControllerListProps<Instrument>> = (props) => {
+export const BoardInstrumentController: FC<ControllerListProps<StringsInstrument>> = (props) => {
 	const { instrument, dispatchInstrument } = useBoardContext()
 
-	const renderInstrumentItem = (instrument: Instrument) => {
+	const renderInstrumentItem = (instrument: StringsInstrument) => {
 		return (
 			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
-				<span>{instrumentUIConfig[instrument].name_zh}</span>
-				<Icon name={instrumentUIConfig[instrument].icon} size={props.size === 'small' ? 16 : 30} />
+				<span>{instrumentUIConfig?.[instrument]?.name_zh}</span>
+				<Icon
+					name={instrumentUIConfig?.[instrument]?.icon}
+					size={props.size === 'small' ? 16 : 30}
+				/>
 				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
 					音色
 				</div>
@@ -114,14 +119,14 @@ export const BoardInstrumentController: FC<ControllerListProps<Instrument>> = (p
 		)
 	}
 
-	const handleClick = (instrument: Instrument) => {
+	const handleClick = (instrument: StringsInstrument) => {
 		dispatchInstrument({ type: 'set', payload: instrument })
 	}
 
 	return (
 		<ControllerList
 			{...props}
-			list={Object.keys(instrumentConfig) as Instrument[]}
+			list={instrumentType.strings as StringsInstrument[]}
 			onClickItem={handleClick}
 			checkedItem={(item) => item === instrument}
 			renderListItem={renderInstrumentItem}
@@ -131,7 +136,7 @@ export const BoardInstrumentController: FC<ControllerListProps<Instrument>> = (p
 }
 
 /**
- * 指板播放乐器选项
+ * 指板播放乐器UI主题选项
  * @param props
  * @returns
  */
@@ -166,6 +171,11 @@ export const BoardThemeController: FC<ControllerListProps<GuitarBoardThemeKey>> 
 	)
 }
 
+/**
+ * 真实乐器选项
+ * @param props
+ * @returns
+ */
 export const KeyBoardInstrument: FC<ControllerListProps<InstrumentKeyboardKey>> = (props) => {
 	const { instrumentKeyboard, dispatchInstrumentKeyboard } = useBoardContext()
 
@@ -188,5 +198,44 @@ export const KeyBoardInstrument: FC<ControllerListProps<InstrumentKeyboardKey>> 
 			checkedItem={(key) => key === instrumentKeyboard}
 			itemClassName={() => styles['controller-inner-option']}
 		></ControllerList>
+	)
+}
+
+/**
+ * 鼓机乐器选项
+ * @param props
+ * @returns
+ */
+export const DrumInstrumentController: FC<ControllerListProps<PercussionInstrument>> = (props) => {
+	const { instrument, dispatchInstrument } = useDrumBoardContext()
+
+	const renderInstrumentItem = (instrument: PercussionInstrument) => {
+		return (
+			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
+				<span>{instrumentUIConfig?.[instrument]?.name_zh}</span>
+				<Icon
+					name={instrumentUIConfig?.[instrument]?.icon}
+					size={props.size === 'small' ? 12 : 24}
+				/>
+				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
+					打击乐器
+				</div>
+			</div>
+		)
+	}
+
+	const handleClick = (instrument: PercussionInstrument) => {
+		dispatchInstrument({ type: 'set', payload: instrument })
+	}
+
+	return (
+		<ControllerList
+			{...props}
+			list={instrumentType.percussion as PercussionInstrument[]}
+			onClickItem={handleClick}
+			checkedItem={(item) => item === instrument}
+			renderListItem={renderInstrumentItem}
+			itemClassName={() => styles['controller-inner-option']}
+		/>
 	)
 }

@@ -1,7 +1,7 @@
 import * as Tone from 'tone'
 import { instrumentConfig, instrumentType } from './tone.config'
 import type { PolySynth } from 'tone'
-import type { Instrument } from './instrument.type'
+import type { Instrument, StringsInstrument } from './instrument.type'
 import type { Point } from '@buitar/to-guitar'
 
 // import '../samples/index'
@@ -39,9 +39,13 @@ export class TonePlayer extends Tone.Sampler {
 		if (instrument === this.instrument) {
 			return Promise.resolve()
 		}
+		if (!isStringsInstrument(instrument)) {
+			return Promise.reject()
+		}
+
 		this.setInstrument(instrument)
 		TonePlayer.setBaseUrl(baseUrl) // 更新静态baseUrl
-		if (instrumentType.samplers.includes(instrument)) {
+		if (instrument !== 'default') {
 			// 选择乐器使用 Sampler取样器 播放
 			this._sampler = new Tone.Sampler({
 				urls: instrumentConfig[instrument],
@@ -147,4 +151,8 @@ export class TonePlayer extends Tone.Sampler {
 	private transPoint = (point: Point): Tone.Unit.Frequency => {
 		return `${point.toneSchema.note}${point.toneSchema.level}`
 	}
+}
+
+const isStringsInstrument = (x: Instrument): x is StringsInstrument => {
+	return instrumentType.strings.includes(x)
 }

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
-import { Instrument } from '@buitar/tone-player'
+import type { StringsInstrument } from '@buitar/tone-player'
 import {
 	GuitarBoardOptions,
 	GuitarBoardThemeKey,
@@ -7,7 +7,7 @@ import {
 } from '@/pages/settings/config/controller.type'
 import {
 	OPTIONS_KEY,
-	INSTRUMENT_KEY,
+	INSTRUMENT_STRINGS_KEY,
 	BOARD_THEME_KEY,
 	INSTRUMENT_KEYBOARD_KEY,
 	instrumentKeyboardConfig,
@@ -105,8 +105,8 @@ type BoardContextType = {
 	/**
 	 * 乐器设置
 	 */
-	instrument: Instrument
-	dispatchInstrument: Dispatch<Instrument>
+	instrument: StringsInstrument
+	dispatchInstrument: Dispatch<StringsInstrument>
 	/**
 	 *
 	 */
@@ -176,9 +176,9 @@ export const BoardProvider: FC = (props) => {
 		OPTIONS_KEY,
 		defaultBoardOptions
 	)
-	const [instrument, dispatchInstrument] = useStore<Instrument>(
-		INSTRUMENT_KEY,
-		player.getInstrument()
+	const [instrument, dispatchInstrument] = useStore<StringsInstrument>(
+		INSTRUMENT_STRINGS_KEY,
+		player.getInstrument() as StringsInstrument
 	)
 	const [instrumentKeyboard, dispatchInstrumentKeyboard] = useStore<InstrumentKeyboardKey>(
 		INSTRUMENT_KEYBOARD_KEY,

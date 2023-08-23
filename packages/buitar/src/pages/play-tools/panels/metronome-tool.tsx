@@ -3,12 +3,13 @@ import * as Tone from 'tone'
 import { RangeSlider, RadioSelector } from '@/components/ui'
 import { Icon } from '@/components/icon'
 import { waitAudioContext } from '@/utils/audio-play'
+import { useDrumBoardContext } from '@/components/drum-board/drum-provider'
 import cx from 'classnames'
 import toolsStyles from '../play-tools.module.scss'
 import styles from './metronome-tool.module.scss'
 
 export const Metronome: FC = () => {
-	const player = window.drumPlayer
+	const { player, instrument } = useDrumBoardContext()
 	const [metronomeBeat, setMetronomeBeat] = useState(4) // 拍子
 	const [metronomeNote, setMetronomeNote] = useState(4) // 小节
 	const [metronomeBpm, setMetronomeBpm] = useState(60) // 拍速
@@ -22,7 +23,8 @@ export const Metronome: FC = () => {
 	useEffect(() => {
 		player.dispatchInstrument('metronome')
 		return () => {
-			player.dispatchInstrument('drum')
+			// 销毁页面重置drum
+			player.dispatchInstrument(instrument || 'drum')
 		}
 	}, [])
 
@@ -119,7 +121,10 @@ export const Metronome: FC = () => {
 			</div>
 
 			<div className={styles['metronome-info']}>
-				<div className={cx('primary-button', styles['metronome-info-item'])}> Tempo {metronomeBpm} </div>
+				<div className={cx('primary-button', styles['metronome-info-item'])}>
+					{' '}
+					Tempo {metronomeBpm}{' '}
+				</div>
 				<div className={cx('primary-button', styles['metronome-info-item'])}>
 					{metronomeBeat} / {metronomeNote}
 				</div>

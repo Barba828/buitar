@@ -1,4 +1,4 @@
-import { Instrument } from './instrument.type'
+import { Instrument, PercussionInstrument, StringsInstrument } from './instrument.type'
 
 /**
  * 由于ogg格式在Safari中有部分兼容问题，采用mp3格式
@@ -257,15 +257,18 @@ const instrumentConfig: Record<Instrument, Record<string, string>> = {
 }
 
 const instrumentType: Record<string, Instrument[]> = {
-	samplers: [
+	// 弦乐
+	strings: [
 		'bass-electric',
 		'guitar-acoustic',
 		'guitar-electric',
 		'guitar-nylon',
 		'piano',
 		'ukulele',
-	],
-	players: ['drum', 'drum-acounstic', 'drum-electronic', 'metronome'],
+		'default',
+	] as StringsInstrument[],
+	// 打击乐
+	percussion: ['drum', 'drum-acounstic', 'drum-electronic', 'metronome'] as PercussionInstrument[],
 }
 
 export { instrumentConfig, instrumentType }
