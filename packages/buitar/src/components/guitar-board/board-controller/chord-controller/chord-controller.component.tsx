@@ -9,21 +9,36 @@ import { ControllerList, ControllerListProps } from '@/components/controller'
 import cx from 'classnames'
 
 import styles from './chord-controller.module.scss'
+import { Link } from 'react-router-dom'
+import { useRouteFind } from '@/utils/hooks/use-routers'
 
 export const ChordController: FC = (props) => {
 	const [tabIndex, setTabIndex] = useState(0)
+	const { taps } = useBoardContext()
+	const chordAnalyzerRoute = useRouteFind('ChordAnalyzer')
 
 	return (
 		<>
-			<TabSwitch
-				className={cx(styles['chord-tab'])}
-				values={chordControllConfig}
-				defaultValue={chordControllConfig[tabIndex]}
-				onChange={(value, index) => {
-					setTabIndex(index)
-				}}
-				renderItem={(item) => item.name_zh}
-			/>
+			<div className={styles['chord-switch']}>
+				<TabSwitch
+					className={cx(styles['chord-tab'])}
+					values={chordControllConfig}
+					defaultValue={chordControllConfig[tabIndex]}
+					onChange={(value, index) => {
+						setTabIndex(index)
+					}}
+					renderItem={(item) => item.name_zh}
+				/>
+				{taps.length > 0 && (
+					<Link
+						to={chordAnalyzerRoute.path}
+						state={{ taps }}
+						className={cx('primary-button', styles['chord-switch-item'])}
+					>
+						前往编辑
+					</Link>
+				)}
+			</div>
 			{tabIndex === 0 ? (
 				<ChordControllerInner>
 					<ChordNumPickerController {...props} />
@@ -121,11 +136,7 @@ export const ChordTagPicker: FC<{ onChange(tag: string): void; tag?: string }> =
 					<div
 						key={tagItem}
 						onClick={() => onChange(tagItem)}
-						className={cx(
-							'primary-button',
-							styles['tags-item'],
-							tag === tagItem && 'touch-yellow'
-						)}
+						className={cx('primary-button', styles['tags-item'], tag === tagItem && 'touch-yellow')}
 					>
 						{tagItem}
 					</div>
@@ -194,7 +205,7 @@ const ChordPickerController: FC<ControllerListProps<Chord>> = ({ ...props }) => 
 			{...props}
 			list={guitarBoardOption.chords || []}
 			onClickItem={handleClick}
-			renderListItem={(item) => <DegreeChordItem item={item} isSharpSemitone={isSharpSemitone}/>}
+			renderListItem={(item) => <DegreeChordItem item={item} isSharpSemitone={isSharpSemitone} />}
 			checkedItem={(item) => item.chord === chord}
 		/>
 	)

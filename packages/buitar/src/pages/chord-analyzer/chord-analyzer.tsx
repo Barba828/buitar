@@ -17,18 +17,23 @@ import { getBoardChordName } from '@/components/guitar-board/board-controller/ch
 import cx from 'classnames'
 
 import styles from './chord-analyzer.module.scss'
+import { useLocation } from 'react-router-dom'
 
 export const ChordAnalyzer = () => {
 	const intro = usePagesIntro()
 	const [chordTypes, setChordTypes] = useState<ChordType[]>([])
 	const { menus } = useConfigContext()
-	const { clearTaps } = useBoardContext()
+	const { clearTaps, setTaps } = useBoardContext()
+	const { state } = useLocation()
 
 	useEffect(() => {
-		return () => {
-			clearTaps()
+		// 初始化 来自路由参数的taps
+		if (state.taps) {
+			setTaps(state.taps)
 		}
-	}, [])
+	}, [state])
+
+	useEffect(() => () => clearTaps(), [])
 
 	const handleChangeTaps = useCallback((taps: Point[]) => {
 		const notes = taps
@@ -42,7 +47,7 @@ export const ChordAnalyzer = () => {
 	return (
 		<>
 			{intro}
-			{menus.board_setting && <BoardOptionsController extendItem={false}/>}
+			{menus.board_setting && <BoardOptionsController extendItem={false} />}
 			<TapedGuitarBoard onChange={handleChangeTaps} />
 			{chordTypes && <TapedChordCard chordTypes={chordTypes} />}
 		</>
@@ -103,7 +108,7 @@ const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultCh
 		const temp = { ...chordTypes[0] }
 		chordTypes[0] = chordTypes[index]
 		chordTypes[index] = temp
-		
+
 		setChordTypes([...chordTypes])
 	}
 

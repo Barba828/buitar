@@ -219,12 +219,13 @@ export const instrumentKeyboardConfig: Record<
 		baseFret: 17, // 0~16品
 		baseLevel: 2, // 基础音高 E2
 		baseTone: ['E', 'A', 'D', 'G', 'B', 'E'], // 0 品调音
+		chordOver: false
 	},
 	ukulele: {
 		key: 'ukulele',
 		name: '尤克里里',
 		baseFret: 17, // 0~16品
-		baseTone: ['G4', 'C4', 'E4', 'A4'], // 0 品调音
+		baseTone: ['G4', 'C4', 'E4', 'A4'], // 0 品绝对调音，不需要 baseLevel
 		chordOver: true, // 需要带转位和弦
 	},
 	bass: {
@@ -233,6 +234,7 @@ export const instrumentKeyboardConfig: Record<
 		baseFret: 17, // 0~16品
 		baseLevel: 1, // 基础音高 E2
 		baseTone: ['E', 'A', 'D', 'G'], // 0 品调音
+		chordOver: false
 	},
 }
 

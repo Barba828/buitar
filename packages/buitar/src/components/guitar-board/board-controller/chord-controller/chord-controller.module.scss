@@ -46,6 +46,20 @@
 	}
 }
 
+.chord-switch {
+	display: flex;
+	align-items: center;
+	.chord-switch-item {
+		height: calc($btn-size * 0.8);
+		width: calc($btn-size * 2);
+		border-radius: calc($btn-margin * 2);
+		font-size: $font-12;
+		font-weight: bold;
+		opacity: 0.8;
+		@include flex-center;
+	}
+}
+
 .chord-item {
 	padding: 2px;
 	white-space: nowrap;
@@ -92,5 +106,5 @@
 }
 
 .chord-type-tabs {
-	width: 98%
+	width: 98%;
 }

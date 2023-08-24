@@ -17,11 +17,7 @@ export const GuitarTableture: FC = () => {
 		[tabList]
 	)
 
-	useEffect(() => {
-		return () => {
-			clearTaps()
-		}
-	}, [])
+	useEffect(() => () => clearTaps(), [])
 
 	return (
 		<>

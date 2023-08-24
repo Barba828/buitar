@@ -41,12 +41,8 @@ export const ChordPlayer = () => {
 		}
 	}, [chordTap])
 
-	useEffect(() => {
-		return () => {
-			clearTaps()
-		}
-	}, [])
-	
+	useEffect(() => () => clearTaps(), [])
+
 	return (
 		<>
 			{intro}

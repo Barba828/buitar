@@ -317,9 +317,9 @@ const transChordTaps = (
 		const grades = keyboard[stringIndex]
 		grades.forEach((point) => {
 			if (chords.includes(point.toneSchema.note)) {
-				// 若和其他按位品位不超过4，或者该品是0品，则加入指位
+				// 若和「其他非0品位的按位」品位差不超过4，或者「该品」是0品，则加入指位
 				if (
-					taps.every((tap) => Math.abs(tap.grade - point.grade) < fingerSpan) ||
+					taps.every((tap) => tap.grade === 0 || Math.abs(tap.grade - point.grade) < fingerSpan) ||
 					point.grade === 0
 				) {
 					findNextString(stringIndex + 1, [...taps, point], allTaps)

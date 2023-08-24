@@ -70,16 +70,10 @@ const PcHome = () => {
 			</p>
 
 			<div className={styles.links}>
-				<Link
-					to={ChordLibrary.path}
-					className={cx('primary-button', styles['links-button'])}
-				>
+				<Link to={ChordLibrary.path} className={cx('primary-button', styles['links-button'])}>
 					先从顺阶和弦开始
 				</Link>
-				<Link
-					to={ChordAnalyzer.path}
-					className={cx('primary-button', styles['links-button'])}
-				>
+				<Link to={ChordAnalyzer.path} className={cx('primary-button', styles['links-button'])}>
 					定义我的和弦
 				</Link>
 			</div>
@@ -118,9 +112,7 @@ const Example = () => {
 		setChordTaps(GChordTaps)
 		setChordTap(GChordTaps[0])
 		setTaps(GChordTaps[0].chordTaps)
-		return () => {
-			clearTaps()
-		}
+		return () => clearTaps()
 	}, [])
 	return (
 		<>

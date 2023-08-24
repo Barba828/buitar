@@ -17,6 +17,7 @@ import { Board, BoardChord, BoardOption, Point, Tone } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
 import { useStore } from '@/utils/hooks/use-store'
 import { COLLECTIONS_KEY, CollectionMapType } from '@/pages/collections/collections.config'
+import { toast } from '@/components'
 
 /**
  * 吉他指板默认配置
@@ -211,7 +212,9 @@ export const BoardProvider: FC = (props) => {
 
 	// 切换乐器音色：加载乐器音源
 	useEffect(() => {
-		player.dispatchInstrument(instrument)
+		player.dispatchInstrument(instrument).then(()=>{
+			toast('音色加载完成')
+		})
 	}, [instrument])
 
 	// 切换乐器指板：更新guitar实例

@@ -1,3 +1,4 @@
+import { toast } from '@/components'
 import { INSTRUMENT_PERCUSSION_KEY } from '@/pages/settings/config/controller.config'
 import { useStore } from '@/utils/hooks/use-store'
 import { DrumPlayer } from '@buitar/tone-player'
@@ -24,7 +25,9 @@ export const DrumProvider: FC = (props) => {
 
 	// 切换乐器音色：加载乐器音源
 	useEffect(() => {
-		player.dispatchInstrument(instrument)
+		player.dispatchInstrument(instrument).then(()=>{
+			toast('音色加载完成')
+		})
 	}, [instrument])
 
 	const value = {
