@@ -31,7 +31,7 @@ jobs:
           npm install pnpm -g
           pnpm install --no-frozen-lockfile
           pnpm build
-          cd /packages/buitar
+          cd packages/buitar
           pnpm build:ghpages
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
