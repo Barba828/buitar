@@ -18,6 +18,7 @@ import { FifthCircleTool } from './play-tools/panels/fifth-circle-tool'
 import { Metronome } from './play-tools/panels/metronome-tool'
 
 import { SettingsPage } from './settings'
+import { NotFound } from './not-found'
 
 export const baseUrl = import.meta.env.BASE_URL || '/buitar/'
 
@@ -169,6 +170,13 @@ export const routeConfig: Array<RouteType> = [
 		path: `${baseUrl}settings`,
 		type: 'menu',
 		Component: SettingsPage,
+	},
+	{
+		name: '404',
+		id: 'NotFound',
+		path: `${baseUrl}*`,
+		type:'',
+		Component: NotFound,
 	},
 ]
 

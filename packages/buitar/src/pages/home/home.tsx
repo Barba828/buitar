@@ -25,7 +25,7 @@ const MobileHome = () => {
 	return (
 		<div className={cx(styles['menu-container'])}>
 			{routeConfig
-				.filter((route) => route.id !== 'Home')
+				.filter((route) => route.type === 'menu')
 				.map((route) => {
 					return route.children ? (
 						<div className={cx(styles['sub-route-wrap'])} key={route.path}>
