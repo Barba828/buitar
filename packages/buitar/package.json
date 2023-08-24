@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
+		"build:ghpages": "BASE_URL=/buitar/ vite build",
 		"preview": "vite preview",
 		"generate-pwa-assets": "pwa-assets-generator",
 		"test": "echo \"Error: no test specified\" && exit 1"

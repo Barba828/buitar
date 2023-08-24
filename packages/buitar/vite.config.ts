@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 import { VitePWA as pwa } from 'vite-plugin-pwa'
 import { viteStaticCopy as copy } from 'vite-plugin-static-copy'
 
-const baseUrl = '/buitar/'
+const baseUrl = process.env.BASE_URL || '/'
 
 /**
  * https://cn.vitejs.dev/config/

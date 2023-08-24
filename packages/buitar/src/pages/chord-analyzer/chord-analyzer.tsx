@@ -3,7 +3,6 @@ import {
 	GuitarBoard,
 	ChordCard,
 	useBoardContext,
-	BoardController,
 	DetailCard,
 	BoardOptionsController,
 } from '@/components/guitar-board'
@@ -28,7 +27,7 @@ export const ChordAnalyzer = () => {
 
 	useEffect(() => {
 		// 初始化 来自路由参数的taps
-		if (state.taps) {
+		if (state && state.taps) {
 			setTaps(state.taps)
 		}
 	}, [state])

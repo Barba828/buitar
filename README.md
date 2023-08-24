@@ -51,11 +51,11 @@ GitHub Pages[前往体验](https://barba828.github.io/buitar/)
 ## 开发
 
 ```sh
-pnpm i
-
-# 本地开发(localhost:8282)
-pnpm dev
+pnpm install
 
 # 构建
 pnpm build
+
+# 本地开发(localhost:8282)
+pnpm dev
 ```
