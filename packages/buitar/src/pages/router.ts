@@ -16,6 +16,7 @@ import { SequencerPlayer } from './sequencer-player'
 import { PlayToolsHome } from './play-tools'
 import { FifthCircleTool } from './play-tools/panels/fifth-circle-tool'
 import { Metronome } from './play-tools/panels/metronome-tool'
+import { IntervalList } from './play-tools/panels/interval-list-tool'
 
 import { SettingsPage } from './settings'
 import { NotFound } from './not-found'
@@ -139,15 +140,15 @@ export const routeConfig: Array<RouteType> = [
 					back: true,
 				},
 			},
-			// {
-			// 	name: '和弦图生成',
-			// 	id: 'PlayToolsSvgSave',
-			// 	path: `${baseUrl}tools/svg-save`,
-			// 	Component: Metronome,
-			// 	meta: {
-			// 		back: true,
-			// 	},
-			// },
+			{
+				name: '音程关系',
+				id: 'PlayToolsIntervalList',
+				path: `${baseUrl}tools/interval-list`,
+				Component: IntervalList,
+				meta: {
+					back: true,
+				},
+			},
 		],
 	},
 	{

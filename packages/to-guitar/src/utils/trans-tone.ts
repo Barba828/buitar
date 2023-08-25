@@ -7,6 +7,7 @@ import type {
 	NoteFalling,
 	IntervalFalling,
 	Pitch,
+	ModeType,
 } from '../interface'
 
 // overload
@@ -74,11 +75,24 @@ function transToneNum(x: Tone | Tone[]) {
  * @param x
  */
 function transToneOffset(x: Tone, offset: number = 0) {
-	if (offset === 0) {
-		return x
-	}
 	const base = transToneNum(x)
-	return NOTE_LIST[(base + offset) % NOTE_LIST.length]
+	let index = (base + offset) % NOTE_LIST.length
+	if (index < 0) {
+		index += NOTE_LIST.length
+	}
+	return NOTE_LIST[index]
+}
+
+/**
+ * Tone切换关系大小调
+ * @param x
+ */
+function transToneMode(x: Tone, toMinor: boolean = true) {
+	const note = transToneOffset(x, toMinor ? -3 : 3)
+	return {
+		tone: transTone(note),
+		mode: toMinor ? 'minor' : ('major' as ModeType),
+	}
 }
 
 const isNote = (x: any): x is Note => {
@@ -97,4 +111,4 @@ const isIntervalFalling = (x: any): x is IntervalFalling => {
 	return INTERVAL_FALLING_LIST.includes(x)
 }
 
-export { transTone, transNote, transToneNum, transToneOffset }
+export { transTone, transNote, transToneNum, transToneOffset, transToneMode }

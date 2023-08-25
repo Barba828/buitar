@@ -158,8 +158,7 @@ const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultCh
 			{!isMobile && (
 				<FifthsCircle
 					size={280}
-					thin={70}
-					minor={false}
+					thin={50}
 					onClick={handleClickFifths}
 					className={cx('primary-button', styles['fifth-circle'])}
 				/>

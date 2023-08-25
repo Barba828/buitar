@@ -16,6 +16,18 @@
 	}
 }
 
+.tableture-chord-wrap {
+	display: flex;
+	.tableture-chord-title {
+		height: auto;
+		min-width: calc($btn-size * 2);
+		@include flex-center();
+	}
+	.tableture-chord-list {
+		display: flex;
+	}
+}
+
 .tableture-list-options {
 	display: flex;
 	.tableture-options-mode {

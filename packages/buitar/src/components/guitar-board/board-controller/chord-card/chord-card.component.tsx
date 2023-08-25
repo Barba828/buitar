@@ -1,15 +1,14 @@
-import React, { FC, useMemo, useState, memo, useCallback, useRef } from 'react'
+import React, { FC, useMemo, useState, memo, useCallback } from 'react'
 import { useBoardContext } from '../../board-provider'
 import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
 import { Icon } from '@/components/icon'
 import { Portal, getBoardOptionsNote } from '@/components'
-import { BoardChord, NOTE_LIST, Point, Tone, getDegreeTag, transInterval } from '@buitar/to-guitar'
+import { BoardChord, NOTE_LIST, Point, getDegreeTag, transInterval } from '@buitar/to-guitar'
 import { CardCollector } from './card-collector.component'
 import { CardDownloader } from './card-downloader.component'
 import { getBoardChordName } from './utils'
 import cx from 'classnames'
 import styles from './chord-card.module.scss'
-import { downloadSVG, downloadSvgToImg } from '@/utils/download'
 
 export const ChordCard: FC<{
 	taps: Point[]
