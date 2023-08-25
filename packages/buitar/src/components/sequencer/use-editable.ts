@@ -35,14 +35,14 @@ export const useEditable = ({
 
 	const start = useRef<[number, number]>([0, 0]) // 音序图左上起始坐标
 	const offset = useRef<[number, number]>([0, 0]) // 拖拽时，鼠标锚点相对于音序条位置
-	const dragable = useRef<false | 'drag' | 'resize'>(false) // 拖拽触发类型
+	const dragable = useRef<false | 'drag' | 'resize' | 'click'>(false) // 拖拽触发类型
 	/**
-	 * 幽灵条原dom参数 [keyIndex, index, block[0], block[1]]
+	 * 幽灵条原音序条dom参数 [keyIndex, index, block[0], block[1]]
 	 */
 	const preTargetData = useRef<[number, number, number, number]>([-1, -1, 0, 0])
 	/**
 	 * 幽灵条dom参数
-	 * yIndex, xIndex, length -> 纵轴位置，横轴位置，长度
+	 * yIndex, xIndex, length -> 纵轴位置，横轴位置，长度（preTargetData：yIndex对应keyIndex，xIndex对应block[0]）
 	 */
 	const [ghost, setGhost] = useState<[number, number, number]>([-1, 0, 0])
 
@@ -84,6 +84,11 @@ export const useEditable = ({
 		const yIndex = Math.floor((clientY - y) / itemSizeY)
 		const zIndex = Math.floor((clientX - x - offsetX) / itemSizeX)
 
+		// 幽灵条位置相对原音序条改变 -> 拖拽
+		if (yIndex !== preTargetData.current[0] || zIndex !== preTargetData.current[2]) {
+			dragable.current = 'drag'
+		}
+
 		// 更新幽灵条位置
 		setGhost([yIndex, zIndex, ghost[2]])
 	}
@@ -116,6 +121,12 @@ export const useEditable = ({
 		if (soundList[Number(preTargetData.current[0])]) {
 			soundList[Number(preTargetData.current[0])].blocks.splice(preTargetData.current[1], 1)
 		}
+		// 点击事件 -> 删除后即返回
+		if (dragable.current === 'click'){
+			setSoundList([...soundList])
+			return
+		}
+
 		// 使用幽灵音序条 -> 生成新音序条
 		const blocks = soundList[ghost[0]].blocks
 		const block: Block = [ghost[1], ghost[1] + ghost[2]] // 例 [2, 4]
@@ -158,7 +169,7 @@ export const useEditable = ({
 	 * 事件处理
 	 */
 	const onMouseMove = (e: DivTouchEvent) => {
-		if (dragable.current === 'drag') {
+		if (dragable.current === 'drag' || dragable.current === 'click') {
 			// drag模式下更新幽灵音序条位置
 			handleDragGhost(e)
 		} else if (dragable.current === 'resize') {
@@ -181,8 +192,8 @@ export const useEditable = ({
 
 		preTargetData.current = [Number(keyIndex), Number(index), block[0], block[1]]
 		if (type === 'active') {
-			// 音序条拖拽
-			dragable.current = 'drag'
+			// 音序条点击｜拖拽
+			dragable.current = 'click'
 
 			// 默认幽灵条属性
 			ghost[2] = block[1] - block[0]

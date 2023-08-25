@@ -6,7 +6,8 @@
 
 **Buitar**，一个基于[tone.js](https://github.com/Tonejs/Tone.js)控制器乐，React绘制UI的吉他学习工具
 
-GitHub Pages[前往体验](https://barba828.github.io/buitar/)
+## 前往体验
+可以选择前往[GitHub Pages](https://barba828.github.io/buitar/)，或者[Vercel](https://buitar.vercel.app/)
 
 - 完善的和弦学习工具集
 - 完备的乐器搭配
@@ -14,13 +15,19 @@ GitHub Pages[前往体验](https://barba828.github.io/buitar/)
 - 灵活使用的吉他指板/键盘指板
 - 趣味无限的音序机
 
-使用的乐器参考[tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments)
-
+### 弦乐
+参考[tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments)
 - 原声吉他
 - 尼龙吉他
 - 电吉他
 - 贝斯
 - 钢琴
+
+### 打击乐
+- 套鼓
+- 原生鼓
+- 电子鼓
+- 节拍器
 
 ## PWA支持（推荐使用）
 
