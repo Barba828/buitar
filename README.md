@@ -9,9 +9,9 @@
 ## 前往体验
 可以选择前往[GitHub Pages](https://barba828.github.io/buitar/)，或者[Vercel](https://buitar.vercel.app/)
 
-- 完善的和弦学习工具集
-- 完备的乐器搭配
-- 自由搭配的和弦进行
+- 完善的和弦学习工具集，基于配置即时生成和弦指位图
+- 完备的乐器搭配，随意切换弦乐乐器
+- 自由搭配的和弦进行，可以在五度圈上任意切换
 - 灵活使用的吉他指板/键盘指板
 - 趣味无限的音序机
 
@@ -22,6 +22,7 @@
 - 电吉他
 - 贝斯
 - 钢琴
+- 尤克里里
 
 ### 打击乐
 - 套鼓
@@ -66,3 +67,5 @@ pnpm build
 # 本地开发(localhost:8282)
 pnpm dev
 ```
+
+## [TODO](./packages/buitar/README.md)
