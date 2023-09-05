@@ -9,20 +9,13 @@ to-guitar.js for Guitar fretboard and chords
 可设置属性包括 调式、音阶、0 品调音、指板品数、调音高度
 可获取属性包括 调式、音阶、和弦类型、顺阶和弦、指板数组
 
-```js
-/**
- * 默认指板
- * @param emit 指板数据修改回调函数
- * @param options 配置
- */
-const board = new Board(emit, options)
-```
-
-基础使用
+### 基础使用
 
 ```js
+import { Board } from '@buitar/to-guitar'
+
 const emit = (board) => {
-	console.log(board)
+	console.log('The board changed', board)
 }
 const options = {
 	mode: 'major',
@@ -33,7 +26,7 @@ const board = new Board(emit, options)
 
 board.setOptions({
 	scale: 'D',
-}) // 更新后会默认执行emit
+})
 ```
 
 ## trans
@@ -41,10 +34,46 @@ board.setOptions({
 吉他数据转换方法
 
 ```js
-transChord //和弦根音 => 和弦
-transChordType //和弦 => 和弦名称 & 类型
-transScale //调式 & 调 => 顺阶音调
-transScaleDegree //调式 & 调 => 顺阶和弦
-transFifthsCircle // 五度圈[]
+import { transChord, transChordTaps } from '@buitar/to-guitar'
+
+// c_minor_chord = 
+// {
+// 	"chord": [ "C", "D#", "G" ],
+// 	"chordType": {
+// 		"tag": "m",
+// 		"name": "minor triad",
+// 		"constitute": [
+// 			"1",
+// 			"3b",
+// 			"5"
+// 		],
+// 		"name_zh": "小三和弦"
+// 	}
+// }
+const c_minor_chord = transChord('C', 'm') // 获取和弦音
+
+// keyboard_taps = [
+// 	{ chordTaps: [...], chordType: {...} },
+// 	...
+// ]
+const keyboard_taps = transChordTaps([ "C", "D#", "G" ]) // 获取和弦吉他指法
+```
+
+### trans功能
+
+```js
+getDegreeTag, //和弦音 => 和弦名称[]
+transInterval, //度数 => 半音程
+transChord, //和弦根音 => 和弦
+transChordType, //和弦 => 和弦名称 & 类型
+transScale, //调式 & 调 => 顺阶音调
+transScaleDegree, //调式 & 调 => 顺阶和弦
+transFifthsCircle, // 五度圈[]
+
+transBoard, // 二维指板数组
+transChordTaps, // 和弦指板位置
+getModeFregTaps, // 获取调式音阶基础指法(上行 & 下行)
+getModeRangeTaps, // 获取指板某范围内某调式音阶
+getTapsOnBoard, // 根据指位获取Taps
 ...
 ```

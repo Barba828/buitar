@@ -71,8 +71,8 @@ export const SlideMenu = () => {
 	})
 	options.push(
 		<div key="clear" className={cx(styles['slide-menu-tab-item'])} onClick={clearStore}>
-			清理
-			<span className={cx(styles['slide-menu-tab-hint'])}>有效解决应用崩溃</span>
+			重置
+			<span className={cx(styles['slide-menu-tab-hint'])}>清理缓存</span>
 		</div>
 	)
 	options.unshift(<div key="seperate" className={styles['seperate']}></div>)

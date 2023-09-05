@@ -153,6 +153,7 @@ export const TapedGuitarBoardTableture = () => {
 			</div>
 			<GuitarBoard onCheckedPoints={handleCheckedPoint} />
 
+			{/* 相关和弦图 */}
 			{chordRenderList.map(
 				({ list, title }) =>
 					list.length > 0 && (

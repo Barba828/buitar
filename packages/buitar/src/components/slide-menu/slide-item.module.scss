@@ -124,7 +124,7 @@ $side-width: 60px;
 			bottom: 0;
 			width: 100%;
 			@media #{$mobileLayout} {
-				display: none;
+				margin-left: -20px;
 			}
 		}
 	}

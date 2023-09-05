@@ -20,6 +20,7 @@
 	display: flex;
 	.tableture-chord-title {
 		height: auto;
+		font-size: $font-12;
 		min-width: calc($btn-size * 2);
 		@include flex-center();
 	}

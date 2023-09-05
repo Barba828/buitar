@@ -15,6 +15,9 @@
 - 灵活使用的吉他指板/键盘指板
 - 趣味无限的音序机
 
+### 和弦转换
+参考[to-guitar](./packages/to-guitar/README.md)
+
 ### 弦乐
 参考[tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments)
 - 原声吉他

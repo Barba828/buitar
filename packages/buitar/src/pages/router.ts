@@ -159,7 +159,7 @@ export const routeConfig: Array<RouteType> = [
 		Component: InstrumentPlayer,
 	},
 	{
-		name: '创造',
+		name: '音序机',
 		id: 'Creation',
 		path: `${baseUrl}creation`,
 		type: 'menu',

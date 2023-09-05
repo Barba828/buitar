@@ -113,7 +113,7 @@ export const BoardInstrumentController: FC<ControllerListProps<StringsInstrument
 					size={props.size === 'small' ? 16 : 30}
 				/>
 				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
-					音色
+					弦乐音色
 				</div>
 			</div>
 		)
