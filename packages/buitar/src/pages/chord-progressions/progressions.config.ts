@@ -1,6 +1,8 @@
 import { chordMap } from '@buitar/to-guitar'
 
+/**和弦所有类型 */
 export const tagList = Array.from(chordMap.values()).map((item) => item.tag)
+/**和弦所有类型 根据度数分类列表（3度/4度/5度 构成音） */
 export const tagTypedList = Array.from(chordMap.values()).reduce((prev: string[][], curr) => {
 	const index = (curr.constitute?.length || 3) - 3
 	if (!prev[index]) {

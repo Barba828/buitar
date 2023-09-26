@@ -243,11 +243,11 @@ const transFifthsCircle = (root: Tone = 'C') => {
 }
 
 export {
-	getDegreeTag,
-	transInterval,
-	transChord,
-	transChordType,
-	transScale,
-	transScaleDegree,
-	transFifthsCircle,
+	getDegreeTag, //和弦音 => 和弦名称[]
+	transInterval, //度数 => 半音程
+	transChord, //和弦根音 => 和弦
+	transChordType, //和弦 => 和弦名称 & 类型
+	transScale, //调式 & 调 => 顺阶音调
+	transScaleDegree, //调式 & 调 => 顺阶和弦
+	transFifthsCircle, // 五度圈[]
 }

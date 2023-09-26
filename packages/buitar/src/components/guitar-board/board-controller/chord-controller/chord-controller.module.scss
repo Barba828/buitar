@@ -94,6 +94,7 @@
 .chord-type {
 	display: flex;
 	flex-wrap: wrap;
+	max-height: calc($btn-size * 6);
 
 	.tags-item {
 		@include flex-center;

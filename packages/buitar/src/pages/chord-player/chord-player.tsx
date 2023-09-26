@@ -65,7 +65,7 @@ const ChordDetail = memo(() => {
 	const title = getBoardChordName(chordTap.chordType, boardOptions)
 
 	return (
-		<div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
+		<div style={{ display: 'flex' }} className='scroll-without-bar'>
 			<ChordCard taps={chordTap?.chordTaps} title={title} size={isMobile ? 120 : 160} />
 			<DetailCard chordType={chordTap.chordType} />
 		</div>

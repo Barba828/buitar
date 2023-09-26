@@ -98,6 +98,7 @@ export const ChordTagPicker: FC<{ onChange(tag: string): void; tag?: string }> =
 }) => {
 	const [list, setList] = useState(tagList)
 	const tabQuery = ['all', '3', '7', '9', 'm', 'maj', 'sus', 'aug']
+	const defaultQuery = '3'
 
 	const handleChangeQuery = useCallback((query: string) => {
 		let tempList = tagList
@@ -124,14 +125,20 @@ export const ChordTagPicker: FC<{ onChange(tag: string): void; tag?: string }> =
 		setList(tempList)
 		return
 	}, [])
+
+	useEffect(() => {
+		handleChangeQuery(defaultQuery)
+	}, [])
+
 	return (
 		<>
 			<TabSwitch
 				className={styles['chord-type-tabs']}
 				values={tabQuery}
+				defaultValue={defaultQuery}
 				onChange={handleChangeQuery}
 			></TabSwitch>
-			<div className={styles['chord-type']}>
+			<div className={cx(styles['chord-type'], 'scroll-without-bar')}>
 				{list.map((tagItem) => (
 					<div
 						key={tagItem}
