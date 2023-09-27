@@ -1,4 +1,4 @@
-import { FC, forwardRef, memo, useMemo } from 'react'
+import { forwardRef, useMemo } from 'react'
 
 export type SvgChordPoint = {
 	/**

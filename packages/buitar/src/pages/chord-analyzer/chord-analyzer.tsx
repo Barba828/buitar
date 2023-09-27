@@ -10,6 +10,7 @@ import { FifthsCircle } from '@/components/fifths-circle'
 import type { Point, Note, ToneSchema, ChordType } from '@buitar/to-guitar'
 import { transChordType } from '@buitar/to-guitar'
 import { AddTextInput } from '@/components/basic'
+import { VexChord } from '@/components/svg-chord'
 import { useConfigContext, usePagesIntro } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
 import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
@@ -153,25 +154,25 @@ const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultCh
 	}
 
 	return (
-		<div className={styles['taped-container']}>
+		<div className={cx(styles['taped-container'], 'scroll-without-bar')}>
 			{/* 五度圈 */}
-			{!isMobile && (
-				<FifthsCircle
-					size={280}
-					thin={50}
-					onClick={handleClickFifths}
-					className={cx('primary-button', styles['fifth-circle'])}
-				/>
-			)}
+			<FifthsCircle
+				size={280}
+				thin={50}
+				onClick={handleClickFifths}
+				className={cx('primary-button', styles['fifth-circle'])}
+			/>
 			{/* 和弦大图卡片 */}
 			<ChordCard
-				size={isMobile ? 160 : 200}
+				size={isMobile ? 120 : 160}
 				className={styles['svg-chord']}
 				taps={taps}
 				title={title}
 			/>
+			{/* 五线音阶卡片 */}
+			<VexChord taps={taps} className={styles['vex-chord']}/>
+			{/* 和弦详细信息 */}
 			<div>
-				{/* 和弦详细信息 */}
 				<DetailCard chordType={checkedChordType} />
 				<div className={styles['type-list']}>
 					{/* 和弦其他over转位和弦信息 */}

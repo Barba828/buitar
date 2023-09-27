@@ -30,6 +30,7 @@
 	},
 	"dependencies": {
 		"@buitar/to-guitar": "workspace:*",
-		"@buitar/tone-player": "workspace:*"
+		"@buitar/tone-player": "workspace:*",
+		"vexflow": "^4.2.3"
 	}
 }

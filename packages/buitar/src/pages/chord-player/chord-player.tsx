@@ -9,6 +9,7 @@ import {
 } from '@/components/guitar-board'
 import { transChordTaps } from '@buitar/to-guitar'
 import { PianoBoard } from '@/components/piano-board'
+import { VexChord } from '@/components/svg-chord'
 import { useConfigContext, usePagesIntro } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
 import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
@@ -65,8 +66,12 @@ const ChordDetail = memo(() => {
 	const title = getBoardChordName(chordTap.chordType, boardOptions)
 
 	return (
-		<div style={{ display: 'flex' }} className='scroll-without-bar'>
+		<div style={{ display: 'flex' }} className="scroll-without-bar">
+			{/* 和弦大图卡片 */}
 			<ChordCard taps={chordTap?.chordTaps} title={title} size={isMobile ? 120 : 160} />
+			{/* 五线音阶卡片 */}
+			<VexChord taps={chordTap?.chordTaps} />
+			{/* 和弦详细信息 */}
 			<DetailCard chordType={chordTap.chordType} />
 		</div>
 	)

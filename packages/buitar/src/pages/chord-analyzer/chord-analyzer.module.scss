@@ -1,17 +1,17 @@
 .taped-container {
 	display: flex;
 	@media #{$mobileLayout} {
-		flex-direction: column;
+		flex-wrap: wrap;
 	}
 	.svg-chord {
-		width: calc($btn-size * 6) !important;
-		height: calc($btn-size * 6) !important;
+		width: calc($btn-size * 5) !important;
+		height: calc($btn-size * 5) !important;
 		margin: $btn-margin !important;
 	}
 
 	.fifth-circle {
-		width: calc($btn-size * 6);
-		height: calc($btn-size * 6);
+		min-width: calc($btn-size * 5);
+		height: calc($btn-size * 5);
 		background: $gray-second !important;
 	}
 
