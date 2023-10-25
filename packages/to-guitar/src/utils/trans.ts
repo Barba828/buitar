@@ -25,16 +25,16 @@ import { transNote, transTone } from './trans-tone'
  * 11 完全十一度 => 17
  * @param interval
  */
-const transInterval = (interval: IntervalAll) => {
-	const match = interval.match(/(\d+)(\D*)/)
+const transInterval = (interval: IntervalAll | Number) => {
+	const match = interval.toString().match(/(\d+)(\D*)/)
 	if (!match) {
 		return 0
 	}
 	const pitchNum = Number(match[1]) // 总度数
 	const semitonesTag = match[2] // 半音标记
 
-	const intervalNum = pitchNum % 7 // 有效度数
-	const size = Math.floor(pitchNum / 7) // 差多少个八度
+	const intervalNum = pitchNum % 8 // 有效度数
+	const size = Math.floor(pitchNum / 8) // 差多少个八度
 	const halfPicth = semitonesTag === '#' ? 1 : semitonesTag === 'b' ? -1 : 0
 
 	const basePitch = intervalMap.get(intervalNum as IntervalNum) || 0
