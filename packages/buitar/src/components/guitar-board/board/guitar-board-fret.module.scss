@@ -10,7 +10,7 @@
 	width: calc($btn-size * 1.5) !important;
 	height: calc($btn-size * 0.8) !important;
 	border-radius: calc($btn-size * 0.4) !important;
-	border-bottom: calc($btn-margin * 2) solid $gray-02;
+	border-bottom: calc($btn-margin * 2) solid rgba($gray-02, 0.8);
 
 	&.empty-point {
 		opacity: 0;

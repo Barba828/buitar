@@ -8,7 +8,7 @@ export type MenuKeys = 'board_setting' | 'instrument_setting'
 
 export const menuConfig: MenuItem[] = [
 	{
-		name: '显示指板设置',
+		name: '快捷指板设置',
 		name_en: 'Board setting',
 		key: 'board_setting',
 	},

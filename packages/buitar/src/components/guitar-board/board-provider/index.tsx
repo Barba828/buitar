@@ -185,7 +185,7 @@ export const BoardProvider: FC = (props) => {
 		INSTRUMENT_KEYBOARD_KEY,
 		'guitar'
 	)
-	const [boardTheme, dispatchBoardTheme] = useStore<GuitarBoardThemeKey>(BOARD_THEME_KEY, 'default')
+	const [boardTheme, dispatchBoardTheme] = useStore<GuitarBoardThemeKey>(BOARD_THEME_KEY, 'fender')
 	let [collection, dispatchCollection] = useStore<CollectionMapType>(
 		COLLECTIONS_KEY,
 		defaultCollection

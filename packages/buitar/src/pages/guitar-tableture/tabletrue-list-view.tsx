@@ -1,17 +1,36 @@
-import { useState, useEffect } from "react"
-import { ModeType, Pitch, Point, getModeRangeTaps,  } from "@buitar/to-guitar"
-import { GuitarBoard, Icon, BoardProvider, useBoardContext, getBoardOptionsList, ToneModeController, RangeSliderProps, RangeSlider } from "@/components"
-import { useDebounce } from "@/utils/hooks/use-debouce"
-import { useStore } from "@/utils/hooks/use-store"
+import { useState, useEffect } from 'react'
+import { ModeType, Pitch, Point, getModeRangeTaps } from '@buitar/to-guitar'
+import {
+	GuitarBoard,
+	Icon,
+	BoardProvider,
+	useBoardContext,
+	getBoardOptionsList,
+	ToneModeController,
+	RangeSliderProps,
+	RangeSlider,
+} from '@/components'
+import { useDebounce } from '@/utils/hooks/use-debouce'
+import { useStore } from '@/utils/hooks/use-store'
 import cx from 'classnames'
 import styles from './guitar-tableture.module.scss'
 
 const TABLETURES_KEY = 'tabletures'
+// 新增默认指板配置
 const TABLETRUE_CONFIG: TabletrueItemConfig = {
-	range: [0, 3],
-	mode: 'minor-pentatonic',
+	range: [5, 8],
+	mode: 'major-pentatonic',
 	root: 0,
 }
+// 默认指板配置列表
+const DEFAULT_TABLETRUE_CONFIGS: TabletrueItemConfig[] = [
+	TABLETRUE_CONFIG,
+	{
+		range: [4, 8],
+		mode: 'major-pentatonic',
+		root: 7,
+	},
+]
 
 /**
  * 指型列表展示
@@ -19,7 +38,7 @@ const TABLETRUE_CONFIG: TabletrueItemConfig = {
  */
 export const GuitarBoardTabletureList = () => {
 	const [tabletrues, dispatchTabletrues] = useStore<TabletrueItemConfig[]>(TABLETURES_KEY, [
-		TABLETRUE_CONFIG,
+		...DEFAULT_TABLETRUE_CONFIGS,
 	])
 	const [isEdit, setIsEdit] = useState<boolean>(false) // 编辑
 
