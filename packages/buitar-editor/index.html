@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Buitar Editor</title>
+	</head>
+	<body style="background-color: rgb(63, 67, 69); margin: 0; color: #f2f2f2">
+		<div id="root">
+			<div id="editor-container">
+				<textarea id="editor"></textarea>
+				<div id="warnings"></div>
+			</div>
+			<div id="paper"></div>
+		</div>
+		<script type="module" src="/src/main.ts"></script>
+
+		<style>
+			#root {
+				display: flex;
+				height: 100vh;
+			}
+			#root > div {
+				flex: 1;
+			}
+			#editor-container {
+				display: flex;
+				flex-direction: column;
+			}
+			#editor {
+				flex: 1;
+				border-radius: 6px;
+				background-color: rgb(73, 78, 80);
+				color: #f2f2f2;
+				resize: none;
+				width: -webkit-fill-available;
+				margin: 20px 12px 6px;
+				padding: 10px;
+				border: none;
+				transition: background-color 0.2s linear;
+			}
+			#editor:focus {
+				outline: none;
+				background-color: rgb(86, 92, 94);
+				border: none;
+			}
+
+			#paper {
+				padding: 0 !important;
+				overflow-y: scroll !important;
+			}
+
+			#warnings {
+				height: 60px;
+				border-radius: 6px;
+				background-color: rgb(73, 78, 80);
+				margin: 0px 12px 10px;
+				padding: 10px;
+				font-size: 12px;
+				overflow-y: scroll;
+			}
+		</style>
+	</body>
+</html>
