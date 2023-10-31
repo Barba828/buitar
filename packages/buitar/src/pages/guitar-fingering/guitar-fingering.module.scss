@@ -1,37 +1,37 @@
-.tableture-tab {
+.fingering-tab {
 	width: calc($btn-size * 8);
 }
 
-.tableture-tab-wrap {
+.fingering-tab-wrap {
 	display: flex;
-	.tableture-lock {
+	.fingering-lock {
 		height: calc($btn-size * 0.8);
 		width: calc($btn-size * 0.8);
 		border-radius: calc($btn-margin * 2);
 		opacity: 0.4;
 		@include flex-center
 	}
-	.tableture-locked {
+	.fingering-locked {
 		opacity: 1;
 	}
 }
 
-.tableture-chord-wrap {
+.fingering-chord-wrap {
 	display: flex;
-	.tableture-chord-title {
+	.fingering-chord-title {
 		height: auto;
 		font-size: $font-12;
 		min-width: calc($btn-size * 2);
 		@include flex-center();
 	}
-	.tableture-chord-list {
+	.fingering-chord-list {
 		display: flex;
 	}
 }
 
-.tableture-list-options {
+.fingering-list-options {
 	display: flex;
-	.tableture-options-mode {
+	.fingering-options-mode {
 		@include flex-center();
 		font-size: 20px;
 		position: relative;
@@ -46,40 +46,40 @@
 		}
 	}
 
-	.tableture-options-range {
+	.fingering-options-range {
 		@include flex-center();
 		font-size: 12px;
 		position: relative;
 		width: calc($btn-size * 4);
 	}
 
-	.tableture-options-button {
+	.fingering-options-button {
 		@include flex-center();
 		font-size: 20px;
 	}
 
-	.tableture-options-button__active {
+	.fingering-options-button__active {
 		background: $yellow-primary;
 		opacity: 1;
 	}
 }
 
-.tableture-list {
+.fingering-list {
 	display: flex;
     flex-direction: row;
 	flex-wrap: wrap;
 }
-.tableture-list__edit {
+.fingering-list__edit {
     flex-direction: column;
 }
 
 
-.tableture-list-item {
+.fingering-list-item {
 	margin-bottom: calc($btn-size * 0.2);
 	margin-right: calc($btn-size * 0.2);
 }
 
-.tableture-list-button {
+.fingering-list-button {
 	@include flex-center();
 	font-size: 20px;
 	width: calc($btn-size * 1.5) !important;

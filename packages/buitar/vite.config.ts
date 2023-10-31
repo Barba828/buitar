@@ -67,8 +67,8 @@ export default defineConfig({
 					},
 					{
 						name: '吉他指型',
-						short_name: 'Guitar Tableture',
-						url: `${baseUrl}tableture`,
+						short_name: 'Guitar Fingering',
+						url: `${baseUrl}fingering`,
 					},
 				],
 			},

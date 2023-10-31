@@ -4,10 +4,10 @@ import { HomePage } from './home'
 import { ChordAnalyzer } from './chord-analyzer'
 import { ChordPlayer } from './chord-player'
 import {
-	GuitarBoardTabletureList,
-	GuitarTableture,
-	TapedGuitarBoardTableture,
-} from './guitar-tableture'
+	GuitarBoardFingeringList,
+	GuitarFingering,
+	TapedGuitarBoardFingering,
+} from './guitar-fingering'
 import { ChordProgressions } from './chord-progressions'
 import { Collections, CagedCollection, StorageCollection } from './collections'
 import { InstrumentPlayer } from './instrument-player'
@@ -58,29 +58,29 @@ export const routeConfig: Array<RouteType> = [
 	},
 	{
 		name: '吉他指型',
-		id: 'GuitarTableture',
-		path: `${baseUrl}tableture`,
+		id: 'GuitarFingering',
+		path: `${baseUrl}fingering`,
 		type: 'menu',
-		Component: GuitarTableture,
+		Component: GuitarFingering,
 		children: [
 			{
 				name: '',
-				id: 'GuitarTabletureSingleHome',
-				path: `${baseUrl}tableture`,
-				Component: TapedGuitarBoardTableture,
+				id: 'GuitarFingeringSingleHome',
+				path: `${baseUrl}fingering`,
+				Component: TapedGuitarBoardFingering,
 			},
 			{
 				name: '指板分析',
-				id: 'GuitarTabletureSingle',
-				path: `${baseUrl}tableture/single`,
-				Component: TapedGuitarBoardTableture,
+				id: 'GuitarFingeringSingle',
+				path: `${baseUrl}fingering/single`,
+				Component: TapedGuitarBoardFingering,
 				meta: {},
 			},
 			{
 				name: '固定区域指型', // 多指型
-				id: 'GuitarTabletureMulti',
-				path: `${baseUrl}tableture/multi`,
-				Component: GuitarBoardTabletureList,
+				id: 'GuitarFingeringMulti',
+				path: `${baseUrl}fingering/multi`,
+				Component: GuitarBoardFingeringList,
 			},
 		],
 	},

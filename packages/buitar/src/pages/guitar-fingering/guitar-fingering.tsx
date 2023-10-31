@@ -4,12 +4,12 @@ import { TabSwitch, usePagesIntro } from '@/components'
 import { Link, Outlet } from 'react-router-dom'
 import { useRouteFind, useRouteMatch } from '@/utils/hooks/use-routers'
 import cx from 'classnames'
-import styles from './guitar-tableture.module.scss'
+import styles from './guitar-fingering.module.scss'
 
-export const GuitarTableture: FC = () => {
+export const GuitarFingering: FC = () => {
 	const intro = usePagesIntro()
 	const { clearTaps } = useBoardContext()
-	const { children = [] } = useRouteFind('GuitarTableture')
+	const { children = [] } = useRouteFind('GuitarFingering')
 	const { path } = useRouteMatch()
 	const tabList = useMemo(() => children.filter((route) => route.name), [children])
 	const defaultTab = useMemo(
@@ -23,7 +23,7 @@ export const GuitarTableture: FC = () => {
 		<>
 			{intro}
 			<TabSwitch
-				className={cx(styles['tableture-tab'])}
+				className={cx(styles['fingering-tab'])}
 				values={tabList}
 				defaultValue={defaultTab}
 				renderItem={(route) => (

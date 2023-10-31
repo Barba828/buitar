@@ -21,13 +21,13 @@ import {
 } from '@buitar/to-guitar'
 import cx from 'classnames'
 
-import styles from './guitar-tableture.module.scss'
+import styles from './guitar-fingering.module.scss'
 import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
 /**
  * 点击获取该位置的任一指型
  * @returns
  */
-export const TapedGuitarBoardTableture = () => {
+export const TapedGuitarBoardFingering = () => {
 	const tabList = [
 		{
 			key: 'down',
@@ -132,19 +132,19 @@ export const TapedGuitarBoardTableture = () => {
 	return (
 		<>
 			<ToneModeController mode={guitar.board.mode} onClick={handleCheckedMode} />
-			<div className={cx(styles['tableture-tab-wrap'])}>
+			<div className={cx(styles['fingering-tab-wrap'])}>
 				<TabSwitch
 					values={tabList}
 					defaultValue={tabList[0]}
 					onChange={(tab) => setTab(tab)}
 					renderItem={(tab) => tab.label}
-					className={cx(styles['tableture-tab'])}
+					className={cx(styles['fingering-tab'])}
 				/>
 				<div
 					className={cx(
 						'primary-button',
-						styles['tableture-lock'],
-						locked && styles['tableture-locked']
+						styles['fingering-lock'],
+						locked && styles['fingering-locked']
 					)}
 					onClick={() => setLocked(!locked)}
 				>
@@ -157,9 +157,9 @@ export const TapedGuitarBoardTableture = () => {
 			{chordRenderList.map(
 				({ list, title }) =>
 					list.length > 0 && (
-						<div className={cx(styles['tableture-chord-wrap'])} key={title}>
-							<div className={cx(styles['tableture-chord-title'], 'primary-button')}>{title}</div>
-							<div className={cx(styles['tableture-chord-list'], 'scroll-without-bar')}>
+						<div className={cx(styles['fingering-chord-wrap'])} key={title}>
+							<div className={cx(styles['fingering-chord-title'], 'primary-button')}>{title}</div>
+							<div className={cx(styles['fingering-chord-list'], 'scroll-without-bar')}>
 								{list.map((tapItem, index) => (
 									<ChordCard
 										key={index}

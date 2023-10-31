@@ -13,9 +13,9 @@ import {
 import { useDebounce } from '@/utils/hooks/use-debouce'
 import { useStore } from '@/utils/hooks/use-store'
 import cx from 'classnames'
-import styles from './guitar-tableture.module.scss'
+import styles from './guitar-fingering.module.scss'
 
-const TABLETURES_KEY = 'tabletures'
+const TABLETURES_KEY = 'fingerings'
 // 新增默认指板配置
 const TABLETRUE_CONFIG: TabletrueItemConfig = {
 	range: [5, 8],
@@ -36,14 +36,14 @@ const DEFAULT_TABLETRUE_CONFIGS: TabletrueItemConfig[] = [
  * 指型列表展示
  * @returns
  */
-export const GuitarBoardTabletureList = () => {
+export const GuitarBoardFingeringList = () => {
 	const [tabletrues, dispatchTabletrues] = useStore<TabletrueItemConfig[]>(TABLETURES_KEY, [
 		...DEFAULT_TABLETRUE_CONFIGS,
 	])
 	const [isEdit, setIsEdit] = useState<boolean>(false) // 编辑
 
 	// 保存指板option
-	const handleSaveTableture = () => {
+	const handleSaveFingering = () => {
 		setIsEdit(!isEdit)
 	}
 
@@ -51,16 +51,16 @@ export const GuitarBoardTabletureList = () => {
 		<>
 			{/* 编辑模式 */}
 			<div
-				className={cx(styles['tableture-list-button'], isEdit && 'touch-yellow', 'primary-button')}
-				onClick={handleSaveTableture}
+				className={cx(styles['fingering-list-button'], isEdit && 'touch-yellow', 'primary-button')}
+				onClick={handleSaveFingering}
 			>
 				<Icon name={isEdit ? 'icon-confirm' : 'icon-edit'} />
 			</div>
 			{/* 指板列表 */}
-			<div className={cx(styles['tableture-list'], isEdit && styles['tableture-list__edit'])}>
+			<div className={cx(styles['fingering-list'], isEdit && styles['fingering-list__edit'])}>
 				{tabletrues.map((config, index) => (
 					<BoardProvider key={config.mode + index}>
-						<GuitarBoardTabletureItem
+						<GuitarBoardFingeringItem
 							range={config.range}
 							mode={config.mode}
 							root={config.root}
@@ -79,7 +79,7 @@ export const GuitarBoardTabletureList = () => {
 			</div>
 			{/* 新增指板 */}
 			<div
-				className={cx(styles['tableture-list-button'], 'primary-button')}
+				className={cx(styles['fingering-list-button'], 'primary-button')}
 				onClick={() => {
 					dispatchTabletrues({ type: 'set', payload: [...tabletrues, TABLETRUE_CONFIG] })
 				}}
@@ -105,7 +105,7 @@ type TabletrueItemProps = TabletrueItemConfig & {
 /**
  * 获取某和弦匹配的指型
  */
-const GuitarBoardTabletureItem = ({
+const GuitarBoardFingeringItem = ({
 	range: defaultRange = [0, 3],
 	mode: defaultMode = 'minor-pentatonic',
 	root: defaultRoot = 0,
@@ -177,19 +177,19 @@ const GuitarBoardTabletureItem = ({
 	const modeText = mode?.includes('major') ? 'Major' : 'Minor'
 
 	return (
-		<div className={styles['tableture-list-item']}>
-			<div className={cx(styles['tableture-list-options'])}>
+		<div className={styles['fingering-list-item']}>
+			<div className={cx(styles['fingering-list-options'])}>
 				{/* 调式选择 */}
 				<div
 					className={cx(
-						styles['tableture-options-mode'],
+						styles['fingering-options-mode'],
 						isEdit && 'touch-yellow',
 						'primary-button'
 					)}
 					onClick={() => handleCheckedOption(1)}
 				>
 					{rootNote}
-					<div className={cx(styles['tableture-options-mode-tag'])}>{modeText}</div>
+					<div className={cx(styles['fingering-options-mode-tag'])}>{modeText}</div>
 					{isEdit && (
 						<Icon
 							name="icon-play"
@@ -203,7 +203,7 @@ const GuitarBoardTabletureItem = ({
 				{/* 吉他指板范围选择 */}
 				<div
 					className={cx(
-						styles['tableture-options-range'],
+						styles['fingering-options-range'],
 						isEdit && 'touch-yellow',
 						'primary-button'
 					)}
@@ -223,7 +223,7 @@ const GuitarBoardTabletureItem = ({
 				{/* 删除 */}
 				{isEdit && (
 					<div
-						className={cx(styles['tableture-options-button'], 'touch-purple', 'primary-button')}
+						className={cx(styles['fingering-options-button'], 'touch-purple', 'primary-button')}
 						onClick={onRemove}
 					>
 						<Icon name="icon-delete" />

@@ -25,7 +25,7 @@ export const pagesIntroConfig = new Map<string, PageIntroType>([
 		},
 	],
 	[
-		'GuitarTableture',
+		'GuitarFingering',
 		{
 			title: '从指型图熟悉指板',
 			content: ['五度音阶学习，并且对关系大小调&平行大小调运用自如', '点击指板上根音可以获取相对应的调式指法，在固定区域指型中，你也可以保存某个指板范围内的不同调式/根音的指法。'],
