@@ -33,6 +33,7 @@ export const AudioBtn: FC = memo(() => {
 				!mute && styles['audio-btn__hidden']
 			)}
 			onClick={waitAudioContext}
+			id="audio-btn"
 		>
 			<Icon name={mute ? 'icon-mute' : 'icon-volume'} />
 		</div>

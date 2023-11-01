@@ -1,0 +1,123 @@
+$print-color: #0d0d0d;
+
+@import '../../buitar/src/style/definitions/index.scss';
+
+body {
+	background-color: $gray-01;
+	margin: 0;
+	color: $white-01;
+}
+
+#abc-editor {
+	display: flex;
+	height: 100vh;
+	transition: background-color 0.2s ease;
+	margin: 0 !important;
+	> div {
+		flex: 1;
+	}
+	#editor-container {
+		display: flex;
+		flex-direction: column;
+		padding: 10px 12px;
+
+		> * {
+			border-radius: 6px;
+			background-color: rgba($gray-primary, 40%);
+		}
+
+		#editor {
+			flex: 1;
+			border-radius: 6px;
+			color: $white-01;
+			resize: none;
+			width: -webkit-fill-available;
+			padding: 10px;
+			border: none;
+			transition: background-color 0.2s linear;
+			&:focus {
+				outline: none;
+				background-color: rgba($gray-primary, 80%);
+				border: none;
+			}
+		}
+
+		#audio {
+			height: 30px;
+			margin-top: 6px;
+			padding: 6px;
+			> div {
+				background-color: unset;
+			}
+		}
+
+		#warnings {
+			height: 60px;
+			margin-top: 6px;
+			padding: 10px;
+			font-size: 12px;
+			overflow-y: scroll;
+		}
+	}
+
+	#paper {
+		padding: 0 !important;
+		overflow-y: scroll !important;
+	}
+
+	#printer {
+		position: fixed;
+		right: 2vh;
+		bottom: 2vh;
+		width: calc($btn-size * 2);
+		height: $btn-size;
+		border-radius: 6px;
+		border: none;
+		background-color: $gray-primary;
+		color: $white-01;
+		transition: all 0.2s ease;
+		opacity: 0.4;
+		&:hover {
+			opacity: 1;
+			background-color: rgba($gray-primary, 40%);
+		}
+	}
+
+	@media #{$mobileLayout} {
+		display: block;
+		height: auto;
+		margin-top: 42px !important;
+		#editor-container {
+			#editor {
+				min-height: 60vh;
+			}
+		}
+		#paper {
+			height: 100vh;
+		}
+	}
+}
+
+@media print {
+	header,
+	footer,
+	nav button,
+	main section {
+		display: none;
+	}
+
+	#abc-editor {
+		#editor-container,
+		#printer {
+			display: none;
+		}
+	}
+
+	[fill='#f2f2f2'] {
+		fill: $print-color;
+	}
+
+	svg {
+		color: $print-color;
+	}
+}

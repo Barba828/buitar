@@ -29,6 +29,7 @@
 		"vite-plugin-static-copy": "^0.17.0"
 	},
 	"dependencies": {
+		"@buitar/abc-editor": "workspace:*",
 		"@buitar/to-guitar": "workspace:*",
 		"@buitar/tone-player": "workspace:*",
 		"vexflow": "^4.2.3"
