@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { Editor } from 'abcjs'
+import { printElement } from './utils'
 import type { AbcVisualParams, EditorOptions } from 'abcjs'
 
 import './app.scss'
 import './abcjs-audio.css'
-import '../../buitar/src/style/definitions/app.scss'
 
 const abcDefaultString = `
 X:1
@@ -77,15 +77,18 @@ export const ABCEditor: FC<ABCEditorInterface> = ({
 
 		editorRef.current = new Editor('editor', editorParams as EditorOptions)
 	}, [])
+
 	return (
-		<div id="abc-editor">
+		<div id="abc-editor" className='print-visible'>
 			<div id="editor-container">
 				<textarea id="editor" defaultValue={abcString}></textarea>
-                <div id="audio"></div>
+				<div id="audio"></div>
 				{warningVisible && <div id="warnings"></div>}
 			</div>
 			<div id="paper"></div>
-            <button id="printer">Print</button>
+			<button id="printer" onClick={() => printElement('paper')}>
+				Print
+			</button>
 		</div>
 	)
 }

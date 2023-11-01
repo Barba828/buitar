@@ -11,7 +11,8 @@ body {
 #abc-editor {
 	display: flex;
 	height: 100vh;
-    transition: background-color 0.2s ease;
+	transition: background-color 0.2s ease;
+	margin: 0 !important;
 	> div {
 		flex: 1;
 	}
@@ -68,17 +69,31 @@ body {
 		position: fixed;
 		right: 2vh;
 		bottom: 2vh;
-		width: $btn-size;
+		width: calc($btn-size * 2);
 		height: $btn-size;
 		border-radius: 6px;
 		border: none;
 		background-color: $gray-primary;
 		color: $white-01;
-        transition: all 0.2s ease;
-        opacity: 0.4;
+		transition: all 0.2s ease;
+		opacity: 0.4;
 		&:hover {
-            opacity: 1;
+			opacity: 1;
 			background-color: rgba($gray-primary, 40%);
+		}
+	}
+
+	@media #{$mobileLayout} {
+		display: block;
+		height: auto;
+		margin-top: 42px !important;
+		#editor-container {
+			#editor {
+				min-height: 60vh;
+			}
+		}
+		#paper {
+			height: 100vh;
 		}
 	}
 }
@@ -92,7 +107,8 @@ body {
 	}
 
 	#abc-editor {
-		#editor-container {
+		#editor-container,
+		#printer {
 			display: none;
 		}
 	}

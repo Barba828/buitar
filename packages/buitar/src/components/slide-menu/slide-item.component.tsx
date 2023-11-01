@@ -91,7 +91,7 @@ export const SlideMenu = () => {
 	)
 
 	return (
-		<div
+		<nav
 			id="slide-menu"
 			className={cx(styles['slide-menu'], extend && styles['slide-menu__extend'])}
 		>
@@ -120,6 +120,6 @@ export const SlideMenu = () => {
 				onTouchStart={toggleExtend}
 				className={styles['slide-menu-intro']}
 			></div>
-		</div>
+		</nav>
 	)
 }

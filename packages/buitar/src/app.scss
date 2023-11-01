@@ -24,22 +24,18 @@ body {
 	}
 }
 
-.app {
+#app {
 	@include flex-center(row);
 	width: 100%;
 	height: 100%;
 
-	.board {
+	#board {
 		width: 100%;
 		height: 100%;
 		overflow-x: hidden;
-		padding-left: 12%;
 
-		@media #{$mobileLayout} {
-			padding-left: 20px;
-			> :first-child {
-				margin-top: 80px;
-			}
+		> * {
+			margin-left: 10vw;
 		}
 
 		> :first-child {
@@ -49,5 +45,32 @@ body {
 		> :last-child {
 			margin-bottom: 120px;
 		}
+
+		@media #{$pcLayout} {
+			padding-left: 60px; // 侧边栏宽度，TODO 调整布局方式
+		}
+
+		@media #{$mobileLayout} {
+			> * {
+				margin-left: 20px;
+			}
+			> :first-child {
+				margin-top: 80px;
+			}
+		}
+	}
+}
+
+@media print {
+	header,
+	footer,
+	nav button,
+	main section {
+		display: none;
+	}
+
+	nav,
+	#audio-btn {
+		visibility: hidden;
 	}
 }

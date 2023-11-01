@@ -44,6 +44,9 @@ importers:
 
   packages/buitar:
     dependencies:
+      '@buitar/abc-editor':
+        specifier: workspace:*
+        version: link:../buitar-editor
       '@buitar/to-guitar':
         specifier: workspace:*
         version: link:../to-guitar

@@ -21,6 +21,8 @@ import { IntervalList } from './play-tools/panels/interval-list-tool'
 import { SettingsPage } from './settings'
 import { NotFound } from './not-found'
 
+import { ABCEditor } from '@buitar/abc-editor'
+
 export const baseUrl = import.meta.env.BASE_URL || '/buitar/'
 
 export type RouteType = {
@@ -164,6 +166,13 @@ export const routeConfig: Array<RouteType> = [
 		path: `${baseUrl}creation`,
 		type: 'menu',
 		Component: SequencerPlayer,
+	},
+	{
+		name: '乐谱编辑',
+		id: 'ABCEditor',
+		path: `${baseUrl}abc-editor`,
+		type: 'menu',
+		Component: ABCEditor,
 	},
 	{
 		name: '设置',
