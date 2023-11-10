@@ -2,9 +2,10 @@ import { FC } from 'react'
 import { ChordType, Point } from '@buitar/to-guitar'
 import { ChordCard, useBoardContext } from '../guitar-board'
 import { Icon } from '@/components/icon'
-import { useConfigContext } from '../slide-menu/config-provider'
-import cx from 'classnames'
+import { useConfigContext } from '@/components/slide-menu/config-provider'
+import { DragableList, type DragableListProps } from '@/components/basic'
 
+import cx from 'classnames'
 import styles from './chord-list.module.scss'
 
 export type CollectionChord = {
@@ -19,9 +20,10 @@ export const ChordList: FC<{
 	title?: string
 	intro?: string
 	disableCollect?: boolean
+	disableDrag?: boolean
 	className?: string
 	titleClassName?: string
-}> = ({ data, title, intro, disableCollect, titleClassName, className, index }) => {
+}> = ({ data, title, intro, disableCollect, disableDrag, titleClassName, className, index }) => {
 	const { collection, dispatchCollection, instrumentKeyboard } = useBoardContext()
 	const { isMobileDevice } = useConfigContext()
 
@@ -32,6 +34,16 @@ export const ChordList: FC<{
 
 	const handleRemoveCollection = () => {
 		collection[instrumentKeyboard].splice(index, 1)
+		dispatchCollection({ type: 'set', payload: collection })
+	}
+
+	const handleDragEnd: DragableListProps['onDragEnd'] = (result) => {
+		if (!result.destination) return // 如果没有目标位置，不执行任何操作
+		const items = Array.from(data)
+		const [reorderedItem] = items.splice(result.source.index, 1)
+		items.splice(result.destination.index, 0, reorderedItem)
+
+		collection[instrumentKeyboard][index].data = items
 		dispatchCollection({ type: 'set', payload: collection })
 	}
 
@@ -52,9 +64,7 @@ export const ChordList: FC<{
 	return (
 		<div className={cx(styles.list, className)}>
 			<div className={cx(styles['title-view'], titleClassName)}>
-				<div className={cx(styles['title-text'], 'primary-button', 'touch-yellow')}>
-					{title}
-				</div>
+				<div className={cx(styles['title-text'], 'primary-button', 'touch-yellow')}>{title}</div>
 				{!disableCollect && (
 					<div className={cx(styles['title-btn'], 'primary-button', 'touch-primary')}>
 						<Icon name="icon-delete" onClick={handleRemoveCollection} />
@@ -62,7 +72,15 @@ export const ChordList: FC<{
 				)}
 				{intro && <div className={cx(styles['title-sub-text'])}>{intro}</div>}
 			</div>
-			<div className={cx(styles['data-list'], 'scroll-without-bar')}>{dataView}</div>
+			{disableDrag ? (
+				<div className={cx(styles['data-list'], 'scroll-without-bar')}>{dataView}</div>
+			) : (
+				<DragableList
+					className={cx(styles['data-list'], 'scroll-without-bar')}
+					list={dataView}
+					onDragEnd={handleDragEnd}
+				></DragableList>
+			)}
 		</div>
 	)
 }

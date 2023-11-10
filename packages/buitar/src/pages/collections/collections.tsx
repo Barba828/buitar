@@ -93,6 +93,7 @@ export const CagedCollection: FC = () => {
 					index={index}
 					title={key}
 					disableCollect
+					disableDrag
 					className={styles['caged-list']}
 					titleClassName={styles['caged-title']}
 				/>
