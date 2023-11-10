@@ -1,4 +1,4 @@
-import { Instrument, StringsInstrument } from '@buitar/tone-player'
+import { StringsInstrument } from '@buitar/tone-player'
 import {
 	GuitarBoardOptionsKey,
 	GuitarBoardThemeKey,
