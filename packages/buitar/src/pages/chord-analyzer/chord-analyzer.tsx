@@ -133,7 +133,7 @@ const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultCh
 	 * @param tone
 	 * @returns
 	 */
-	const handleClickFifths = ({ tone }: { tone: ToneSchema }) => {
+	const handleClickFifths = ({ tone }: { tone?: ToneSchema }) => {
 		if (!guitarBoardOption.keyboard) {
 			return
 		}

@@ -41,7 +41,7 @@ export type FifthCircleProps = {
 	 * 默认选中下标
 	 */
 	defaultIndex?: number
-	onClick?: (obj: { tone: ToneSchema; mode: ModeType }) => void
+	onClick?(obj: { tone?: ToneSchema; mode: ModeType }): void
 	[x: string]: any
 }
 
@@ -87,8 +87,12 @@ export const FifthsCircle: FC<FifthCircleProps> = ({
 				thin={thin}
 				className={styles.arc}
 				checked={checked}
-				offset={0}
 				onClick={(index: number) => {
+					if(index === checked) {
+						setChecked(-1)
+						onClick?.({ mode: 'major'})
+						return
+					}
 					setChecked(index)
 					onClick?.({ tone: OUTER_TONES[index], mode: 'major' })
 				}}
@@ -110,10 +114,15 @@ export const FifthsCircle: FC<FifthCircleProps> = ({
 						cr={cr - thin - 2}
 						thin={thin}
 						className={styles.arc}
-						checked={checked}
-						offset={12}
+						checked={checked - 12}
 						onClick={(index: number) => {
-							setChecked(index + 12)
+							index += 12
+							if(index === checked) {
+								setChecked(-1)
+								onClick?.({ mode: 'minor'})
+								return
+							}
+							setChecked(index)
 							onClick?.({ tone: INNER_TONES[index], mode: 'minor' })
 						}}
 					></Arc>
@@ -181,7 +190,6 @@ const Arc: FC<any> = ({
 	cr = 100,
 	thin = 40,
 	checked = -1, // 选中的index
-	offset = 0, // 大小调圆环的index便宜，父元素:[0,11]是大调圆环下标，[12,23]是小调圆环下标
 	...props
 }) => {
 	const r = cr - thin / 2
@@ -202,7 +210,7 @@ const Arc: FC<any> = ({
 						key={index}
 						className={classnames(
 							props.className,
-							checked - offset === index && styles['arc-checked']
+							checked === index && styles['arc-checked']
 						)}
 						onClick={() => props.onClick(index)}
 						d={d}
