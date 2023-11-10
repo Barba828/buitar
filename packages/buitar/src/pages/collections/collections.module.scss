@@ -21,7 +21,7 @@
 		height: auto;
 		:global(.touch-yellow) {
 			height: inherit;
-			max-width: calc($btn-size * 2);
+			width: calc($btn-size);
 			font-size: calc($font-22 * 2);
 		}
 	}

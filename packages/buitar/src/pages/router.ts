@@ -94,7 +94,7 @@ export const routeConfig: Array<RouteType> = [
 		Component: ChordProgressions,
 	},
 	{
-		name: '和弦卡片',
+		name: '和弦收藏',
 		id: 'ChordCollections',
 		path: `${baseUrl}collections`,
 		type: 'menu',
@@ -103,17 +103,17 @@ export const routeConfig: Array<RouteType> = [
 			{
 				name: 'Caged系统',
 				id: 'ChordCollectionsCaged',
-				path: `${baseUrl}collections`,
+				path: `${baseUrl}collections/caged`,
 				Component: CagedCollection,
+				meta: {
+					back: true,
+				},
 			},
 			{
 				name: '我的收藏',
 				id: 'ChordCollectionsOfMine',
-				path: `${baseUrl}collections/mine`,
+				path: `${baseUrl}collections`,
 				Component: StorageCollection,
-				meta: {
-					back: true,
-				},
 			},
 		],
 	},

@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { AddTextInput, CollectionSelecter } from '@/components/basic'
 import { CollectionChord } from '@/pages/collections/collections.config'
 import { Modal, ModalProps, toast } from '@/components/portal'
@@ -15,6 +15,11 @@ export const CardCollector: FC<
 > = ({ data, className, ...restProps }) => {
 	const { collection, dispatchCollection, instrumentKeyboard } = useBoardContext()
 	const [collectionIndex, setCollectionIndex] = useState<number>(0)
+
+	// 更新选中收藏夹
+	useEffect(() => {
+		setCollectionIndex(collection[instrumentKeyboard].length - 1)
+	}, [collection, instrumentKeyboard])
 
 	const handleAddCollection = (title: string) => {
 		collection[instrumentKeyboard].push({ title: title, intro: '', data: [] })
@@ -36,10 +41,10 @@ export const CardCollector: FC<
 					onChange={(_title, index) => {
 						setCollectionIndex(index)
 					}}
+					checkedIndex={collectionIndex}
 				/>
 				<AddTextInput onConfirm={handleAddCollection} placeholder="请输入收藏夹名称" />
 			</div>
 		</Modal>
 	)
 }
-

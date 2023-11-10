@@ -1,31 +1,17 @@
 .selector {
-	select {
-		// -webkit-appearance: none;
-		outline: none;
-		border: none;
-		border-radius: 2px;
-		height: $btn-size;
-		min-width: calc($btn-size * 2);
-		width: -webkit-fill-available;
-		margin: $btn-margin;
-		padding: 4px 10px;
-		color: $white-01;
-		font-size: 16px;
-		background: $gray-primary;
-		&:hover {
-			background: $gray-second;
+	display: flex;
+	flex-wrap: wrap;
+	max-height: calc($btn-size * 4);
+	.selector-item {
+		width: auto;
+		flex-direction: row;
+		padding: calc($btn-margin * 4) calc($btn-margin * 8);
+		font-size: $font-14;
+		svg {
+			margin-right: calc($btn-margin * 2);
 		}
-		option {
-			&:hover {
-				background: $yellow-primary;
-			}
-
-			&:focus {
-				background: $yellow-primary;
-			}
-		}
-		select {
-			background: $yellow-primary;
-		}
+	}
+	.selector-item__checked {
+		@include touch-color;
 	}
 }

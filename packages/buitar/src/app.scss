@@ -47,7 +47,9 @@ body {
 		}
 
 		@media #{$pcLayout} {
-			padding-left: 60px; // 侧边栏宽度，TODO 调整布局方式
+			#abc-editor {
+				padding-left: 60px; // 侧边栏宽度，TODO 调整布局方式
+			}
 		}
 
 		@media #{$mobileLayout} {

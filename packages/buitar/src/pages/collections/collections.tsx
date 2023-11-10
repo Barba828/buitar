@@ -25,9 +25,13 @@ export const Collections: FC = () => {
 
 export const StorageCollection: FC = () => {
 	const { collection, instrumentKeyboard } = useBoardContext()
+	const CagedCollectionsRoute = useRouteFind('ChordCollectionsCaged')
 
 	return (
 		<>
+			<Link to={CagedCollectionsRoute.path} className={styles['my-collections-link']}>
+				Caged〉
+			</Link>
 			{collection[instrumentKeyboard].map((item, index) => (
 				<ChordList key={index} data={item.data} title={item.title} index={index} />
 			))}
@@ -40,8 +44,6 @@ export const CagedCollection: FC = () => {
 		guitarBoardOption: { keyboard },
 		instrumentKeyboard,
 	} = useBoardContext()
-	const myCollectionsRoute = useRouteFind('ChordCollectionsOfMine')
-
 	const [startGrade, setStartGrade] = useState(0)
 
 	const config = useMemo(() => {
@@ -70,9 +72,6 @@ export const CagedCollection: FC = () => {
 
 	return (
 		<>
-			<Link to={myCollectionsRoute.path} className={styles['my-collections-link']}>
-				我的收藏〉
-			</Link>
 			<div className={styles['caged-range']}>
 				<div className={cx('primary-button', 'flex-center', styles['caged-range-title'])}>
 					品位 {startGrade}
