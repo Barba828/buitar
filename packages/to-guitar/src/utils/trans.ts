@@ -33,7 +33,7 @@ const transInterval = (interval: IntervalAll | Number) => {
 	const pitchNum = Number(match[1]) // 总度数
 	const semitonesTag = match[2] // 半音标记
 
-	const intervalNum = pitchNum % 8 // 有效度数
+	const intervalNum = pitchNum % 7 // 有效度数
 	const size = Math.floor(pitchNum / 8) // 差多少个八度
 	const halfPicth = semitonesTag === '#' ? 1 : semitonesTag === 'b' ? -1 : 0
 
