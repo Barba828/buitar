@@ -37,7 +37,7 @@ export const CardCollector: FC<
 						setCollectionIndex(index)
 					}}
 				/>
-				<AddTextInput onConfirm={handleAddCollection} />
+				<AddTextInput onConfirm={handleAddCollection} placeholder="请输入收藏夹名称" />
 			</div>
 		</Modal>
 	)

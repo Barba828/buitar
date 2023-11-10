@@ -8,7 +8,7 @@
 
 .type-input {
 	@include flex-center;
-	font-size: 18px;
+	font-size: $font-16;
 	color: $white-01;
 	border: 0px;
 	outline: 0px;
@@ -19,6 +19,10 @@
 	&:focus {
 		width: 80% !important;
 		min-width: calc($btn-size * 3) !important;
+	}
+	&::placeholder {
+		color: $white-03;
+		font-size: $font-14;
 	}
 }
 .type-input-controller {
