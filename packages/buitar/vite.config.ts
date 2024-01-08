@@ -102,7 +102,6 @@ export default defineConfig({
 					tone: ['tone'],
 					vexflow: ['vexflow'],
 					'react-libs': ['react', 'react-dom', 'react-router-dom'],
-					// 'buitar-libs': ['@buitar/abc-editor', '@buitar/to-guitar', '@buitar/tone-player'],
 					'@buitar/abc-editor':['@buitar/abc-editor'],
 					'@buitar/to-guitar':['@buitar/to-guitar'],
 					'@buitar/tone-player':['@buitar/tone-player'],

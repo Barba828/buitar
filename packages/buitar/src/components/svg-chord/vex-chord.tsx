@@ -1,11 +1,11 @@
 import { useIsMobile } from '@/utils/hooks/use-device'
 import { Point } from '@buitar/to-guitar'
 import { FC, memo, useEffect, useRef } from 'react'
-import Vex, { Voice, StaveNote, Formatter } from 'vexflow'
-const { Renderer, Stave } = Vex.Flow
+import { Voice, StaveNote, Formatter, Flow } from 'vexflow/core'
 import cx from 'classnames'
 import styles from './vex-chord.module.scss'
 
+const { Renderer, Stave } = Flow
 export const VexChord: FC<{ taps: Point[]; className?: string }> = memo(({ taps, className }) => {
 	const divRef = useRef<HTMLDivElement>()
 	const isMobile = useIsMobile()
