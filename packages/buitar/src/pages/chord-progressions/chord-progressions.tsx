@@ -10,16 +10,16 @@ import {
 import { Point, transChordTaps, DEGREE_TAG_LIST } from '@buitar/to-guitar'
 import { PlayerProvider, usePlayerContext } from '@/components/guitar-player'
 import { SoundBoard } from '@/components/sound-board'
-import { usePagesIntro } from '@/components'
+import { PagesIntro, PagesMeta } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
 
 import styles from './chord-progressions.module.scss'
 
 export const ChordProgressions = () => {
-	const intro = usePagesIntro()
 	return (
 		<PlayerProvider>
-			{intro}
+			<PagesMeta/>
+			<PagesIntro/>
 			<DegreeController />
 			<ChordPicker />
 			<TapsViewer />

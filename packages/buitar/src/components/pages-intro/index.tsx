@@ -1,10 +1,10 @@
 import { FC } from 'react'
-import { PageIntroType, pagesIntroConfig } from '@/pages/pages.config'
+import { pagesIntroConfig } from '@/pages/pages.config'
 import { useTopRoute } from '@/utils/hooks/use-routers'
 
 import styles from './pages-intro.module.scss'
 
-export const usePagesIntro = () => {
+export const PagesIntro: FC = () => {
 	const curTopRoute = useTopRoute()
 	if (!curTopRoute?.id) {
 		return null
@@ -16,10 +16,8 @@ export const usePagesIntro = () => {
 		return null
 	}
 
-	return <PagesIntro {...pageInfo} />
-}
+	const { title, content } = pageInfo
 
-export const PagesIntro: FC<PageIntroType> = ({ title, content }) => {
 	return (
 		<div className={styles['pages-intro']}>
 			<h2>{title}</h2>
@@ -29,3 +27,5 @@ export const PagesIntro: FC<PageIntroType> = ({ title, content }) => {
 		</div>
 	)
 }
+
+export { PagesMeta } from './pages-meta'

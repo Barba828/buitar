@@ -100,11 +100,10 @@ export default defineConfig({
 			output: {
 				manualChunks: {
 					tone: ['tone'],
-					vexflow: ['vexflow'],
 					'react-libs': ['react', 'react-dom', 'react-router-dom'],
-					'@buitar/abc-editor':['@buitar/abc-editor'],
-					'@buitar/to-guitar':['@buitar/to-guitar'],
-					'@buitar/tone-player':['@buitar/tone-player'],
+					'@buitar/abc-editor': ['@buitar/abc-editor'],
+					'@buitar/to-guitar': ['@buitar/to-guitar'],
+					'@buitar/tone-player': ['@buitar/tone-player'],
 				},
 			},
 		},

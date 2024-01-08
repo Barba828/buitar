@@ -1,13 +1,14 @@
-import React, { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import {
 	Icon,
 	Sequencer,
 	SequencerController,
 	SequencerProvider,
-	usePagesIntro,
+	PagesIntro,
+	PagesMeta,
 } from '@/components'
 import { instrumentUIConfig } from '@/pages/settings/config/controller.config'
-import { Instrument } from '@buitar/tone-player/instrument.type'
+import type { Instrument } from '@buitar/tone-player/src/instrument.type'
 import {
 	SequencerReducerPayload,
 	SequencerReducerType,
@@ -20,12 +21,12 @@ import cx from 'classnames'
 import styles from './sequencer-player.module.scss'
 
 export const SequencerPlayer = memo(() => {
-	const intro = usePagesIntro()
 	const [sequencers, dispatchSequencers] = useSequencerReducer()
 
 	return (
 		<SequencerProvider>
-			{intro}
+			<PagesMeta />
+			<PagesIntro />
 			<SequencerController
 				onSave={() => {
 					setSequencersStateToStore(sequencers)

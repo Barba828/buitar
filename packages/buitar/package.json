@@ -14,9 +14,9 @@
 	"author": "liningzhu2012@gmail.com",
 	"license": "MIT",
 	"devDependencies": {
+		"@types/react-beautiful-dnd": "^13.1.7",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
-		"@types/react-beautiful-dnd": "^13.1.7",
 		"@vite-pwa/assets-generator": "^0.0.7",
 		"@vitejs/plugin-react": "^4.0.3",
 		"classnames": "^2.3.1",
@@ -34,6 +34,7 @@
 		"@buitar/to-guitar": "workspace:*",
 		"@buitar/tone-player": "workspace:*",
 		"react-beautiful-dnd": "^13.1.1",
+		"react-helmet-async": "^2.0.4",
 		"vexflow": "^4.2.3"
 	}
 }

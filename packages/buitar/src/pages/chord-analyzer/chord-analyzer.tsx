@@ -11,7 +11,7 @@ import type { Point, Note, ToneSchema, ChordType } from '@buitar/to-guitar'
 import { transChordType } from '@buitar/to-guitar'
 import { AddTextInput } from '@/components/basic'
 import { VexChord } from '@/components/svg-chord'
-import { useConfigContext, usePagesIntro } from '@/components'
+import { useConfigContext, PagesIntro, PagesMeta } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
 import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
 import cx from 'classnames'
@@ -20,7 +20,6 @@ import styles from './chord-analyzer.module.scss'
 import { useLocation } from 'react-router-dom'
 
 export const ChordAnalyzer = () => {
-	const intro = usePagesIntro()
 	const [chordTypes, setChordTypes] = useState<ChordType[]>([])
 	const { menus } = useConfigContext()
 	const { clearTaps, setTaps } = useBoardContext()
@@ -46,7 +45,8 @@ export const ChordAnalyzer = () => {
 
 	return (
 		<>
-			{intro}
+			<PagesMeta/>
+			<PagesIntro/>
 			{menus.board_setting && <BoardOptionsController extendItem={false} />}
 			<TapedGuitarBoard onChange={handleChangeTaps} />
 			{chordTypes && <TapedChordCard chordTypes={chordTypes} />}

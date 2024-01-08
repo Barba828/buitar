@@ -1,13 +1,12 @@
 import { FC, useEffect, useMemo } from 'react'
 import { useBoardContext } from '@/components/guitar-board'
-import { TabSwitch, usePagesIntro } from '@/components'
+import { TabSwitch, PagesIntro, PagesMeta } from '@/components'
 import { Link, Outlet } from 'react-router-dom'
 import { useRouteFind, useRouteMatch } from '@/utils/hooks/use-routers'
 import cx from 'classnames'
 import styles from './guitar-fingering.module.scss'
 
 export const GuitarFingering: FC = () => {
-	const intro = usePagesIntro()
 	const { clearTaps } = useBoardContext()
 	const { children = [] } = useRouteFind('GuitarFingering')
 	const { path } = useRouteMatch()
@@ -21,7 +20,8 @@ export const GuitarFingering: FC = () => {
 
 	return (
 		<>
-			{intro}
+			<PagesMeta/>
+			<PagesIntro/>
 			<TabSwitch
 				className={cx(styles['fingering-tab'])}
 				values={tabList}

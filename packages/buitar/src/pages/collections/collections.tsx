@@ -1,4 +1,4 @@
-import { RangeSlider, useBoardContext, usePagesIntro } from '@/components'
+import { RangeSlider, useBoardContext, PagesIntro, PagesMeta } from '@/components'
 import { ChordList } from '@/components/chord-list'
 import { Tone, getTapsOnBoard, transToneOffset } from '@buitar/to-guitar'
 import { CagedBaseType, GuitarCagedBaseConfig } from './caged.config'
@@ -11,13 +11,13 @@ import cx from 'classnames'
 import styles from './collections.module.scss'
 
 export const Collections: FC = () => {
-	const intro = usePagesIntro()
 	const CollectionsHomeRoute = useRouteFind('ChordCollections') // 工具菜单页路由
 	const curRoute = useRouteMatch() // 当前页面一级路由
 
 	return (
 		<>
-			{CollectionsHomeRoute === curRoute && intro}
+			{CollectionsHomeRoute === curRoute && <PagesIntro />}
+			<PagesMeta />
 			<Outlet />
 		</>
 	)
