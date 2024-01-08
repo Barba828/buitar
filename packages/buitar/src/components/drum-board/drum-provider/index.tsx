@@ -1,4 +1,3 @@
-import { toast } from '@/components'
 import { INSTRUMENT_PERCUSSION_KEY } from '@/pages/settings/config/controller.config'
 import { useStore } from '@/utils/hooks/use-store'
 import { DrumPlayer } from '@buitar/tone-player'

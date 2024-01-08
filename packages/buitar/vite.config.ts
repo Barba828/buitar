@@ -30,6 +30,7 @@ export default defineConfig({
 				clientsClaim: true,
 				skipWaiting: true,
 				globPatterns: ['**/*.{js,css,html,mp3,ogg,ico}'],
+				maximumFileSizeToCacheInBytes: 2 * 1024 * 1024, // 2MB，最大预缓存文件大小
 			},
 			manifest: {
 				name: 'Buitar',
@@ -95,6 +96,19 @@ export default defineConfig({
 	build: {
 		outDir: 'dist',
 		minify: true,
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					tone: ['tone'],
+					vexflow: ['vexflow'],
+					'react-libs': ['react', 'react-dom', 'react-router-dom'],
+					// 'buitar-libs': ['@buitar/abc-editor', '@buitar/to-guitar', '@buitar/tone-player'],
+					'@buitar/abc-editor':['@buitar/abc-editor'],
+					'@buitar/to-guitar':['@buitar/to-guitar'],
+					'@buitar/tone-player':['@buitar/tone-player'],
+				},
+			},
+		},
 	},
 	server: {
 		port: 8282,

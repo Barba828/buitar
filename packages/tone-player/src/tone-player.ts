@@ -1,10 +1,7 @@
 import * as Tone from 'tone'
 import { instrumentConfig, instrumentType } from './tone.config'
-import type { PolySynth } from 'tone'
 import type { Instrument, StringsInstrument } from './instrument.type'
 import type { Point } from '@buitar/to-guitar'
-
-// import '../samples/index'
 
 /**
  * time
@@ -16,7 +13,7 @@ import type { Point } from '@buitar/to-guitar'
  * Tone.Transport.timeSignature = 3 拍数（3/4拍）
  */
 export class TonePlayer extends Tone.Sampler {
-	private _sampler: Tone.Sampler | PolySynth = new Tone.PolySynth(Tone.Synth).toDestination()
+	private _sampler: Tone.Sampler | Tone.PolySynth = new Tone.PolySynth(Tone.Synth).toDestination()
 	private instrument: Instrument = 'default'
 	static baseUrl: String = '/'
 
