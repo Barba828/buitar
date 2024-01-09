@@ -9,8 +9,8 @@ import {
 	useSequencerContext,
 } from '../sequencer'
 import { useBoardContext } from '../guitar-board'
-import cx from 'classnames'
-import styles from './sound-board.module.scss'
+// import cx from 'classnames'
+// import styles from './sound-board.module.scss'
 
 export const SoundBoard: FC = () => {
 	return (

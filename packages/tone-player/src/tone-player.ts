@@ -145,6 +145,14 @@ export class TonePlayer extends Tone.Sampler {
 		this._sampler.triggerAttackRelease(notes, duration)
 	}
 
+	/**
+	 * 直接播放note音符
+	 * @param note
+	 */
+	public triggerNote(note: string, duration: Tone.Unit.Time = '2n', time?: Tone.Unit.Time) {
+		this._sampler.triggerAttackRelease(note, duration, time)
+	}
+
 	private transPoint = (point: Point): Tone.Unit.Frequency => {
 		return `${point.toneSchema.note}${point.toneSchema.level}`
 	}

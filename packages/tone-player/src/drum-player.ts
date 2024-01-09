@@ -39,7 +39,7 @@ export class DrumPlayer extends TonePlayer {
 		return { ...instrumentConfig[this.getInstrument()] }
 	}
 
-	public triggerDrum = async  (note: string | string[], time?: number) => {
+	public triggerDrum = async  (note: string | string[], duration?: Tone.Unit.Time, time?: Tone.Unit.Time, offset?: Tone.Unit.Time) => {
 		if (!this.loaded) {
 			return
 		}
@@ -47,12 +47,20 @@ export class DrumPlayer extends TonePlayer {
 		// await Tone.loaded()
 
 		if (typeof note === 'string') {
-			this._players.player(note).start(time)
+			this._players.player(note).start(time, offset, duration)
 		} else {
 			note.forEach((key) => {
-				this._players.player(key).start()
+				this._players.player(key).start(time, offset, duration)
 			})
 		}
+	}
+
+	/**
+	 * 直接播放note音符
+	 * @param note 
+	 */
+	public triggerNote (note: string, duration?: Tone.Unit.Time, time?: Tone.Unit.Time) {
+		this.triggerDrum(note, duration, time)
 	}
 
 	static getDrumConfig(instrument: PercussionInstrument) {

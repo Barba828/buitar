@@ -177,25 +177,25 @@ export const instrumentUIConfig: InstrumentUIOption = {
 		name_en: 'Drum',
 		name_zh: '套鼓',
 		icon: 'icon-drumkit',
-		color: 'yellow',
+		color: 'blue',
 	},
 	'drum-acounstic': {
 		name_en: 'Acounstic Drum',
 		name_zh: '原声鼓',
 		icon: 'icon-drum',
-		color: 'blue',
+		color: 'green',
 	},
 	'drum-electronic': {
 		name_en: 'Electronic Drum',
 		name_zh: '电音鼓',
 		icon: 'icon-drum-electronic',
-		color: 'green',
+		color: 'cyan',
 	},
 	'metronome': {
 		name_en: 'Metronome',
 		name_zh: '节拍器',
 		icon: 'icon-metronome',
-		color: 'cyan',
+		color: 'purple',
 	},
 }
 

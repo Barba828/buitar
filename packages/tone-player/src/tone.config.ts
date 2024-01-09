@@ -259,10 +259,10 @@ const instrumentConfig: Record<Instrument, Record<string, string>> = {
 const instrumentType: Record<string, Instrument[]> = {
 	// 弦乐
 	strings: [
-		'bass-electric',
 		'guitar-acoustic',
 		'guitar-electric',
 		'guitar-nylon',
+		'bass-electric',
 		'piano',
 		'ukulele',
 		'default',

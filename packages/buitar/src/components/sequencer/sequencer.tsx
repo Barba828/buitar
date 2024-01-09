@@ -3,7 +3,7 @@ import * as Tone from 'tone'
 import { Icon } from '@/components/icon'
 import { useEditable } from './use-editable'
 import { Switch } from '@/components/ui'
-import { TonePlayer } from '@buitar/tone-player'
+import { DrumPlayer, TonePlayer } from '@buitar/tone-player'
 import { useSequencerContext } from './sequencer-provider'
 import { InstrumentColor } from '@/pages/settings/config/controller.type'
 import { useIsMobile } from '@/utils/hooks/use-device'
@@ -23,7 +23,7 @@ export type Block = [number, number, ('translucent' | string)?]
  * key: 音符
  * blocks: 单序列active的音符列表
  */
-export type Sound = { key: Tone.Unit.Frequency; blocks: Block[] }
+export type Sound = { key: string; blocks: Block[] }
 
 const defaultSounds: Sound[] = [
 	{ key: 'C4', blocks: [] },
@@ -44,7 +44,7 @@ export interface SequencerProps extends Pick<SequencerListProps, 'color'> {
 	/**
 	 * 播放器
 	 */
-	player: TonePlayer
+	player: TonePlayer | DrumPlayer
 	/**
 	 * 存在Controller
 	 */
@@ -85,7 +85,7 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 			const { key, blocks } = sound
 			blocks.forEach((block) => {
 				const time = block[0].toString(4).padStart(3, '0').split('').join(':')
-				const duration = 8 / (block[1] - block[0] + 1) + 'n'
+				const duration = 16 / (block[1] - block[0] + 1) + 'n'
 				partNotes.push({
 					time,
 					key,
@@ -96,7 +96,7 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 
 		// 播放时间片
 		tonePart.current = new Tone.Part((time, { key, duration }) => {
-			player.getContext().triggerAttackRelease(key, duration, time)
+			player.triggerNote(key, duration, time)
 		}, partNotes)
 		// 循环
 		tonePart.current.loop = true
@@ -119,7 +119,7 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 	 * 音序条改变时提示
 	 */
 	const handleChange = useCallback((sound: Sound) => {
-		player.loaded && player.getContext().triggerAttackRelease(sound.key, '2n')
+		player.loaded && player.triggerNote(String(sound.key))
 	}, [])
 
 	return (
@@ -344,11 +344,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 					})}
 					{editable && keyIndex === ghost[0] && (
 						<div
-							className={cx(
-								'primary-button',
-								styles['sound-item'],
-								styles['sound-item-ghost']
-							)}
+							className={cx('primary-button', styles['sound-item'], styles['sound-item-ghost'])}
 							style={{
 								transform: `translateX(${ghost[1] * itemSizeX}px)`,
 								width: itemSizeX * ghost[2] + itemWidth,

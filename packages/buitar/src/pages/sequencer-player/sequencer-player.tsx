@@ -111,7 +111,8 @@ const SequencerOptionController = ({
 		onChange?.('volume', { volume: debounceVolume })
 	}, [debounceVolume])
 
-	const pickerView = instrumentType.strings.map((instrument, index) => {
+	// const pickerView = instrumentType.strings.map((instrument, index) => {
+	const pickerView = [...instrumentType.strings, ...instrumentType.percussion].map((instrument, index) => {
 		const item = instrumentUIConfig[instrument]
 		const extended = extend || instrument === checked
 		return (

@@ -1,8 +1,13 @@
 import { Sound } from '@/components'
+import { instrumentUIConfig } from '@/pages/settings/config/controller.config'
+import type { Instrument, PercussionInstrument } from '@buitar/tone-player'
 import {
-	instrumentUIConfig,
-} from '@/pages/settings/config/controller.config'
-import { Instrument, TonePlayer } from '@buitar/tone-player'
+	DrumPlayer,
+	TonePlayer,
+	instrumentConfig,
+	isPercussionInstrument,
+	isStringsInstrument,
+} from '@buitar/tone-player'
 import { useCallback, useReducer } from 'react'
 import { InstrumentColor } from '@/pages/settings/config/controller.type'
 
@@ -38,7 +43,7 @@ export const useSequencerReducer = () => {
 				payload: SequencerReducerPayload
 			}
 		) => {
-			const player =
+			let player =
 				action.payload.index < sequencers.length
 					? sequencers[action.payload.index]?.sequencerPlayer
 					: null
@@ -50,7 +55,7 @@ export const useSequencerReducer = () => {
 						{
 							sequencerPlayer: newPlayer,
 							color: instrumentUIConfig[newPlayer.getInstrument()].color,
-							sounds: getEmptySounds(),
+							sounds: getEmptyStringSounds(),
 						},
 					]
 
@@ -63,9 +68,34 @@ export const useSequencerReducer = () => {
 						return sequencers
 					}
 
-					player.dispatchInstrument(action.payload.instrument)
-					sequencers[action.payload.index].color =
-						instrumentUIConfig[action.payload.instrument].color
+					// 乐器类型相同：切换音色 & 显示颜色
+					if (isSameTypeInstrument(player.getInstrument(), action.payload.instrument)) {
+						player.dispatchInstrument(action.payload.instrument) 		// 1. 音色
+						sequencers[action.payload.index].color =
+							instrumentUIConfig[action.payload.instrument].color 	// 2. 颜色
+						if (isPercussionInstrument(action.payload.instrument)) { 	// 3. 鼓乐sounds
+							sequencers[action.payload.index].sounds = getEmptyPercussionSounds(
+								action.payload.instrument
+							)
+						}
+						return [...sequencers]
+					}
+
+					const newSequencer = {
+						sequencerPlayer: player,
+						color: instrumentUIConfig[action.payload.instrument].color,
+						sounds: [],
+					} as SequencersState
+					// 乐器类型不同：新的乐器实例
+					if (isPercussionInstrument(action.payload.instrument)) {
+						newSequencer.sequencerPlayer = new DrumPlayer(action.payload.instrument)
+						newSequencer.sounds = getEmptyPercussionSounds(action.payload.instrument)
+					} else {
+						newSequencer.sequencerPlayer = new TonePlayer(action.payload.instrument)
+						newSequencer.sounds = getEmptyStringSounds()
+					}
+
+					sequencers[action.payload.index] = newSequencer
 					return [...sequencers]
 
 				case 'mute':
@@ -117,11 +147,30 @@ export const useSequencerReducer = () => {
 	return [sequencers, dispatch] as const
 }
 
+const isSameTypeInstrument = (a: string, b: string) => {
+	return (
+		(isPercussionInstrument(a) && isPercussionInstrument(b)) ||
+		(isStringsInstrument(a) && isStringsInstrument(b))
+	)
+}
+
 /**
- * 默认空sounds
+ * 默认弦乐空sounds
  */
-const getEmptySounds = (keys: string[] = ['C4', 'B3', 'A3', 'G3', 'F3', 'E3', 'D3', 'C3']) => {
+const getEmptyStringSounds = (
+	keys: string[] = ['C4', 'B3', 'A3', 'G3', 'F3', 'E3', 'D3', 'C3']
+) => {
 	return keys.map((key) => ({
+		key,
+		blocks: [],
+	}))
+}
+
+/**
+ * 默认鼓乐空sounds
+ */
+const getEmptyPercussionSounds = (instrument: PercussionInstrument) => {
+	return Object.keys(instrumentConfig[instrument]).map((key) => ({
 		key,
 		blocks: [],
 	}))
@@ -145,7 +194,7 @@ export const getSequencersStateFromStore = () => {
 			return {
 				sequencerPlayer: defaultPlayer,
 				color: instrumentUIConfig[defaultPlayer.getInstrument()].color,
-				sounds: item.sounds || getEmptySounds(),
+				sounds: item.sounds || getEmptyStringSounds(),
 			}
 		})
 		return sequencers
@@ -157,7 +206,7 @@ export const getSequencersStateFromStore = () => {
 		{
 			sequencerPlayer: defaultPlayer,
 			color: instrumentUIConfig[defaultPlayer.getInstrument()].color,
-			sounds: getEmptySounds(),
+			sounds: getEmptyStringSounds(),
 		},
 	]
 	return defaultValue
