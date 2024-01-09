@@ -98,8 +98,16 @@ export default defineConfig({
 		minify: true,
 		rollupOptions: {
 			output: {
+				/**
+				 * 手动做一下拆包，避免超过500kb
+				 * tone 单独打包，避免 buitar 和 @buitar/tone-player 重复打包
+				 * vexflow 整包过大，单独打包 core 和字体 bravura
+				 * workspace 包单独打包，和tonejs不同，abcjs 包打在 @buitar/abc-editor 中
+				 */
 				manualChunks: {
 					tone: ['tone'],
+					'vexflow/core':['vexflow/core'],
+					'vexflow/bravura':['vexflow/bravura'],
 					'react-libs': ['react', 'react-dom', 'react-router-dom'],
 					'@buitar/abc-editor': ['@buitar/abc-editor'],
 					'@buitar/to-guitar': ['@buitar/to-guitar'],

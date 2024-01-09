@@ -4,7 +4,10 @@ import { useTopRoute } from '@/utils/hooks/use-routers'
 
 import styles from './pages-intro.module.scss'
 
-export const PagesIntro: FC = () => {
+/**
+ * 页面介绍
+ */
+const PagesIntro: FC = () => {
 	const curTopRoute = useTopRoute()
 	if (!curTopRoute?.id) {
 		return null
@@ -28,4 +31,5 @@ export const PagesIntro: FC = () => {
 	)
 }
 
+export { PagesIntro }
 export { PagesMeta } from './pages-meta'

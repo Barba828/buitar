@@ -1,4 +1,5 @@
-import { RouteObject } from 'react-router-dom'
+import { lazy } from 'react'
+import { type RouteObject } from 'react-router-dom'
 
 import { HomePage } from './home'
 import { ChordAnalyzer } from './chord-analyzer'
@@ -20,8 +21,6 @@ import { IntervalList } from './play-tools/panels/interval-list-tool'
 
 import { SettingsPage } from './settings'
 import { NotFound } from './not-found'
-
-import { ABCEditor } from '@buitar/abc-editor'
 
 export const baseUrl = import.meta.env.BASE_URL || '/buitar/'
 
@@ -172,7 +171,7 @@ export const routeConfig: Array<RouteType> = [
 		id: 'ABCEditor',
 		path: `${baseUrl}abc-editor`,
 		type: 'menu',
-		Component: ABCEditor,
+		Component: lazy(() => import('@buitar/abc-editor')),
 	},
 	{
 		name: '设置',
@@ -185,7 +184,7 @@ export const routeConfig: Array<RouteType> = [
 		name: '404',
 		id: 'NotFound',
 		path: `${baseUrl}*`,
-		type:'',
+		type: '',
 		Component: NotFound,
 	},
 ]

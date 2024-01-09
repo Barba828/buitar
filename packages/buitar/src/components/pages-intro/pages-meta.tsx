@@ -3,24 +3,22 @@ import { Helmet } from 'react-helmet-async'
 import { pagesIntroConfig } from '@/pages/pages.config'
 import { useTopRoute, useRouteMatch } from '@/utils/hooks/use-routers'
 
+/**
+ * 页面元数据
+ */
 export const PagesMeta: FC<{ title?: string; decsription?: string }> = ({
 	title,
 	decsription = '',
 }) => {
 	const curTopRoute = useTopRoute() // 一级路由
 	const curRoute = useRouteMatch()
-	if (!curTopRoute?.id) {
-		return null
-	}
+	const pageInfo = pagesIntroConfig.get(curTopRoute?.id || '') // 页面介绍信息
 
-	const pageInfo = pagesIntroConfig.get(curTopRoute.id)
-
-	if (!pageInfo) {
-		return null
-	}
-	const ogTitle = `${title || curRoute.name ||curTopRoute.name || pageInfo.title} - Buitar`
-	const ogDescription =
-		(decsription || `${pageInfo.title} - ${pageInfo.content.join(',') || 'Buitar'}`).slice(0, 150)
+	const ogTitle = `${title || curRoute.name || curTopRoute?.name || pageInfo?.title} - Buitar`
+	const ogDescription = (
+		decsription ||
+		`${pageInfo?.title || curRoute.name} - ${pageInfo?.content.join(',') || 'Buitar'}`
+	).slice(0, 150)
 	const ogImage = 'https://i1.wp.com/img.erpweb.eu.org/imgs/2024/01/63842433f6b0627a.png' // https://img.erpweb.eu.org/imgs/2024/01/63842433f6b0627a.png
 	return (
 		<Helmet>

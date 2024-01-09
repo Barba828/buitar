@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { GuitarBoard, ChordCard, useBoardContext } from '@/components/guitar-board'
 import { Link } from 'react-router-dom'
 import { transChordTaps } from '@buitar/to-guitar'
-import { Icon } from '@/components'
+import { Icon, PagesMeta } from '@/components'
 import { routeConfig } from '@/pages/router'
 import { useIsMobile } from '@/utils/hooks/use-device'
 import { useRouteFind } from '@/utils/hooks/use-routers'
@@ -15,6 +15,7 @@ export const HomePage = () => {
 
 	return (
 		<div className={styles.container}>
+			<PagesMeta />
 			<Title />
 			{isMobile ? <MobileHome /> : <PcHome />}
 		</div>
