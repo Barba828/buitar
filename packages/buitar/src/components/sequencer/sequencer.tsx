@@ -103,7 +103,7 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 		tonePart.current.loopEnd = `${m}m`
 
 		const nowTime = Tone.Transport.seconds + 0.01
-		const looper = new Tone.Loop((time) => {
+		const looper = new Tone.Loop((_time) => {
 			sequencerList.current?.playTimeline(Tone.Transport.toSeconds(`${m}m`))
 		}, `${m}m`).start(nowTime)
 
@@ -399,6 +399,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 							<div
 								className={cx('primary-button', styles['sound-item'], styles['sound-head'])}
 								style={{ width: headItemWidth }}
+								onClick={() => onChange?.({ key, blocks: [] })}
 							>
 								{key}
 							</div>

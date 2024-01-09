@@ -271,4 +271,12 @@ const instrumentType: Record<string, Instrument[]> = {
 	percussion: ['drum', 'drum-acounstic', 'drum-electronic', 'metronome'] as PercussionInstrument[],
 }
 
-export { instrumentConfig, instrumentType }
+function isStringsInstrument(value: string): value is StringsInstrument {
+	return instrumentType.strings.includes(value as Instrument)
+}
+
+function isPercussionInstrument(value: string): value is PercussionInstrument {
+	return instrumentType.percussion.includes(value as Instrument)
+}
+
+export { instrumentConfig, instrumentType, isStringsInstrument, isPercussionInstrument }

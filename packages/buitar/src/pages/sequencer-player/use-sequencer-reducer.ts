@@ -135,6 +135,7 @@ export const setSequencersStateToStore = (sequencers: SequencersState[]) => {
 	localStorage.setItem('sequencers', JSON.stringify(data))
 }
 
+/**获取初始 sequencers 数据 */
 export const getSequencersStateFromStore = () => {
 	const data = JSON.parse(localStorage.getItem('sequencers') || '[]') as any[]
 	// 从storage中读取sequencers数据

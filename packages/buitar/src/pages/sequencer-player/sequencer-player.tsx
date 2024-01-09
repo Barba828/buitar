@@ -8,7 +8,7 @@ import {
 	PagesMeta,
 } from '@/components'
 import { instrumentUIConfig } from '@/pages/settings/config/controller.config'
-import type { Instrument } from '@buitar/tone-player/src/instrument.type'
+import { instrumentType, type Instrument } from '@buitar/tone-player'
 import {
 	SequencerReducerPayload,
 	SequencerReducerType,
@@ -33,6 +33,9 @@ export const SequencerPlayer = memo(() => {
 				}}
 			/>
 			{sequencers.map((sequencer, index) => {
+				/**
+				 * @TODO 拖拽排序
+				 */
 				const { sequencerPlayer, sounds, color } = sequencer
 				return (
 					<div key={sequencer.sequencerPlayer.getInstrument() + index}>
@@ -108,7 +111,7 @@ const SequencerOptionController = ({
 		onChange?.('volume', { volume: debounceVolume })
 	}, [debounceVolume])
 
-	const pickerView = (Object.keys(instrumentUIConfig) as Instrument[]).map((instrument, index) => {
+	const pickerView = instrumentType.strings.map((instrument, index) => {
 		const item = instrumentUIConfig[instrument]
 		const extended = extend || instrument === checked
 		return (

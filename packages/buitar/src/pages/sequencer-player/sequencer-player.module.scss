@@ -1,5 +1,6 @@
 .picker {
 	display: flex;
+	flex-wrap: wrap;
 
 	> div {
 		height: 30px;
