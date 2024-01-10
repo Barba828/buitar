@@ -1,4 +1,13 @@
-import { FC, forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
+import {
+	FC,
+	forwardRef,
+	memo,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
+	useMemo,
+	useRef,
+} from 'react'
 import * as Tone from 'tone'
 import { Icon } from '@/components/icon'
 import { useEditable } from './use-editable'
@@ -70,8 +79,9 @@ export const Sequencer: FC<SequencerProps> = memo(({ sounds = defaultSounds, pla
 	const tonePart = useRef<Tone.Part<TonePart>>() // 当前组件循环播放ID
 
 	/**
-	 * Tone.Part循环播放实现音序机Looper
-	 * Tone.Loop同步循环实现UI绘制
+	 * Tone.Part 循环播放实现音序机Looper
+	 * Tone.Loop 同步循环实现UI绘制
+	 * player.triggerNote 播放
 	 */
 	useEffect(() => {
 		tonePart.current?.clear()
@@ -235,15 +245,19 @@ interface SequencerListRefs {
  */
 const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 	({ soundList, color = 'yellow', onChange }, ref) => {
-		const { isPlaying: timelineVisible, editable, itemWidth, maxLength } = useSequencerContext()
+		const {
+			isPlaying: timelineVisible,
+			editable,
+			panelData: { itemWidth, maxLength, headerItemWidth },
+		} = useSequencerContext()
 
 		const container = useRef<HTMLDivElement>(null)
 		const timeline = useRef<HTMLDivElement>(null)
 
 		const itemSizeX = 2 * Number(styles.sound_margin) + itemWidth // 格子宽度
 		const itemSizeY = 2 * Number(styles.sound_margin) + Number(styles.sound_height) // 格子高度
-		const headItemWidth = 2 * Number(styles.sound_margin) + Number(styles.button_size) // 音符格子宽度
-		const soundWidth = headItemWidth + itemSizeX * maxLength // 格子行总宽度
+		const headerItemSizeX = 2 * Number(styles.sound_margin) + headerItemWidth // 音符格子宽度
+		const soundWidth = headerItemSizeX + itemSizeX * maxLength // 格子行总宽度
 
 		/**
 		 * 幽灵条设置 & 事件监听
@@ -251,31 +265,28 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 		const { ghost, handler } = useEditable({
 			itemSizeX,
 			itemSizeY,
+			headerItemSizeX,
 			soundList,
 			maxLength,
 			container,
 			editable,
 			onChange,
 		})
-
-		/**
-		 * 4分音符分割线
-		 * @returns
-		 */
-		const spacingLine = () => {
+		/** 4分音符分割线 */
+		const spacingLine = useMemo(() => {
 			const length = Math.round(maxLength / 4) - 1 > 0 ? Math.round(maxLength / 4) - 1 : 0
 			return new Array(length).fill(0).map((_, index) => {
 				return (
 					<div
 						key={index}
 						style={{
-							left: headItemWidth + itemSizeX * 4 * (index + 1) + Number(styles.sound_margin),
+							left: headerItemSizeX + itemSizeX * 4 * (index + 1) - Number(styles.sound_margin),
 						}}
 						className={styles['sound-line']}
 					></div>
 				)
 			})
-		}
+		}, [maxLength, headerItemSizeX, itemSizeX])
 
 		// 默认背景 Item
 		const backgounrdItems = (keyIndex: number) => {
@@ -293,7 +304,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 						key={index}
 						data-sq={`${keyIndex}-${index}-empty`}
 						className={cx('primary-button', styles['sound-item'])}
-						style={{ width: itemWidth }}
+						style={{ width: itemWidth, minWidth: itemWidth }}
 						onClick={handleClick}
 					></div>
 				)
@@ -370,7 +381,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 			}
 
 			timeline.current.style.transition = ''
-			timeline.current.style.left = `${headItemWidth}px`
+			timeline.current.style.left = `${headerItemSizeX}px`
 
 			// 10ms 防止页面left未复原
 			setTimeout(() => {
@@ -394,7 +405,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 						<div className={styles['sound']} key={key} data-sound={key}>
 							<div
 								className={cx('primary-button', styles['sound-item'], styles['sound-head'])}
-								style={{ width: headItemWidth }}
+								style={{ width: headerItemWidth }}
 								onClick={() => onChange?.({ key, blocks: [] })}
 							>
 								{key}
@@ -406,7 +417,7 @@ const SequencerList = forwardRef<SequencerListRefs, SequencerListProps>(
 						</div>
 					)
 				})}
-				{spacingLine()}
+				{spacingLine}
 				<div
 					ref={timeline}
 					className={cx(styles['sound-time-line'], timelineVisible && styles['sound-time-visible'])}

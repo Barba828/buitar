@@ -8,14 +8,13 @@ $sound-height: 30;
 }
 
 .sound {
-	display: flex;
-
 	.sound-head {
 		@include flex-center;
 		font-size: 12px;
 		font-weight: 700;
 		opacity: 0.8;
 		letter-spacing: 1.5px;
+		float: left;
 	}
 
 	.sound-list {
@@ -108,19 +107,20 @@ $sound-height: 30;
 		justify-content: start;
 		width: fit-content;
 		.player-range-text {
-			font-size: 14px;
+			font-size: $font-14;
 			font-weight: 600;
+			text-wrap: nowrap;
 			opacity: 0.8;
 			letter-spacing: 0.5px;
 			margin-right: 4px;;
 		}
 		.player-range-bpm {
-			font-size: 16px;
+			font-size: $font-16;
 		}
 	}
 
 	.player-m {
-		font-size: 18px;
+		font-size: $font-18;
 		font-weight: 700;
 		opacity: 0.8;
 	}

@@ -25,9 +25,6 @@ $cyan-second: rgb(145, 145, 14);
 $purple-primary: rgb(209, 91, 47);
 $purple-second: rgb(189, 80, 41);
 
-$button-size: 40;
-$button-margin: 2;
-
 $btn-size: var(--btn-size);
 $btn-margin: var(--btn-margin);
 $btn-radius: var(--btn-radius);
@@ -51,9 +48,6 @@ $font-22: var(--font-22);
 
 // es module 使用
 :export {
-	button_size: $button-size;
-	button_margin: $button-margin;
-
 	gray_primary: $gray-primary;
 	gray_second: $gray-second;
 	yellow_primary: $yellow-primary;

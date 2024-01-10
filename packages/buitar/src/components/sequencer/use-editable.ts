@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useIsTouch } from '@/utils/hooks/use-device'
 import type { Block, Sound } from './sequencer'
 
-import styles from './sequencer.module.scss'
-
 type BaseTouchEvent<T> = React.MouseEvent<T> & React.TouchEvent<T>
 type DivTouchEvent = BaseTouchEvent<HTMLDivElement>
 
@@ -14,6 +12,7 @@ type DivTouchEvent = BaseTouchEvent<HTMLDivElement>
 export const useEditable = ({
 	itemSizeX,
 	itemSizeY,
+	headerItemSizeX,
 	soundList: sounds,
 	maxLength,
 	container,
@@ -23,6 +22,7 @@ export const useEditable = ({
 }: {
 	itemSizeX: number
 	itemSizeY: number
+	headerItemSizeX: number
 	soundList: Sound[]
 	maxLength: number
 	container: React.RefObject<HTMLDivElement>
@@ -49,7 +49,7 @@ export const useEditable = ({
 	useEffect(() => {
 		if (!container.current) return
 		const { x, y } = container.current.getBoundingClientRect()
-		start.current = [x + Number(styles.button_size) + 2 * Number(styles.sound_margin), y]
+		start.current = [x + headerItemSizeX, y]
 	}, [container.current, dragable.current])
 
 	useEffect(() => {

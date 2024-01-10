@@ -11,14 +11,20 @@ type SequencerCorntextType = {
 	m: number
 	setM: SetState<number>
 
-	/**
-	 * 1/16分音符格子数量
-	 */
-	maxLength: number
-	/**
-	 * 1/16分音符格子宽度
-	 */
-	itemWidth: number
+	panelData: {
+		/**
+		 * 1/16分音符格子数量
+		 */
+		maxLength: number
+		/**
+		 * 1/16分音符格子宽度
+		 */
+		itemWidth: number
+		/**
+		 * 音符名称格子宽度
+		 */
+		headerItemWidth: number
+	}
 }
 
 const SequencerCorntext = React.createContext<SequencerCorntextType>({} as any)
@@ -55,14 +61,19 @@ export const SequencerProvider: FC<SequencerProps> = ({
 	const [m, setM] = useState(defaultM)
 	const maxLength = useMemo(() => 16 * m, [m]) // 16分音符数量
 
+	// 音符文本格子宽度
+	const headerItemWidth = 40
 	// 十六分音符UI宽度
 	const itemWidth = useMemo(() => {
-		const containerWidth = document.getElementById('app')?.getBoundingClientRect().width
-		if (!containerWidth) {
-			return 0
-		}
-		return (containerWidth * 0.8 * 0.9) / maxLength
-	}, [document.getElementById('app')?.getBoundingClientRect().width, maxLength])
+		const left =
+			document.getElementById('board')?.firstElementChild?.getBoundingClientRect().left || 20
+		const itemAllWidth = window.innerWidth - left - (headerItemWidth + 2) // 屏幕宽度 - 左侧边距或者侧边栏宽度 - (音符格子宽度 + 外边距)
+		return Math.min(itemAllWidth / maxLength - 2, 42)
+	}, [
+		document.getElementById('slide-menu')?.getBoundingClientRect().width,
+		headerItemWidth,
+		maxLength,
+	])
 
 	useEffect(() => {
 		Tone.start()
@@ -77,7 +88,7 @@ export const SequencerProvider: FC<SequencerProps> = ({
 		// Tone.Transport.bpm.rampTo(bpm, 1)
 	}, [bpm])
 
-	const sequencervalue = {
+	const sequencerValue = {
 		isPlaying,
 		setIsPlaying,
 		editable,
@@ -87,11 +98,14 @@ export const SequencerProvider: FC<SequencerProps> = ({
 		m,
 		setM,
 
-		maxLength,
-		itemWidth,
+		panelData: {
+			maxLength,
+			itemWidth,
+			headerItemWidth
+		},
 	}
 
 	return (
-		<SequencerCorntext.Provider value={sequencervalue}>{props.children}</SequencerCorntext.Provider>
+		<SequencerCorntext.Provider value={sequencerValue}>{props.children}</SequencerCorntext.Provider>
 	)
 }
