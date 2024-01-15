@@ -228,7 +228,7 @@ const transChordType = (chords: Tone[], calGrades?: number) => {
 }
 
 /**
- * 五度圈 数组
+ * 五度圈 ToneSchema 数组
  * @param root 根音 默认「C」
  */
 const transFifthsCircle = (root: Tone = 'C') => {

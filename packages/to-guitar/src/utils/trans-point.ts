@@ -329,25 +329,31 @@ const transChordTaps = (
 	}
 
 	/**
-	 * 过滤 和弦指法手指按位超过 fingerSpan（正常指法不超过4根手指）
+	 * 过滤 和弦指法手指按位超过 4（正常指法不超过4根手指，这里4不是fingerSpan「和弦品位跨度」）
 	 * 		& 手指不超过 1
-	 * 		& 最小品不超过 12 （超过12品重复的八度音高）
+	 * 		& 非零最小品不超过 12 （超过12品重复的八度音高）
 	 * @param taps
 	 */
 	const fingersFilter = (taps: Point[]) => {
 		// 最小品位（最小品位超过1，则为横按指法）
 		const minGrade = Math.min(...taps.map((tap) => tap.grade))
 		let fingerNums = minGrade > 0 ? 1 : 0
+		// 非零最小品位
+		let notZeroMinGrade = Infinity
 		taps.forEach((tap) => {
 			if (tap.grade > minGrade) {
 				fingerNums++
 			}
+			if (tap.grade > 0 && tap.grade < notZeroMinGrade) {
+				notZeroMinGrade = tap.grade
+			}
 		})
-		return fingerNums <= fingerSpan && fingerNums >= 1 && minGrade < 12
+		return fingerNums <= 4 && fingerNums >= 1 && minGrade < 12 && notZeroMinGrade < 12
 	}
 
 	/**
 	 * 过滤 非完整和弦音组成
+	 * @todo 优化 真实的和弦组成音不一定绝对完整，比如七和弦可以不要 5 音
 	 * @param taps
 	 */
 	const integrityFilter = (taps: Point[]) => {
@@ -373,9 +379,9 @@ const transChordTaps = (
 	 * @param tapsA
 	 * @param tapsB
 	 */
-	const gradeSorter = (chordA: BoardChord, chordB: BoardChord) => {
-		const maxGradeA = Math.max(...chordA.chordTaps.map((tap) => tap.grade))
-		const maxGradeB = Math.max(...chordB.chordTaps.map((tap) => tap.grade))
+	const gradeSorter = (chordTapsA: Point[], chordTapsB: Point[]) => {
+		const maxGradeA = Math.max(...chordTapsA.map((tap) => tap.grade))
+		const maxGradeB = Math.max(...chordTapsB.map((tap) => tap.grade))
 		return maxGradeA - maxGradeB
 	}
 
@@ -426,6 +432,7 @@ const transChordTaps = (
 					findNextString(point.string, [point], list)
 					// 过滤无效和弦
 					list = list.filter(integrityFilter).filter(fingersFilter).filter(repeatingPitchFilter)
+					// 增加当前point为根音的和弦
 					root.chordTapsList.push(...list)
 				}
 			})
@@ -435,16 +442,17 @@ const transChordTaps = (
 	// 扁平化多转位和弦
 	overRoots.forEach((item) => {
 		// 格式化当前转位的所有和弦
-		let tempList = item.chordTapsList.map(
+		let tempList = item.chordTapsList.sort(gradeSorter).map(
 			(taps) => ({ chordType: item.chordType, chordTaps: taps } as BoardChord)
 		)
 		// 所有和弦指位去重
 		tempList = coverTapsReduce(tempList)
-		tapsList.push(...tempList)
+
+		if(tempList){
+			tapsList.push(...tempList)
+		}
 	})
 
-	// 根据品位排序
-	tapsList = tapsList.sort(gradeSorter).filter((item)=>!!item)
 	return tapsList
 }
 
@@ -547,7 +555,10 @@ const getTapsFromBoard = (tones: Pitch[], options: TapsRangeProps) => {
 	return points
 }
 
-/**根据指位获取Taps */
+/**
+ * 根据指位获取Taps
+ * { x弦, y品} => Point
+ */
 const getTapsOnBoard = (positions: BoardPosition[], keyboard: BoardOption['keyboard']) => {
 	return positions.map(({ string, grade }) => keyboard[string - 1][grade])
 }
