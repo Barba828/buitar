@@ -7,6 +7,8 @@ pnpm dev
 
 # TODO
 
+## keepalive
+
 ## feature
 
 1. 支持乐器
@@ -15,7 +17,7 @@ pnpm dev
     - 1.3 ~~指板适配尤克里里~~
     - 1.4 ~~鼓机~~
     - 1.5 效果器
-    - 1.6 鼓机加入音序机[编辑](https://www.musicca.com/zh/chord-player)
+    - 1.6 ~~鼓机加入音序机[编辑](https://www.musicca.com/zh/chord-player)~~
 2. 和弦收藏
     - 2.1 ~~caged系统和弦卡片~~
     - 2.2 ~~「和弦收藏」适配多指板模式~~
