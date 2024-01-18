@@ -1,4 +1,3 @@
-import { lazy } from 'react'
 import { type RouteObject } from 'react-router-dom'
 
 import { HomePage } from './home'
@@ -13,6 +12,7 @@ import { ChordProgressions } from './chord-progressions'
 import { Collections, CagedCollection, StorageCollection } from './collections'
 import { InstrumentPlayer } from './instrument-player'
 import { SequencerPlayer } from './sequencer-player'
+import { AbcEditor } from './abc-editor'
 
 import { PlayToolsHome } from './play-tools'
 import { FifthCircleTool } from './play-tools/panels/fifth-circle-tool'
@@ -28,7 +28,6 @@ export type RouteType = {
 	name: string
 	id: string
 	path: string
-	type?: '' | 'menu' | 'children'
 	children?: RouteType[]
 	meta?: Record<string, any>
 	element?: RouteObject['element']
@@ -40,28 +39,28 @@ export const routeConfig: Array<RouteType> = [
 		name: '首页',
 		id: 'Home',
 		path: baseUrl,
-		type: '',
 		Component: HomePage,
+		meta: {},
 	},
 	{
 		name: '和弦库',
 		id: 'ChordLibrary',
 		path: `${baseUrl}library`,
-		type: 'menu',
+		meta: { menu: true, tabMenu: true, icon: 'icon-chord' },
 		Component: ChordPlayer,
 	},
 	{
 		name: '和弦编辑',
 		id: 'ChordAnalyzer',
 		path: `${baseUrl}analyzer`,
-		type: 'menu',
+		meta: { menu: true, icon: 'icon-edit-score' },
 		Component: ChordAnalyzer,
 	},
 	{
 		name: '吉他指型',
 		id: 'GuitarFingering',
 		path: `${baseUrl}fingering`,
-		type: 'menu',
+		meta: { menu: true, tabMenu: true, icon: 'icon-gesture-hand-fill' },
 		Component: GuitarFingering,
 		children: [
 			{
@@ -89,14 +88,14 @@ export const routeConfig: Array<RouteType> = [
 		name: '和弦进行',
 		id: 'ChordProgressions',
 		path: `${baseUrl}progressions`,
-		type: 'menu',
+		meta: { menu: true, tabMenu: true, icon: 'icon-changyonghexian' },
 		Component: ChordProgressions,
 	},
 	{
 		name: '和弦收藏',
 		id: 'ChordCollections',
 		path: `${baseUrl}collections`,
-		type: 'menu',
+		meta: { menu: true, icon: 'icon-dir' },
 		Component: Collections,
 		children: [
 			{
@@ -120,7 +119,7 @@ export const routeConfig: Array<RouteType> = [
 		name: '工具',
 		id: 'PlayTools',
 		path: `${baseUrl}tools`,
-		type: 'menu',
+		meta: { menu: true, tabMenu: true, icon: 'icon-hexiantu' },
 		Component: PlayToolsHome,
 		children: [
 			{
@@ -156,28 +155,28 @@ export const routeConfig: Array<RouteType> = [
 		name: '乐器',
 		id: 'Instrument',
 		path: `${baseUrl}instrument`,
-		type: 'menu',
+		meta: { menu: true, icon: 'icon-synth' },
 		Component: InstrumentPlayer,
 	},
 	{
 		name: '音序机',
 		id: 'Creation',
 		path: `${baseUrl}creation`,
-		type: 'menu',
+		meta: { menu: true, icon: 'icon-musical-note' },
 		Component: SequencerPlayer,
 	},
 	{
 		name: '乐谱编辑',
 		id: 'ABCEditor',
 		path: `${baseUrl}abc-editor`,
-		type: 'menu',
-		Component: lazy(() => import('@buitar/abc-editor')),
+		meta: { menu: true, icon: 'icon-hexianzidian' },
+		Component: AbcEditor,
 	},
 	{
 		name: '设置',
 		id: 'Settings',
 		path: `${baseUrl}settings`,
-		type: 'menu',
+		meta: { menu: true, tabMenu: true, icon: 'icon-setting' },
 		Component: SettingsPage,
 	},
 	{

@@ -11,6 +11,7 @@ body {
 	-ms-user-select: none;
 	user-select: none;
 	-webkit-user-drag: none;
+	-webkit-tap-highlight-color: transparent; // 点击块高亮
 
 	scrollbar-width: none; /* Firefox */
 	-ms-overflow-style: none; /* IE 10+ */
@@ -21,44 +22,33 @@ body {
 	a {
 		text-decoration: none;
 		color: inherit;
+		-webkit-tap-highlight-color: $gray-02; // 点击块高亮
 	}
 }
 
 #app {
-	@include flex-center(column);
-	width: 100%;
-	height: 100%;
+	display: flex;
+	justify-content: space-between;
+	min-width: 100vw;
 
 	#board {
+		box-sizing: border-box;
 		width: 100%;
 		height: 100%;
 		overflow-x: hidden;
+		padding-left: 10vw;
+		padding-top: 5vh;
+	}
 
-		> * {
-			margin-left: 10vw;
-		}
+	@media #{$pcLayout} {
+		min-height: 100vh;
+	}
 
-		> :first-child {
-			margin-top: 120px;
-		}
-
-		> :last-child {
-			margin-bottom: 120px;
-		}
-
-		@media #{$pcLayout} {
-			#abc-editor {
-				padding-left: 60px; // 侧边栏宽度，TODO 调整布局方式
-			}
-		}
-
-		@media #{$mobileLayout} {
-			> * {
-				margin-left: 20px;
-			}
-			> :first-child {
-				margin-top: 80px;
-			}
+	@media #{$mobileLayout} {
+		flex-direction: column;
+		#board {
+			padding-left: 20px;
+			padding-bottom: calc(env(safe-area-inset-bottom) + 80px);
 		}
 	}
 }

@@ -26,7 +26,7 @@ export const AudioBtn: FC = memo(() => {
 	})
 
 	return (
-		<div
+		<button
 			className={cx(
 				// 'primary-button',
 				styles['audio-btn'],
@@ -36,6 +36,6 @@ export const AudioBtn: FC = memo(() => {
 			id="audio-btn"
 		>
 			<Icon name={mute ? 'icon-mute' : 'icon-volume'} />
-		</div>
+		</button>
 	)
 })

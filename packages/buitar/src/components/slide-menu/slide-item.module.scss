@@ -1,144 +1,148 @@
 $side-width: 60px;
+$tab-height: 60px;
 
 .slide-menu {
-	position: fixed;
-	left: 0;
-	top: 0;
 	display: flex;
-	z-index: 99;
-	height: 100%;
-	backdrop-filter: blur(0px);
+	transition: all 0.2s ease;
+	margin-left: $side-width * (-4);
+	width: $side-width * 5;
+	min-width: $side-width * 5;
+	background: $gray-02;
 
 	&.slide-menu__extend {
-		width: 100%;
-		backdrop-filter: blur(40px);
-
-		.slide-menu-bar {
-			@media #{$mobileLayout} {
-				display: none;
-			}
-		}
-
-		.slide-menu-tab {
-			width: $side-width * 5;
-			height: 100%;
-
-			@media #{$mobileLayout} {
-				padding-left: 20px;
-				width: 80%;
-			}
-		}
-
-		.slide-menu-intro {
-			flex: 1;
-		}
+		margin-left: 0;
 	}
 
-	&-bar {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		opacity: 0.8;
-		padding: $side-width * 0.25 0px;
-		min-width: $side-width;
-		background: $gray-02;
-
-		@media #{$mobileLayout} {
-			// @media (max-width: 499px) {
-			width: 0px;
-			min-width: 0px;
-			opacity: 1;
-		}
-
-		&-icon {
-			@media #{$mobileLayout} {
-				transform: translateX(100%);
-			}
-
-			opacity: 0.8;
-			&:hover {
-				opacity: 1;
-			}
-		}
-	}
-
-	&-tab {
-		transition: all 0.2s linear;
-		width: 0px;
-		background: $gray-02;
-		opacity: 0.8;
+	&-nav {
+		position: fixed;
+		top: 0;
+		width: inherit;
+		height: 100vh;
 		overflow: hidden;
 		white-space: nowrap;
-		box-shadow: inset;
-		position: relative;
-
-		@media #{$mobileLayout} {
-			opacity: 1;
-		}
+		background: $gray-02;
 
 		&-title {
-			font-size: 68px !important;
+			font-size: 40px !important;
+			line-height: 60px;
 			text-decoration: none;
 			color: $white-01;
-			line-height: 92px;
-			font-weight: 700;
-
-			@media #{$mobileLayout} {
-				line-height: 100px;
-			}
+			opacity: 0.8;
+			font-weight: bolder;
+			padding: 0 20px;
 		}
 
 		&-item {
 			color: $white-01;
-			font-size: 18px;
+			font-size: $font-18;
+			height: $side-width * 0.7;
 			font-weight: 300;
-			padding: 8px;
+			padding: 8px 20px;
 			text-decoration: none;
 			display: flex;
-			justify-content: space-between;
+			justify-content: flex-end;
 			align-items: center;
-			transition: all 0.15s linear;
+			transition: all 0.15s ease;
 			cursor: pointer;
-			&:hover {
-				font-weight: 400;
-				padding-left: 10px;
-
-				.slide-menu-tab-hint {
-					opacity: 0.8;
+			@media (any-hover: hover) {
+				&:hover {
+					font-weight: 400;
+					padding-left: 24px;
 				}
+			}
+
+			&-name {
+				margin-left: 12px;
+				flex: 1;
 			}
 		}
 
-		&-hint {
-			transition: all 0.15s linear;
-			font-size: 12px;
-			opacity: 0;
-		}
-
 		&-item-checked {
-			background-color: $yellow-primary;
+			background-color: $gray-01;
+			font-weight: 400;
 		}
 
 		&-footer {
 			position: absolute;
 			bottom: 0;
 			width: 100%;
-			@media #{$mobileLayout} {
-				margin-left: -20px;
-			}
 		}
 	}
 
-	&-intro {
-		flex: 1;
-		width: 0px;
-		height: 100%;
+	&-trigger {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		&-icon {
+			margin: 14px 17px;
+		}
 	}
 }
 
-.seperate {
-	width: 100%;
-	height: 1px;
-	background: $white-01;
-	opacity: 0.2;
+@media #{$mobileLayout} {
+	.slide-menu {
+		width: 100vw;
+		height: $tab-height;
+		margin: 0;
+		position: fixed;
+		bottom: 0;
+		z-index: 99;
+		padding-bottom: env(safe-area-inset-bottom);
+
+		&.slide-menu__extend {
+			height: $tab-height * 2;
+		}
+
+		&-nav {
+			position: relative;
+			height: inherit;
+			width: inherit;
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			&-item {
+				width: 20%;
+				height: $tab-height;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				padding: 0;
+				&-name {
+					font-size: $font-10;
+					margin: 4px 0 0;
+					flex: unset;
+				}
+			}
+
+			&-item-checked {
+				background-color: unset;
+				color: $yellow-primary;
+			}
+		}
+
+		&-trigger,
+		&-nav-title,
+		&-nav-footer {
+			display: none;
+		}
+
+		&-tab-trigger {
+			display: flex;
+			justify-content: center;
+			z-index: 1;
+			width: 80px;
+			background-color: $gray-02;
+			border-radius: 10px 10px 0 0;
+			position: absolute;
+			top: -10px;
+			height: 20px;
+			left: 50%;
+			transform: translateX(-50%);
+			padding-top: 2px;
+			&-icon {
+				transition: all 0.15s ease;
+				opacity: 0.6;
+			}
+		}
+	}
 }

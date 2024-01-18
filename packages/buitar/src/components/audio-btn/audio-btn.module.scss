@@ -5,8 +5,9 @@
 	width: 32px !important;
 	height: 32px !important;
 	cursor: pointer;
-	// border-radius: 16px !important;
-	// box-shadow: 2px 2px 8px #444;
+	background: none;
+	border: none;
+	color: inherit;
 	@include flex-center;
 }
 
