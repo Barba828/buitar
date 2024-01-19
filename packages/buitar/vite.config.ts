@@ -3,6 +3,7 @@ import { resolve } from 'path'
 import react from '@vitejs/plugin-react'
 import { VitePWA as pwa } from 'vite-plugin-pwa'
 import { viteStaticCopy as copy } from 'vite-plugin-static-copy'
+import postcssPresetEnv from 'postcss-preset-env'
 
 const baseUrl = process.env.BASE_URL || '/'
 
@@ -89,8 +90,11 @@ export default defineConfig({
 		},
 		preprocessorOptions: {
 			scss: {
-				additionalData: '@import "src/style/definitions/index.scss";',
+				additionalData: '@import "src/style/definitions/index.scss";', // 预处理
 			},
+		},
+		postcss: {
+			plugins: [postcssPresetEnv()], // css 前缀补全兼容
 		},
 	},
 	build: {
@@ -106,8 +110,8 @@ export default defineConfig({
 				 */
 				manualChunks: {
 					tone: ['tone'],
-					'vexflow/core':['vexflow/core'],
-					'vexflow/bravura':['vexflow/bravura'],
+					'vexflow/core': ['vexflow/core'],
+					'vexflow/bravura': ['vexflow/bravura'],
 					'react-libs': ['react', 'react-dom', 'react-router-dom'],
 					'@buitar/abc-editor': ['@buitar/abc-editor'],
 					'@buitar/to-guitar': ['@buitar/to-guitar'],

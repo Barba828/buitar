@@ -31,7 +31,7 @@ export const Modal: FC<ModalProps> = ({ visible, pure, title, children, onConfir
 
 	return (
 		<PortalInner>
-			<div className="modal flex-center">
+			<div className="modal flex-center fade-in">
 				{pure ? (
 					children
 				) : (
@@ -41,7 +41,7 @@ export const Modal: FC<ModalProps> = ({ visible, pure, title, children, onConfir
 						) : (
 							title
 						)}
-
+						
 						{children}
 
 						<div className={styles['modal-options']}>

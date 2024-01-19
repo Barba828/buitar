@@ -155,7 +155,7 @@ export const routeConfig: Array<RouteType> = [
 		name: '乐器',
 		id: 'Instrument',
 		path: `${baseUrl}instrument`,
-		meta: { menu: true, icon: 'icon-synth' },
+		meta: { menu: true, icon: 'icon-play-piano' },
 		Component: InstrumentPlayer,
 	},
 	{
@@ -183,7 +183,6 @@ export const routeConfig: Array<RouteType> = [
 		name: '404',
 		id: 'NotFound',
 		path: `${baseUrl}*`,
-		type: '',
 		Component: NotFound,
 	},
 ]

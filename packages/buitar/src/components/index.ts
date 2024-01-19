@@ -4,7 +4,7 @@ export * from './drum-board'
 export * from './sound-board'
 export * from './sequencer'
 export * from './guitar-player'
-export * from './pages-intro'
+export * from './pages-info'
 
 export * from './ui'
 export * from './slide-menu'
