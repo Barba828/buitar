@@ -111,6 +111,11 @@ $tab-height: 60px;
 				align-items: center;
 				justify-content: center;
 				padding: 0;
+
+				&:hover {
+					padding-left: unset;
+				}
+
 				&-name {
 					font-size: $font-10;
 					margin: 4px 0 0;
