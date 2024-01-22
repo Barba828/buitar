@@ -11,7 +11,7 @@ import type { Point, Note, ToneSchema, ChordType } from '@buitar/to-guitar'
 import { transChordType } from '@buitar/to-guitar'
 import { AddTextInput } from '@/components/basic'
 import { VexChord } from '@/components/svg-chord'
-import { useConfigContext, PagesIntro, PagesMeta } from '@/components'
+import { useConfigContext, PagesMeta } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
 import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
 import cx from 'classnames'
@@ -46,7 +46,6 @@ export const ChordAnalyzer = () => {
 	return (
 		<>
 			<PagesMeta/>
-			<PagesIntro/>
 			{menus.board_setting && <BoardOptionsController extendItem={false} />}
 			<TapedGuitarBoard onChange={handleChangeTaps} />
 			{chordTypes && <TapedChordCard chordTypes={chordTypes} />}

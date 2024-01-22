@@ -4,7 +4,6 @@ import {
 	Sequencer,
 	SequencerController,
 	SequencerProvider,
-	PagesIntro,
 	PagesMeta,
 } from '@/components'
 import { instrumentUIConfig } from '@/pages/settings/config/controller.config'
@@ -26,7 +25,6 @@ export const SequencerPlayer = memo(() => {
 	return (
 		<SequencerProvider>
 			<PagesMeta />
-			<PagesIntro />
 			<SequencerController
 				onSave={() => {
 					setSequencersStateToStore(sequencers)

@@ -104,7 +104,7 @@ $sound-height: 30;
 		@include flex-center(row);
 		margin: $sound-margin + px;
 		padding: 0 8px;
-		justify-content: start;
+		justify-content: flex-start;
 		width: fit-content;
 		.player-range-text {
 			font-size: $font-14;

@@ -10,6 +10,7 @@
 		font-size: 80px;
 		opacity: 0.9;
 		margin-bottom: 0px;
+		margin-top: 20px;
 	}
 
 	.subtitle {
@@ -67,22 +68,24 @@
 	}
 }
 
-$route-size: calc($btn-size * 3);
+$route-size: calc($btn-size * 3.2);
 
 .menu-container {
 	display: flex;
 	flex-wrap: wrap;
+	font-weight: 300;
+	a {
+		&:active {
+			background-color: $yellow-primary;
+		}
+	}
 	.main-route {
-		font-size: $font-22;
-		display: block;
-		color: $white-01;
-		text-decoration: none;
 		width: $route-size;
 		height: $route-size;
-		@include touch-color;
-		> :first-child {
-			margin: calc($btn-size * 0.2);
-		}
+	}
+	.main-route-title {
+		font-size: $font-14;
+		margin-top: $space-10;
 	}
 	.sub-route-wrap {
 		width: $route-size;
@@ -91,20 +94,15 @@ $route-size: calc($btn-size * 3);
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
+	}
 
-		.sub-route {
-			font-size: $font-14;
-			display: block;
-			color: $white-01;
-			text-decoration: none;
-			width: calc($route-size / 2 - $btn-margin);
-			height: calc($route-size / 2 - $btn-margin);
-			@include touch-color;
-			margin: 0 0 calc($btn-margin * 2) !important;
-
-			> :first-child {
-				margin: calc($btn-margin * 2);
-			}
-		}
+	.sub-route {
+		font-size: $font-10;
+		width: calc($route-size / 2 - $btn-margin);
+		height: calc($route-size / 2 - $btn-margin);
+		margin: 0 0 calc($btn-margin * 2) !important;
+		padding: $space-4;
+		box-sizing: border-box;
+		text-align: center;
 	}
 }

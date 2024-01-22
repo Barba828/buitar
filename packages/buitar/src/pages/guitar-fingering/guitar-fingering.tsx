@@ -21,7 +21,6 @@ export const GuitarFingering: FC = () => {
 	return (
 		<>
 			<PagesMeta/>
-			<PagesIntro/>
 			<TabSwitch
 				className={cx(styles['fingering-tab'])}
 				values={tabList}

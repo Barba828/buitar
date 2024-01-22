@@ -10,7 +10,7 @@ import {
 import { transChordTaps } from '@buitar/to-guitar'
 import { PianoBoard } from '@/components/piano-board'
 import { VexChord } from '@/components/svg-chord'
-import { useConfigContext, PagesIntro, PagesMeta } from '@/components'
+import { useConfigContext, PagesMeta } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
 import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
 
@@ -46,7 +46,6 @@ export const ChordPlayer = () => {
 	return (
 		<>
 			<PagesMeta/>
-			<PagesIntro/>
 			<ChordController />
 			<ChordDetail />
 			<GuitarBoard />

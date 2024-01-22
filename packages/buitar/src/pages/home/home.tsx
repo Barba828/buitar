@@ -26,7 +26,7 @@ const MobileHome = () => {
 	return (
 		<div className={cx(styles['menu-container'])}>
 			{routeConfig
-				.filter((route) => route.type === 'menu')
+				.filter((route) => route.meta?.menu)
 				.map((route) => {
 					return route.children ? (
 						<div className={cx(styles['sub-route-wrap'])} key={route.path}>
@@ -36,9 +36,10 @@ const MobileHome = () => {
 									<Link
 										key={subRoute.path}
 										to={subRoute.path}
-										className={cx('primary-button', styles['sub-route'])}
+										className={cx('primary-button', 'flex-center', styles['sub-route'])}
+										onDragStart={() => false}
 									>
-										<div>{subRoute.name}</div>
+										{subRoute.name}
 									</Link>
 								))}
 						</div>
@@ -46,9 +47,11 @@ const MobileHome = () => {
 						<Link
 							key={route.path}
 							to={route.path}
-							className={cx('primary-button', styles['main-route'])}
+							className={cx('primary-button', 'flex-center', styles['main-route'])}
+							onDragStart={() => false}
 						>
-							<span>{route.name}</span>
+							{route.meta?.icon && <Icon name={route.meta?.icon} size={32} />}
+							<div className={styles['main-route-title']}>{route.name}</div>
 						</Link>
 					)
 				})}

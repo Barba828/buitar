@@ -68,7 +68,6 @@ export const SlideMenu = memo(() => {
 	))
 
 	const footer = [
-		<div style={{ marginTop: 'auto' }}></div>,
 		<div
 			key="clear"
 			className={cx(styles['slide-menu-nav-item'])}
@@ -90,6 +89,7 @@ export const SlideMenu = memo(() => {
 			</Modal>
 		</div>,
 		<a
+			key="github"
 			href="https://github.com/Barba828/buitar"
 			className={cx(styles['slide-menu-nav-item'])}
 			target="view_window"
