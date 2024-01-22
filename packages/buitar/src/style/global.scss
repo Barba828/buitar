@@ -114,10 +114,11 @@
 	left: 50%;
 	transform: translateX(-50%);
 	z-index: 199;
-	background-color: rgba($gray-third, 0.8);
+	background-color: rgba($gray-03, 0.8);
 	padding: calc($btn-margin * 5) calc($btn-margin * 10);
 	border-radius: calc($btn-margin * 2);
 	pointer-events: none;
+	font-size: $font-14;
 }
 
 .text-input {

@@ -4,7 +4,8 @@
 	max-height: 92vh;
 	overflow-y: scroll;
 	background: $gray-01;
-    padding: $btn-margin;
+    padding: calc($btn-margin * 2);
+	border-radius: calc($btn-margin * 4);
 
 	.modal-options {
 		display: flex;
@@ -13,6 +14,7 @@
 		:global(.primary-button) {
 			height: calc($btn-size);
 			flex: 1;
+			border-radius: calc($btn-margin * 3);
 		}
 	}
 

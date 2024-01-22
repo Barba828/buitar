@@ -11,6 +11,9 @@ $tab-height: 60px;
 
 	&.slide-menu__extend {
 		margin-left: 0;
+		.slide-menu-nav-item-name {
+			display: block;
+		}
 	}
 
 	&-nav {
@@ -54,6 +57,7 @@ $tab-height: 60px;
 			&-name {
 				margin-left: 12px;
 				flex: 1;
+				display: none;
 			}
 		}
 
@@ -90,7 +94,7 @@ $tab-height: 60px;
 		padding-bottom: env(safe-area-inset-bottom);
 
 		&.slide-menu__extend {
-			height: $tab-height * 2;
+			height: $tab-height * 3;
 		}
 
 		&-nav {
@@ -98,7 +102,7 @@ $tab-height: 60px;
 			height: inherit;
 			width: inherit;
 			display: flex;
-			justify-content: space-between;
+			justify-content: flex-start;
 			flex-wrap: wrap;
 			&-item {
 				width: 20%;
@@ -107,10 +111,16 @@ $tab-height: 60px;
 				align-items: center;
 				justify-content: center;
 				padding: 0;
+
+				&:hover {
+					padding-left: unset;
+				}
+
 				&-name {
 					font-size: $font-10;
 					margin: 4px 0 0;
 					flex: unset;
+					display: block;
 				}
 			}
 
@@ -118,12 +128,6 @@ $tab-height: 60px;
 				background-color: unset;
 				color: $yellow-primary;
 			}
-		}
-
-		&-trigger,
-		&-nav-title,
-		&-nav-footer {
-			display: none;
 		}
 
 		&-tab-trigger {

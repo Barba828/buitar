@@ -1,5 +1,5 @@
 import { BrowserRouter, useRoutes } from 'react-router-dom'
-import { ConfigProvider, SlideMenu, AudioBtn, BoardProvider } from '@/components'
+import { ConfigProvider, SlideMenu, FixedBtns, BoardProvider, PageHeader } from '@/components'
 import { routeConfig } from '@/pages/router'
 import { Suspense } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
@@ -11,9 +11,13 @@ export const App = () => {
 		<BrowserRouter>
 			<ConfigProvider>
 				<HelmetProvider>
-					<SlideMenu />
-					<Board />
-					<AudioBtn />
+					<BoardProvider>
+						<DrumProvider>
+							<SlideMenu />
+							<Board />
+							<FixedBtns />
+						</DrumProvider>
+					</BoardProvider>
 				</HelmetProvider>
 			</ConfigProvider>
 		</BrowserRouter>
@@ -23,12 +27,9 @@ export const App = () => {
 const Board = () => {
 	const element = useRoutes(routeConfig)
 	return (
-		<BoardProvider>
-			<DrumProvider>
-				<main id="board">
-					<Suspense fallback={<div>Loading...</div>}>{element}</Suspense>
-				</main>
-			</DrumProvider>
-		</BoardProvider>
+		<main id="board">
+			<PageHeader />
+			<Suspense fallback={<div>Loading...</div>}>{element}</Suspense>
+		</main>
 	)
 }

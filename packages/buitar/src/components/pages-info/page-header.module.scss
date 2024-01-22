@@ -1,0 +1,10 @@
+.page-header {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	
+	> h2 {
+		margin: $font-16 $font-10;
+		font-size: $font-20;
+	}
+}

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { memo } from 'react'
 import { pagesIntroConfig } from '@/pages/pages.config'
 import { useTopRoute } from '@/utils/hooks/use-routers'
 
@@ -7,7 +7,7 @@ import styles from './pages-intro.module.scss'
 /**
  * 页面介绍
  */
-const PagesIntro: FC = () => {
+export const PagesIntro = memo(() => {
 	const curTopRoute = useTopRoute()
 	if (!curTopRoute?.id) {
 		return null
@@ -22,14 +22,11 @@ const PagesIntro: FC = () => {
 	const { title, content } = pageInfo
 
 	return (
-		<div className={styles['pages-intro']}>
+		<section className={styles['pages-intro']}>
 			<h2>{title}</h2>
 			{content.map((item, index) => (
 				<p key={index}>{item}</p>
 			))}
-		</div>
+		</section>
 	)
-}
-
-export { PagesIntro }
-export { PagesMeta } from './pages-meta'
+})

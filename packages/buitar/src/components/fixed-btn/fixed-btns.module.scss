@@ -1,0 +1,23 @@
+.btn-group {
+	position: fixed;
+	right: 20px;
+	bottom: 100px;
+	z-index: 99;
+}
+.btn {
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+	margin: $space-6;
+	background: $gray-02;
+	border-radius: 50%;
+	border: none;
+	color: inherit;
+	opacity: 0.8;
+	@include flex-center;
+	@media (any-hover: hover) {
+		&:hover {
+			background: $gray-03;
+		}
+	}
+}
