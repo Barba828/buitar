@@ -6,13 +6,30 @@ import cx from 'classnames'
 
 export interface ModalProps {
 	visible?: boolean
+	/**
+	 * 无children容器
+	 */
 	pure?: boolean
+	/**
+	 * 点击浮层onCancel
+	 */
+	closeOnOverlay?: boolean
 	title?: ReactNode
 	onCancel?: React.MouseEventHandler<HTMLDivElement>
 	onConfirm?: React.MouseEventHandler<HTMLDivElement>
+	containerClass?: string
 }
 
-export const Modal: FC<ModalProps> = ({ visible, pure, title, children, onConfirm, onCancel }) => {
+export const Modal: FC<ModalProps> = ({
+	visible,
+	pure,
+	title,
+	children,
+	onConfirm,
+	onCancel,
+	containerClass,
+	closeOnOverlay = true,
+}) => {
 	useEffect(() => {
 		const container = document.body
 		if (visible) {
@@ -31,17 +48,17 @@ export const Modal: FC<ModalProps> = ({ visible, pure, title, children, onConfir
 
 	return (
 		<PortalInner>
-			<div className="modal flex-center fade-in">
+			<div className="overlay flex-center fade-in" onClick={closeOnOverlay ? onCancel : undefined}>
 				{pure ? (
 					children
 				) : (
-					<div className={styles['modal-container']}>
+					<div onClick={(e) => e.stopPropagation()} className={cx(styles['modal-container'], containerClass)}>
 						{typeof title == 'string' ? (
 							<div className={styles['modal-title']}>{title}</div>
 						) : (
 							title
 						)}
-						
+
 						{children}
 
 						<div className={styles['modal-options']}>

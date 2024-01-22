@@ -1,7 +1,7 @@
 .metronome-wrap {
 	display: flex;
 	justify-content: space-between;
-	align-items: end;
+	align-items: flex-end;
 	width: auto;
 	max-width: 600px;
 	margin-right: calc($btn-size * 0.5);

@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { ControllerList } from '@/components/controller'
 import { useRouteFind, useRouteMatch } from '@/utils/hooks/use-routers'
-import { PagesIntro, PagesMeta } from '@/components'
+import { PagesMeta } from '@/components'
 
 import styles from './play-tools.module.scss'
 
@@ -15,7 +15,6 @@ export const PlayToolsHome: FC = () => {
 	return isToolsHome ? (
 		<>
 			<PagesMeta />
-			<PagesIntro />
 			<ControllerList
 				size="large"
 				list={toolsRoute.children || []}

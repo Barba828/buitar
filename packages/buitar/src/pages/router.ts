@@ -24,12 +24,18 @@ import { NotFound } from './not-found'
 
 export const baseUrl = import.meta.env.BASE_URL || '/buitar/'
 
+type RouteMeta = {
+	menu?: boolean
+	tabMenu?: boolean
+	icon?: string
+} & Record<string, any>
+
 export type RouteType = {
 	name: string
 	id: string
 	path: string
 	children?: RouteType[]
-	meta?: Record<string, any>
+	meta?: RouteMeta
 	element?: RouteObject['element']
 	Component?: RouteObject['Component']
 }
@@ -40,7 +46,7 @@ export const routeConfig: Array<RouteType> = [
 		id: 'Home',
 		path: baseUrl,
 		Component: HomePage,
-		meta: {},
+		meta: { tabMenu: true, icon: 'icon-buitar' },
 	},
 	{
 		name: '和弦库',
@@ -119,7 +125,7 @@ export const routeConfig: Array<RouteType> = [
 		name: '工具',
 		id: 'PlayTools',
 		path: `${baseUrl}tools`,
-		meta: { menu: true, tabMenu: true, icon: 'icon-hexiantu' },
+		meta: { menu: true, icon: 'icon-hexiantu' },
 		Component: PlayToolsHome,
 		children: [
 			{

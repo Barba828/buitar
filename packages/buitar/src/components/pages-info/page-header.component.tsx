@@ -10,7 +10,7 @@ export const PageHeader = memo(() => {
 	const navigate = useNavigate()
 	const showBack = useMemo(() => !!curRoute?.meta?.back, [curRoute])
 
-	if(showBack){
+	if (showBack) {
 		return (
 			<header className={styles['page-header']} onClick={() => navigate(-1)}>
 				<Icon name="icon-back" size={16}></Icon>
@@ -18,7 +18,10 @@ export const PageHeader = memo(() => {
 			</header>
 		)
 	}
-	
-	return null
 
+	return (
+		<header className={styles['page-header']}>
+			<h1>{curRoute.name}</h1>
+		</header>
+	)
 })

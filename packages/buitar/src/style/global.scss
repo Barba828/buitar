@@ -1,5 +1,13 @@
 @import './animation.scss';
 
+a {
+	text-decoration: none;
+	color: inherit;
+	-webkit-tap-highlight-color: unset; // 点击块高亮
+	// -webkit-tap-highlight-color: $gray-02;
+	-webkit-touch-callout: none;
+}	
+
 .scroll-without-bar {
 	overflow: scroll;
 	scrollbar-width: none; /* Firefox */
@@ -96,13 +104,13 @@
 	display: flex;
 }
 
-.modal {
+.overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 99;
+	z-index: $z-index-overlay;
 
 	backdrop-filter: blur(10px);
 	background-color: rgba(0, 0, 0, 0.5);
@@ -113,7 +121,7 @@
 	bottom: 20%;
 	left: 50%;
 	transform: translateX(-50%);
-	z-index: 199;
+	z-index: $z-index-toast;
 	background-color: rgba($gray-03, 0.8);
 	padding: calc($btn-margin * 5) calc($btn-margin * 10);
 	border-radius: calc($btn-margin * 2);

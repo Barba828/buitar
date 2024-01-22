@@ -9,7 +9,7 @@
 	display: none;
 	transform: translateY(20px);
 	transition: 0.3s;
-	z-index: 99;
+	z-index: $z-index-modal;
 }
 
 .show {

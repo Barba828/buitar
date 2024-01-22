@@ -4,7 +4,6 @@ import {
 	GuitarBoard,
 	PianoBoard,
 	DrumBoard,
-	PagesIntro,
 	PagesMeta,
 	useBoardContext,
 	useConfigContext,
@@ -24,7 +23,6 @@ export const InstrumentPlayer = () => {
 	return (
 		<>
 			<PagesMeta />
-			<PagesIntro />
 			{menus.board_setting && <BoardOptionsController extendItem={false} />}
 			<KeyBoardInstrument extendItem={false} />
 			<DrumInstrumentController extendItem={false} />

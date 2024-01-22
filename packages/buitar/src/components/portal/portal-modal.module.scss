@@ -6,10 +6,11 @@
 	background: $gray-01;
     padding: calc($btn-margin * 2);
 	border-radius: calc($btn-margin * 4);
+	box-sizing: border-box;
 
 	.modal-options {
 		display: flex;
-		justify-content: end;
+		justify-content: flex-end;
 		font-size: $font-18;
 		:global(.primary-button) {
 			height: calc($btn-size);
