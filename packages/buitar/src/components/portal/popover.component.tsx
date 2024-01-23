@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { createPopper, type Options as PopperOptions } from '@popperjs/core'
 import { PortalInner } from './portal.component'
 import styles from './popover.module.scss'
 import cx from 'classnames'
+import { useIsHoverable } from '@/utils/hooks/use-device'
 
 interface PopoverProps extends Partial<PopperOptions> {
 	trigger: React.ReactNode
@@ -18,6 +19,7 @@ export const Popover: React.FC<PopoverProps> = ({
 	containerClass,
 	...popperOptions
 }) => {
+	const isHover = useIsHoverable()
 	const [isVisible, setIsVisible] = useState(false)
 	const triggerRef = useRef<HTMLDivElement | null>(null)
 	const containerRef = useRef<HTMLDivElement | null>(null)
@@ -32,9 +34,9 @@ export const Popover: React.FC<PopoverProps> = ({
 		}
 	}, [triggerRef.current, containerRef.current, popperOptions])
 
-	const handleTogglePopover = () => {
+	const handleTogglePopover = useCallback(() => {
 		setIsVisible(!isVisible)
-	}
+	}, [isVisible])
 
 	const content = (
 		<>
@@ -49,7 +51,11 @@ export const Popover: React.FC<PopoverProps> = ({
 
 	return (
 		<>
-			<div ref={triggerRef} onClick={handleTogglePopover} onMouseEnter={handleTogglePopover}>
+			<div
+				ref={triggerRef}
+				onClick={handleTogglePopover}
+				onMouseEnter={() => isHover && setIsVisible(true)}
+			>
 				{trigger}
 			</div>
 			{appendToBody ? isVisible && <PortalInner>{content}</PortalInner> : content}

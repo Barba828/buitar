@@ -21,9 +21,9 @@ export const SlideMenu = memo(() => {
 	const isMobile = useIsMobile()
 
 	// 移动端处理手势展开tab栏
-	const { touchRef, deltaY } = useTouchMove({
+	const { touchRef } = useTouchMove({
 		handleTouchMove: (_, deltaY) => {
-			if (!isMobile || !touchRef.current) {
+			if (!isMobile || !touchRef.current || deltaY === 0) {
 				return
 			}
 			const refStyle = (touchRef.current as HTMLDivElement).style
@@ -155,9 +155,6 @@ export const SlideMenu = memo(() => {
 		<nav
 			id="slide-menu"
 			className={cx(styles['slide-menu'], extend && styles['slide-menu__extend'])}
-			style={{
-				height: `${60 - deltaY.current}px`,
-			}}
 			ref={touchRef}
 		>
 			{isMobile && mobileTrigger}
