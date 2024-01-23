@@ -1,7 +1,7 @@
 import { FC, ReactNode, useEffect } from 'react'
 import { PortalInner } from './portal.component'
 import { Icon } from '@/components/icon'
-import styles from './portal-modal.module.scss'
+import styles from './modal.module.scss'
 import cx from 'classnames'
 
 export interface ModalProps {
@@ -48,11 +48,17 @@ export const Modal: FC<ModalProps> = ({
 
 	return (
 		<PortalInner>
-			<div className="overlay flex-center fade-in" onClick={closeOnOverlay ? onCancel : undefined}>
+			<div
+				className={cx('overlay flex-center fade-in', styles['modal-overlay'])}
+				onClick={closeOnOverlay ? onCancel : undefined}
+			>
 				{pure ? (
 					children
 				) : (
-					<div onClick={(e) => e.stopPropagation()} className={cx(styles['modal-container'], containerClass)}>
+					<div
+						onClick={(e) => e.stopPropagation()}
+						className={cx(styles['modal-container'], containerClass)}
+					>
 						{typeof title == 'string' ? (
 							<div className={styles['modal-title']}>{title}</div>
 						) : (

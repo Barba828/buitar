@@ -14,7 +14,6 @@ export const FifthCircleTool = () => {
 		<div className={styles['fifth-tool']}>
 			<div className={toolsStyles['intro-title']}>Fifths Circle</div>
 			<FifthCircleController size={360} thin={60} className={styles['fifth-tool__circle']} />
-			{/* <BoardOptionsController list={['isSharpSemitone', 'isNote']} /> */}
 			<ControllerList
 				list={guitarBoardOption.chords || []}
 				renderListItem={(item) => (

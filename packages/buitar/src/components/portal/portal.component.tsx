@@ -33,6 +33,9 @@ interface PortalProps {
 	align?: 'right' | 'bottom'
 }
 
+/**
+ * @Deprecated 使用Popper
+ */
 export const Portal: FC<PortalProps> = ({
 	trigger,
 	children,

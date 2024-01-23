@@ -1,0 +1,10 @@
+.setting-wrap {
+	width: calc(($btn-size * 2 + $btn-margin * 2) * 3); // 一行3列宫格
+	height: auto;
+	flex-wrap: wrap;
+	background-color: $gray-02;
+	margin-bottom: 4px;
+	margin-right: 4px;
+	padding: calc($btn-margin );
+	border-radius: calc($btn-margin * 2);
+}

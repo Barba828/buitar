@@ -19,6 +19,10 @@ export const PageHeader = memo(() => {
 		)
 	}
 
+	if (curRoute.id === 'Home') {
+		return null
+	}
+
 	return (
 		<header className={styles['page-header']}>
 			<h1>{curRoute.name}</h1>

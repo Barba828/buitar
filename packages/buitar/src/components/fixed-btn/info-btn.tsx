@@ -24,11 +24,10 @@ export const InfoBtn: FC<React.HTMLAttributes<HTMLButtonElement>> = memo((props)
 	const { title, content } = pageInfo
 
 	return (
-		<button id="info-btn" className={props.className}>
+		<button id="info-btn" className={props.className} onClick={toggleInfoModalVisible}>
 			<Icon
 				name="icon-more"
 				style={{ transform: 'rotate(90deg)' }}
-				onClick={toggleInfoModalVisible}
 			></Icon>
 			<Modal
 				visible={infoModalVisible}

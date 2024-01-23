@@ -107,7 +107,7 @@ export const useBoardWheel = (element?: HTMLDivElement | null) => {
 		}
 
 		element.addEventListener('wheel', handleWheel, { passive: false })
-		return element.removeEventListener('wheel', handleWheel)
+		return () => element.removeEventListener('wheel', handleWheel)
 	}, [element])
 }
 

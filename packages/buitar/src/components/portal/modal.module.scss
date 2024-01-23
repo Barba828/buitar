@@ -26,3 +26,8 @@
 		margin: calc($btn-margin * 4) calc($btn-margin * 2);
 	}
 }
+
+.modal-overlay {
+	backdrop-filter: blur(10px);
+	background-color: rgba(0, 0, 0, 0.5);
+}

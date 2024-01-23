@@ -150,3 +150,9 @@ $tab-height: 60px;
 		}
 	}
 }
+
+:export {
+	side_width: $side-width;
+	tab_height: $tab-height;
+}
+
