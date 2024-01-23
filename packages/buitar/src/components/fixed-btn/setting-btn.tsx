@@ -1,16 +1,18 @@
-import { FC, memo, useState, useCallback } from 'react'
-import { BoardOptionsController, Icon, Portal } from '@/components'
+import { FC, memo } from 'react'
+import { BoardOptionsController, Icon, Popover } from '@/components'
+import styles from './setting-btn.module.scss'
 
 export const SettingBtn: FC<React.HTMLAttributes<HTMLButtonElement>> = memo((props) => {
-	const [settingModalVisible, setSettingModalVisible] = useState<boolean>(false)
-	const toggleSettingModalVisible = useCallback(() => {
-		setSettingModalVisible(!settingModalVisible)
-	}, [settingModalVisible])
 	return (
-		<button id="setting-btn" className={props.className}>
-			<Portal trigger={<Icon name="icon-setting" onClick={toggleSettingModalVisible} />}>
-				<BoardOptionsController />
-			</Portal>
-		</button>
+		<Popover
+			trigger={
+				<button id="setting-btn" className={props.className}>
+					<Icon name="icon-setting" />
+				</button>
+			}
+			placement="top-end"
+		>
+			<BoardOptionsController className={styles['setting-wrap']} />
+		</Popover>
 	)
 })

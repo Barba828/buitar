@@ -34,6 +34,7 @@
 		"@buitar/abc-editor": "workspace:*",
 		"@buitar/to-guitar": "workspace:*",
 		"@buitar/tone-player": "workspace:*",
+		"@popperjs/core": "^2.11.8",
 		"react-beautiful-dnd": "^13.1.1",
 		"react-helmet-async": "^2.0.4",
 		"vexflow": "^4.2.3"
