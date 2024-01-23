@@ -10,6 +10,7 @@ import { useIsMobile } from '@/utils/hooks/use-device'
 
 import cx from 'classnames'
 import styles from './slide-item.module.scss'
+import { useTouchMove } from '@/utils/hooks/use-touch-move'
 
 export const SlideMenu = memo(() => {
 	// const { menus, dispatchMenus } = useConfigContext()
@@ -18,6 +19,40 @@ export const SlideMenu = memo(() => {
 	const [cleanStoreVisible, setCleanStoreVisible] = useState<boolean>(false)
 	const homeRoute = useRouteFind('Home')
 	const isMobile = useIsMobile()
+
+	// 移动端处理手势展开tab栏
+	const { touchRef, deltaY } = useTouchMove({
+		handleTouchMove: (_, deltaY) => {
+			if (!isMobile || !touchRef.current) {
+				return
+			}
+			const refStyle = (touchRef.current as HTMLDivElement).style
+			refStyle.transition = 'unset' // 停止height变化动画
+
+			if (extend && deltaY > 0) {
+				// 下滑，最低不超过 30 px
+				refStyle.height = `${Math.max(60 * 3 - deltaY, 30)}px`
+			} else if (!extend && deltaY < 0) {
+				// 上拉，最高不超过 240 px
+				refStyle.height = `${Math.min(60 - deltaY, 240)}px`
+			}
+		},
+		handleTouchEnd: (_, deltaY) => {
+			if (!touchRef.current) {
+				return
+			}
+
+			if (!extend && deltaY < -60) {
+				setExtend(true)
+			} else if (extend && deltaY > 60) {
+				setExtend(false)
+			}
+
+			const refStyle = (touchRef.current as HTMLDivElement).style
+			refStyle.transition = ''
+			refStyle.height = ''
+		},
+	})
 
 	const toggleExtend = useCallback(() => {
 		setExtend(!extend)
@@ -120,6 +155,10 @@ export const SlideMenu = memo(() => {
 		<nav
 			id="slide-menu"
 			className={cx(styles['slide-menu'], extend && styles['slide-menu__extend'])}
+			style={{
+				height: `${60 - deltaY.current}px`,
+			}}
+			ref={touchRef}
 		>
 			{isMobile && mobileTrigger}
 			<div className={cx(styles['slide-menu-nav'])}>

@@ -4,7 +4,6 @@ import {
 	useBoardContext,
 	TabSwitch,
 	Icon,
-	BoardOptionsController,
 	ToneModeController,
 	GuitarBoard,
 	ChordCard,
@@ -42,7 +41,7 @@ export const TapedGuitarBoardFingering = () => {
 			label: '全指板',
 		},
 	]
-	const { menus, isMobileDevice } = useConfigContext()
+	const { isMobileDevice } = useConfigContext()
 	const { taps, setTaps, setHighFixedTaps, guitarBoardOption, boardOptions, guitar } =
 		useBoardContext()
 	const [tab, setTab] = useState(tabList[0]) // 是否上行音阶指型
@@ -172,8 +171,6 @@ export const TapedGuitarBoardFingering = () => {
 						</div>
 					)
 			)}
-
-			{menus.board_setting && <BoardOptionsController extendItem={false} />}
 		</>
 	)
 }

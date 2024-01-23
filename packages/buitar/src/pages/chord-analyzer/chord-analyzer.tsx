@@ -4,14 +4,13 @@ import {
 	ChordCard,
 	useBoardContext,
 	DetailCard,
-	BoardOptionsController,
 } from '@/components/guitar-board'
 import { FifthsCircle } from '@/components/fifths-circle'
 import type { Point, Note, ToneSchema, ChordType } from '@buitar/to-guitar'
 import { transChordType } from '@buitar/to-guitar'
 import { AddTextInput } from '@/components/basic'
 import { VexChord } from '@/components/svg-chord'
-import { useConfigContext, PagesMeta } from '@/components'
+import { PagesMeta } from '@/components'
 import { useIsMobile } from '@/utils/hooks/use-device'
 import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
 import cx from 'classnames'
@@ -21,7 +20,6 @@ import { useLocation } from 'react-router-dom'
 
 export const ChordAnalyzer = () => {
 	const [chordTypes, setChordTypes] = useState<ChordType[]>([])
-	const { menus } = useConfigContext()
 	const { clearTaps, setTaps } = useBoardContext()
 	const { state } = useLocation()
 
@@ -46,7 +44,6 @@ export const ChordAnalyzer = () => {
 	return (
 		<>
 			<PagesMeta/>
-			{menus.board_setting && <BoardOptionsController extendItem={false} />}
 			<TapedGuitarBoard onChange={handleChangeTaps} />
 			{chordTypes && <TapedChordCard chordTypes={chordTypes} />}
 		</>

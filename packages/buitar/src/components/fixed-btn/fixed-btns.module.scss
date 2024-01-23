@@ -21,4 +21,8 @@
 			opacity: 1;
 		}
 	}
+
+	&:active {
+		background: $yellow-primary;
+	}
 }
