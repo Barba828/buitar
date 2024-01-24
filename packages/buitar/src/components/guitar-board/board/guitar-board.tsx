@@ -9,6 +9,7 @@ import { Icon } from '@/components'
 import cx from 'classnames'
 import styles from './guitar-board.module.scss'
 import fretStyles from './guitar-board-fret.module.scss'
+import { useIsTouch } from '@/utils/hooks/use-device'
 
 interface GuitarBoardProps {
 	/**渲染吉他品数范围 */
@@ -46,6 +47,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	const boardRange = range[0] < 1 ? [1, range[1]] : range
 	const scrollRef = useRef<HTMLDivElement>(null)
 	const BoardBtnComponent = boardTheme === 'default' ? BoardButtonOriginal : BoardButton
+	const isTouchDevice = useIsTouch()
 
 	/**扁平化指板二维数组 */
 	const boardList = useMemo(() => {
@@ -64,9 +66,21 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		},
 		[boardList]
 	)
-	
+	const handleTouchKey = useCallback(
+		(key: string) => {
+			if (key.length && boardList && isTouchDevice) {
+				const point = boardList[Number(key)]
+				onCheckedPoints?.([point])
+			}
+		},
+		[boardList]
+	)
+
 	// 鼠标事件监听
-	const { handler } = useBoardTouch(emphasis, setEmphasis, { onChange: handleChangeKey })
+	const { handler } = useBoardTouch(emphasis, setEmphasis, {
+		onChange: handleChangeKey,
+		onClick: handleTouchKey,
+	})
 	// 键盘事件监听
 	const { part, keyHandler } = useGuitarKeyDown(emphasis, setEmphasis, {
 		gradeLength: baseFret,
@@ -82,7 +96,6 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 			return
 		}
 		const points = debouceEmphasis.map((index) => boardList[Number(index)])
-
 		console.log(
 			'%c Points ',
 			'color:white; background:rgb(57, 167, 150);border-radius: 2px',
@@ -239,7 +252,7 @@ const BoardButtonOriginal = ({
 
 	// key
 	const key = `${point.index}`
-	// 交互反馈强调的point
+	// 交互反馈强调的point (active)
 	const emphasised = emphasis.includes(key)
 	// 固定的point
 	const fixed = !!fixedTaps.find((tap) => tap.index === point.index)
@@ -248,7 +261,11 @@ const BoardButtonOriginal = ({
 	// 被点击的point
 	const tapped = !!taps.find((tap) => tap.index === point.index)
 	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
-	const tone = getBoardOptionsTone(point.toneSchema, boardSettings, !tapped && !fixed && !emphasised)
+	const tone = getBoardOptionsTone(
+		point.toneSchema,
+		boardSettings,
+		!tapped && !fixed && !emphasised
+	)
 	// 显示八度音高
 	const level = tone && getLevel(point.toneSchema, boardSettings)
 

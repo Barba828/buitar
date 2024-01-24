@@ -113,7 +113,7 @@
 		flex-direction: column-reverse;
 	}
 
-	// 如下三种point风格，以出现越后的优先级越高
+	// 如下若干种point风格，以出现越后的优先级越高
 	&.fixed-point {
 		background: $yellow-second !important;
 	}
@@ -122,7 +122,7 @@
 		background: $blue-primary !important;
 	}
 
-	&.emphasised-point {
+	&.emphasised-point, &:active {
 		background: $green-primary !important;
 	}
 

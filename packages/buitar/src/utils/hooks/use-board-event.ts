@@ -15,8 +15,8 @@ export const useBoardTouch = (
 	 * 手动设置Touch事件
 	 */
 	options: {
-		onClick?(): void
-		onChange?(item: string): void
+		onClick?(key: string): void
+		onChange?(key: string): void
 	} = {}
 ) => {
 	const { onClick, onChange } = options
@@ -48,7 +48,7 @@ export const useBoardTouch = (
 	const onMouseOver = (e: React.MouseEvent | React.TouchEvent) => {
 		const targetData = (e.target as HTMLDivElement).dataset.key
 		if (targetData && isTouched.current) {
-			removeActiveFromTouched() // Touched中移除原active
+			removeActiveFromTouched() // Touched中移除原active（鼠标刚划过）
 			setActive(targetData)
 			onChange?.(targetData)
 			// 更新Touched
@@ -58,23 +58,35 @@ export const useBoardTouch = (
 		}
 	}
 	const onMouseUp = () => {
+		active && onClick?.(active)
 		removeActiveFromTouched()
 		isTouched.current = false
-		onClick?.()
 	}
 	const onMouseLeave = () => {
+		removeActiveFromTouched()
 		isTouched.current = false
+	}
+
+	const onBoardClick = (e: React.TouchEvent) => {
+		const targetData = (e.target as HTMLDivElement).dataset.key
+		if (targetData) {
+			onChange?.(targetData)
+			setActive(targetData)
+			if (touched.indexOf(targetData) === -1) {
+				onClick?.(targetData)
+			}
+		}
 	}
 
 	const handler = isTouchDevice
 		? {
-				// Mobile
-				onTouchStart: onMouseDown,
-				// onTouchMove: onMouseOver, // Touch设置TouchMove事件响应页面滚动，暂不用于指板响应
-				onTouchCancel: onMouseLeave,
-				onTouchEnd: onMouseUp,
+				// Mobile onTouch 方法与页面滚动冲突，所以暂不使用
+				// onTouchStart: onMouseDown,
+				// onTouchMove: onMouseLeave,
+				// onTouchCancel: onMouseLeave,
+				// onTouchEnd: onMouseUp,
 				// default
-				onClick: onMouseOver,
+				onClick: onBoardClick,
 		  }
 		: {
 				// PC
