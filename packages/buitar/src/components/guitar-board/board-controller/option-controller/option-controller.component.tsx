@@ -9,7 +9,7 @@ import {
 	instrumentKeyboardConfig,
 } from '@/pages/settings/config/controller.config'
 import {
-	GuitarBoardOptions,
+	GuitarBoardSetting,
 	GuitarBoardOptionsKey,
 	GuitarBoardThemeKey,
 	InstrumentKeyboardKey,
@@ -43,24 +43,24 @@ export const BoardController: FC<
  * @returns
  */
 export const BoardOptionsController: FC<
-	ControllerListProps<keyof GuitarBoardOptions> & {
+	ControllerListProps<keyof GuitarBoardSetting> & {
 		list?: GuitarBoardOptionsKey[]
 	}
 > = (props) => {
-	const { boardOptions, dispatchBoardOptions } = useBoardContext()
+	const { boardSettings, dispatchBoardSettings } = useBoardContext()
 
-	const handleClick = (option: keyof GuitarBoardOptions) => {
-		dispatchBoardOptions({
+	const handleClick = (option: keyof GuitarBoardSetting) => {
+		dispatchBoardSettings({
 			type: 'set',
-			payload: { ...boardOptions, [option]: !boardOptions[option] },
+			payload: { ...boardSettings, [option]: !boardSettings[option] },
 		})
 	}
 
-	const renderOptionItem = (option: keyof GuitarBoardOptions) => {
-		const checkedItem = boardOptions[option]
+	const renderOptionItem = (option: keyof GuitarBoardSetting) => {
+		const checkedItem = boardSettings[option]
 			? optionsUIConfig[option].checked
 			: optionsUIConfig[option].unchecked
-		const uncheckedItem = !boardOptions[option]
+		const uncheckedItem = !boardSettings[option]
 			? optionsUIConfig[option].checked
 			: optionsUIConfig[option].unchecked
 
@@ -82,14 +82,14 @@ export const BoardOptionsController: FC<
 
 	const list = props.list || (Object.keys(optionsUIConfig) as GuitarBoardOptionsKey[])
 	// 默认展示选中的option，若全都未选中，则展示「isShowSemitone」
-	const checkedList = list.filter((option) => boardOptions[option])
+	const checkedList = list.filter((option) => boardSettings[option])
 	return (
 		<ControllerList
 			{...props}
 			list={list}
 			onClickItem={handleClick}
 			renderListItem={renderOptionItem}
-			checkedItem={(option) => boardOptions[option]}
+			checkedItem={(option) => boardSettings[option]}
 			visibleItem={(option) => (checkedList.length > 0 ? false : option === 'isShowSemitone')}
 			itemClassName={() => styles['controller-inner-option']}
 		/>

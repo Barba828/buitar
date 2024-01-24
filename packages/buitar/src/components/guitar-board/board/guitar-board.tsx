@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useMemo, useRef } from 'react'
 import type { Point, ToneSchema } from '@buitar/to-guitar'
 import { useBoardContext } from '../board-provider'
 import { getBoardOptionsTone } from '../utils'
-import { GuitarBoardOptions } from '@/pages/settings/config/controller.type'
+import { GuitarBoardSetting } from '@/pages/settings/config/controller.type'
 import { useBoardTouch, useGuitarKeyDown } from '@/utils/hooks/use-board-event'
 import { useDebounce } from '@/utils/hooks/use-debouce'
 import { Icon } from '@/components'
@@ -36,7 +36,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 }) => {
 	const {
 		guitarBoardOption: { keyboard, baseFret },
-		boardOptions: { hasTag, numTag, isStickyZero = true },
+		boardSettings: { hasTag, numTag, isStickyZero = true },
 		boardTheme,
 		taps,
 		emphasis,
@@ -211,7 +211,7 @@ const BoardButton = ({
 }
 const BoardDots = ({ index }: { index: number }) => {
 	const {
-		boardOptions: { hasTag, numTag },
+		boardSettings: { hasTag, numTag },
 	} = useBoardContext()
 
 	if (!hasTag) {
@@ -234,8 +234,8 @@ const BoardButtonOriginal = ({
 	point,
 	itemClassName,
 }: { point: Point; itemClassName?: string } & GuitarBoardProps) => {
-	const { boardOptions, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
-	const { hasLevel, isNote } = boardOptions
+	const { boardSettings, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
+	const { hasLevel, isNote } = boardSettings
 
 	// key
 	const key = `${point.index}`
@@ -248,9 +248,9 @@ const BoardButtonOriginal = ({
 	// 被点击的point
 	const tapped = !!taps.find((tap) => tap.index === point.index)
 	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
-	const tone = getBoardOptionsTone(point.toneSchema, boardOptions, !tapped && !fixed && !emphasised)
+	const tone = getBoardOptionsTone(point.toneSchema, boardSettings, !tapped && !fixed && !emphasised)
 	// 显示八度音高
-	const level = tone && getLevel(point.toneSchema, boardOptions)
+	const level = tone && getLevel(point.toneSchema, boardSettings)
 
 	const cls = cx(
 		'primary-button',
@@ -277,7 +277,7 @@ const BoardButtonOriginal = ({
 }
 const BoardDotsOriginal = ({ index }: { index: number }) => {
 	const {
-		boardOptions: { hasTag, numTag },
+		boardSettings: { hasTag, numTag },
 	} = useBoardContext()
 
 	if (!hasTag) {
@@ -301,14 +301,14 @@ const BoardDotsOriginal = ({ index }: { index: number }) => {
 /**
  * 数字显示下的八度音高UI
  * @param toneSchema
- * @param boardOptions
+ * @param boardSettings
  */
-const getLevel = (toneSchema: ToneSchema, boardOptions: GuitarBoardOptions) => {
-	if (!boardOptions.hasLevel || !toneSchema.level) {
+const getLevel = (toneSchema: ToneSchema, boardSettings: GuitarBoardSetting) => {
+	if (!boardSettings.hasLevel || !toneSchema.level) {
 		return null
 	}
 	const { level } = toneSchema
-	if (boardOptions.isNote) {
+	if (boardSettings.isNote) {
 		return <span className={styles.level}>{level}</span>
 	}
 	return (
@@ -322,8 +322,8 @@ const getLevel = (toneSchema: ToneSchema, boardOptions: GuitarBoardOptions) => {
  * @returns
  */
 const useBoardBtnContent = (point: Point) => {
-	const { boardOptions, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
-	const { hasLevel, isNote } = boardOptions
+	const { boardSettings, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
+	const { hasLevel, isNote } = boardSettings
 
 	// key
 	const key = `${point.index}`
@@ -336,9 +336,9 @@ const useBoardBtnContent = (point: Point) => {
 	// 被点击的point
 	const tapped = !!taps.find((tap) => tap.index === point.index)
 	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
-	const tone = getBoardOptionsTone(point.toneSchema, boardOptions, false)
+	const tone = getBoardOptionsTone(point.toneSchema, boardSettings, false)
 	// 显示八度音高
-	const level = tone && getLevel(point.toneSchema, boardOptions)
+	const level = tone && getLevel(point.toneSchema, boardSettings)
 
 	const hidden = !(fixed || emphasised || highFixed || tapped)
 

@@ -18,6 +18,7 @@ export interface ModalProps {
 	onCancel?: React.MouseEventHandler<HTMLDivElement>
 	onConfirm?: React.MouseEventHandler<HTMLDivElement>
 	containerClass?: string
+	buttons?: ReactNode
 }
 
 export const Modal: FC<ModalProps> = ({
@@ -25,6 +26,7 @@ export const Modal: FC<ModalProps> = ({
 	pure,
 	title,
 	children,
+	buttons,
 	onConfirm,
 	onCancel,
 	containerClass,
@@ -68,6 +70,7 @@ export const Modal: FC<ModalProps> = ({
 						{children}
 
 						<div className={styles['modal-options']}>
+							{buttons}
 							<div className={cx('primary-button', 'flex-center')} onClick={onCancel}>
 								<Icon name="icon-close" />
 							</div>

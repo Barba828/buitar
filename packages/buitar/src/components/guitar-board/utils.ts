@@ -6,7 +6,7 @@ import {
 	ToneSchema,
 	ToneTypeName,
 } from '@buitar/to-guitar'
-import { GuitarBoardOptions } from '@/pages/settings/config/controller.type'
+import { GuitarBoardSetting } from '@/pages/settings/config/controller.type'
 
 /**
  * 根据指板设置获取 Tone 值
@@ -16,7 +16,7 @@ import { GuitarBoardOptions } from '@/pages/settings/config/controller.type'
  */
 export const getBoardOptionsTone = (
 	tone: ToneSchema,
-	options: GuitarBoardOptions,
+	options: GuitarBoardSetting,
 	ignore?: boolean
 ) => {
 	const { isShowSemitone } = options
@@ -40,7 +40,7 @@ export const getBoardOptionsTone = (
  */
 export const getBoardOptionsNote = (
 	tone: ToneSchema | number,
-	options: Pick<GuitarBoardOptions, 'isSharpSemitone'>
+	options: Pick<GuitarBoardSetting, 'isSharpSemitone'>
 ) => {
 	if (typeof tone === 'number') {
 		return options.isSharpSemitone ? NOTE_LIST[tone] : NOTE_FALLING_LIST[tone]
@@ -54,7 +54,7 @@ export const getBoardOptionsNote = (
  * @returns
  */
 export const getBoardOptionsToneType = (
-	options: Pick<GuitarBoardOptions, 'isSharpSemitone' | 'isNote'>
+	options: Pick<GuitarBoardSetting, 'isSharpSemitone' | 'isNote'>
 ): ToneTypeName => {
 	if (!options) {
 		return 'note'
@@ -75,7 +75,7 @@ export const getBoardOptionsToneType = (
  * @returns
  */
 export const getBoardOptionsList = (
-	options: Pick<GuitarBoardOptions, 'isSharpSemitone' | 'isNote'>
+	options: Pick<GuitarBoardSetting, 'isSharpSemitone' | 'isNote'>
 ) => {
 	const { isSharpSemitone, isNote } = options
 

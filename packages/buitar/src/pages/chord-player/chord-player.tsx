@@ -53,13 +53,13 @@ export const ChordPlayer = () => {
 }
 
 const ChordDetail = memo(() => {
-	const { chordTap, boardOptions } = useBoardContext()
+	const { chordTap, boardSettings } = useBoardContext()
 	const isMobile = useIsMobile()
 
 	if (!chordTap) {
 		return null
 	}
-	const title = getBoardChordName(chordTap.chordType, boardOptions)
+	const title = getBoardChordName(chordTap.chordType, boardSettings)
 
 	return (
 		<div style={{ display: 'flex' }} className="scroll-without-bar">
@@ -74,8 +74,8 @@ const ChordDetail = memo(() => {
 })
 
 const ChordKeyboard = () => {
-	const { taps, player, boardOptions } = useBoardContext()
-	const { isAllKey } = boardOptions
+	const { taps, player, boardSettings } = useBoardContext()
+	const { isAllKey } = boardSettings
 	const levels = isAllKey ? [2, 3, 4, 5] : [3]
 	const notes = taps.map(
 		(point) => `${point.toneSchema.note}${isAllKey ? point.toneSchema.level : 3}`

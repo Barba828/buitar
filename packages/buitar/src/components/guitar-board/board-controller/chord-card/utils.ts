@@ -1,17 +1,17 @@
 import { BoardChord } from "@buitar/to-guitar"
-import { GuitarBoardOptions } from '@/pages/settings/config/controller.type'
+import { GuitarBoardSetting } from '@/pages/settings/config/controller.type'
 import { getBoardOptionsNote } from '@/components/guitar-board/utils'
 
 
 /**
  * 根据 chordType 获取和弦名称
  * @param chordType
- * @param boardOptions
+ * @param boardSettings
  * @returns
  */
 export const getBoardChordName = (
 	chordType?: BoardChord['chordType'],
-	boardOptions?: Pick<GuitarBoardOptions, 'isSharpSemitone'>
+	boardSettings?: Pick<GuitarBoardSetting, 'isSharpSemitone'>
 ) => {
 	if (!chordType) {
 		return ''
@@ -23,12 +23,12 @@ export const getBoardChordName = (
 
 	// 根据 tone 获取和弦名称
 	if (!chordType.tone) return ' '
-	const tone = boardOptions
-		? getBoardOptionsNote(chordType.tone, boardOptions)
+	const tone = boardSettings
+		? getBoardOptionsNote(chordType.tone, boardSettings)
 		: chordType.tone.note
 	const over = chordType.over
-		? boardOptions
-			? getBoardOptionsNote(chordType.over, boardOptions)
+		? boardSettings
+			? getBoardOptionsNote(chordType.over, boardSettings)
 			: chordType.over.note
 		: ''
 	const tag = chordType.tag

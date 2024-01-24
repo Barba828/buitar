@@ -252,7 +252,7 @@ export const DegreeChordController: FC<ControllerListProps<any>> = () => {
 		guitarBoardOption,
 		setChord,
 		setChordTaps,
-		boardOptions: { isSharpSemitone },
+		boardSettings: { isSharpSemitone },
 	} = useBoardContext()
 	const { progressions, progressionIndex, soundListIndex, setSoundList, setSoundListIndex } =
 		usePlayerContext()

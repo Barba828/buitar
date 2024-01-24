@@ -126,8 +126,8 @@ export const ChordCard: FC<{
 })
 
 export const DetailCard: FC<{ chordType?: BoardChord['chordType'] }> = ({ chordType }) => {
-	const { boardOptions } = useBoardContext()
-	const chordName = getBoardChordName(chordType, boardOptions)
+	const { boardSettings } = useBoardContext()
+	const chordName = getBoardChordName(chordType, boardSettings)
 
 	if (!chordType || !chordType.tone) {
 		return null
@@ -139,7 +139,7 @@ export const DetailCard: FC<{ chordType?: BoardChord['chordType'] }> = ({ chordT
 	const chordList = constitute?.map((pitch, index) => {
 		const noteIndex = (offset + transInterval(pitch)) % NOTE_LIST.length
 		return {
-			note: getBoardOptionsNote(noteIndex, boardOptions),
+			note: getBoardOptionsNote(noteIndex, boardSettings),
 			degreeTag: constituteTag?.[index],
 			degree: constitute?.[index],
 		}

@@ -113,14 +113,14 @@ const GuitarBoardFingeringItem = ({
 	onChange,
 	onRemove,
 }: Partial<TabletrueItemProps>) => {
-	const { guitarBoardOption, boardOptions, setTaps, setHighFixedTaps } = useBoardContext()
+	const { guitarBoardOption, boardSettings, setTaps, setHighFixedTaps } = useBoardContext()
 	const [optionVisible, setOptionVisible] = useState<number>(0)
 	const [range, setRange] = useState<TabletrueItemConfig['range']>(defaultRange)
 	const [mode, setMode] = useState<TabletrueItemConfig['mode']>(defaultMode)
 	const [rootPitch, setRootPitch] = useState<TabletrueItemConfig['root']>(defaultRoot) // 根音
 	const deboucedRange = useDebounce(range, 200) // 200ms 防抖 改变range重计算指型
 	// pitch转note查看
-	const rootNote = getBoardOptionsList(boardOptions)[rootPitch]
+	const rootNote = getBoardOptionsList(boardSettings)[rootPitch]
 
 	// 编辑：改变根音
 	const handleCheckedPoint = (points: Point[]) => {

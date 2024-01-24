@@ -42,7 +42,7 @@ export const TapedGuitarBoardFingering = () => {
 		},
 	]
 	const { isMobileDevice } = useConfigContext()
-	const { taps, setTaps, setHighFixedTaps, guitarBoardOption, boardOptions, guitar } =
+	const { taps, setTaps, setHighFixedTaps, guitarBoardOption, boardSettings, guitar } =
 		useBoardContext()
 	const [tab, setTab] = useState(tabList[0]) // 是否上行音阶指型
 	const [rootPoint, setRootPoint] = useState<Point>() // 根音
@@ -164,7 +164,7 @@ export const TapedGuitarBoardFingering = () => {
 										key={index}
 										size={isMobileDevice ? 80 : 120}
 										taps={tapItem.chordTaps}
-										title={getBoardChordName(tapItem.chordType, boardOptions)}
+										title={getBoardChordName(tapItem.chordType, boardSettings)}
 									/>
 								))}
 							</div>

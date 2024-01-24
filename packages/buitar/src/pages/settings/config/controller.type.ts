@@ -10,7 +10,7 @@ export type GuitarBoardOptionsKey =
 	| 'numTag'
 	| 'isAllKey'
 
-export type GuitarBoardOptions = Record<GuitarBoardOptionsKey, boolean>
+export type GuitarBoardSetting = Record<GuitarBoardOptionsKey, boolean>
 export type InstrumentColor = 'yellow' | 'blue' | 'green' | 'cyan' | 'purple'
 export type GuitarBoardThemeKey = 'default' | 'fender'
 export type InstrumentKeyboardKey = 'guitar' | 'bass' | 'ukulele'

@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
 import type { StringsInstrument } from '@buitar/tone-player'
 import {
-	GuitarBoardOptions,
+	GuitarBoardSetting,
 	GuitarBoardThemeKey,
 	InstrumentKeyboardKey,
 } from '@/pages/settings/config/controller.type'
@@ -22,7 +22,7 @@ import { toast } from '@/components'
 /**
  * 吉他指板默认配置
  */
-const defaultBoardOptions: GuitarBoardOptions = {
+const defaultBoardOptions: GuitarBoardSetting = {
 	/**
 	 * 是否显示半音
 	 */
@@ -101,8 +101,8 @@ type BoardContextType = {
 	/**
 	 * 指板显示设置
 	 */
-	boardOptions: GuitarBoardOptions
-	dispatchBoardOptions: Dispatch<GuitarBoardOptions>
+	boardSettings: GuitarBoardSetting
+	dispatchBoardSettings: Dispatch<GuitarBoardSetting>
 	/**
 	 * 乐器设置
 	 */
@@ -173,7 +173,7 @@ export const useBoardContext = () => React.useContext(BoardContext)
 export const BoardProvider: FC = (props) => {
 	const player = window.tonePlayer as TonePlayer
 	const [guitarBoardOption, setGuitarBoardOption] = useState<Partial<BoardOption>>({})
-	const [boardOptions, dispatchBoardOptions] = useStore<GuitarBoardOptions>(
+	const [boardSettings, dispatchBoardSettings] = useStore<GuitarBoardSetting>(
 		OPTIONS_KEY,
 		defaultBoardOptions
 	)
@@ -239,8 +239,8 @@ export const BoardProvider: FC = (props) => {
 		guitar,
 
 		guitarBoardOption,
-		boardOptions,
-		dispatchBoardOptions,
+		boardSettings,
+		dispatchBoardSettings,
 		instrument,
 		dispatchInstrument,
 		instrumentKeyboard,

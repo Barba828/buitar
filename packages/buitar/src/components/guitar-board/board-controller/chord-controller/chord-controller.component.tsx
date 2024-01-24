@@ -200,7 +200,7 @@ const ChordPickerController: FC<ControllerListProps<Chord>> = ({ ...props }) => 
 		chord,
 		setChord,
 		guitarBoardOption,
-		boardOptions: { isSharpSemitone },
+		boardSettings: { isSharpSemitone },
 	} = useBoardContext()
 
 	const handleClick = useCallback((item: Chord) => {

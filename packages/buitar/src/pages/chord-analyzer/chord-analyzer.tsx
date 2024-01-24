@@ -83,7 +83,7 @@ const TapedGuitarBoard: FC<{ onChange?(taps: Point[]): void }> = ({ onChange }) 
 
 const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultChordTypes }) => {
 	const isMobile = useIsMobile()
-	const { taps, boardOptions, setFixedTaps, guitarBoardOption } = useBoardContext()
+	const { taps, boardSettings, setFixedTaps, guitarBoardOption } = useBoardContext()
 	const [chordTypes, setChordTypes] = useState(defaultChordTypes)
 
 	useEffect(() => {
@@ -93,8 +93,8 @@ const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultCh
 	const checkedChordType = useMemo(() => chordTypes[0], [chordTypes])
 	const extraChordTypes = useMemo(() => chordTypes.slice(1), [chordTypes])
 	const title = useMemo(
-		() => getBoardChordName(checkedChordType, boardOptions),
-		[checkedChordType, boardOptions]
+		() => getBoardChordName(checkedChordType, boardSettings),
+		[checkedChordType, boardSettings]
 	)
 
 	const changeChordTapName = (index: number) => {
@@ -181,7 +181,7 @@ const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultCh
 								key={index}
 								className={cx('primary-button', styles['type-item'])}
 							>
-								{getBoardChordName(chordType, boardOptions)}
+								{getBoardChordName(chordType, boardSettings)}
 							</div>
 						))}
 					<AddTextInput key="add-text-input" onConfirm={addChordTapName} />
