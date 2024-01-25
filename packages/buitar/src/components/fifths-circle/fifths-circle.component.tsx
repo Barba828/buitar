@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, memo } from 'react'
 import { ModeType, ToneSchema, transFifthsCircle } from '@buitar/to-guitar'
 import classnames from 'classnames'
 
@@ -45,7 +45,7 @@ export type FifthCircleProps = {
 	[x: string]: any
 }
 
-export const FifthsCircle: FC<FifthCircleProps> = ({
+export const FifthsCircle: FC<FifthCircleProps> = memo(({
 	size = 400,
 	thin = 60,
 	minor = true,
@@ -57,14 +57,14 @@ export const FifthsCircle: FC<FifthCircleProps> = ({
 	const cx = size >> 1
 	const cy = size >> 1
 	const cr = size >> 1
-	const outerCircle = OUTER_TONES.map((tone, index) => {
-		if (index === 6) {
+	const outerCircle = OUTER_TONES.map((tone) => {
+		if (tone.note!==tone.noteFalling) {
 			return `${tone.note},${tone.noteFalling}`
 		}
 		return tone.noteFalling
 	})
 	const innerCircle = INNER_TONES.map((tone, index) => {
-		if (index === 6) {
+		if (tone.note!==tone.noteFalling) {
 			return `${tone.note},${tone.noteFalling}m`
 		}
 		if (index === 7) {
@@ -138,7 +138,7 @@ export const FifthsCircle: FC<FifthCircleProps> = ({
 			)}
 		</svg>
 	)
-}
+})
 
 const Text: FC<any> = ({
 	cx = 100,

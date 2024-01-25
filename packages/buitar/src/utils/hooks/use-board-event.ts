@@ -67,7 +67,7 @@ export const useBoardTouch = (
 		isTouched.current = false
 	}
 
-	const onBoardClick = (e: React.TouchEvent) => {
+	const onBoardClick = (e: React.MouseEvent | React.TouchEvent) => {
 		const targetData = (e.target as HTMLDivElement).dataset.key
 		if (targetData) {
 			onChange?.(targetData)
