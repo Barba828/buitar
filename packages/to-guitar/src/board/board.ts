@@ -1,5 +1,5 @@
 import { transBoard, transScaleDegree } from '../index'
-import type { Chord, ChordDegreeNum, GuitarBoard, ModeType, Point, Tone } from '../interface'
+import type { DegreeChord, ChordDegreeNum, GuitarBoard, ModeType, Point, Tone, DegreeScale } from '../interface'
 import { DEFAULT_LEVEL, DEFAULT_TUNE, GRADE_NUMS } from '../config'
 import { OnChange } from '../utils/on-change'
 
@@ -22,8 +22,9 @@ type BoardOption = {
 	chordOver: boolean
 	/**
 	 * 调内顺阶和弦「 C Dm Em ... 」
+	 * 与 chordNumType 相匹配
 	 */
-	chords: Chord[]
+	chords: DegreeChord[]
 	/**
 	 * 指板
 	 * 「弦数」 * 「品数」
@@ -45,7 +46,7 @@ type BoardOption = {
 	baseLevel: number
 }
 
-type BoardOptionProps = Pick<BoardOption, 'mode' | 'scale' | 'chordNumType' | 'chordOver' |'baseTone' | 'baseFret' | 'baseLevel'>
+type BoardOptionProps = Pick<BoardOption, 'mode' | 'scale' |'chordNumType' | 'chordOver' |'baseTone' | 'baseFret' | 'baseLevel'>
 
 const defaultOptions: BoardOptionProps = {
 	mode: 'major',

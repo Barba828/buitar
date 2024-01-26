@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react'
-import { Chord, chordDegreeMap, ChordDegreeNum, transChord, getDegreeTag } from '@buitar/to-guitar'
+import { DegreeChord, chordDegreeMap, ChordDegreeNum, transChord, getDegreeTag } from '@buitar/to-guitar'
 import { useBoardContext, ChordTapsController } from '@/components/guitar-board'
 import { FifthCircleController } from '../fifth-circle-controller'
 import { tagList, tagTypedList } from '@/pages/chord-progressions/progressions.config'
@@ -195,7 +195,7 @@ const ChordNumPickerController: FC<ControllerListProps<ChordDegreeNum>> = (props
  * @param props
  * @returns
  */
-const ChordPickerController: FC<ControllerListProps<Chord>> = ({ ...props }) => {
+const ChordPickerController: FC<ControllerListProps<DegreeChord>> = ({ ...props }) => {
 	const {
 		chord,
 		setChord,
@@ -203,7 +203,7 @@ const ChordPickerController: FC<ControllerListProps<Chord>> = ({ ...props }) => 
 		boardSettings: { isSharpSemitone },
 	} = useBoardContext()
 
-	const handleClick = useCallback((item: Chord) => {
+	const handleClick = useCallback((item: DegreeChord) => {
 		setChord(item.chord)
 	}, [])
 
@@ -218,7 +218,7 @@ const ChordPickerController: FC<ControllerListProps<Chord>> = ({ ...props }) => 
 	)
 }
 
-export const DegreeChordItem: FC<{ item: Chord; isSharpSemitone?: boolean; withtag?: boolean }> = ({
+export const DegreeChordItem: FC<{ item: DegreeChord; isSharpSemitone?: boolean; withtag?: boolean }> = ({
 	item,
 	isSharpSemitone = true,
 	withtag = true,

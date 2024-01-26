@@ -38,13 +38,41 @@ export type ChordType = {
  * 和弦级数
  */
 export type DegreeTag = 'Ⅰ' | 'Ⅱ' | 'Ⅲ' | 'Ⅳ' | 'Ⅴ' | 'Ⅵ' | 'Ⅶ'
-export type RollType = 'Do' | 'Di' | 'Ra' | 'Re' | 'Mi' | 'Fa' | 'Fi' | 'Se' | 'So' | 'Si' | 'Le' | 'La' | 'Li' | 'Te' | 'Ti' //现代唱名系统对于升降调的区分
+export type RollType =
+	| 'Do'
+	| 'Di'
+	| 'Ra'
+	| 'Re'
+	| 'Mi'
+	| 'Fa'
+	| 'Fi'
+	| 'Se'
+	| 'So'
+	| 'Si'
+	| 'Le'
+	| 'La'
+	| 'Li'
+	| 'Te'
+	| 'Ti' //现代唱名系统对于升降调的区分
 export type ChordDegreeNum = 3 | 7 | 9
 /**
  * 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian'
  * https://learningmusic.ableton.com/zh-Hans/advanced-topics/modes.html
  */
-export type ModeType = 'major' | 'minor' | 'ionian' |'dorian' | 'phrygian' | 'lydian' | 'mixolydian' | 'aeolian' | 'locrian' | 'major-pentatonic' | 'minor-pentatonic'| 'major-blues' | 'minor-blues'
+export type ModeType =
+	| 'major'
+	| 'minor'
+	| 'ionian'
+	| 'dorian'
+	| 'phrygian'
+	| 'lydian'
+	| 'mixolydian'
+	| 'aeolian'
+	| 'locrian'
+	| 'major-pentatonic'
+	| 'minor-pentatonic'
+	| 'major-blues'
+	| 'minor-blues'
 export type DegreeType = {
 	/**
 	 * 音程
@@ -66,10 +94,16 @@ export type DegreeType = {
 	roll: RollType
 }
 
-/**级数和弦 */
-export type Chord = {
+/**
+ * 级数音阶
+ */
+export type DegreeScale = {
 	degree: DegreeType
 	tone: ToneSchema
+}
+
+/**级数和弦 */
+export type DegreeChord = DegreeScale & {
 	chord: Note[]
 	chordType: ChordType[]
 }

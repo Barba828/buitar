@@ -13,7 +13,7 @@ export const INTERVAL_FALLING_LIST: IntervalFalling[] = ['1', '2b', '2', '3b', '
 export const DEFAULT_TUNE: Note[] = ['E', 'A', 'D', 'G', 'B', 'E']
 export const DEFAULT_ABSOLUTE_TUNE: string[] = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 export const DEFAULT_LEVEL = 2
-export const NOTE_SORT: Note[] = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C']
+export const NOTE_SORT: Note[] = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 export const MODE_LIST: ModeType[] = [
 	// 标准七度
 	'major', // 中古调式dorian
