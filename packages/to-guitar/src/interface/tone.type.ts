@@ -1,19 +1,9 @@
-export type Note = 'C' | 'C#' | 'D' | 'D#' | 'E' | 'F' | 'F#' | 'G' | 'G#' | 'A' | 'A#' | 'B'
-export type NoteFalling = 'C' | 'Db' | 'D' | 'Eb' | 'E' | 'F' | 'Gb' | 'G' | 'Ab' | 'A' | 'Bb' | 'B'
+export type NoteBasic = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B'
+export type Note = NoteBasic | 'C#' | 'D#' | 'F#' | 'G#' | 'A#'
+export type NoteFalling = NoteBasic | 'Db' | 'Eb' | 'Gb' | 'Ab' | 'Bb'
+type NoteExtended = 'Cb' | 'E#' | 'Fb' | 'B#'
 export type Interval = '1' | '1#' | '2' | '2#' | '3' | '4' | '4#' | '5' | '5#' | '6' | '6#' | '7'
-export type IntervalFalling =
-	| '1'
-	| '2b'
-	| '2'
-	| '3b'
-	| '3'
-	| '4'
-	| '5b'
-	| '5'
-	| '6b'
-	| '6'
-	| '7b'
-	| '7'
+export type IntervalFalling = '1' | '2b' | '2' | '3b' | '3' | '4' | '5b' | '5' | '6b' | '6' | '7b' | '7'
 type IntervalExtended =
 	| '8'
 	| '8#'
@@ -38,6 +28,7 @@ export type IntervalNum = 1 | 2 | 3 | 4 | 5 | 6 | 7
  * 音符类型
  */
 export type Tone = Note | NoteFalling | Interval | IntervalFalling | IntervalNum
+export type NoteAll = Note | NoteFalling | NoteExtended
 /**
  * 音符类型ToneType名称
  */

@@ -15,15 +15,21 @@ const chordMap = new Map<number, ChordType>([
 	 * 三和弦
 	 */
 	[43, { tag: '', name: 'major triad', constitute: ['1', '3', '5'], name_zh: '大三和弦' }],
-	[44, { tag: 'aug', name: 'augmented triad', constitute: ['1', '3', '5#'], name_zh: '增三和弦' }],
 	[34, { tag: 'm', name: 'minor triad', constitute: ['1', '3b', '5'], name_zh: '小三和弦' }],
+	[44, { tag: 'aug', name: 'augmented triad', constitute: ['1', '3', '5#'], name_zh: '增三和弦' }],
 	[33, { tag: 'dim', name: 'diminished triad', constitute: ['1', '3b', '5b'], name_zh: '减三和弦' }],
 	[25, { tag: 'sus2', name: 'suspended 2 chord', constitute: ['1', '2', '5'], name_zh: '挂二和弦' }],
 	[52, { tag: 'sus4', name: 'suspended 4 chord', constitute: ['1', '4', '5'], name_zh: '挂四和弦' }],
+
+	/**
+	 * 三和弦拓展
+	 */
 	[223, { tag: 'add9', name: 'addition 9 chord', constitute: ['1', '3', '5', '9'], name_zh: '加九和弦' }],
-	[214, { tag: 'madd9', name: 'minor addition 9 chord', constitute: ['1', '3b', '5', '9'], name_zh: '小加九和弦' }],
+	[214, { tag: 'm(add9)', name: 'minor addition 9 chord', constitute: ['1', '3b', '5', '9'], name_zh: '小加九和弦' }],
+	[224, { tag: 'aug(add9)', name: 'augmented addition 9 chord', constitute: ['1', '3', '5#', '9'], name_zh: '增三加九和弦' }],
+	[212, { tag: 'dim(add9)', name: 'diminished addition 9 chord', constitute: ['1', '3b', '5b', '9'], name_zh: '减三加九和弦' }],
 	[412, { tag: 'add11', name: 'addition 11 chord', constitute: ['1', '3', '5', '11'], name_zh: '加十一和弦' }],
-	[322, { tag: 'madd11', name: 'minor addition 11 chord', constitute: ['1', '3b', '5', '11'], name_zh: '小加十一和弦' }],
+	[322, { tag: 'm(add11)', name: 'minor addition 11 chord', constitute: ['1', '3b', '5', '11'], name_zh: '小加十一和弦' }],
 
 	/**
 	 * 七和弦
@@ -84,7 +90,7 @@ const chordMap = new Map<number, ChordType>([
 /**
  * 和弦级数分类
  */
-const degreeMap = new Map<ModeType, DegreeType[]>([
+const degreeMap = new Map<ModeType, Readonly<DegreeType>[]>([
 	[
 		'major', // 自然大调 Ionian
 		[

@@ -20,7 +20,7 @@ import type {
 	BoardPosition,
 } from '../interface'
 import { transChordType } from './trans'
-import { transTone, transNote, transToneNum } from './trans-tone'
+import { transTone, transNote, transNotePitch } from './trans-tone'
 
 /**
  * 便于计算，默认调音一线零品为低音，即
@@ -522,7 +522,7 @@ const getModeRangeTaps = (root: Point | Tone, options: TapsRangeProps) => {
 		return []
 	}
 	// 获取有效相对音高，在range范围内的所有相对音高符合即可
-	const rootTone = isPoint(root) ? root.tone : transToneNum(root)
+	const rootTone = isPoint(root) ? root.tone : transNotePitch(root)
 	// 音阶相对音高
 	const toneList = intervals.map((interval) => (interval + rootTone) % 12)
 

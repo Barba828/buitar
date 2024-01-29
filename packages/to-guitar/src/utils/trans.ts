@@ -5,6 +5,8 @@ import {
 	chordDegreeMap,
 	DEGREE_TAG_MAP,
 	intervalMap,
+	NOTE_SORT,
+	NOTE_MULTI_LIST,
 } from '../config'
 import type {
 	Note,
@@ -16,8 +18,10 @@ import type {
 	IntervalNum,
 	IntervalAll,
 	DegreeScale,
+	NoteAll,
+	DegreeType,
 } from '../interface'
-import { transNote, transTone } from './trans-tone'
+import { transNote, transNoteAllPitch, transTone } from './trans-tone'
 
 /**
  * 度数 => 半音程
@@ -66,10 +70,7 @@ const getChordType = (chords: Note[]): ChordType[] => {
 			.sort((a, b) => a - b)
 
 		// 排序完成根据音程计算key
-		const key = intervals.reduce(
-			(pre, cur, curIndex) => pre * 10 + (cur - intervals[curIndex - 1] || 0),
-			0
-		)
+		const key = intervals.reduce((pre, cur, curIndex) => pre * 10 + (cur - intervals[curIndex - 1] || 0), 0)
 
 		const chordItem = chordMap.get(key)
 		if (chordItem) {
@@ -109,9 +110,7 @@ const getDegreeTag = (degree: string | number) => {
  */
 const transChord = (tone: Tone, chordTypeTag: string = '') => {
 	const note = transNote(tone)
-	const chordTypeItem = Array.from(chordMap.entries()).find(
-		([_key, value]) => value.tag === chordTypeTag
-	)
+	const chordTypeItem = Array.from(chordMap.entries()).find(([_key, value]) => value.tag === chordTypeTag)
 	if (!chordTypeItem) {
 		return null
 	}
@@ -136,6 +135,63 @@ const transChord = (tone: Tone, chordTypeTag: string = '') => {
 	}
 }
 
+const getScaleDegreeList = ({ mode = 'major', scale = 'C' }: { mode?: ModeType; scale?: NoteAll }): DegreeType[] => {
+	const pitch = transNoteAllPitch(scale)
+	const degreeArr = degreeMap.get(mode)
+	const scaleNoteList: DegreeType[] = []
+	const sortOffset = NOTE_SORT.findIndex((sortNote) => scale.includes(sortNote))
+
+	// 无效调式 或 无效音名
+	if (!degreeArr || sortOffset === -1) {
+		return []
+	}
+	for (let i = 0; i < degreeArr.length; i++) {
+		const degree = degreeArr[i]
+		const currPitch = (pitch + degree.interval) % 12 // 当前「相对音高」
+		const currMultiNode = NOTE_MULTI_LIST[currPitch] // 当前符合「相对音高」的所有音名（包括所有升降号）
+		const currSortNote = NOTE_SORT[(i + sortOffset) % 7] // 当前音名（无升降号）
+		const currNote = currMultiNode.find((note) => note.includes(currSortNote)) // 当前音名
+		if (currNote) {
+			scaleNoteList.push({
+				...degree,
+				note: currNote,
+			})
+		} else {
+			// 存在不符合「相对音高」的音名，例如「D#大调」的7度音是C双升「Cx」
+			// 转为「相对音高」的其他音名组成：「D#大调」=>「Eb大调」
+			const otherScale = NOTE_MULTI_LIST[pitch].find((note) => note !== scale)
+			return getScaleDegreeList({ mode, scale: otherScale })
+		}
+	}
+	return scaleNoteList
+}
+
+const transScaleDegreeList = ({
+	degrees = getScaleDegreeList({}),
+	chordNumType = 3,
+}: {
+	degrees?: DegreeType[]
+	chordNumType?: ChordDegreeNum
+}) => {
+	const degreeLength = degrees.length
+	const chordScale = chordDegreeMap.get(chordNumType)?.interval || [] // 顺阶和弦级数增量
+
+	// 根据转换的大调获取大调和弦
+	return degrees.map((degree, index) => {
+		const chord = chordScale.map((scale) => degrees[(index + scale - 1) % 7].note!)
+		const chordType = getChordType(chord as Note[])
+		/**
+		 * @TODO 统一九和弦计算方式
+		 */
+		console.log('lnz chordType', chord, chordType)
+		// return {
+		// 	...degree,
+		// 	chord,
+		// 	chordType,
+		// }
+	})
+}
+
 /**
  * 调式 & 调 => 顺阶音调
  * @param {
@@ -144,13 +200,7 @@ const transChord = (tone: Tone, chordTypeTag: string = '') => {
  * }
  * @returns 大调音阶顺阶音调 数组
  */
-const transScale = ({
-	mode = 'major',
-	scale = 'C',
-}: {
-	mode?: ModeType
-	scale?: Tone
-}): DegreeScale[] => {
+const transScale = ({ mode = 'major', scale = 'C' }: { mode?: ModeType; scale?: Tone }): DegreeScale[] => {
 	const note = transNote(scale)
 	const degreeArr = degreeMap.get(mode)
 
@@ -273,4 +323,6 @@ export {
 	transDegreeChord, //顺阶音调 => 顺阶和弦
 	transScaleDegree, //调式 & 调 => 顺阶和弦 (transScale + transDegreeChord)
 	transFifthsCircle, // 五度圈[]
+	getScaleDegreeList,
+	transScaleDegreeList,
 }

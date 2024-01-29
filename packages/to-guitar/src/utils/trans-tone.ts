@@ -2,13 +2,17 @@ import { NOTE_LIST, NOTE_FALLING_LIST, INTERVAL_LIST, INTERVAL_FALLING_LIST } fr
 import type {
 	Tone,
 	Note,
+	NoteAll,
 	Interval,
 	ToneSchema,
 	NoteFalling,
 	IntervalFalling,
 	Pitch,
 	ModeType,
+NoteBasic,
 } from '../interface'
+
+const NOTE_REGEX = /([A-Ga-g#b])/g;
 
 // overload
 function transNote(x: Tone): Note
@@ -55,19 +59,36 @@ function transTone(note: Note | number): ToneSchema {
 }
 
 // overload
-function transToneNum(x: Tone): Pitch
-function transToneNum(x: Tone[]): Pitch[]
+function transNotePitch(x: Tone): Pitch
+function transNotePitch(x: Tone[]): Pitch[]
 /**
  * Tone音字符 => 相对音高 （0～11）
  * @param x
  * @returns Pitch
  */
-function transToneNum(x: Tone | Tone[]) {
+function transNotePitch(x: Tone | Tone[]) {
 	if (x instanceof Array) {
-		return x.map((x) => transToneNum(x as Tone))
+		return x.map((x) => transNotePitch(x as Tone))
 	}
 	const note = transNote(x)
 	return NOTE_LIST.indexOf(note)
+}
+
+function transNoteAllPitch(x: NoteAll): Pitch
+function transNoteAllPitch(x: NoteAll[]): Pitch[]
+function transNoteAllPitch(x: NoteAll | NoteAll[]) {
+	if (x instanceof Array) {
+		return x.map((x) => transNoteAllPitch(x as NoteAll))
+	}
+	const [note, symbol] = x.match(NOTE_REGEX) as [NoteBasic, string];
+	let basic = NOTE_LIST.indexOf(note) + 12 // 避免出现 -1
+	if (symbol === '#') {
+		basic += 1
+	} else if (symbol === 'b') {
+		basic -= 1
+	}
+	basic = basic % 12
+	return basic
 }
 
 /**
@@ -75,7 +96,7 @@ function transToneNum(x: Tone | Tone[]) {
  * @param x
  */
 function transToneOffset(x: Tone, offset: number = 0) {
-	const base = transToneNum(x)
+	const base = transNotePitch(x)
 	let index = (base + offset) % NOTE_LIST.length
 	if (index < 0) {
 		index += NOTE_LIST.length
@@ -111,4 +132,4 @@ const isIntervalFalling = (x: any): x is IntervalFalling => {
 	return INTERVAL_FALLING_LIST.includes(x)
 }
 
-export { transTone, transNote, transToneNum, transToneOffset, transToneMode }
+export { transTone, transNote, transNotePitch, transNoteAllPitch, transToneOffset, transToneMode }
