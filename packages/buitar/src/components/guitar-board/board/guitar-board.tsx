@@ -66,15 +66,15 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		},
 		[boardList]
 	)
-	const handleTouchKey = useCallback(
-		(key: string) => {
+	// touchable设备：点击 checked
+	const handleTouchKey = (key: string) => {
+		if (key.length && boardList) {
 			if (key.length && boardList && isTouchDevice) {
 				const point = boardList[Number(key)]
 				onCheckedPoints?.([point])
 			}
-		},
-		[boardList]
-	)
+		}
+	}
 
 	// 鼠标事件监听
 	const { handler } = useBoardTouch(emphasis, setEmphasis, {
@@ -89,7 +89,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	// 滚轮事件监听
 	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
 
-	// 指位停留 30 ms以上 => play & checked
+	// 非touchable设备：指位停留 30 ms以上 => play & checked
 	const debouceEmphasis = useDebounce(emphasis, 30)
 	useEffect(() => {
 		if (debouceEmphasis.length <= 0 || !boardList) {

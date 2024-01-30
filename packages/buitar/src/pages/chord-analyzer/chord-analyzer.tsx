@@ -1,10 +1,5 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
-import {
-	GuitarBoard,
-	ChordCard,
-	useBoardContext,
-	DetailCard,
-} from '@/components/guitar-board'
+import { GuitarBoard, ChordCard, useBoardContext, DetailCard } from '@/components/guitar-board'
 import { FifthsCircle } from '@/components/fifths-circle'
 import type { Point, Note, ToneSchema, ChordType } from '@buitar/to-guitar'
 import { transChordType } from '@buitar/to-guitar'
@@ -43,7 +38,7 @@ export const ChordAnalyzer = () => {
 
 	return (
 		<>
-			<PagesMeta/>
+			<PagesMeta />
 			<TapedGuitarBoard onChange={handleChangeTaps} />
 			{chordTypes && <TapedChordCard chordTypes={chordTypes} />}
 		</>
@@ -166,7 +161,7 @@ const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultCh
 				title={title}
 			/>
 			{/* 五线音阶卡片 */}
-			<VexChord taps={taps} className={styles['vex-chord']}/>
+			<VexChord taps={taps} className={styles['vex-chord']} />
 			{/* 和弦详细信息 */}
 			<div>
 				<DetailCard chordType={checkedChordType} />
