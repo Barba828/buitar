@@ -13,7 +13,7 @@ import {
 	instrumentKeyboardConfig,
 	instrumentKeyboardMap,
 } from '@/pages/settings/config/controller.config'
-import { Board, BoardChord, BoardOption, Point, Tone } from '@buitar/to-guitar'
+import { Board, BoardChord, BoardOption, DegreeType, Pitch, Point, Tone } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
 import { useStore } from '@/utils/hooks/use-store'
 import { COLLECTIONS_KEY, CollectionMapType } from '@/pages/collections/collections.config'
@@ -128,8 +128,8 @@ type BoardContextType = {
 	/**
 	 * 大调音阶和弦
 	 */
-	chord: Tone[]
-	setChord: SetState<Tone[]>
+	chord: Pitch[]
+	setChord: SetState<Pitch[]>
 	/**
 	 * 音阶和弦指位列表
 	 */

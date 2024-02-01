@@ -152,14 +152,14 @@ const getDegreeTag = (degree: string | number) => {
  * @returns
  */
 const transChord = (tone: Tone, chordTypeTag: string = '') => {
-	const note = transNote(tone)
+	const pitch = transPitch(tone)
 	const chordTypeItem = Array.from(chordMap.entries()).find(([_key, value]) => value.tag === chordTypeTag)
 	if (!chordTypeItem) {
 		return null
 	}
 
 	const [key, chordType] = chordTypeItem
-	const intervals = [NOTE_LIST.indexOf(note)]
+	const intervals = [pitch]
 	const intervalNums = key
 		.toString()
 		.split('')
@@ -170,10 +170,8 @@ const transChord = (tone: Tone, chordTypeTag: string = '') => {
 		return temp
 	}, intervals[0])
 
-	const chord = intervals.map((interval) => NOTE_LIST[interval])
-
 	return {
-		chord,
+		chord: intervals,
 		chordType,
 	}
 }
@@ -264,11 +262,16 @@ const getScaleDegreeWithChord = ({
  */
 const getScaleNoteAll = (degrees: DegreeType[]) => {
 	if (!degrees[0].note) {
-		return []
+		return {
+			notes: [],
+			notesOnC: [],
+			notesInnerOnC: [],
+		}
 	}
 
 	// 1. 获取12音名「based on scale」，例如「Eb, Fb, F ...」
 	const notes: NoteAll[] = []
+	const notesInner: (NoteAll | null)[] = []
 	const offset = transPitch(degrees[0].note)
 	let degreeIndex = 0
 	for (let i = 0; i < 12; i++) {
@@ -277,15 +280,27 @@ const getScaleNoteAll = (degrees: DegreeType[]) => {
 				throw new Error('DegreeType need note')
 			}
 			notes.push(degrees[degreeIndex].note!)
+			notesInner.push(degrees[degreeIndex].note!)
 			degreeIndex++
 		} else {
 			notes.push(NOTE_FALLING_LIST[(i + offset) % 12])
+			notesInner.push(null)
 		}
 	}
 
 	// 2. 交换数组为「based on C」
 	const cIndex = notes.indexOf('C')
-	return notes.slice(cIndex).concat(notes.slice(0, cIndex))
+	return {
+		notes: [...notes],
+		/**
+		 * 12音
+		 */
+		notesOnC: notes.slice(cIndex).concat(notes.slice(0, cIndex)),
+		/**
+		 * 12音中饭只有调内音
+		 */
+		notesInnerOnC: notesInner.slice(cIndex).concat(notesInner.slice(0, cIndex)),
+	}
 }
 
 // /**

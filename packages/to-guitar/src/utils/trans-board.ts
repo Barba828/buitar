@@ -104,11 +104,12 @@ const transBoard = (
 	zeroTones: Array<Tone | NoteAll | string> = DEFAULT_TUNE,
 	options: {
 		notes?: NoteAll[]
+		notesInner?: (NoteAll | null)[]
 		gradeLength?: number
 		baseLevel?: number
 	} = {}
 ) => {
-	let { notes = NOTE_FALLING_LIST, gradeLength = GRADE_NUMS, baseLevel = DEFAULT_LEVEL } = options
+	let { notes = NOTE_FALLING_LIST, gradeLength = GRADE_NUMS, baseLevel = DEFAULT_LEVEL, notesInner = [] } = options
 	let zeroPitchs = [] // 基于 C 调的 0品绝对音高
 	if (matchPitchNote(String(zeroTones[0]))) {
 		// 匹配 E2 A2 0品绝对音高
@@ -126,6 +127,7 @@ const transBoard = (
 			const pitch = zeroPitch + grade
 			const tone = pitch % 12
 			const note = notes[tone]
+			const isInner = !!notesInner?.[tone]
 			const index = stringIndex * gradeLength + grade
 			const level = Math.floor(pitch / 12) + baseLevel
 
@@ -137,6 +139,7 @@ const transBoard = (
 				string: stringIndex + 1,
 				grade,
 				index,
+				isInner,
 			} as Point
 
 			stringNums[grade] = point
@@ -159,6 +162,7 @@ const transChordTaps = (
 		fingerSpan?: number
 	} & Partial<Pick<BoardOption, 'keyboard' | 'chordOver'>> = {}
 ) => {
+	console.log('lnz tones', tones);
 	const { fingerSpan = FINGER_GRADE_NUMS, keyboard = transBoard(), chordOver = false } = options
 	const chords = Array.from(new Set(transPitch(tones)))
 	// 无效和弦组成音

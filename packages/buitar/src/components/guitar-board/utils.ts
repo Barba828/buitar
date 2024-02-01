@@ -3,6 +3,7 @@ import {
 	INTERVAL_LIST,
 	NOTE_FALLING_LIST,
 	NOTE_LIST,
+	Point,
 	ToneSchema,
 	ToneTypeName,
 } from '@buitar/to-guitar'
@@ -14,22 +15,18 @@ import { GuitarBoardSetting } from '@/pages/settings/config/controller.type'
  * @param options
  * @param ignore 忽视半音
  */
-export const getBoardOptionsTone = (
-	tone: ToneSchema,
+export const getPointNoteBySetting = (
+	point: Point,
 	options: GuitarBoardSetting,
 	ignore?: boolean
 ) => {
 	const { isShowSemitone } = options
-	const rising = tone.note.length > 1 && !isShowSemitone
 
-	// 忽略升降调半音
-	if (rising && ignore) {
-		return
+	if(!isShowSemitone && ignore) {
+		return ''
 	}
-
-	const toneType = getBoardOptionsToneType(options)
-
-	return tone[toneType]
+	// 忽略升降调半音
+	return point.note
 }
 
 /**

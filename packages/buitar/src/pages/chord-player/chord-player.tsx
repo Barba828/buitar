@@ -1,11 +1,5 @@
 import { memo, useEffect } from 'react'
-import {
-	ChordController,
-	GuitarBoard,
-	ChordCard,
-	useBoardContext,
-	DetailCard,
-} from '@/components/guitar-board'
+import { ChordController, GuitarBoard, ChordCard, useBoardContext, DetailCard } from '@/components/guitar-board'
 import { transChordTaps } from '@buitar/to-guitar'
 import { PianoBoard } from '@/components/piano-board'
 import { VexChord } from '@/components/svg-chord'
@@ -14,8 +8,7 @@ import { useIsMobile } from '@/utils/hooks/use-device'
 import { getBoardChordName } from '@/components/guitar-board/board-controller/chord-card/utils'
 
 export const ChordPlayer = () => {
-	const { chord, chordTap, chordTaps, guitarBoardOption, setChordTaps, setTaps, clearTaps } =
-		useBoardContext()
+	const { chord, chordTap, chordTaps, guitarBoardOption, setChordTaps, setTaps, clearTaps } = useBoardContext()
 
 	// 指板更新：清除和弦指位列表
 	useEffect(() => {
@@ -24,7 +17,14 @@ export const ChordPlayer = () => {
 
 	// 切换和弦：更新指板图列表
 	useEffect(() => {
-		setChordTaps(transChordTaps(chord, guitarBoardOption))
+		console.log('chord', chord)
+
+		setChordTaps(
+			transChordTaps(
+				chord.map((pitch) => guitarBoardOption.notes![pitch % 12]),
+				guitarBoardOption
+			)
+		)
 	}, [chord])
 
 	// 切换指板图：更新Taps指位
@@ -43,7 +43,7 @@ export const ChordPlayer = () => {
 
 	return (
 		<>
-			<PagesMeta/>
+			<PagesMeta />
 			<ChordController />
 			<ChordDetail />
 			<GuitarBoard />
@@ -77,8 +77,6 @@ const ChordKeyboard = () => {
 	const { taps, player, boardSettings } = useBoardContext()
 	const { isAllKey } = boardSettings
 	const levels = isAllKey ? [2, 3, 4, 5] : [3]
-	const notes = taps.map(
-		(point) => `${point.toneSchema.note}${isAllKey ? point.toneSchema.level : 3}`
-	)
+	const notes = taps.map((point) => `${point.toneSchema.note}${isAllKey ? point.toneSchema.level : 3}`)
 	return <PianoBoard player={player} checked={notes} levels={levels} />
 }

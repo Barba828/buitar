@@ -1,8 +1,7 @@
 import { FC, useCallback, useEffect, useMemo, useRef } from 'react'
-import type { Point, ToneSchema } from '@buitar/to-guitar'
+import type { Point } from '@buitar/to-guitar'
 import { useBoardContext } from '../board-provider'
-import { getBoardOptionsTone } from '../utils'
-import { GuitarBoardSetting } from '@/pages/settings/config/controller.type'
+import { getPointNoteBySetting } from '../utils'
 import { useBoardTouch, useGuitarKeyDown } from '@/utils/hooks/use-board-event'
 import { useDebounce } from '@/utils/hooks/use-debouce'
 import { Icon } from '@/components'
@@ -30,11 +29,7 @@ interface GuitarBoardProps {
 
 const FRET_DOT = [, , '·', , '·', , '·', , '·', , , '··', , , , '·']
 
-export const GuitarBoard: FC<GuitarBoardProps> = ({
-	range = [1, 16],
-	onCheckedPoints,
-	onChangePart,
-}) => {
+export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 16], onCheckedPoints, onChangePart }) => {
 	const {
 		guitarBoardOption: { keyboard, baseFret },
 		boardSettings: { hasTag, numTag, isStickyZero = true },
@@ -96,11 +91,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 			return
 		}
 		const points = debouceEmphasis.map((index) => boardList[Number(index)])
-		console.log(
-			'%c Points ',
-			'color:white; background:rgb(57, 167, 150);border-radius: 2px',
-			points
-		)
+		console.log('%c Points ', 'color:white; background:rgb(57, 167, 150);border-radius: 2px', points)
 		onCheckedPoints?.(points)
 	}, [debouceEmphasis])
 
@@ -122,9 +113,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	const board = exchangeBoardArray(keyboard)
 
 	const boardView = board.slice(boardRange[0], boardRange[1] + 1).map((frets, fretIndex) => {
-		const fretsView = frets
-			.reverse()
-			.map((point, stringIndex) => <BoardBtnComponent key={stringIndex} point={point} />)
+		const fretsView = frets.reverse().map((point, stringIndex) => <BoardBtnComponent key={stringIndex} point={point} />)
 
 		const dotsView =
 			boardTheme === 'default' ? (
@@ -149,10 +138,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 
 		// 存在数字标记才显示播放按钮
 		const playButton = hasTag && numTag && (
-			<div
-				onClick={handlePlayArpeggio}
-				className={cx('primary-button', styles['frets-dot'], styles['point'])}
-			>
+			<div onClick={handlePlayArpeggio} className={cx('primary-button', styles['frets-dot'], styles['point'])}>
 				<Icon name="icon-eighth-note" color="#fff8" size={16} />
 			</div>
 		)
@@ -202,12 +188,7 @@ const BoardButton = ({
 		status: { hidden },
 	} = useBoardBtnContent(point)
 
-	const cls = cx(
-		baseCls,
-		fretStyles['point'],
-		hidden && !visible && fretStyles['empty-point'],
-		itemClassName
-	)
+	const cls = cx(baseCls, fretStyles['point'], hidden && !visible && fretStyles['empty-point'], itemClassName)
 	const toneNode = (
 		<div className={cls} key={key} data-key={key}>
 			{element}
@@ -243,12 +224,8 @@ const BoardDots = ({ index }: { index: number }) => {
 	)
 }
 
-const BoardButtonOriginal = ({
-	point,
-	itemClassName,
-}: { point: Point; itemClassName?: string } & GuitarBoardProps) => {
+const BoardButtonOriginal = ({ point, itemClassName }: { point: Point; itemClassName?: string } & GuitarBoardProps) => {
 	const { boardSettings, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
-	const { hasLevel, isNote } = boardSettings
 
 	// key
 	const key = `${point.index}`
@@ -261,22 +238,14 @@ const BoardButtonOriginal = ({
 	// 被点击的point
 	const tapped = !!taps.find((tap) => tap.index === point.index)
 	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
-	const tone = getBoardOptionsTone(
-		point.toneSchema,
-		boardSettings,
-		!tapped && !fixed && !emphasised
-	)
+	const tone = getPointNoteBySetting(point, boardSettings, !tapped && !fixed && !emphasised)
 	// 显示八度音高
-	const level = tone && getLevel(point.toneSchema, boardSettings)
+	const level = tone && point.level
 
 	const cls = cx(
 		'primary-button',
 		!tone && styles['empty-point'], // 隐藏半音
-		!isNote && hasLevel && point.toneSchema.level //处理数字显示时八度音高
-			? point.toneSchema.level > 3
-				? styles['interval-point-reverse']
-				: styles['interval-point']
-			: null,
+		level && styles['interval-point'], // 显示八度
 		emphasised && styles['emphasised-point'], // 被强调的point
 		fixed && styles['fixed-point'], // 被固定高亮的point
 		tapped && styles['tapped-point'], // 被点击的point
@@ -288,7 +257,7 @@ const BoardButtonOriginal = ({
 	return (
 		<li className={cls} key={key} data-key={key}>
 			{tone}
-			{level}
+			<span className={styles.level}>{level}</span>
 		</li>
 	)
 }
@@ -316,31 +285,12 @@ const BoardDotsOriginal = ({ index }: { index: number }) => {
 }
 
 /**
- * 数字显示下的八度音高UI
- * @param toneSchema
- * @param boardSettings
- */
-const getLevel = (toneSchema: ToneSchema, boardSettings: GuitarBoardSetting) => {
-	if (!boardSettings.hasLevel || !toneSchema.level) {
-		return null
-	}
-	const { level } = toneSchema
-	if (boardSettings.isNote) {
-		return <span className={styles.level}>{level}</span>
-	}
-	return (
-		<span className={styles['level-dot']}>{new Array(Math.abs(level - 3)).fill('·').join('')}</span>
-	)
-}
-
-/**
  * 获取按钮公共样式
  * @param point
  * @returns
  */
 const useBoardBtnContent = (point: Point) => {
 	const { boardSettings, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
-	const { hasLevel, isNote } = boardSettings
 
 	// key
 	const key = `${point.index}`
@@ -353,9 +303,9 @@ const useBoardBtnContent = (point: Point) => {
 	// 被点击的point
 	const tapped = !!taps.find((tap) => tap.index === point.index)
 	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
-	const tone = getBoardOptionsTone(point.toneSchema, boardSettings, false)
+	const tone = getPointNoteBySetting(point, boardSettings, false)
 	// 显示八度音高
-	const level = tone && getLevel(point.toneSchema, boardSettings)
+	const level = tone && point.level
 
 	const hidden = !(fixed || emphasised || highFixed || tapped)
 
@@ -374,16 +324,12 @@ const useBoardBtnContent = (point: Point) => {
 			userCls,
 			'primary-button',
 			styles['point'],
-			!isNote && hasLevel && point.toneSchema.level //处理数字显示时八度音高
-				? point.toneSchema.level > 3
-					? styles['interval-point-reverse']
-					: styles['interval-point']
-				: null
+			level && styles['interval-point'] // 显示八度
 		),
 		element: (
 			<>
 				{tone}
-				{level}
+				<span className={styles.level}>{level}</span>
 			</>
 		),
 		status: {

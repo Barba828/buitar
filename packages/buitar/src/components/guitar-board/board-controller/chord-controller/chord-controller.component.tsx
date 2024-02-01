@@ -24,7 +24,7 @@ export const ChordController: FC = (props) => {
 					className={cx(styles['chord-tab'])}
 					values={chordControllConfig}
 					defaultValue={chordControllConfig[tabIndex]}
-					onChange={(value, index) => {
+					onChange={(_value, index) => {
 						setTabIndex(index)
 					}}
 					renderItem={(item) => item.name_zh}
@@ -59,11 +59,7 @@ export const ChordController: FC = (props) => {
  * 左侧五度圈的选择器
  * @returns
  */
-export const ChordControllerInner: FC<{ left?: JSX.Element; minor?: boolean }> = ({
-	left,
-	minor,
-	children,
-}) => {
+export const ChordControllerInner: FC<{ left?: JSX.Element; minor?: boolean }> = ({ left, minor, children }) => {
 	return (
 		<>
 			<div className={styles['container']}>
@@ -92,10 +88,7 @@ const ChordTypePicker = () => {
 	return <ChordTagPicker onChange={setType} tag={type} />
 }
 
-export const ChordTagPicker: FC<{ onChange(tag: string): void; tag?: string }> = ({
-	onChange,
-	tag,
-}) => {
+export const ChordTagPicker: FC<{ onChange(tag: string): void; tag?: string }> = ({ onChange, tag }) => {
 	const [list, setList] = useState(tagList)
 	const tabQuery = ['all', '3', '7', '9', 'm', 'maj', 'sus', 'aug']
 	const defaultQuery = '3'
@@ -179,9 +172,7 @@ const ChordNumPickerController: FC<ControllerListProps<ChordDegreeNum>> = (props
 				return (
 					<div className={styles['scale-item']}>
 						{item}
-						<span className={styles['scale-item-mode']}>
-							{chordDegreeMap.get(item)?.name.split(' ')[0]}
-						</span>
+						<span className={styles['scale-item-mode']}>{chordDegreeMap.get(item)?.name.split(' ')[0]}</span>
 					</div>
 				)
 			}}
@@ -196,15 +187,10 @@ const ChordNumPickerController: FC<ControllerListProps<ChordDegreeNum>> = (props
  * @returns
  */
 const ChordPickerController: FC<ControllerListProps<DegreeChord>> = ({ ...props }) => {
-	const {
-		chord,
-		setChord,
-		guitarBoardOption,
-		boardSettings: { isSharpSemitone },
-	} = useBoardContext()
+	const { chord, setChord, guitarBoardOption } = useBoardContext()
 
 	const handleClick = useCallback((item: DegreeChord) => {
-		setChord(item.chord)
+		setChord(item.chord.map((degree) => degree.interval))
 	}, [])
 
 	return (
@@ -212,25 +198,19 @@ const ChordPickerController: FC<ControllerListProps<DegreeChord>> = ({ ...props 
 			{...props}
 			list={guitarBoardOption.chords || []}
 			onClickItem={handleClick}
-			renderListItem={(item) => <DegreeChordItem item={item} isSharpSemitone={isSharpSemitone} />}
-			checkedItem={(item) => item.chord === chord}
+			renderListItem={(item) => <DegreeChordItem item={item} />}
+			checkedItem={(item) => item.chord[0].interval === chord[0]}
 		/>
 	)
 }
 
-export const DegreeChordItem: FC<{ item: DegreeChord; isSharpSemitone?: boolean; withtag?: boolean }> = ({
-	item,
-	isSharpSemitone = true,
-	withtag = true,
-}) => {
+export const DegreeChordItem: FC<{ item: DegreeChord; withtag?: boolean }> = ({ item, withtag = true }) => {
 	return (
 		<div className={styles['chord-item']}>
-			<div className={styles['chord-item-grade']}>{getDegreeTag(item.degree.degreeNum)}</div>
-			<span className={styles['chord-item-note']}>
-				{isSharpSemitone ? item.tone.note : item.tone.noteFalling}
-			</span>
+			<div className={styles['chord-item-grade']}>{getDegreeTag(item.degreeNum)}</div>
+			<span className={styles['chord-item-note']}>{item.note}</span>
 			{withtag && <span className={styles['chord-item-tag']}>{item.chordType?.[0]?.tag}</span>}
-			<div className={styles['chord-item-scale']}>{item.degree.scale}</div>
+			<div className={styles['chord-item-scale']}>{item.scale}</div>
 		</div>
 	)
 }

@@ -1,14 +1,5 @@
 import { transBoard, getScaleNoteAll, getScaleDegreeWithChord } from '../index'
-import type {
-	DegreeChord,
-	ChordDegreeNum,
-	GuitarBoard,
-	ModeType,
-	Point,
-	Tone,
-	NoteAll,
-	DegreeType,
-} from '../interface'
+import type { DegreeChord, ChordDegreeNum, GuitarBoard, ModeType, Point, Tone, NoteAll, DegreeType } from '../interface'
 import { DEFAULT_LEVEL, DEFAULT_TUNE, GRADE_NUMS } from '../config'
 import { OnChange } from '../utils/on-change'
 
@@ -38,6 +29,14 @@ type BoardOption = {
 	 * 12音名
 	 */
 	notes: NoteAll[]
+	/**
+	 * 12音名
+	 */
+	notesOnC: NoteAll[]
+	/**
+	 * 12音名（仅调内音）
+	 */
+	notesInnerOnC: (NoteAll | null)[]
 	/**
 	 * 指板
 	 * 「弦数」 * 「品数」
@@ -91,14 +90,16 @@ class Board {
 		 * 3. getKeyBoard 根据完整音名获取指板
 		 */
 		const chords = this.getChords(_options)
-		const notes = this.getNotes(chords)
-		const keyboard = this.getKeyBoard(_options, notes)
+		const { notes, notesOnC, notesInnerOnC } = this.getNotes(chords)
+		const keyboard = this.getKeyBoard(_options, notesOnC)
 
 		this._board = OnChange(
 			{
 				..._options,
 				chords,
 				notes,
+				notesOnC,
+				notesInnerOnC,
 				keyboard,
 			},
 			() => {
@@ -115,6 +116,12 @@ class Board {
 	}
 	get notes() {
 		return this._board.notes
+	}
+	get notesOnC() {
+		return this._board.notesOnC
+	}
+	get notesInnerOnC() {
+		return this._board.notesInnerOnC
 	}
 	get keyboard() {
 		return this._board.keyboard
@@ -145,8 +152,10 @@ class Board {
 		 * 更新 options 需要更新 12音名
 		 */
 		if (keys.includes('mode') || keys.includes('scale')) {
-			const notes = this.getNotes(_options.chords)
+			const { notes, notesOnC, notesInnerOnC } = this.getNotes(_options.chords)
 			_options.notes = notes
+			_options.notesOnC = notesOnC
+			_options.notesInnerOnC = notesInnerOnC
 		}
 
 		/**
@@ -159,7 +168,7 @@ class Board {
 			keys.includes('baseFret') ||
 			keys.includes('baseLevel')
 		) {
-			const keyboard = this.getKeyBoard(_options, _options.notes)
+			const keyboard = this.getKeyBoard(_options, _options.notesOnC)
 			_options.keyboard = keyboard
 		}
 

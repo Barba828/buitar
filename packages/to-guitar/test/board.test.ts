@@ -11,7 +11,9 @@ describe('board.js', () => {
 	})
 	test('Board based on D#', () => {
 		board.setOptions({scale: 'D#'})
-		expect(board.notes[0]).toBe('C')
+		expect(board.notes[0]).toBe('Eb')
+		expect(board.notesOnC[1]).toBe('Db')
+		expect(board.notesInnerOnC[1]).toBe(null)
 		expect(board.chords[0].note).toBe('Eb')
 		expect(board.chords[0].interval).toBe(0)
 		expect(board.keyboard[1][3].note).toBe('C')

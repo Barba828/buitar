@@ -10,7 +10,7 @@ export const transToSvgPoint = (point: Point): SvgChordPoint => {
 	return {
 		fret: point.grade,
 		string: point.string,
-		tone: point.toneSchema.note,
+		tone: point.note,
 	}
 }
 

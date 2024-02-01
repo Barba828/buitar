@@ -95,22 +95,12 @@
 		pointer-events: none;
 	}
 
-	.level-dot {
-		line-height: 2px;
-		pointer-events: none;
-	}
-
 	&.empty-point {
 		background: $gray-second !important;
 		cursor: auto;
 	}
 
 	&.interval-point {
-		flex-direction: column;
-	}
-
-	&.interval-point-reverse {
-		flex-direction: column-reverse;
 	}
 
 	// 如下若干种point风格，以出现越后的优先级越高

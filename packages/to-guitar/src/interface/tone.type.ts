@@ -96,6 +96,10 @@ export type Point = {
 	 */
 	note: NoteAll
 	/**
+	 * 是否调内音
+	 */
+	isInner: boolean
+	/**
 	 * 音高级数，如「3」
 	 * 匹配note音高，如「C3」
 	 */
