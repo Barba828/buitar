@@ -8,7 +8,7 @@ import type { ChordDegreeNum, ChordType, DegreeType, IntervalNum, ModeType } fro
  */
 
 /**
- * 和弦分类
+ * 和弦分类（以和弦半音距离为key）
  */
 const chordMap = new Map<number, ChordType>([
 	/**
@@ -26,10 +26,29 @@ const chordMap = new Map<number, ChordType>([
 	 */
 	[223, { tag: 'add9', name: 'addition 9 chord', constitute: ['1', '3', '5', '9'], name_zh: '加九和弦' }],
 	[214, { tag: 'm(add9)', name: 'minor addition 9 chord', constitute: ['1', '3b', '5', '9'], name_zh: '小加九和弦' }],
-	[224, { tag: 'aug(add9)', name: 'augmented addition 9 chord', constitute: ['1', '3', '5#', '9'], name_zh: '增三加九和弦' }],
-	[212, { tag: 'dim(add9)', name: 'diminished addition 9 chord', constitute: ['1', '3b', '5b', '9'], name_zh: '减三加九和弦' }],
+	[
+		224,
+		{
+			tag: 'aug(add9)',
+			name: 'augmented addition 9 chord',
+			constitute: ['1', '3', '5#', '9'],
+			name_zh: '增三加九和弦',
+		},
+	],
+	[
+		212,
+		{
+			tag: 'dim(add9)',
+			name: 'diminished addition 9 chord',
+			constitute: ['1', '3b', '5b', '9'],
+			name_zh: '减三加九和弦',
+		},
+	],
 	[412, { tag: 'add11', name: 'addition 11 chord', constitute: ['1', '3', '5', '11'], name_zh: '加十一和弦' }],
-	[322, { tag: 'm(add11)', name: 'minor addition 11 chord', constitute: ['1', '3b', '5', '11'], name_zh: '小加十一和弦' }],
+	[
+		322,
+		{ tag: 'm(add11)', name: 'minor addition 11 chord', constitute: ['1', '3b', '5', '11'], name_zh: '小加十一和弦' },
+	],
 
 	/**
 	 * 七和弦
@@ -37,55 +56,311 @@ const chordMap = new Map<number, ChordType>([
 	[434, { tag: 'maj7', name: 'major seventh chord', constitute: ['1', '3', '5', '7'], name_zh: '大七和弦' }],
 	[433, { tag: '7', name: 'seventh chord', constitute: ['1', '3', '5', '7b'], name_zh: '属七和弦' }], //（七和弦） 大七和弦 -> 给7度音一个降号 7b
 	[343, { tag: 'm7', name: 'minor seventh chord', constitute: ['1', '3b', '5', '7b'], name_zh: '小七和弦' }], // 属七和弦 -> 给3度音一个降号 3b
-	[334, { tag: 'm7b5' /**'m7-5' */, name: 'half-diminished seventh chord', constitute: ['1', '3b', '5b', '7b'], name_zh: '半减七和弦' }], // 小七和弦 -> 给5度音一个降号 5b
+	[
+		334,
+		{
+			tag: 'm7(b5)' /**'m7-5' */,
+			name: 'half-diminished seventh chord',
+			constitute: ['1', '3b', '5b', '7b'],
+			name_zh: '半减七和弦',
+		},
+	], // 小七和弦 -> 给5度音一个降号 5b
 	[333, { tag: 'dim7', name: 'diminished seventh chord', constitute: ['1', '3b', '5b', '6'], name_zh: '减七和弦' }], //半减七和弦 -> 给7度音再给一个降号 bb7 （大-属-小-半-减 规律变化）
 	[344, { tag: 'mM7', name: 'minor major seventh chord', constitute: ['1', '3b', '5', '7'], name_zh: '小大七和弦' }], // 大七和弦 -> 给3度音一个降号 3b
-	[443, { tag: 'augM7' /**'M7#5' */, name: 'augmented major seventh chord', constitute: ['1', '3', '5#', '7'], name_zh: '增大七和弦' }], // 大七和弦 -> 给5度音一个升号 5#
-	[442, { tag: 'aug7' /**'7#5' */, name: 'augmented seventh chord', constitute: ['1', '3', '5#', '7b'], name_zh: '增属七和弦' }], // （增七和弦）属七和弦 -> 给5度音一个升号 5#
-	[523, { tag: '7sus4', name: 'seventh suspended 4 chord', constitute: ['1', '4', '5', '7b'], name_zh: '属七挂四和弦' }],
+	[
+		443,
+		{
+			tag: 'augM7' /**'M7#5' */,
+			name: 'augmented major seventh chord',
+			constitute: ['1', '3', '5#', '7'],
+			name_zh: '增大七和弦',
+		},
+	], // 大七和弦 -> 给5度音一个升号 5#
+	[
+		442,
+		{
+			tag: 'aug7' /**'7#5' */,
+			name: 'augmented seventh chord',
+			constitute: ['1', '3', '5#', '7b'],
+			name_zh: '增属七和弦',
+		},
+	], // （增七和弦）属七和弦 -> 给5度音一个升号 5#
+	[
+		523,
+		{ tag: '7sus4', name: 'seventh suspended 4 chord', constitute: ['1', '4', '5', '7b'], name_zh: '属七挂四和弦' },
+	],
 	[432, { tag: '6', name: 'sixth chord', constitute: ['1', '3', '5', '6'], name_zh: '大六和弦' }],
 	[342, { tag: 'm6', name: 'minor sixth chord', constitute: ['1', '3b', '5', '6'], name_zh: '小六和弦' }],
-	[341, { tag: 'mb6', name: 'minor sixth chord', constitute: ['1', '3b', '5', '6b'], name_zh: '减六和弦' }], // 不知道这个怎么读
+	[341, { tag: 'm(b6)', name: 'minor sixth chord', constitute: ['1', '3b', '5', '6b'], name_zh: '减六和弦' }],
 
 	/**
 	 * 七和弦拓展
+	 * 因为这里的九音是#9或者b9（并非完全9度），实际上还是在7和弦上做的拓展，而非九和弦
+	 * 并且注意#9的音程和b3的音程是一致的（忽略8度关系）
 	 */
-	[1333, { tag: '7(b9)', name: 'seventh(b-ninth) chord', constitute: ['1', '3', '5', '7b', '9b'], name_zh: '属七(b9)和弦' }],
-	[3133, { tag: '7(#9)', name: 'seventh(#-ninth) chord', constitute: ['1', '3', '5', '7b', '9#'], name_zh: '属七(#9)和弦' }],
-	[4313, { tag: '7(#11)', name: 'seventh(#-eleventh) chord', constitute: ['1', '3', '5', '7b', '11#'], name_zh: '属七(#11)和弦' }],
-	[4312, { tag: '7(b13/#5)', name: 'seventh(#-fifth) chord', constitute: ['1', '3', '5', '7b', '13b'], name_zh: '属七(b13/#5)和弦' }],
+	[
+		1333,
+		{ tag: '7(b9)', name: 'seventh(b-ninth) chord', constitute: ['1', '3', '5', '7b', '9b'], name_zh: '属七(b9)和弦' },
+	], // '1', '3', '5', '7b' 属七和弦拓展
+	[
+		3133,
+		{ tag: '7(#9)', name: 'seventh(#-ninth) chord', constitute: ['1', '3', '5', '7b', '9#'], name_zh: '属七(#9)和弦' },
+	],
+	[
+		1324,
+		{
+			tag: '7(b9b5)',
+			name: 'seventh(b9b5) chord',
+			constitute: ['1', '3', '5b', '7b', '9b'],
+			name_zh: '属七(b9b5)和弦',
+		},
+	],
+	[
+		1342,
+		{
+			tag: '7(b9#5)',
+			name: 'seventh(b9#5) chord',
+			constitute: ['1', '3', '5#', '7b', '9b'],
+			name_zh: '属七(b9#5)和弦',
+		},
+	],
+	[
+		3124,
+		{
+			tag: '7(#9b5)',
+			name: 'seventh(#9b5) chord',
+			constitute: ['1', '3', '5b', '7b', '9#'],
+			name_zh: '属七(#9b5)和弦',
+		},
+	],
+	[
+		3142,
+		{
+			tag: '7(#9#5)',
+			name: 'seventh(#9#5) chord',
+			constitute: ['1', '3', '5#', '7b', '9#'],
+			name_zh: '属七(#9#5)和弦',
+		},
+	],
+	[
+		4313,
+		{
+			tag: '7(#11)',
+			name: 'seventh(#-eleventh) chord',
+			constitute: ['1', '3', '5', '7b', '11#'],
+			name_zh: '属七(#11)和弦',
+		},
+	],
+	[
+		4312,
+		{
+			tag: '7(b13/#5)',
+			name: 'seventh(#-fifth) chord',
+			constitute: ['1', '3', '5', '7b', '13b'],
+			name_zh: '属七(b13/#5)和弦',
+		},
+	],
+	[
+		1334,
+		{
+			tag: 'maj7',
+			name: 'major seventh(b-ninth) chord',
+			constitute: ['1', '3', '5', '7', '9b'],
+			name_zh: '大七(b9)和弦',
+		},
+	], // '1', '3', '5', '7' 大七和弦拓展
+	[
+		3134,
+		{
+			tag: 'maj7',
+			name: 'major seventh(#-ninth) chord',
+			constitute: ['1', '3', '5', '7', '9#'],
+			name_zh: '大七(#9)和弦',
+		},
+	],
+	[
+		1243,
+		{
+			tag: 'm7(b9)',
+			name: 'minor seventh(b-ninth) chord',
+			constitute: ['1', '3b', '5', '7b', '9b'],
+			name_zh: '小七(b9)和弦',
+		},
+	], // '1', '3b', '5', '7b' 小七和弦拓展
+	// [1243, { tag: 'm7(#9)', name: 'minor seventh(#-ninth) chord', constitute: ['1', '3b', '5', '7b', '9#'], name_zh: '小七(#9)和弦' }], // 3b=9# 无意义
+	[
+		1234,
+		{
+			tag: 'm7(b9b5)',
+			name: 'half-diminished seventh(b-ninth) chord',
+			constitute: ['1', '3b', '5b', '7b', '9b'],
+			name_zh: '半减七(b9)和弦',
+		},
+	],
+	[
+		1253,
+		{
+			tag: 'm7(b9#5)',
+			name: 'minor seventh(b9#5) chord',
+			constitute: ['1', '3b', '5#', '7b', '9b'],
+			name_zh: '小七(b9#5)和弦',
+		},
+	], // 无意义
 
 	/**
-	 * 九和弦
+	 * 七和弦省略拓展
+	 * 一般来说七和弦可以省略五音
+	 */
+	[47, { tag: 'maj7', name: 'major seventh chord', constitute: ['1', '3', '7'], name_zh: '大七和弦' }],
+	[46, { tag: '7', name: 'seventh chord', constitute: ['1', '3', '7b'], name_zh: '属七和弦' }],
+	[37, { tag: 'm7', name: 'minor seventh chord', constitute: ['1', '3b', '7b'], name_zh: '小七和弦' }],
+	[
+		137,
+		{
+			tag: 'maj7(b9)',
+			name: 'major seventh(b-ninth) chord',
+			constitute: ['1', '3', '7', '9b'],
+			name_zh: '大七(b9)和弦',
+		},
+	],
+	[
+		317,
+		{
+			tag: 'maj7(#9)',
+			name: 'major seventh(#-ninth) chord',
+			constitute: ['1', '3', '7', '9#'],
+			name_zh: '大七(#9)和弦',
+		},
+	],
+	[136, { tag: '7(b9)', name: 'seventh(b-ninth) chord', constitute: ['1', '3', '7b', '9b'], name_zh: '属七(b9)和弦' }],
+	[316, { tag: '7(#9)', name: 'seventh(#-ninth) chord', constitute: ['1', '3', '7b', '9#'], name_zh: '属七(#9)和弦' }],
+	[
+		127,
+		{
+			tag: 'm7(b9)',
+			name: 'minor(b-ninth) seventh chord',
+			constitute: ['1', '3b', '7b', '9b'],
+			name_zh: '小七(b9)和弦',
+		},
+	],
+
+	/**
+	 * 九和弦(必须是完全九度，所以这里的key都是2开头)
 	 * 计算复音程真TMD麻烦
 	 */
 	[2234, { tag: 'maj9', name: 'major ninth chord', constitute: ['1', '3', '5', '7', '9'], name_zh: '大九和弦' }],
 	[2233, { tag: '9', name: 'ninth chord', constitute: ['1', '3', '5', '7b', '9'], name_zh: '属九和弦' }],
 	[2143, { tag: 'm9', name: 'minor ninth chord', constitute: ['1', '3b', '5', '7b', '9'], name_zh: '小九和弦' }],
-	[2134, { tag: 'dim9-5', name: 'half-diminished ninth chord', constitute: ['1', '3b', '5b', '7b', '9'], name_zh: '半减九和弦' }],
+	[
+		2134,
+		{
+			tag: 'dim9-5',
+			name: 'half-diminished ninth chord',
+			constitute: ['1', '3b', '5b', '7b', '9'],
+			name_zh: '半减九和弦',
+		},
+	],
 	[2133, { tag: 'dim9', name: 'diminished ninth chord', constitute: ['1', '3b', '5b', '6', '9'], name_zh: '减九和弦' }],
-	[2144, { tag: 'mM9', name: 'minor major ninth chord', constitute: ['1', '3b', '5', '7', '9'], name_zh: '小大九和弦' }],
-	[2243, { tag: 'augM9', name: 'augmented major ninth chord', constitute: ['1', '3', '5#', '7', '9'], name_zh: '增大九和弦' }],
-	[2242, { tag: 'aug9', name: 'augmented ninth chord', constitute: ['1', '3', '5#', '7b', '9'], name_zh: '增九和弦' }],
+	[
+		2224,
+		{ tag: '9(b5)', name: 'ninth(b-fifth) chord', constitute: ['1', '3', '5b', '7b', '9'], name_zh: '属九(b5)和弦' },
+	],
+	[
+		2144,
+		{ tag: 'mM9', name: 'minor major ninth chord', constitute: ['1', '3b', '5', '7', '9'], name_zh: '小大九和弦' },
+	],
+	[
+		2243,
+		{
+			tag: 'augM9',
+			name: 'augmented major ninth chord',
+			constitute: ['1', '3', '5#', '7', '9'],
+			name_zh: '增大九和弦',
+		},
+	],
+	[2242, { tag: 'aug9', name: 'augmented ninth chord', constitute: ['1', '3', '5#', '7b', '9'], name_zh: '增九和弦' }], // 属九(#5)和弦
 	[2323, { tag: '9sus4', name: 'suspended 4 chord', constitute: ['1', '4', '5', '7b', '9'], name_zh: '属九挂四和弦' }],
 	[2232, { tag: '69', name: 'sixth ninth chord', constitute: ['1', '3', '5', '6', '9'], name_zh: '六九和弦' }],
-	[2142, { tag: 'm69', name: 'minor sixth ninth chord', constitute: ['1', '3b', '5', '6', '9'], name_zh: '小六九和弦' }],
-	[2141, { tag: 'mb69', name: 'minor b-sixth ninth chord', constitute: ['1', '3b', '5', '6b', '9'], name_zh: '小减六九和弦?' }], // 不知道这个怎么读
+	[
+		2142,
+		{ tag: 'm69', name: 'minor sixth ninth chord', constitute: ['1', '3b', '5', '6', '9'], name_zh: '小六九和弦' },
+	],
+	[
+		2141,
+		{ tag: 'mb69', name: 'minor b-sixth ninth chord', constitute: ['1', '3b', '5', '6b', '9'], name_zh: '减六九和弦' },
+	],
+
+	/**
+	 * 九和弦省略拓展
+	 * 一般九和弦可以省略五音
+	 */
+	[227, { tag: 'maj9', name: 'major seventh chord', constitute: ['1', '3', '7', '9'], name_zh: '大九和弦' }],
+	[226, { tag: '9', name: 'seventh chord', constitute: ['1', '3', '7b', '9'], name_zh: '属九和弦' }],
+	[217, { tag: 'm9', name: 'minor seventh chord', constitute: ['1', '3b', '7b', '9'], name_zh: '小九和弦' }],
+	[218, { tag: 'mM9', name: 'minor major ninth chord', constitute: ['1', '3b', '7', '9'], name_zh: '小大九和弦' }],
+	[225, { tag: '69', name: 'sixth ninth chord', constitute: ['1', '3', '6', '9'], name_zh: '六九和弦' }],
+	[216, { tag: 'm69', name: 'minor sixth ninth chord', constitute: ['1', '3b', '6', '9'], name_zh: '小六九和弦' }],
+	[215, { tag: 'mb69', name: 'minor b-sixth ninth chord', constitute: ['1', '3b', '6b', '9'], name_zh: '减六九和弦' }],
 
 	/**
 	 * 十一和弦
 	 */
-	[22214, { tag: 'maj#11', name: 'major #-eleventh chord', constitute: ['1', '3', '5', '7', '9', '11#'], name_zh: '大升十一和弦' }],
+	[
+		22214,
+		{
+			tag: 'maj#11',
+			name: 'major #-eleventh chord',
+			constitute: ['1', '3', '5', '7', '9', '11#'],
+			name_zh: '大升十一和弦',
+		},
+	],
 	[22123, { tag: '11', name: 'eleventh chord', constitute: ['1', '3', '5', '7b', '9', '11'], name_zh: '属十一和弦' }],
-	[21223, { tag: 'm11', name: 'minor eleventh chord', constitute: ['1', '3b', '5', '7b', '9', '11'], name_zh: '小十一和弦' }],
+	[
+		21223,
+		{ tag: 'm11', name: 'minor eleventh chord', constitute: ['1', '3b', '5', '7b', '9', '11'], name_zh: '小十一和弦' },
+	],
 
 	/**
 	 * 十三和弦
 	 */
-	[222122, { tag: 'maj13', name: 'major eleventh chord', constitute: ['1', '3', '5', '7', '9', '11#', '13'], name_zh: '大十三和弦' }],
-	[221221, { tag: '13', name: 'eleventh chord', constitute: ['1', '3', '5', '7b', '9', '11', '13'], name_zh: '属十三和弦' }],
-	[212221, { tag: 'm13', name: 'minor eleventh chord', constitute: ['1', '3b', '5', '7b', '9', '11', '13'], name_zh: '小十三和弦' }],
+	[
+		222122,
+		{
+			tag: 'maj13',
+			name: 'major eleventh chord',
+			constitute: ['1', '3', '5', '7', '9', '11#', '13'],
+			name_zh: '大十三和弦',
+		},
+	],
+	[
+		221221,
+		{ tag: '13', name: 'eleventh chord', constitute: ['1', '3', '5', '7b', '9', '11', '13'], name_zh: '属十三和弦' },
+	],
+	[
+		212221,
+		{
+			tag: 'm13',
+			name: 'minor eleventh chord',
+			constitute: ['1', '3b', '5', '7b', '9', '11', '13'],
+			name_zh: '小十三和弦',
+		},
+	],
 ])
+/**
+ * 和弦分类（以和弦tag为key）
+ */
+const chordTagMap = (() => {
+	const map = new Map<string, Omit<ChordType, 'tag'> & { key: number }>()
+
+	for (const [key, value] of chordMap) {
+		const { tag, ...rest } = value
+		if (!map.has(value.tag)) {
+			map.set(value.tag, { key, ...rest })
+		}
+	}
+
+	return map
+})()
 
 /**
  * 和弦级数分类
@@ -210,7 +485,7 @@ const chordDegreeMap = new Map<ChordDegreeNum, { name: string; interval: number[
  * 度数=>半音程转换映射
  */
 const intervalMap = new Map<IntervalNum, number>([
-	[1, 0], // 一度音程 0 
+	[1, 0], // 一度音程 0
 	[2, 2], // 大二度 2（大/小：可能垮半音）-> 小二度 1
 	[3, 4], // 大三度	4（大/小：可能垮半音）-> 小三度 3
 	[4, 5], // 完全四度 5 （一定跨半音） -> 增四度 6
@@ -224,4 +499,4 @@ const intervalMap = new Map<IntervalNum, number>([
 	// ['11', 17], // 完全十一度
 ])
 
-export { chordMap, degreeMap, chordDegreeMap, intervalMap }
+export { chordMap, chordTagMap, degreeMap, chordDegreeMap, intervalMap }

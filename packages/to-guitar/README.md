@@ -77,3 +77,10 @@ getModeRangeTaps, // 获取指板某范围内某调式音阶
 getTapsOnBoard, // 根据指位获取Taps
 ...
 ```
+
+# TODO
+## 划分层级
+1. 必须要 keyboard		「taps」
+2. 必须要 12 个音名		 「degrees」
+3. 使用音名Note进行计算   「notes」
+4. 直接计算音高Tone		 「tones」

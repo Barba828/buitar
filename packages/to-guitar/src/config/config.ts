@@ -10,6 +10,8 @@ import type {
 	DegreeTag,
 	IntervalNum,
 	NoteAll,
+	NoteBasic,
+	IntervalBasic,
 } from '../interface'
 
 /**
@@ -68,6 +70,28 @@ export const MODE_LIST: ModeType[] = [
 	'major-blues',
 	'minor-blues',
 ]
+
+/**音名半音 */
+export const NOTE_INTERVAL_MAP: Record<NoteBasic, number> = {
+	C: 0,
+	D: 2,
+	E: 4,
+	F: 5,
+	G: 7,
+	A: 9,
+	B: 11,
+}
+
+/**音级半音（Major） */
+export const DEGREE_INTERVAL_MAP: Record<IntervalBasic | IntervalNum, number> = {
+	1: 0,
+	2: 2,
+	3: 4,
+	4: 5,
+	5: 7,
+	6: 9,
+	7: 11,
+}
 
 /**级数罗马数字映射 */
 export const DEGREE_TAG_MAP: Record<IntervalNum, DegreeTag> = {

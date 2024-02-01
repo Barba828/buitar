@@ -1,18 +1,25 @@
-import { NOTE_LIST, NOTE_FALLING_LIST, INTERVAL_LIST, INTERVAL_FALLING_LIST } from '../config'
+import {
+	NOTE_LIST,
+	NOTE_FALLING_LIST,
+	INTERVAL_LIST,
+	INTERVAL_FALLING_LIST,
+	NOTE_INTERVAL_MAP,
+	DEGREE_INTERVAL_MAP,
+} from '../config'
 import type {
 	Tone,
 	Note,
-	NoteAll,
 	Interval,
 	ToneSchema,
 	NoteFalling,
 	IntervalFalling,
 	Pitch,
 	ModeType,
-NoteBasic,
+	NoteBasic,
+	IntervalBasic,
 } from '../interface'
 
-const NOTE_REGEX = /([A-Ga-g#b])/g;
+const NOTE_REGEX = /([A-Ga-g\d#b])/g
 
 // overload
 function transNote(x: Tone): Note
@@ -34,7 +41,7 @@ function transNote(x: Tone | Tone[]) {
 		? NOTE_LIST[INTERVAL_LIST.indexOf(x)]
 		: isIntervalNum(x)
 		? NOTE_LIST[INTERVAL_LIST.indexOf(x.toString() as Interval)]
-		: NOTE_LIST[INTERVAL_FALLING_LIST.indexOf(x)]
+		: NOTE_LIST[INTERVAL_FALLING_LIST.indexOf(x as IntervalFalling)]
 }
 
 /**
@@ -42,7 +49,7 @@ function transNote(x: Tone | Tone[]) {
  * @param note
  * @returns toneSchema
  */
-function transTone(note: Note | number): ToneSchema {
+function transToneSchema(note: Note | number): ToneSchema {
 	let index = 0
 	if (typeof note === 'number') {
 		index = note
@@ -58,30 +65,25 @@ function transTone(note: Note | number): ToneSchema {
 	}
 }
 
-// overload
-function transNotePitch(x: Tone): Pitch
-function transNotePitch(x: Tone[]): Pitch[]
 /**
- * Tone音字符 => 相对音高 （0～11）
- * @param x
- * @returns Pitch
+ * 转换为 0 ~ 11 音高「based on C」
+ * @param x 
  */
-function transNotePitch(x: Tone | Tone[]) {
+function transPitch(x: Tone): Pitch
+function transPitch(x: Tone[]): Pitch[]
+function transPitch(x: Tone | Tone[]) {
 	if (x instanceof Array) {
-		return x.map((x) => transNotePitch(x as Tone))
+		return x.map((x) => transPitch(x as Tone))
 	}
-	const note = transNote(x)
-	return NOTE_LIST.indexOf(note)
-}
-
-function transNoteAllPitch(x: NoteAll): Pitch
-function transNoteAllPitch(x: NoteAll[]): Pitch[]
-function transNoteAllPitch(x: NoteAll | NoteAll[]) {
-	if (x instanceof Array) {
-		return x.map((x) => transNoteAllPitch(x as NoteAll))
+	let basic = 0
+	const [tone, symbol] = String(x).match(NOTE_REGEX) as [NoteBasic | IntervalBasic, string]
+	if (Number(tone)) {
+		// tone -> 0 ~ 7
+		basic = DEGREE_INTERVAL_MAP[tone as IntervalBasic] + 12
+	} else {
+		// tone -> C ~ B
+		basic = NOTE_INTERVAL_MAP[tone as NoteBasic] + 12 // 避免「symbol = b」出现 -1
 	}
-	const [note, symbol] = x.match(NOTE_REGEX) as [NoteBasic, string];
-	let basic = NOTE_LIST.indexOf(note) + 12 // 避免出现 -1
 	if (symbol === '#') {
 		basic += 1
 	} else if (symbol === 'b') {
@@ -96,7 +98,7 @@ function transNoteAllPitch(x: NoteAll | NoteAll[]) {
  * @param x
  */
 function transToneOffset(x: Tone, offset: number = 0) {
-	const base = transNotePitch(x)
+	const base = transPitch(x)
 	let index = (base + offset) % NOTE_LIST.length
 	if (index < 0) {
 		index += NOTE_LIST.length
@@ -111,7 +113,7 @@ function transToneOffset(x: Tone, offset: number = 0) {
 function transToneMode(x: Tone, toMinor: boolean = true) {
 	const note = transToneOffset(x, toMinor ? -3 : 3)
 	return {
-		tone: transTone(note),
+		tone: transToneSchema(note),
 		mode: toMinor ? 'minor' : ('major' as ModeType),
 	}
 }
@@ -132,4 +134,4 @@ const isIntervalFalling = (x: any): x is IntervalFalling => {
 	return INTERVAL_FALLING_LIST.includes(x)
 }
 
-export { transTone, transNote, transNotePitch, transNoteAllPitch, transToneOffset, transToneMode }
+export { transToneSchema, transNote, transPitch, transToneOffset, transToneMode }

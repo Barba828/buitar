@@ -1,5 +1,14 @@
-import { transBoard, transScaleDegree } from '../index'
-import type { DegreeChord, ChordDegreeNum, GuitarBoard, ModeType, Point, Tone, DegreeScale } from '../interface'
+import { transBoard, getScaleNoteAll, getScaleDegreeWithChord } from '../index'
+import type {
+	DegreeChord,
+	ChordDegreeNum,
+	GuitarBoard,
+	ModeType,
+	Point,
+	Tone,
+	NoteAll,
+	DegreeType,
+} from '../interface'
 import { DEFAULT_LEVEL, DEFAULT_TUNE, GRADE_NUMS } from '../config'
 import { OnChange } from '../utils/on-change'
 
@@ -11,7 +20,7 @@ type BoardOption = {
 	/**
 	 * 音阶「 C 」
 	 */
-	scale: Tone
+	scale: NoteAll
 	/**
 	 * 和弦类型「三和弦」
 	 */
@@ -25,6 +34,10 @@ type BoardOption = {
 	 * 与 chordNumType 相匹配
 	 */
 	chords: DegreeChord[]
+	/**
+	 * 12音名
+	 */
+	notes: NoteAll[]
 	/**
 	 * 指板
 	 * 「弦数」 * 「品数」
@@ -46,7 +59,10 @@ type BoardOption = {
 	baseLevel: number
 }
 
-type BoardOptionProps = Pick<BoardOption, 'mode' | 'scale' |'chordNumType' | 'chordOver' |'baseTone' | 'baseFret' | 'baseLevel'>
+type BoardOptionProps = Pick<
+	BoardOption,
+	'mode' | 'scale' | 'chordNumType' | 'chordOver' | 'baseTone' | 'baseFret' | 'baseLevel'
+>
 
 const defaultOptions: BoardOptionProps = {
 	mode: 'major',
@@ -66,25 +82,42 @@ class Board {
 	 * @param emit 指板数据修改回调函数
 	 * @param options 配置
 	 */
-	constructor(private emit: (board: BoardOption) => void, options?: Partial<BoardOptionProps>) {
+	constructor(private emit?: (board: BoardOption) => void, options?: Partial<BoardOptionProps>) {
 		const _options = { ...defaultOptions, ...options }
-		const keyboard = this.getKeyBoard(_options)
+		/**
+		 * 顺序获取
+		 * 1. getChords 获取对应级数和音名
+		 * 2. getNotes 获取完整12音音名
+		 * 3. getKeyBoard 根据完整音名获取指板
+		 */
 		const chords = this.getChords(_options)
+		const notes = this.getNotes(chords)
+		const keyboard = this.getKeyBoard(_options, notes)
 
 		this._board = OnChange(
 			{
 				..._options,
 				chords,
+				notes,
 				keyboard,
 			},
 			() => {
-				this.emit({ ...this._board })
+				this.emit?.({ ...this._board })
 			}
 		)
 	}
 
 	get board() {
 		return this._board
+	}
+	get chords() {
+		return this._board.chords
+	}
+	get notes() {
+		return this._board.notes
+	}
+	get keyboard() {
+		return this._board.keyboard
 	}
 
 	/**
@@ -98,15 +131,35 @@ class Board {
 		/**
 		 * 更新 options 需要更新 顺阶和弦
 		 */
-		if (keys.includes('mode') || keys.includes('scale') || keys.includes('chordNumType') || keys.includes('chordOver')) {
+		if (
+			keys.includes('mode') ||
+			keys.includes('scale') ||
+			keys.includes('chordNumType') ||
+			keys.includes('chordOver')
+		) {
 			const chords = this.getChords(_options)
 			_options.chords = chords
 		}
+
+		/**
+		 * 更新 options 需要更新 12音名
+		 */
+		if (keys.includes('mode') || keys.includes('scale')) {
+			const notes = this.getNotes(_options.chords)
+			_options.notes = notes
+		}
+
 		/**
 		 * 更新 options 需要更新 指板
 		 */
-		if (keys.includes('baseTone') || keys.includes('baseFret') || keys.includes('baseLevel')) {
-			const keyboard = this.getKeyBoard(_options)
+		if (
+			keys.includes('mode') ||
+			keys.includes('scale') ||
+			keys.includes('baseTone') ||
+			keys.includes('baseFret') ||
+			keys.includes('baseLevel')
+		) {
+			const keyboard = this.getKeyBoard(_options, _options.notes)
 			_options.keyboard = keyboard
 		}
 
@@ -114,21 +167,34 @@ class Board {
 	}
 
 	/**
-	 * 获取当前设置的指板
-	 * @param options 
-	 * @returns 
+	 * 获取当前调式 & 音阶的顺阶和弦
+	 * @param options
+	 * @returns
 	 */
-	private getKeyBoard = (options: BoardOptionProps) => {
-		return transBoard(options.baseTone, options.baseFret, options.baseLevel)
+	private getChords = (options: BoardOptionProps) => {
+		return getScaleDegreeWithChord({ mode: options.mode, scale: options.scale, chordNumType: options.chordNumType })
 	}
 
 	/**
-	 * 获取当前调式 & 音阶的顺阶和弦
-	 * @param options 
-	 * @returns 
+	 * 获取完整12音音名
+	 * @param degrees 音阶级数
+	 * @returns
 	 */
-	private getChords = (options: BoardOptionProps) => {
-		return transScaleDegree({ mode: options.mode, scale: options.scale, chordNumType: options.chordNumType })
+	private getNotes = (degrees: DegreeType[]) => {
+		return getScaleNoteAll(degrees)
+	}
+
+	/**
+	 * 获取当前设置的指板
+	 * @param options
+	 * @returns
+	 */
+	private getKeyBoard = (options: BoardOptionProps, notes: NoteAll[] = this._board.notes) => {
+		return transBoard(options.baseTone, {
+			gradeLength: options.baseFret,
+			baseLevel: options.baseLevel,
+			notes: notes,
+		})
 	}
 
 	/**

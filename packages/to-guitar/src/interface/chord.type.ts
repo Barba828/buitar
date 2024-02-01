@@ -1,4 +1,4 @@
-import type { IntervalAll, Note, NoteAll, Point, ToneSchema } from './tone.type'
+import type { IntervalAll, Note, NoteAll, Pitch, Point, ToneSchema } from './tone.type'
 
 export type ChordType = {
 	/**
@@ -20,15 +20,16 @@ export type ChordType = {
 	 */
 	constitute?: IntervalAll[]
 	/**
-	 * 和弦最低音名（一般是根音，除非存在转位和弦）
-	 * C|D|...
+	 * 和弦最低音高（0~11以C调C音为0）
+	 * @example 1表示Db | 2表示 D |...
 	 */
-	tone?: ToneSchema
+	tone?: Pitch
 	/**
-	 * 转位和弦根音（即实际和弦名称over/note）
+	 * 转位和弦根音（即实际和弦名称over/note）（0~11以C调C音为0）
 	 * C/E ("C over E"｜"C slash E"｜"C on E")
+	 * @example 1表示Db | 2表示 D |...
 	 */
-	over?: ToneSchema
+	over?: Pitch
 	/**
 	 * chordMap key，实际表示和弦内音程关系
 	 */
@@ -78,7 +79,7 @@ export type DegreeType = {
 	 * 音程
 	 * 距离I级和弦音程
 	 */
-	interval: number
+	interval: Pitch
 	/**
 	 * 级数
 	 * 数字标记
@@ -103,12 +104,12 @@ export type DegreeType = {
  */
 export type DegreeScale = {
 	degree: DegreeType
-	tone: ToneSchema
+	tone: NoteAll
 }
 
 /**级数和弦 */
-export type DegreeChord = DegreeScale & {
-	chord: Note[]
+export type DegreeChord = DegreeType & {
+	chord: DegreeType[]
 	chordType: ChordType[]
 }
 
