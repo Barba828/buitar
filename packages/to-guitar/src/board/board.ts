@@ -1,4 +1,4 @@
-import { transBoard, getScaleNoteAll, getScaleDegreeWithChord } from '../index'
+import { transBoard, degreesToNotes, scaleToDegreeWithChord } from '../index'
 import type { DegreeChord, ChordDegreeNum, GuitarBoard, ModeType, Point, Tone, NoteAll, DegreeType } from '../interface'
 import { DEFAULT_LEVEL, DEFAULT_TUNE, GRADE_NUMS } from '../config'
 import { OnChange } from '../utils/on-change'
@@ -25,18 +25,18 @@ type BoardOption = {
 	 * 与 chordNumType 相匹配
 	 */
 	chords: DegreeChord[]
-	/**
-	 * 12音名
-	 */
-	notes: NoteAll[]
-	/**
-	 * 12音名
-	 */
-	notesOnC: NoteAll[]
-	/**
-	 * 12音名（仅调内音）
-	 */
-	notesInnerOnC: (NoteAll | null)[]
+    /**
+     * 12音名（基于当前scale）
+     */
+    notes: NoteAll[];
+    /**
+     * 12音名（基于C）
+     */
+    notesOnC: NoteAll[];
+    /**
+     * 12音名（基于C仅调内音）
+     */
+    notesInnerOnC: (NoteAll | null)[];
 	/**
 	 * 指板
 	 * 「弦数」 * 「品数」
@@ -181,7 +181,7 @@ class Board {
 	 * @returns
 	 */
 	private getChords = (options: BoardOptionProps) => {
-		return getScaleDegreeWithChord({ mode: options.mode, scale: options.scale, chordNumType: options.chordNumType })
+		return scaleToDegreeWithChord({ mode: options.mode, scale: options.scale, chordNumType: options.chordNumType })
 	}
 
 	/**
@@ -190,7 +190,7 @@ class Board {
 	 * @returns
 	 */
 	private getNotes = (degrees: DegreeType[]) => {
-		return getScaleNoteAll(degrees)
+		return degreesToNotes(degrees)
 	}
 
 	/**

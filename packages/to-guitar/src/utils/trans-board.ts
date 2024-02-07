@@ -19,7 +19,7 @@ import type {
 	BoardPosition,
 	NoteAll,
 } from '../interface'
-import { getChordTypeByPitch } from './trans'
+import { pitchToChordType } from './trans'
 import { transPitch } from './trans-tone'
 
 /**
@@ -162,7 +162,6 @@ const transChordTaps = (
 		fingerSpan?: number
 	} & Partial<Pick<BoardOption, 'keyboard' | 'chordOver'>> = {}
 ) => {
-	console.log('lnz tones', tones);
 	const { fingerSpan = FINGER_GRADE_NUMS, keyboard = transBoard(), chordOver = false } = options
 	const chords = Array.from(new Set(transPitch(tones)))
 	// 无效和弦组成音
@@ -174,13 +173,13 @@ const transChordTaps = (
 	const overRoots = chordOver
 		? // 根音包括chords里所有音（转位和弦）
 		  chords.map((chord) => ({
-				chordType: getChordTypeByPitch(Array.from(new Set([chord, ...chords])))[0],
+				chordType: pitchToChordType(Array.from(new Set([chord, ...chords])))[0],
 				chordTapsList: [] as Point[][],
 		  }))
 		: // 仅以chords第一个音为根音
 		  [
 				{
-					chordType: getChordTypeByPitch(chords)[0],
+					chordType: pitchToChordType(chords)[0],
 					chordTapsList: [] as Point[][],
 				},
 		  ]

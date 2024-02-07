@@ -190,7 +190,7 @@ export const BoardProvider: FC = (props) => {
 		COLLECTIONS_KEY,
 		defaultCollection
 	)
-	const [chord, setChord] = useState<Tone[]>([])
+	const [chord, setChord] = useState<Pitch[]>([])
 	const [chordTaps, setChordTaps] = useState<BoardChord[]>([])
 	const [chordTap, setChordTap] = useState<BoardChord>()
 	const [taps, setTaps] = useState<Point[]>([])

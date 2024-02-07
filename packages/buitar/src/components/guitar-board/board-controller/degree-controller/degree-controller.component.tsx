@@ -12,7 +12,7 @@ import {
 	useConfigContext,
 	usePlayerContext,
 } from '@/components'
-import { transChord, transChordTaps, DEGREE_TAG_LIST } from '@buitar/to-guitar'
+import { rootToChord, transChordTaps, DEGREE_TAG_LIST } from '@buitar/to-guitar'
 import { ControllerList, ControllerListProps } from '@/components/controller'
 import cx from 'classnames'
 
@@ -264,7 +264,7 @@ export const DegreeChordController: FC<ControllerListProps<any>> = () => {
 		const tones = guitarBoardOption.chords?.map((chord) => chord.tone)
 		return progressions[progressionIndex].procession.map((degree) => {
 			const tone = tones![degree.name - 1]
-			const chord = transChord(tone.note, degree.tag)!
+			const chord = rootToChord(tone.note, degree.tag)!
 			return {
 				...chord,
 				tone,

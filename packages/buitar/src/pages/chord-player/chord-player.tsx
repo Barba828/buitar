@@ -17,8 +17,6 @@ export const ChordPlayer = () => {
 
 	// 切换和弦：更新指板图列表
 	useEffect(() => {
-		console.log('chord', chord)
-
 		setChordTaps(
 			transChordTaps(
 				chord.map((pitch) => guitarBoardOption.notes![pitch % 12]),
@@ -53,13 +51,13 @@ export const ChordPlayer = () => {
 }
 
 const ChordDetail = memo(() => {
-	const { chordTap, boardSettings } = useBoardContext()
+	const { chordTap, guitarBoardOption } = useBoardContext()
 	const isMobile = useIsMobile()
 
 	if (!chordTap) {
 		return null
 	}
-	const title = getBoardChordName(chordTap.chordType, boardSettings)
+	const title = getBoardChordName(chordTap.chordType, guitarBoardOption)
 
 	return (
 		<div style={{ display: 'flex' }} className="scroll-without-bar">
@@ -77,6 +75,6 @@ const ChordKeyboard = () => {
 	const { taps, player, boardSettings } = useBoardContext()
 	const { isAllKey } = boardSettings
 	const levels = isAllKey ? [2, 3, 4, 5] : [3]
-	const notes = taps.map((point) => `${point.toneSchema.note}${isAllKey ? point.toneSchema.level : 3}`)
+	const notes = taps.map((point) => `${point.note}${isAllKey ? point.level : 3}`)
 	return <PianoBoard player={player} checked={notes} levels={levels} />
 }

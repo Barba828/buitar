@@ -13,7 +13,7 @@ import {
 	ModeType,
 	getModeRangeTaps,
 	getModeFregTaps,
-	transChord,
+	rootToChord,
 	transToneMode,
 	transChordTaps,
 	BoardChord,
@@ -76,8 +76,8 @@ export const TapedGuitarBoardFingering = () => {
 		// 获取当前根音和弦 以及 关系大小调和弦
 		const rootModeMajor = guitarBoardOption.mode?.includes('major')
 		const relationalTone = transToneMode(rootPoint.toneSchema.note, rootModeMajor)
-		const chordOrigin = transChord(rootPoint.toneSchema.note, rootModeMajor ? '' : 'm')
-		const chordRelational = transChord(relationalTone.tone.note, rootModeMajor ? 'm' : '')
+		const chordOrigin = rootToChord(rootPoint.toneSchema.note, rootModeMajor ? '' : 'm')
+		const chordRelational = rootToChord(relationalTone.tone.note, rootModeMajor ? 'm' : '')
 		const chordOriginTaps = chordOrigin ? transChordTaps(chordOrigin?.chord, guitarBoardOption) : []
 		const chordRelationalTaps = chordRelational
 			? transChordTaps(chordRelational?.chord, guitarBoardOption)
@@ -164,7 +164,7 @@ export const TapedGuitarBoardFingering = () => {
 										key={index}
 										size={isMobileDevice ? 80 : 120}
 										taps={tapItem.chordTaps}
-										title={getBoardChordName(tapItem.chordType, boardSettings)}
+										title={getBoardChordName(tapItem.chordType, guitarBoardOption)}
 									/>
 								))}
 							</div>
