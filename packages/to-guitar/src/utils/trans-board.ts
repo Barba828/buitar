@@ -7,6 +7,7 @@ import {
 	GRADE_NUMS,
 	degreeMap,
 	NOTE_FALLING_LIST,
+INTERVAL_FALLING_LIST,
 } from '../config'
 import type {
 	Tone,
@@ -18,6 +19,7 @@ import type {
 	BoardChord,
 	BoardPosition,
 	NoteAll,
+IntervalAll,
 } from '../interface'
 import { pitchToChordType } from './trans'
 import { transPitch } from './trans-tone'
@@ -104,12 +106,12 @@ const transBoard = (
 	zeroTones: Array<Tone | NoteAll | string> = DEFAULT_TUNE,
 	options: {
 		notes?: NoteAll[]
-		notesInner?: (NoteAll | null)[]
+		intervals?: IntervalAll[]
 		gradeLength?: number
 		baseLevel?: number
 	} = {}
 ) => {
-	let { notes = NOTE_FALLING_LIST, gradeLength = GRADE_NUMS, baseLevel = DEFAULT_LEVEL, notesInner = [] } = options
+	let { notes = NOTE_FALLING_LIST, intervals = INTERVAL_FALLING_LIST, gradeLength = GRADE_NUMS, baseLevel = DEFAULT_LEVEL } = options
 	let zeroPitchs = [] // 基于 C 调的 0品绝对音高
 	if (matchPitchNote(String(zeroTones[0]))) {
 		// 匹配 E2 A2 0品绝对音高
@@ -127,7 +129,7 @@ const transBoard = (
 			const pitch = zeroPitch + grade
 			const tone = pitch % 12
 			const note = notes[tone]
-			const isInner = !!notesInner?.[tone]
+			const interval = intervals[tone]
 			const index = stringIndex * gradeLength + grade
 			const level = Math.floor(pitch / 12) + baseLevel
 
@@ -135,11 +137,11 @@ const transBoard = (
 				tone,
 				pitch,
 				note,
+				interval,
 				level,
 				string: stringIndex + 1,
 				grade,
 				index,
-				isInner,
 			} as Point
 
 			stringNums[grade] = point

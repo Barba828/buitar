@@ -252,30 +252,29 @@ export const DegreeChordController: FC<ControllerListProps<any>> = () => {
 		guitarBoardOption,
 		setChord,
 		setChordTaps,
-		boardSettings: { isSharpSemitone },
 	} = useBoardContext()
 	const { progressions, progressionIndex, soundListIndex, setSoundList, setSoundListIndex } =
 		usePlayerContext()
 
 	const chords = useMemo(() => {
-		if (!progressions[progressionIndex]) {
+		if (!progressions[progressionIndex] || !guitarBoardOption.chords) {
 			return []
 		}
-		const tones = guitarBoardOption.chords?.map((chord) => chord.tone)
-		return progressions[progressionIndex].procession.map((degree) => {
-			const tone = tones![degree.name - 1]
-			const chord = rootToChord(tone.note, degree.tag)!
+		return progressions[progressionIndex].procession.map((item) => {
+			const degree = guitarBoardOption.chords![item.name - 1]
+			const chord = rootToChord(degree.note!, item.tag)!
 			return {
 				...chord,
-				tone,
-				degree: DEGREE_TAG_LIST[degree.name - 1],
+				tag: item.tag,
+				degree,
+				degreeText: DEGREE_TAG_LIST[item.name - 1],
 			}
 		})
 	}, [guitarBoardOption.chords])
 
 	useEffect(() => {
 		const soundList = chords.map((item) => {
-			return transChordTaps(item.chord, guitarBoardOption)[0].chordTaps
+			return transChordTaps(item.chord.map((pitch) => guitarBoardOption.notes![pitch % 12]), guitarBoardOption)[0].chordTaps
 		})
 		setSoundList(soundList)
 	}, [guitarBoardOption.chords])
@@ -306,12 +305,12 @@ export const DegreeChordController: FC<ControllerListProps<any>> = () => {
 			renderListItem={(item) => {
 				return (
 					<div className={styles['chord-item']}>
-						<div className={styles['chord-item-grade']}>{item.degree}</div>
+						<div className={styles['chord-item-grade']}>{item.degreeText}</div>
 						<div>
 							<span className={styles['chord-item-note']}>
-								{isSharpSemitone ? item.tone.note : item.tone.noteFalling}
+								{item.degree.note}
 							</span>
-							<span className={styles['chord-item-tag']}>{item.chordType.tag}</span>
+							<span className={styles['chord-item-tag']}>{item.tag}</span>
 						</div>
 						<div className={styles['chord-item-name']}>{item.chordType.name_zh}</div>
 					</div>

@@ -36,7 +36,7 @@ const ChordPicker = () => {
 		if (soundListIndex < 0) {
 			return
 		}
-		setChordTaps(transChordTaps(chord, guitarBoardOption))
+		setChordTaps(transChordTaps(chord.map((pitch) => guitarBoardOption.notes![pitch % 12]), guitarBoardOption))
 	}, [chord, soundListIndex])
 
 	// 指板更新：清除和弦指位列表

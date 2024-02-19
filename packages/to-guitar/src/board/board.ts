@@ -1,5 +1,5 @@
 import { transBoard, degreesToNotes, scaleToDegreeWithChord } from '../index'
-import type { DegreeChord, ChordDegreeNum, GuitarBoard, ModeType, Point, Tone, NoteAll, DegreeType } from '../interface'
+import type { DegreeChord, ChordDegreeNum, GuitarBoard, ModeType, Point, Tone, NoteAll, DegreeType, IntervalAll } from '../interface'
 import { DEFAULT_LEVEL, DEFAULT_TUNE, GRADE_NUMS } from '../config'
 import { OnChange } from '../utils/on-change'
 
@@ -29,14 +29,18 @@ type BoardOption = {
      * 12音名（基于当前scale）
      */
     notes: NoteAll[];
-    /**
-     * 12音名（基于C）
-     */
-    notesOnC: NoteAll[];
-    /**
-     * 12音名（基于C仅调内音）
-     */
-    notesInnerOnC: (NoteAll | null)[];
+	/**
+	 * 12音名（基于C）
+	 */
+	notesOnC: NoteAll[];
+	/**
+	 * 12音级（基于当前scale）
+	 */
+    intervals: IntervalAll[];
+	/**
+	 * 12音名（基于C）
+	 */
+    intervalsOnC: IntervalAll[];
 	/**
 	 * 指板
 	 * 「弦数」 * 「品数」
@@ -85,23 +89,21 @@ class Board {
 		const _options = { ...defaultOptions, ...options }
 		/**
 		 * 顺序获取
-		 * 1. getChords 获取对应级数和音名
+		 * 1. getDegreesWithChord 获取对应级数和音名
 		 * 2. getNotes 获取完整12音音名
 		 * 3. getKeyBoard 根据完整音名获取指板
 		 */
-		const chords = this.getChords(_options)
-		const { notes, notesOnC, notesInnerOnC } = this.getNotes(chords)
-		const keyboard = this.getKeyBoard(_options, notesOnC)
+		const chords = this.getDegreesWithChord(_options)
+		const noteList = this.getNotes(chords)
+		Object.assign(_options, noteList)
+		const keyboard = this.getKeyBoard(_options)
 
 		this._board = OnChange(
 			{
 				..._options,
 				chords,
-				notes,
-				notesOnC,
-				notesInnerOnC,
 				keyboard,
-			},
+			} as BoardOption,
 			() => {
 				this.emit?.({ ...this._board })
 			}
@@ -120,8 +122,11 @@ class Board {
 	get notesOnC() {
 		return this._board.notesOnC
 	}
-	get notesInnerOnC() {
-		return this._board.notesInnerOnC
+	get intervals() {
+		return this._board.intervals
+	}
+	get intervalsOnC() {
+		return this._board.intervalsOnC
 	}
 	get keyboard() {
 		return this._board.keyboard
@@ -144,7 +149,7 @@ class Board {
 			keys.includes('chordNumType') ||
 			keys.includes('chordOver')
 		) {
-			const chords = this.getChords(_options)
+			const chords = this.getDegreesWithChord(_options)
 			_options.chords = chords
 		}
 
@@ -152,10 +157,8 @@ class Board {
 		 * 更新 options 需要更新 12音名
 		 */
 		if (keys.includes('mode') || keys.includes('scale')) {
-			const { notes, notesOnC, notesInnerOnC } = this.getNotes(_options.chords)
-			_options.notes = notes
-			_options.notesOnC = notesOnC
-			_options.notesInnerOnC = notesInnerOnC
+			const noteList = this.getNotes(_options.chords)
+			Object.assign(_options, noteList)
 		}
 
 		/**
@@ -168,7 +171,7 @@ class Board {
 			keys.includes('baseFret') ||
 			keys.includes('baseLevel')
 		) {
-			const keyboard = this.getKeyBoard(_options, _options.notesOnC)
+			const keyboard = this.getKeyBoard(_options)
 			_options.keyboard = keyboard
 		}
 
@@ -180,7 +183,7 @@ class Board {
 	 * @param options
 	 * @returns
 	 */
-	private getChords = (options: BoardOptionProps) => {
+	private getDegreesWithChord = (options: BoardOptionProps) => {
 		return scaleToDegreeWithChord({ mode: options.mode, scale: options.scale, chordNumType: options.chordNumType })
 	}
 
@@ -198,11 +201,12 @@ class Board {
 	 * @param options
 	 * @returns
 	 */
-	private getKeyBoard = (options: BoardOptionProps, notes: NoteAll[] = this._board.notes) => {
+	private getKeyBoard = (options: Partial<BoardOption>) => {
 		return transBoard(options.baseTone, {
 			gradeLength: options.baseFret,
 			baseLevel: options.baseLevel,
-			notes: notes,
+			notes: options.notesOnC,
+			intervals: options.intervalsOnC,
 		})
 	}
 

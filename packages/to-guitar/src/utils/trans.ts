@@ -114,7 +114,7 @@ const intervalToSemitones = (interval: IntervalAll | Number) => {
 const rootToChord = (tone: Tone, chordTypeTag: string = '') => {
 	const chordTypeItem = chordTagMap.get(chordTypeTag)
 	if (!chordTypeItem) {
-		return null
+		throw Error('Invalid chordTypeTag')
 	}
 
 	const intervals = [transPitch(tone)]
@@ -129,6 +129,9 @@ const rootToChord = (tone: Tone, chordTypeTag: string = '') => {
 		}, intervals[0])
 
 	return {
+		/**
+		 * 和弦音pitch
+		 */
 		chord: intervals,
 		chordType: chordTypeItem,
 	}
@@ -193,6 +196,7 @@ const pitchToChordType = (chords: Pitch[]): ChordType[] => {
  * @example
  * { mode: 'major', scale: 'C'} => [C, D, E, F, G, A, B]
  * { mode: 'major', scale: 'D#'} => [Eb, F, G, Ab, Bb, C, D]
+ * { mode: 'major-pentatonic', scale: 'E'} => [E, F#, G#, B, C#]
  * @returns 大调音阶顺阶音调 数组
  */
 const scaleToDegree = ({ mode = 'major', scale = 'C' }: { mode?: ModeType; scale?: NoteAll }): DegreeType[] => {
@@ -209,18 +213,32 @@ const scaleToDegree = ({ mode = 'major', scale = 'C' }: { mode?: ModeType; scale
 		const degree = degreeArr[i]
 		const currPitch = (pitch + degree.interval) % 12 // 当前「相对音高」
 		const currMultiNode = NOTE_MULTI_LIST[currPitch] // 当前符合「相对音高」的所有音名（包括所有升降号）
-		const currSortNote = NOTE_SORT[(i + sortOffset) % 7] // 当前音名（无升降号）
-		const currNote = currMultiNode.find((note) => note.includes(currSortNote)) // 当前音名
-		if (currNote) {
+		if (degreeArr.length < 7) {
+			// 非现代7级音乐「五声音阶/布鲁斯音阶」
 			scaleNoteList.push({
 				...degree,
-				note: currNote,
+				note: currMultiNode.sort((a, b) => {
+					if (a.length !== b.length) {
+						return a.length - b.length
+					}
+					return a.includes('b') ? -1 : 1
+				})[0], // 选择最短的音名(E > Fb > D#)
 			})
 		} else {
-			// 存在不符合「相对音高」的音名，例如「D#大调」的7度音是C双升「Cx」
-			// 转为「相对音高」的其他音名组成：「D#大调」=>「Eb大调」
-			const otherScale = NOTE_MULTI_LIST[pitch].find((note) => note !== scale)
-			return scaleToDegree({ mode, scale: otherScale })
+			// 7级音乐，取 NOTE_SORT 排序 Note
+			const currSortNote = NOTE_SORT[(i + sortOffset) % degreeArr.length] // 当前音名（无升降号）
+			const currNote = currMultiNode.find((note) => note.includes(currSortNote)) // 当前音名
+			if (currNote) {
+				scaleNoteList.push({
+					...degree,
+					note: currNote,
+				})
+			} else {
+				// 存在不符合「相对音高」的音名，例如「D#大调」的7度音是C双升「Cx」
+				// 转为「相对音高」的其他音名组成：「D#大调」=>「Eb大调」
+				const otherScale = NOTE_MULTI_LIST[pitch].find((note) => note !== scale)
+				return scaleToDegree({ mode, scale: otherScale })
+			}
 		}
 	}
 	return scaleNoteList
@@ -254,7 +272,7 @@ const scaleToDegreeWithChord = ({
 
 	// 根据转换的大调获取大调和弦
 	return scaleDegrees.map((degree, index) => {
-		const chordDegreeArr = chordScale.map((scale) => scaleDegrees[(index + scale - 1) % 7])
+		const chordDegreeArr = chordScale.map((scale) => scaleDegrees[(index + scale - 1) % scaleDegrees.length])
 		const chordType = pitchToChordType(chordDegreeArr.map((degree) => degree.interval))
 		return {
 			...degree,
@@ -270,31 +288,30 @@ const scaleToDegreeWithChord = ({
  */
 const degreesToNotes = (degrees: DegreeType[]) => {
 	if (!degrees[0].note) {
-		return {
-			notes: [],
-			notesOnC: [],
-			notesInnerOnC: [],
-		}
+		throw new Error('DegreeType need note')
 	}
 
 	// 1. 获取12音名「based on scale」，例如「Eb, Fb, F ...」
 	const notes: NoteAll[] = []
-	const notesInner: (NoteAll | null)[] = []
 	const intervals: IntervalAll[] = []
 	const offset = transPitch(degrees[0].note)
 	let degreeIndex = 0
 	for (let i = 0; i < 12; i++) {
 		if (degrees[degreeIndex] && degrees[degreeIndex].interval === i) {
+			// degree里存在，调内音，直接使用
 			if (!degrees[degreeIndex].note) {
 				throw new Error('DegreeType need note')
 			}
 			notes.push(degrees[degreeIndex].note!)
-			notesInner.push(degrees[degreeIndex].note!)
-			// intervals.push(in)
+			intervals.push((degreeIndex + 1) as IntervalNum)
 			degreeIndex++
 		} else {
-			notes.push(NOTE_FALLING_LIST[(i + offset) % 12])
-			notesInner.push(null)
+			// degree里不存在，调外音，使用降调b表示形式「b比#更适用」
+			notes.push(NOTE_FALLING_LIST[(i + offset) % 12]) // 降调Note
+			intervals.push(`${degreeIndex + 1}b` as IntervalAll) // 降调级数表示时，会有bb这样的双降音
+			if (i > 0 && intervals[i - 1].toString().endsWith('b')) {
+				intervals[i - 1] = `${intervals[i - 1]}b` as IntervalAll
+			}
 		}
 	}
 
@@ -302,14 +319,9 @@ const degreesToNotes = (degrees: DegreeType[]) => {
 	const cIndex = notes.indexOf('C')
 	return {
 		notes: [...notes],
-		/**
-		 * 12音
-		 */
 		notesOnC: notes.slice(cIndex).concat(notes.slice(0, cIndex)),
-		/**
-		 * 12音中饭只有调内音
-		 */
-		notesInnerOnC: notesInner.slice(cIndex).concat(notesInner.slice(0, cIndex)),
+		intervals: [...intervals],
+		intervalsOnC: intervals.slice(cIndex).concat(intervals.slice(0, cIndex)),
 	}
 }
 

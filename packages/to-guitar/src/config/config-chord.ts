@@ -211,14 +211,14 @@ const chordMap = new Map<number, ChordType>([
 	 * 七和弦省略拓展
 	 * 一般来说七和弦可以省略五音
 	 */
-	[47, { tag: 'maj7', name: 'major seventh chord', constitute: ['1', '3', '7'], name_zh: '大七和弦' }],
-	[46, { tag: '7', name: 'seventh chord', constitute: ['1', '3', '7b'], name_zh: '属七和弦' }],
-	[37, { tag: 'm7', name: 'minor seventh chord', constitute: ['1', '3b', '7b'], name_zh: '小七和弦' }],
+	[47, { tag: 'maj7(no5)', name: 'major seventh(no5) chord', constitute: ['1', '3', '7'], name_zh: '大七(no5)和弦' }],
+	[46, { tag: '7(no5)', name: 'seventh(no5) chord', constitute: ['1', '3', '7b'], name_zh: '属七(no5)和弦' }],
+	[37, { tag: 'm7(no5)', name: 'minor seventh(no5) chord', constitute: ['1', '3b', '7b'], name_zh: '小七(no5)和弦' }],
 	[
 		137,
 		{
-			tag: 'maj7(b9)',
-			name: 'major seventh(b-ninth) chord',
+			tag: 'maj7(b9no5)',
+			name: 'major seventh(b-ninth no5) chord',
 			constitute: ['1', '3', '7', '9b'],
 			name_zh: '大七(b9)和弦',
 		},
@@ -226,21 +226,21 @@ const chordMap = new Map<number, ChordType>([
 	[
 		317,
 		{
-			tag: 'maj7(#9)',
-			name: 'major seventh(#-ninth) chord',
+			tag: 'maj7(#9no5)',
+			name: 'major seventh(#-ninth no5) chord',
 			constitute: ['1', '3', '7', '9#'],
-			name_zh: '大七(#9)和弦',
+			name_zh: '大七(#9no5)和弦',
 		},
 	],
-	[136, { tag: '7(b9)', name: 'seventh(b-ninth) chord', constitute: ['1', '3', '7b', '9b'], name_zh: '属七(b9)和弦' }],
-	[316, { tag: '7(#9)', name: 'seventh(#-ninth) chord', constitute: ['1', '3', '7b', '9#'], name_zh: '属七(#9)和弦' }],
+	[136, { tag: '7(b9no5)', name: 'seventh(b-ninth no5) chord', constitute: ['1', '3', '7b', '9b'], name_zh: '属七(b9no5)和弦' }],
+	[316, { tag: '7(#9no5)', name: 'seventh(#-ninth no5) chord', constitute: ['1', '3', '7b', '9#'], name_zh: '属七(#9no5)和弦' }],
 	[
 		127,
 		{
-			tag: 'm7(b9)',
-			name: 'minor(b-ninth) seventh chord',
+			tag: 'm7(b9no5)',
+			name: 'minor(b-ninth no5) seventh chord',
 			constitute: ['1', '3b', '7b', '9b'],
-			name_zh: '小七(b9)和弦',
+			name_zh: '小七(b9no5)和弦',
 		},
 	],
 

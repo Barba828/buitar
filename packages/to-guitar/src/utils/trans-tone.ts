@@ -67,7 +67,7 @@ function transToneSchema(note: Note | number): ToneSchema {
 
 /**
  * 转换为 0 ~ 11 音高「based on C」
- * @param x 
+ * @param x
  */
 function transPitch(x: Tone): Pitch
 function transPitch(x: Tone[]): Pitch[]
@@ -110,12 +110,9 @@ function transToneOffset(x: Tone, offset: number = 0) {
  * Tone切换关系大小调
  * @param x
  */
-function transToneMode(x: Tone, toMinor: boolean = true) {
-	const note = transToneOffset(x, toMinor ? -3 : 3)
-	return {
-		tone: transToneSchema(note),
-		mode: toMinor ? 'minor' : ('major' as ModeType),
-	}
+function transToneMode(x: Pitch, toMinor: boolean = true) {
+	const offset = toMinor ? -3 : 3
+	return (x + offset) % 12
 }
 
 const isNote = (x: any): x is Note => {

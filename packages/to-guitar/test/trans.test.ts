@@ -1,4 +1,4 @@
-import { toDegreeTag, intervalToSemitones, rootToChord, toneToChordType, pitchToChordType } from '../src/index'
+import { toDegreeTag, intervalToSemitones, rootToChord, toneToChordType, pitchToChordType, scaleToDegree } from '../src/index'
 
 describe('trans.js', () => {
 	test('toDegreeTag', () => {
@@ -58,5 +58,11 @@ describe('trans.js', () => {
 				name: 'major triad',
 			})
 		)
+	})
+	
+	test('scaleToDegree', () => {
+		expect(scaleToDegree({ mode: 'major', scale: 'C' }).map((degree) => degree.note)).toEqual(['C', 'D', 'E', 'F', 'G', 'A', 'B'])
+		expect(scaleToDegree({ mode: 'major', scale: 'D#' }).map((degree) => degree.note)).toEqual(['Eb', 'F', 'G', 'Ab', 'Bb', 'C', 'D'])
+		expect(scaleToDegree({  mode: 'major-pentatonic', scale: 'E' }).map((degree) => degree.note)).toEqual(['E', 'F#', 'G#', 'B', 'C#'])
 	})
 })

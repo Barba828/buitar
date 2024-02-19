@@ -42,7 +42,7 @@ export const TapedGuitarBoardFingering = () => {
 		},
 	]
 	const { isMobileDevice } = useConfigContext()
-	const { taps, setTaps, setHighFixedTaps, guitarBoardOption, boardSettings, guitar } =
+	const { taps, setTaps, setHighFixedTaps, guitarBoardOption, guitar } =
 		useBoardContext()
 	const [tab, setTab] = useState(tabList[0]) // 是否上行音阶指型
 	const [rootPoint, setRootPoint] = useState<Point>() // 根音
@@ -51,8 +51,8 @@ export const TapedGuitarBoardFingering = () => {
 	// 获取当前点击位的 主和弦 以及 关系大小调和弦
 	const sameTapsFilter = (boardChord: BoardChord) =>
 		boardChord.chordTaps.every((tap) => taps.includes(tap))
-	const [chordOriginTaps, setChordOriginTaps] = useState<BoardChord[]>([])
-	const [chordRelationalTaps, setChordRelationalTaps] = useState<BoardChord[]>([])
+	const [chordOriginTaps, setChordOriginTaps] = useState<BoardChord[]>([]) // 当前指型和弦
+	const [chordRelationalTaps, setChordRelationalTaps] = useState<BoardChord[]>([]) // 当前指型关系和弦
 	const chordOriginFilterTap = useMemo(() => chordOriginTaps.filter(sameTapsFilter), [taps])
 	const chordRelationalFilterTap = useMemo(() => chordRelationalTaps.filter(sameTapsFilter), [taps])
 	const chordRenderList = useMemo(
@@ -75,12 +75,12 @@ export const TapedGuitarBoardFingering = () => {
 
 		// 获取当前根音和弦 以及 关系大小调和弦
 		const rootModeMajor = guitarBoardOption.mode?.includes('major')
-		const relationalTone = transToneMode(rootPoint.toneSchema.note, rootModeMajor)
-		const chordOrigin = rootToChord(rootPoint.toneSchema.note, rootModeMajor ? '' : 'm')
-		const chordRelational = rootToChord(relationalTone.tone.note, rootModeMajor ? 'm' : '')
-		const chordOriginTaps = chordOrigin ? transChordTaps(chordOrigin?.chord, guitarBoardOption) : []
+		const relationalPitch = transToneMode(rootPoint.tone, rootModeMajor) // 关系调pitch
+		const chordOrigin = rootToChord(rootPoint.note, rootModeMajor ? '' : 'm') // 当前指型和弦构成音
+		const chordRelational = rootToChord(guitarBoardOption.notes![relationalPitch], rootModeMajor ? 'm' : '') // 关系和弦构成音
+		const chordOriginTaps = chordOrigin ? transChordTaps(chordOrigin?.chord.map((pitch) => guitarBoardOption.notes![pitch % 12]), guitarBoardOption) : []
 		const chordRelationalTaps = chordRelational
-			? transChordTaps(chordRelational?.chord, guitarBoardOption)
+			? transChordTaps(chordRelational?.chord.map((pitch) => guitarBoardOption.notes![pitch % 12]), guitarBoardOption)
 			: []
 		setChordOriginTaps(chordOriginTaps)
 		setChordRelationalTaps(chordRelationalTaps)
