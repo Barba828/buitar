@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react'
 import { NOTE_LIST } from '@buitar/to-guitar'
 import cx from 'classnames'
 import { TonePlayer } from '@buitar/tone-player'
-import { useBoardTouch, useBoardWheel, usePianoKeyDown } from '@/utils/hooks/use-board-event'
+import { useBoardTouch, usePianoKeyDown } from '@/utils/hooks/use-board-event'
 import { useDebounce } from '@/utils/hooks/use-debouce'
 
 import styles from './piano-board.module.scss'
