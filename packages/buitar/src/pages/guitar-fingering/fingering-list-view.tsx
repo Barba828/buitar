@@ -5,7 +5,6 @@ import {
 	Icon,
 	BoardProvider,
 	useBoardContext,
-	getBoardOptionsList,
 	ToneModeController,
 	RangeSliderProps,
 	RangeSlider,
@@ -113,14 +112,14 @@ const GuitarBoardFingeringItem = ({
 	onChange,
 	onRemove,
 }: Partial<TabletrueItemProps>) => {
-	const { guitarBoardOption, boardSettings, setTaps, setHighFixedTaps } = useBoardContext()
+	const { guitarBoardOption, setTaps, setHighFixedTaps } = useBoardContext()
 	const [optionVisible, setOptionVisible] = useState<number>(0)
 	const [range, setRange] = useState<TabletrueItemConfig['range']>(defaultRange)
 	const [mode, setMode] = useState<TabletrueItemConfig['mode']>(defaultMode)
 	const [rootPitch, setRootPitch] = useState<TabletrueItemConfig['root']>(defaultRoot) // 根音
 	const deboucedRange = useDebounce(range, 200) // 200ms 防抖 改变range重计算指型
 	// pitch转note查看
-	const rootNote = getBoardOptionsList(boardSettings)[rootPitch]
+	const rootNote = guitarBoardOption?.notesOnC?.[rootPitch]
 
 	// 编辑：改变根音
 	const handleCheckedPoint = (points: Point[]) => {
@@ -148,6 +147,9 @@ const GuitarBoardFingeringItem = ({
 
 	// 监听变化，更改指型
 	useEffect(() => {
+		if(!rootNote) {
+			return
+		}
 		const taps = getModeRangeTaps(rootNote, {
 			board: guitarBoardOption.keyboard,
 			mode: mode,

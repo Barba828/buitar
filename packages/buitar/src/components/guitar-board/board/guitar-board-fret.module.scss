@@ -43,6 +43,7 @@
 
 .fret-dots {
 	position: absolute;
+	height: calc(100% - $btn-size * 0.5 - $btn-margin);
 	.fret-dots-item {
 		height: calc($btn-size * 0.32);
 		width: calc($btn-size * 0.32);
@@ -52,13 +53,4 @@
 		opacity: 1;
 		transition: all 0.15s ease-in-out;
 	}
-}
-
-.fret-num-dots {
-	margin-top: $btn-margin;
-	font-size: $font-16 !important;
-	color: rgba($white-01, 0.5);
-	font-weight: bold;
-	background: rgba($gray-primary, 0.4);
-	transition: all 0.15s ease-in-out;
 }

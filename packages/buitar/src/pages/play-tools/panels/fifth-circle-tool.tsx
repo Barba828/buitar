@@ -8,7 +8,7 @@ import styles from './fifth-circle-tool.module.scss'
 import toolsStyles from '../play-tools.module.scss'
 
 export const FifthCircleTool = () => {
-	const { guitarBoardOption, boardSettings } = useBoardContext()
+	const { guitarBoardOption } = useBoardContext()
 
 	return (
 		<div className={styles['fifth-tool']}>
@@ -20,7 +20,6 @@ export const FifthCircleTool = () => {
 					<DegreeChordItem
 						item={item}
 						withtag={false}
-						isSharpSemitone={boardSettings.isSharpSemitone}
 					/>
 				)}
 				extendItem={true}

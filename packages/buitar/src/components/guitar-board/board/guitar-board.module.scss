@@ -88,19 +88,18 @@
 		}
 	}
 
-	.level {
+	.interval {
 		opacity: 0.6;
-		font-size: 12px;
-		transform: translate(2px, 2px);
+		font-size: $font-12;
+		line-height: $font-12;
+		transform: translateY(1px);
+		margin-left: 2px;
 		pointer-events: none;
 	}
 
 	&.empty-point {
 		background: $gray-second !important;
 		cursor: auto;
-	}
-
-	&.interval-point {
 	}
 
 	// 如下若干种point风格，以出现越后的优先级越高

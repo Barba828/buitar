@@ -32,7 +32,7 @@ const FRET_DOT = [, , '·', , '·', , '·', , '·', , , '··', , , , '·']
 export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 16], onCheckedPoints, onChangePart }) => {
 	const {
 		guitarBoardOption: { keyboard, baseFret },
-		boardSettings: { hasTag, numTag, isStickyZero = true },
+		boardSettings: { numTag, isStickyZero = true },
 		boardTheme,
 		taps,
 		emphasis,
@@ -115,12 +115,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 16], onCheckedPo
 	const boardView = board.slice(boardRange[0], boardRange[1] + 1).map((frets, fretIndex) => {
 		const fretsView = frets.reverse().map((point, stringIndex) => <BoardBtnComponent key={stringIndex} point={point} />)
 
-		const dotsView =
-			boardTheme === 'default' ? (
-				<BoardDotsOriginal index={fretIndex + boardRange[0]} />
-			) : (
-				<BoardDots index={fretIndex + boardRange[0]} />
-			)
+		const dotsView = <BoardDots index={fretIndex + boardRange[0]} fretDot={boardTheme !== 'default'} />
 		return (
 			<ul className={cx(styles.frets)} key={fretIndex}>
 				{fretsView}
@@ -137,7 +132,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({ range = [1, 16], onCheckedPo
 			))
 
 		// 存在数字标记才显示播放按钮
-		const playButton = hasTag && numTag && (
+		const playButton = numTag && (
 			<div onClick={handlePlayArpeggio} className={cx('primary-button', styles['frets-dot'], styles['point'])}>
 				<Icon name="icon-eighth-note" color="#fff8" size={16} />
 			</div>
@@ -203,24 +198,37 @@ const BoardButton = ({
 		</li>
 	)
 }
-const BoardDots = ({ index }: { index: number }) => {
+
+const BoardDots = ({ index, fretDot }: { index: number; fretDot?: boolean }) => {
 	const {
-		boardSettings: { hasTag, numTag },
+		boardSettings: { numTag },
 	} = useBoardContext()
 
-	if (!hasTag) {
-		return <></>
-	}
-
 	const dotsArr = [...Array(FRET_DOT[index - 1]?.length || 0)] // 当前标记点个数
-	return numTag ? (
-		<li className={cx('flex-center', fretStyles['fret-num-dots'], styles['frets-dot'])}>{index}</li>
-	) : (
-		<div className={cx('flex-center', fretStyles['fret-dots'])}>
-			{dotsArr.map((_, index) => (
-				<div className={fretStyles['fret-dots-item']} key={index}></div>
-			))}
-		</div>
+	return (
+		<>
+			<li className={cx('primary-button', styles['frets-dot'])}>
+				{numTag ? (
+					<div className={styles['frets-dot-num']}>{index}</div>
+				) : (
+					<>
+						{FRET_DOT[index - 1]}
+						<span className={styles['frets-dot-text']}>{index}</span>
+					</>
+				)}
+
+				{dotsArr.map((_, index) => (
+					<div className={fretStyles['fret-dots-item']} key={index}></div>
+				))}
+			</li>
+			{fretDot && (
+				<li className={cx('flex-center', fretStyles['fret-dots'])}>
+					{dotsArr.map((_, index) => (
+						<div className={fretStyles['fret-dots-item']} key={index}></div>
+					))}
+				</li>
+			)}
+		</>
 	)
 }
 
@@ -238,14 +246,11 @@ const BoardButtonOriginal = ({ point, itemClassName }: { point: Point; itemClass
 	// 被点击的point
 	const tapped = !!taps.find((tap) => tap.index === point.index)
 	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
-	const tone = getPointNoteBySetting(point, boardSettings, !tapped && !fixed && !emphasised)
-	// 显示八度音高
-	const level = tone && point.level
+	const { note, interval } = getPointNoteBySetting(point, boardSettings, tapped || fixed || emphasised)
 
 	const cls = cx(
 		'primary-button',
-		!tone && styles['empty-point'], // 隐藏半音
-		level && styles['interval-point'], // 显示八度
+		!note && styles['empty-point'], // 隐藏半音
 		emphasised && styles['emphasised-point'], // 被强调的point
 		fixed && styles['fixed-point'], // 被固定高亮的point
 		tapped && styles['tapped-point'], // 被点击的point
@@ -256,31 +261,9 @@ const BoardButtonOriginal = ({ point, itemClassName }: { point: Point; itemClass
 
 	return (
 		<li className={cls} key={key} data-key={key}>
-			{tone}
-			<span className={styles.level}>{level}</span>
+			{note}
+			{interval && <span className={styles.interval}>{interval}</span>}
 		</li>
-	)
-}
-const BoardDotsOriginal = ({ index }: { index: number }) => {
-	const {
-		boardSettings: { hasTag, numTag },
-	} = useBoardContext()
-
-	if (!hasTag) {
-		return <></>
-	}
-
-	return (
-		<div className={cx('primary-button', styles['frets-dot'])}>
-			{numTag ? (
-				<div className={styles['frets-dot-num']}>{index}</div>
-			) : (
-				<>
-					{FRET_DOT[index - 1]}
-					<span className={styles['frets-dot-text']}>{index}</span>
-				</>
-			)}
-		</div>
 	)
 }
 
@@ -303,9 +286,7 @@ const useBoardBtnContent = (point: Point) => {
 	// 被点击的point
 	const tapped = !!taps.find((tap) => tap.index === point.index)
 	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
-	const tone = getPointNoteBySetting(point, boardSettings, false)
-	// 显示八度音高
-	const level = tone && point.level
+	const { note, interval } = getPointNoteBySetting(point, boardSettings, false)
 
 	const hidden = !(fixed || emphasised || highFixed || tapped)
 
@@ -320,16 +301,11 @@ const useBoardBtnContent = (point: Point) => {
 		: ''
 
 	return {
-		baseCls: cx(
-			userCls,
-			'primary-button',
-			styles['point'],
-			level && styles['interval-point'] // 显示八度
-		),
+		baseCls: cx(userCls, 'primary-button', styles['point']),
 		element: (
 			<>
-				{tone}
-				<span className={styles.level}>{level}</span>
+				{note}
+				{interval && <span className={styles.interval}>{interval}</span>}
 			</>
 		),
 		status: {

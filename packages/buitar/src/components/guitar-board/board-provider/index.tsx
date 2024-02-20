@@ -13,7 +13,7 @@ import {
 	instrumentKeyboardConfig,
 	instrumentKeyboardMap,
 } from '@/pages/settings/config/controller.config'
-import { Board, BoardChord, BoardOption, DegreeType, Pitch, Point, Tone } from '@buitar/to-guitar'
+import { Board, BoardChord, BoardOption, Pitch, Point } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
 import { useStore } from '@/utils/hooks/use-store'
 import { COLLECTIONS_KEY, CollectionMapType } from '@/pages/collections/collections.config'
@@ -24,25 +24,17 @@ import { toast } from '@/components'
  */
 const defaultBoardOptions: GuitarBoardSetting = {
 	/**
-	 * 是否显示半音
+	 * 是否显示调外音
 	 */
-	isShowSemitone: false,
+	isShowOuter: false,
 	/**
-	 * 半音是否以#标记
+	 * 是否显示级数/八度
 	 */
-	isSharpSemitone: true,
+	hasInterval: true,
 	/**
-	 * 是否音名显示
+	 * 级数显示为罗马数字
 	 */
-	isNote: true,
-	/**
-	 * 是否显示八度音高
-	 */
-	hasLevel: false,
-	/**
-	 * 是否显示吉他品记
-	 */
-	hasTag: true,
+	isRomanInterval: true,
 	/**
 	 * 吉他品记是否数字展示
 	 */
