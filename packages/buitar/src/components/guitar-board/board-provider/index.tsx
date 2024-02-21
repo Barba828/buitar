@@ -24,6 +24,10 @@ import { toast } from '@/components'
  */
 const defaultBoardOptions: GuitarBoardSetting = {
 	/**
+	 * 是否显示非活动音
+	 */
+	isShowUnActive: false,
+	/**
 	 * 是否显示调外音
 	 */
 	isShowOuter: false,

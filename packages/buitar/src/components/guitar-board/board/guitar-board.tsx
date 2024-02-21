@@ -273,6 +273,7 @@ const BoardDots = ({ index, fretDot }: { index: number; fretDot?: boolean }) => 
 					<div className={fretStyles['fret-dots-item']} key={index}></div>
 				))}
 			</li>
+			{/* 绝对布局居中品记 */}
 			{fretDot && (
 				<li className={cx('flex-center', fretStyles['fret-dots'])}>
 					{dotsArr.map((_, index) => (

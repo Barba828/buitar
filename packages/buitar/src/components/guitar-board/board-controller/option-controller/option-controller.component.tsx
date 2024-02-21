@@ -82,6 +82,9 @@ export const BoardOptionsController: FC<
 			if (item === 'isRomanInterval' && !boardSettings.hasInterval) {
 				return false
 			}
+			if (item === 'isShowOuter' && !boardSettings.isShowUnActive) {
+				return false
+			}
 			return true
 		})
 	}, [props.list, boardSettings])
@@ -176,9 +179,11 @@ export const KeyBoardInstrument: FC<ControllerListProps<InstrumentKeyboardKey>> 
 	const { instrumentKeyboard, dispatchInstrumentKeyboard } = useBoardContext()
 
 	const renderThemeItem = (key: InstrumentKeyboardKey) => {
+		const baseString = instrumentKeyboardConfig[key].baseTone?.map((item) => item.toString().slice(0, 1)).join('')
 		return (
 			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
 				<span>{instrumentKeyboardConfig[key].name}</span>
+				<span style={{ opacity: 0.6 }}>{baseString}</span>
 				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>乐器指板</div>
 			</div>
 		)

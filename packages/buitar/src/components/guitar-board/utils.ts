@@ -8,23 +8,32 @@ import { GuitarBoardSetting } from '@/pages/settings/config/controller.type'
  * @param active 活动按钮
  */
 export const getPointNoteBySetting = (point: Point, options: GuitarBoardSetting, active: boolean = true) => {
-	const { isShowOuter, hasInterval, isRomanInterval } = options
+	const { isShowUnActive, isShowOuter, hasInterval, isRomanInterval } = options
 
 	// 调外音
 	const isOuter = point.interval.toString().length > 1
-	// 可见：1.显示调外音(全部显示) 2.调内音 3.活动状态的调外音 4.是0品音
-	const visible = isShowOuter || !isOuter || (isOuter && active) || point.grade === 0
+	let visible = true
+	if (active || point.grade === 0) {
+		// 1. 活动按钮｜0品按钮 显示
+		visible = true
+	} else if (!isShowUnActive) {
+		// 2. 不显示非活动按钮（active = false）
+		visible = false
+	} else if (!isShowOuter) {
+		// 2. 不显示调外音
+		visible = !isOuter
+	}
 
 	let intervalText = point.interval as String
 	// 级数显示
-	if (isRomanInterval){
+	if (isRomanInterval) {
 		intervalText = DEGREE_TAG_LIST[Number(point.interval) - 1]
 	}
-	
+
 	// 忽略升降调半音
 	return {
 		note: point.note,
 		interval: hasInterval ? intervalText : point.level,
-		visible: visible
+		visible: visible,
 	}
 }

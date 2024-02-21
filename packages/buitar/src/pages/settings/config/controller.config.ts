@@ -15,17 +15,31 @@ export const BOARD_THEME_KEY = 'board_theme'
 export const INSTRUMENT_KEYBOARD_KEY = 'instrument_keyboard'
 
 export const optionsUIConfig: Record<GuitarBoardOptionsKey, any> = {
-	isShowOuter: {
+	isShowUnActive: {
 		checked: {
-			name_zh: '全音',
+			name_zh: '显示',
 			name_en: 'Whole Tone',
 		},
 		unchecked: {
-			name_zh: '调内音',
+			name_zh: '隐藏',
 			name_en: 'Inner Tone',
 		},
 		others: {
-			intro_zh: '吉他显示',
+			intro_zh: '非活动指板音',
+			intro_en: 'Guitar Display',
+		},
+	},
+	isShowOuter: {
+		checked: {
+			name_zh: '显示全部',
+			name_en: 'Whole Tone',
+		},
+		unchecked: {
+			name_zh: '仅调内音',
+			name_en: 'Inner Tone',
+		},
+		others: {
+			intro_zh: '调内指板音',
 			intro_en: 'Guitar Display',
 		},
 	},

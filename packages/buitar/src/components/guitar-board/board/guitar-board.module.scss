@@ -1,3 +1,4 @@
+$board-btn-width: calc($btn-size * 1.6);
 .board {
 	display: flex;
 	outline: none;
@@ -33,7 +34,7 @@
 			.frets-dot {
 				font-size: 30px;
 				height: calc($btn-size / 2);
-				width: calc($btn-size * 2);
+				width: $board-btn-width;
 				background: $gray-second;
 				line-height: 100%;
 				position: relative;
@@ -79,7 +80,7 @@
 
 .point {
 	list-style-type: none;
-	width: calc($btn-size * 2) !important;
+	width: $board-btn-width !important;
 	@include flex-center(row);
 
 	@media (any-hover: hover) {

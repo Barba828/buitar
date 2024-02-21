@@ -1,6 +1,7 @@
 import { PercussionInstrument, StringsInstrument } from '@buitar/tone-player'
 
 export type GuitarBoardOptionsKey =
+	| 'isShowUnActive'
 	| 'isShowOuter'
 	| 'isStickyZero'
 	| 'hasInterval'
