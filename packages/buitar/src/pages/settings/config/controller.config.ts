@@ -17,12 +17,12 @@ export const INSTRUMENT_KEYBOARD_KEY = 'instrument_keyboard'
 export const optionsUIConfig: Record<GuitarBoardOptionsKey, any> = {
 	isShowOuter: {
 		checked: {
-			name_zh: '调内音',
-			name_en: 'Inner Tone',
-		},
-		unchecked: {
 			name_zh: '全音',
 			name_en: 'Whole Tone',
+		},
+		unchecked: {
+			name_zh: '调内音',
+			name_en: 'Inner Tone',
 		},
 		others: {
 			intro_zh: '吉他显示',

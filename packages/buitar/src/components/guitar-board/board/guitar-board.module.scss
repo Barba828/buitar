@@ -84,8 +84,13 @@
 
 	@media (any-hover: hover) {
 		&:hover {
-			font-size: 18px;
+			font-size: $font-18;
 		}
+	}
+
+	.note {
+		font-size: $font-16;
+		pointer-events: none;
 	}
 
 	.interval {
@@ -100,18 +105,29 @@
 	&.empty-point {
 		background: $gray-second !important;
 		cursor: auto;
+		.note,
+		.interval {
+			opacity: 0;
+		}
+		&:hover, &:active {
+			.note,
+			.interval {
+				opacity: 0.4;
+			}
+		}
 	}
 
 	// 如下若干种point风格，以出现越后的优先级越高
 	&.fixed-point {
-		background: $yellow-second !important;
+		background: $yellow-primary !important;
 	}
 
 	&.tapped-point {
 		background: $blue-primary !important;
 	}
 
-	&.emphasised-point, &:active {
+	&.emphasised-point,
+	&:active {
 		background: $green-primary !important;
 	}
 

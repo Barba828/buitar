@@ -15,7 +15,7 @@
 	&.empty-point {
 		opacity: 0;
 
-		&:hover {
+		&:hover, &:active {
 			opacity: 0.4;
 		}
 	}

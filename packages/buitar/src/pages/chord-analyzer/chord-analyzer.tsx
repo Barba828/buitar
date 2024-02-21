@@ -74,7 +74,7 @@ const TapedGuitarBoard: FC<{ onChange?(taps: Point[]): void }> = ({ onChange }) 
 
 const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultChordTypes }) => {
 	const isMobile = useIsMobile()
-	const { taps, boardSettings, setFixedTaps, guitarBoardOption } = useBoardContext()
+	const { taps, guitar, boardSettings, setFixedTaps, guitarBoardOption } = useBoardContext()
 	const [chordTypes, setChordTypes] = useState(defaultChordTypes)
 
 	useEffect(() => {
@@ -126,6 +126,8 @@ const TapedChordCard: FC<{ chordTypes: ChordType[] }> = ({ chordTypes: defaultCh
 			return
 		}
 
+		guitar.setOptions({ scale: tone.note })
+		
 		const fixedTaps: Point[] = []
 		guitarBoardOption.keyboard.forEach((string) => {
 			string.forEach((point) => {
