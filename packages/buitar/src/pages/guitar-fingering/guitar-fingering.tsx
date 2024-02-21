@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo } from 'react'
 import { useBoardContext } from '@/components/guitar-board'
-import { TabSwitch, PagesIntro, PagesMeta } from '@/components'
+import { TabSwitch, PagesMeta } from '@/components'
 import { Link, Outlet } from 'react-router-dom'
 import { useRouteFind, useRouteMatch } from '@/utils/hooks/use-routers'
 import cx from 'classnames'

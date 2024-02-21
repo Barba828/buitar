@@ -2,8 +2,8 @@ import React, { FC, useMemo, useState, memo, useCallback } from 'react'
 import { useBoardContext } from '../../board-provider'
 import { SvgChord, transToSvgPoints } from '@/components/svg-chord'
 import { Icon } from '@/components/icon'
-import { Portal, getBoardOptionsNote } from '@/components'
-import { BoardChord, NOTE_LIST, Point, getDegreeTag, transInterval } from '@buitar/to-guitar'
+import { Portal } from '@/components'
+import { BoardChord, NOTE_LIST, Point, toDegreeTag, intervalToSemitones } from '@buitar/to-guitar'
 import { CardCollector } from './card-collector.component'
 import { CardDownloader } from './card-downloader.component'
 import { getBoardChordName } from './utils'
@@ -28,7 +28,6 @@ export const ChordCard: FC<{
 	size?: number
 	extra?: JSX.Element | JSX.Element[]
 }> = memo(({ taps, title, className, size = 160, extra, disableCollect, onRemoveCollection }) => {
-	
 	const {
 		player,
 		guitarBoardOption: { keyboard },
@@ -36,12 +35,7 @@ export const ChordCard: FC<{
 	const [collectionVisible, setCollectionVisible] = useState(false)
 	const [downloadVisible, setDownloadVisible] = useState(false)
 
-	const cls = cx(
-		'primary-button',
-		styles['chord-card'],
-		className,
-		taps.length === 0 && styles['chord-card-hidden']
-	)
+	const cls = cx('primary-button', styles['chord-card'], className, taps.length === 0 && styles['chord-card-hidden'])
 
 	const svgPoints = useMemo(() => transToSvgPoints(taps, keyboard?.length), [taps])
 
@@ -108,11 +102,7 @@ export const ChordCard: FC<{
 				</div>
 			</div>
 
-			<CardCollector
-				visible={collectionVisible}
-				data={collectionData}
-				onCancel={toggleCollectionVisible}
-			/>
+			<CardCollector visible={collectionVisible} data={collectionData} onCancel={toggleCollectionVisible} />
 			<CardDownloader visible={downloadVisible} onCancel={toggleDownloadVisible} {...svgData} />
 		</div>
 	)
@@ -125,21 +115,21 @@ export const ChordCard: FC<{
 	)
 })
 
-export const DetailCard: FC<{ chordType?: BoardChord['chordType'] }> = ({ chordType }) => {
-	const { boardSettings } = useBoardContext()
-	const chordName = getBoardChordName(chordType, boardSettings)
+export const DetailCard: FC<{ chordType?: BoardChord['chordType'] }> = memo(({ chordType }) => {
+	const { guitarBoardOption } = useBoardContext()
+	const chordName = getBoardChordName(chordType, guitarBoardOption)
 
-	if (!chordType || !chordType.tone) {
+	if (!chordType) {
 		return null
 	}
 
-	const offset = NOTE_LIST.indexOf(chordType?.over?.note || chordType.tone.note)
+	const offset = chordType.tone || 0
 	const constitute = chordType.constitute
-	const constituteTag = constitute?.map((item) => getDegreeTag(item))
+	const constituteTag = constitute?.map((item) => toDegreeTag(item))
 	const chordList = constitute?.map((pitch, index) => {
-		const noteIndex = (offset + transInterval(pitch)) % NOTE_LIST.length
+		const noteIndex = (offset + intervalToSemitones(pitch)) % NOTE_LIST.length
 		return {
-			note: getBoardOptionsNote(noteIndex, boardSettings),
+			note: guitarBoardOption.notesOnC?.[noteIndex],
 			degreeTag: constituteTag?.[index],
 			degree: constitute?.[index],
 		}
@@ -159,18 +149,13 @@ export const DetailCard: FC<{ chordType?: BoardChord['chordType'] }> = ({ chordT
 			<div className={styles['detail-chord']}>
 				{chordList?.length &&
 					chordList.map(({ note, degree, degreeTag }, index) => (
-						<div
-							key={index}
-							className={cx('primary-button', styles['detail-chord-note'], 'flex-center')}
-						>
+						<div key={index} className={cx('primary-button', styles['detail-chord-note'], 'flex-center')}>
 							<div className={styles['detail-chord-tag']}>{degreeTag}</div>
 							<div className={styles['detail-chord-title']}>{note}</div>
-							<div className={cx(styles['detail-chord-tag'], styles['detail-chord-tag__end'])}>
-								{degree}
-							</div>
+							<div className={cx(styles['detail-chord-tag'], styles['detail-chord-tag__end'])}>{degree}</div>
 						</div>
 					))}
 			</div>
 		</div>
 	)
-}
+})

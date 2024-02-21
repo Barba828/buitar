@@ -1,3 +1,4 @@
+$board-btn-width: calc($btn-size * 1.6);
 .board {
 	display: flex;
 	outline: none;
@@ -33,7 +34,7 @@
 			.frets-dot {
 				font-size: 30px;
 				height: calc($btn-size / 2);
-				width: calc($btn-size * 2);
+				width: $board-btn-width;
 				background: $gray-second;
 				line-height: 100%;
 				position: relative;
@@ -79,50 +80,55 @@
 
 .point {
 	list-style-type: none;
-	width: calc($btn-size * 2) !important;
+	width: $board-btn-width !important;
 	@include flex-center(row);
 
 	@media (any-hover: hover) {
 		&:hover {
-			font-size: 18px;
+			font-size: $font-18;
 		}
 	}
 
-	.level {
-		opacity: 0.6;
-		font-size: 12px;
-		transform: translate(2px, 2px);
+	.note {
+		font-size: $font-16;
 		pointer-events: none;
 	}
 
-	.level-dot {
-		line-height: 2px;
+	.interval {
+		opacity: 0.6;
+		font-size: $font-12;
+		line-height: $font-12;
+		transform: translateY(1px);
+		margin-left: 2px;
 		pointer-events: none;
 	}
 
 	&.empty-point {
 		background: $gray-second !important;
 		cursor: auto;
-	}
-
-	&.interval-point {
-		flex-direction: column;
-	}
-
-	&.interval-point-reverse {
-		flex-direction: column-reverse;
+		.note,
+		.interval {
+			opacity: 0;
+		}
+		&:hover, &:active {
+			.note,
+			.interval {
+				opacity: 0.4;
+			}
+		}
 	}
 
 	// 如下若干种point风格，以出现越后的优先级越高
 	&.fixed-point {
-		background: $yellow-second !important;
+		background: $yellow-primary !important;
 	}
 
 	&.tapped-point {
 		background: $blue-primary !important;
 	}
 
-	&.emphasised-point, &:active {
+	&.emphasised-point,
+	&:active {
 		background: $green-primary !important;
 	}
 

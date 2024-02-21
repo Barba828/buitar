@@ -13,7 +13,7 @@ import {
 	instrumentKeyboardConfig,
 	instrumentKeyboardMap,
 } from '@/pages/settings/config/controller.config'
-import { Board, BoardChord, BoardOption, Point, Tone } from '@buitar/to-guitar'
+import { Board, BoardChord, BoardOption, Pitch, Point } from '@buitar/to-guitar'
 import { TonePlayer } from '@buitar/tone-player'
 import { useStore } from '@/utils/hooks/use-store'
 import { COLLECTIONS_KEY, CollectionMapType } from '@/pages/collections/collections.config'
@@ -24,25 +24,21 @@ import { toast } from '@/components'
  */
 const defaultBoardOptions: GuitarBoardSetting = {
 	/**
-	 * 是否显示半音
+	 * 是否显示非活动音
 	 */
-	isShowSemitone: false,
+	isShowUnActive: false,
 	/**
-	 * 半音是否以#标记
+	 * 是否显示调外音
 	 */
-	isSharpSemitone: true,
+	isShowOuter: false,
 	/**
-	 * 是否音名显示
+	 * 是否显示级数/八度
 	 */
-	isNote: true,
+	hasInterval: true,
 	/**
-	 * 是否显示八度音高
+	 * 级数显示为罗马数字
 	 */
-	hasLevel: false,
-	/**
-	 * 是否显示吉他品记
-	 */
-	hasTag: true,
+	isRomanInterval: true,
 	/**
 	 * 吉他品记是否数字展示
 	 */
@@ -128,8 +124,8 @@ type BoardContextType = {
 	/**
 	 * 大调音阶和弦
 	 */
-	chord: Tone[]
-	setChord: SetState<Tone[]>
+	chord: Pitch[]
+	setChord: SetState<Pitch[]>
 	/**
 	 * 音阶和弦指位列表
 	 */
@@ -190,7 +186,7 @@ export const BoardProvider: FC = (props) => {
 		COLLECTIONS_KEY,
 		defaultCollection
 	)
-	const [chord, setChord] = useState<Tone[]>([])
+	const [chord, setChord] = useState<Pitch[]>([])
 	const [chordTaps, setChordTaps] = useState<BoardChord[]>([])
 	const [chordTap, setChordTap] = useState<BoardChord>()
 	const [taps, setTaps] = useState<Point[]>([])

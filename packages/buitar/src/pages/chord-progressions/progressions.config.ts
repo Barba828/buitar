@@ -1,8 +1,11 @@
-import { chordMap } from '@buitar/to-guitar'
+import { chordMap, chordTagMap } from '@buitar/to-guitar'
 
 /**和弦所有类型 */
-export const tagList = Array.from(chordMap.values()).map((item) => item.tag)
-/**和弦所有类型 根据度数分类列表（3度/4度/5度 构成音） */
+export const tagList = Array.from(chordTagMap.keys())
+/**
+ * 和弦所有类型 根据度数分类列表（3音/4音/5音 构成音）
+ * @TODO 3和弦使用构成音有三个是错误的，七和弦省略5音也是三个构成音
+ */
 export const tagTypedList = Array.from(chordMap.values()).reduce((prev: string[][], curr) => {
 	const index = (curr.constitute?.length || 3) - 3
 	if (!prev[index]) {

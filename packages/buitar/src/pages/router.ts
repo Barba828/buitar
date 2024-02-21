@@ -186,6 +186,11 @@ export const routeConfig: Array<RouteType> = [
 		Component: SettingsPage,
 	},
 	{
+		name: 'test',
+		id: 'Test',
+		path: `${baseUrl}test`,
+	},
+	{
 		name: '404',
 		id: 'NotFound',
 		path: `${baseUrl}*`,

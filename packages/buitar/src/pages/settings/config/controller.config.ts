@@ -15,17 +15,31 @@ export const BOARD_THEME_KEY = 'board_theme'
 export const INSTRUMENT_KEYBOARD_KEY = 'instrument_keyboard'
 
 export const optionsUIConfig: Record<GuitarBoardOptionsKey, any> = {
-	isShowSemitone: {
+	isShowUnActive: {
 		checked: {
-			name_zh: '半音',
-			name_en: 'All Tone',
-		},
-		unchecked: {
-			name_zh: '全音',
+			name_zh: '显示',
 			name_en: 'Whole Tone',
 		},
+		unchecked: {
+			name_zh: '隐藏',
+			name_en: 'Inner Tone',
+		},
 		others: {
-			intro_zh: '吉他显示',
+			intro_zh: '非活动指板音',
+			intro_en: 'Guitar Display',
+		},
+	},
+	isShowOuter: {
+		checked: {
+			name_zh: '显示全部',
+			name_en: 'Whole Tone',
+		},
+		unchecked: {
+			name_zh: '仅调内音',
+			name_en: 'Inner Tone',
+		},
+		others: {
+			intro_zh: '调内指板音',
 			intro_en: 'Guitar Display',
 		},
 	},
@@ -43,60 +57,32 @@ export const optionsUIConfig: Record<GuitarBoardOptionsKey, any> = {
 			intro_en: '',
 		},
 	},
-	isSharpSemitone: {
+	hasInterval: {
 		checked: {
-			name_zh: '#',
-			name_en: '#',
+			name_zh: '级数',
+			name_en: 'Interval',
 		},
 		unchecked: {
-			name_zh: 'b',
-			name_en: 'b',
-		},
-		others: {
-			intro_zh: '',
-			intro_en: '',
-		},
-	},
-	isNote: {
-		checked: {
-			name_zh: '音名',
-			name_en: 'note',
-		},
-		unchecked: {
-			name_zh: '音级',
-			name_en: 'interval',
-		},
-		others: {
-			intro_zh: '',
-			intro_en: '',
-		},
-	},
-	hasLevel: {
-		checked: {
 			name_zh: '八度',
 			name_en: 'Octave',
 		},
-		unchecked: {
-			name_zh: '隐藏',
-			name_en: 'hide',
-		},
 		others: {
-			intro_zh: '吉他显示',
+			intro_zh: '附属显示',
 			intro_en: 'Guitar Display',
 		},
 	},
-	hasTag: {
+	isRomanInterval: {
 		checked: {
-			name_zh: '品记',
-			name_en: 'Fret tag',
+			name_zh: '罗马数字',
+			name_en: 'Roman',
 		},
 		unchecked: {
-			name_zh: '隐藏',
-			name_en: 'hide',
+			name_zh: '数字',
+			name_en: 'number',
 		},
 		others: {
-			intro_zh: '吉他显示',
-			intro_en: 'Guitar Display',
+			intro_zh: '级数显示',
+			intro_en: 'Interval Display',
 		},
 	},
 	numTag: {

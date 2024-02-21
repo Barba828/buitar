@@ -9,10 +9,12 @@ import {
 	KeyBoardInstrument,
 } from '@/components'
 import { useDrumBoardContext } from '@/components/drum-board/drum-provider'
+import { useIsHoverable } from '@/utils/hooks/use-device'
 
 export const InstrumentPlayer = () => {
 	const { player } = useBoardContext()
 	const { player: drumPlayer, instrument: drumInstrument } = useDrumBoardContext()
+	const isHoverable = useIsHoverable()
 
 	const [part, setPart] = useState(false)
 	const [level, setPianoPart] = useState(false)
@@ -20,8 +22,8 @@ export const InstrumentPlayer = () => {
 	return (
 		<>
 			<PagesMeta />
-			<KeyBoardInstrument extendItem={false} />
-			<DrumInstrumentController extendItem={false} />
+			<KeyBoardInstrument extendItem={!isHoverable} />
+			<DrumInstrumentController extendItem={!isHoverable} />
 
 			<GuitarBoard onChangePart={setPart} />
 			<PianoBoard onChangePart={setPianoPart} player={player}></PianoBoard>

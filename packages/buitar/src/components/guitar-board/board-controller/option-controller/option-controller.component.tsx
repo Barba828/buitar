@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { useBoardContext } from '@/components/guitar-board/index'
 import { PercussionInstrument, StringsInstrument, instrumentType } from '@buitar/tone-player'
 import { Icon } from '@/components/icon'
@@ -57,12 +57,8 @@ export const BoardOptionsController: FC<
 	}
 
 	const renderOptionItem = (option: keyof GuitarBoardSetting) => {
-		const checkedItem = boardSettings[option]
-			? optionsUIConfig[option].checked
-			: optionsUIConfig[option].unchecked
-		const uncheckedItem = !boardSettings[option]
-			? optionsUIConfig[option].checked
-			: optionsUIConfig[option].unchecked
+		const checkedItem = boardSettings[option] ? optionsUIConfig[option].checked : optionsUIConfig[option].unchecked
+		const uncheckedItem = !boardSettings[option] ? optionsUIConfig[option].checked : optionsUIConfig[option].unchecked
 
 		return (
 			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
@@ -80,9 +76,19 @@ export const BoardOptionsController: FC<
 		)
 	}
 
-	const list = props.list || (Object.keys(optionsUIConfig) as GuitarBoardOptionsKey[])
-	// 默认展示选中的option，若全都未选中，则展示「isShowSemitone」
-	const checkedList = list.filter((option) => boardSettings[option])
+	const list = useMemo(() => {
+		const arr = props.list || (Object.keys(optionsUIConfig) as GuitarBoardOptionsKey[])
+		return arr.filter((item) => {
+			if (item === 'isRomanInterval' && !boardSettings.hasInterval) {
+				return false
+			}
+			if (item === 'isShowOuter' && !boardSettings.isShowUnActive) {
+				return false
+			}
+			return true
+		})
+	}, [props.list, boardSettings])
+
 	return (
 		<ControllerList
 			{...props}
@@ -90,7 +96,7 @@ export const BoardOptionsController: FC<
 			onClickItem={handleClick}
 			renderListItem={renderOptionItem}
 			checkedItem={(option) => boardSettings[option]}
-			visibleItem={(option) => (checkedList.length > 0 ? false : option === 'isShowSemitone')}
+			visibleItem={() => true}
 			itemClassName={() => styles['controller-inner-option']}
 		/>
 	)
@@ -108,13 +114,8 @@ export const BoardInstrumentController: FC<ControllerListProps<StringsInstrument
 		return (
 			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
 				<span>{instrumentUIConfig?.[instrument]?.name_zh}</span>
-				<Icon
-					name={instrumentUIConfig?.[instrument]?.icon}
-					size={props.size === 'small' ? 16 : 30}
-				/>
-				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
-					弦乐音色
-				</div>
+				<Icon name={instrumentUIConfig?.[instrument]?.icon} size={props.size === 'small' ? 16 : 30} />
+				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>弦乐音色</div>
 			</div>
 		)
 	}
@@ -148,9 +149,7 @@ export const BoardThemeController: FC<ControllerListProps<GuitarBoardThemeKey>> 
 			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
 				<span>{boardStyleConfig[theme].name}</span>
 				<div className={styles['controller-inner-unchecked']}>{theme}</div>
-				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
-					乐器外观
-				</div>
+				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>乐器外观</div>
 			</div>
 		)
 	}
@@ -180,12 +179,12 @@ export const KeyBoardInstrument: FC<ControllerListProps<InstrumentKeyboardKey>> 
 	const { instrumentKeyboard, dispatchInstrumentKeyboard } = useBoardContext()
 
 	const renderThemeItem = (key: InstrumentKeyboardKey) => {
+		const baseString = instrumentKeyboardConfig[key].baseTone?.map((item) => item.toString().slice(0, 1)).join('')
 		return (
 			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
 				<span>{instrumentKeyboardConfig[key].name}</span>
-				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
-					乐器指板
-				</div>
+				<span style={{ opacity: 0.6 }}>{baseString}</span>
+				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>乐器指板</div>
 			</div>
 		)
 	}
@@ -213,13 +212,8 @@ export const DrumInstrumentController: FC<ControllerListProps<PercussionInstrume
 		return (
 			<div className={cx(styles['controller-inner'], styles[`controller-inner__${props.size}`])}>
 				<span>{instrumentUIConfig?.[instrument]?.name_zh}</span>
-				<Icon
-					name={instrumentUIConfig?.[instrument]?.icon}
-					size={props.size === 'small' ? 12 : 24}
-				/>
-				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>
-					打击乐器
-				</div>
+				<Icon name={instrumentUIConfig?.[instrument]?.icon} size={props.size === 'small' ? 12 : 24} />
+				<div className={cx(styles['controller-inner-intro'], styles['controller-inner-unchecked'])}>打击乐器</div>
 			</div>
 		)
 	}

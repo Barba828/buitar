@@ -1,20 +1,16 @@
-export type Note = 'C' | 'C#' | 'D' | 'D#' | 'E' | 'F' | 'F#' | 'G' | 'G#' | 'A' | 'A#' | 'B'
-export type NoteFalling = 'C' | 'Db' | 'D' | 'Eb' | 'E' | 'F' | 'Gb' | 'G' | 'Ab' | 'A' | 'Bb' | 'B'
-export type Interval = '1' | '1#' | '2' | '2#' | '3' | '4' | '4#' | '5' | '5#' | '6' | '6#' | '7'
-export type IntervalFalling =
-	| '1'
-	| '2b'
-	| '2'
-	| '3b'
-	| '3'
-	| '4'
-	| '5b'
-	| '5'
-	| '6b'
-	| '6'
-	| '7b'
-	| '7'
+export type NoteBasic = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B'
+export type Note = NoteBasic | 'C#' | 'D#' | 'F#' | 'G#' | 'A#'
+export type NoteFalling = NoteBasic | 'Db' | 'Eb' | 'Gb' | 'Ab' | 'Bb'
+type NoteExtended = 'Cb' | 'E#' | 'Fb' | 'B#'
+export type IntervalBasic = '1' | '2' | '3' | '4' | '5' | '6' | '7'
+export type IntervalNum = 1 | 2 | 3 | 4 | 5 | 6 | 7
+export type Interval = IntervalBasic | '1#' | '2#' | '4#' | '5#' | '6#'
+export type IntervalFalling = IntervalBasic | '2b' | '3b' | '5b' | '6b' | '7b'
 type IntervalExtended =
+	| '1b'
+	| '4b'
+	| '3#'
+	| '7#'
 	| '8'
 	| '8#'
 	| '9b'
@@ -32,12 +28,12 @@ type IntervalExtended =
 	| '13#'
 	| '14b'
 	| '14'
-export type IntervalAll = Interval | IntervalFalling | IntervalExtended
-export type IntervalNum = 1 | 2 | 3 | 4 | 5 | 6 | 7
+export type IntervalAll = Interval | IntervalFalling | IntervalExtended | IntervalNum
+export type NoteAll = Note | NoteFalling | NoteExtended
 /**
  * 音符类型
  */
-export type Tone = Note | NoteFalling | Interval | IntervalFalling | IntervalNum
+export type Tone = NoteAll | IntervalAll
 /**
  * 音符类型ToneType名称
  */
@@ -96,9 +92,18 @@ export type Point = {
 	 */
 	pitch: Pitch
 	/**
-	 * 音高
+	 * 音名，如「C」「Eb」
 	 */
-	toneSchema: ToneSchema
+	note: NoteAll
+	/**
+	 * 音级，如「1」「3b」
+	 */
+	interval: IntervalAll
+	/**
+	 * 音高级数，如「3」
+	 * 匹配note音高，如「C3」
+	 */
+	level: number
 	/**
 	 * 弦位 1弦开始
 	 * string position
@@ -110,13 +115,13 @@ export type Point = {
 	 */
 	grade: number
 	/**
-	 * 唯一下标
+	 * 指位唯一下标
 	 */
 	index: number
 	/**
 	 * 扩展属性
 	 */
-	[key: string]: any
+	// [key: string]: any
 }
 /**
  * 吉他某弦指板音符位置

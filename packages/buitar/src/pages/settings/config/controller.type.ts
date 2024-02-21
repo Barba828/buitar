@@ -1,12 +1,11 @@
 import { PercussionInstrument, StringsInstrument } from '@buitar/tone-player'
 
 export type GuitarBoardOptionsKey =
-	| 'isShowSemitone'
-	| 'isSharpSemitone'
+	| 'isShowUnActive'
+	| 'isShowOuter'
 	| 'isStickyZero'
-	| 'hasLevel'
-	| 'isNote'
-	| 'hasTag'
+	| 'hasInterval'
+	| 'isRomanInterval'
 	| 'numTag'
 	| 'isAllKey'
 

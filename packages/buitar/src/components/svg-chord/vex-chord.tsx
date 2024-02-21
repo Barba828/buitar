@@ -45,7 +45,7 @@ export const VexChord: FC<{ taps: Point[]; className?: string }> = memo(({ taps,
 				const notes = taps
 					.sort((tapA, tapB) => tapA.string - tapB.string)
 					.map((tap) => {
-						const key = `${tap.toneSchema.note}/${Number(tap.toneSchema.level) + 1}`
+						const key = `${tap.note}/${Number(tap.level) + 1}`
 						return new StaveNote({ keys: [key], duration: 'q' })
 					})
 

@@ -34,7 +34,7 @@ board.setOptions({
 吉他数据转换方法
 
 ```js
-import { transChord, transChordTaps } from '@buitar/to-guitar'
+import { rootToChord, transChordTaps } from '@buitar/to-guitar'
 
 // c_minor_chord = 
 // {
@@ -50,7 +50,7 @@ import { transChord, transChordTaps } from '@buitar/to-guitar'
 // 		"name_zh": "小三和弦"
 // 	}
 // }
-const c_minor_chord = transChord('C', 'm') // 获取和弦音
+const c_minor_chord = rootToChord('C', 'm') // 获取和弦音
 
 // keyboard_taps = [
 // 	{ chordTaps: [...], chordType: {...} },
@@ -62,13 +62,13 @@ const keyboard_taps = transChordTaps([ "C", "D#", "G" ]) // 获取和弦吉他�
 ### trans功能
 
 ```js
-getDegreeTag, //和弦音 => 和弦名称[]
-transInterval, //度数 => 半音程
-transChord, //和弦根音 => 和弦
-transChordType, //和弦 => 和弦名称 & 类型
+toDegreeTag, //和弦音 => 和弦名称[]
+intervalToSemitones, //度数 => 半音程
+rootToChord, //和弦根音 => 和弦
+toneToChordType, //和弦 => 和弦名称 & 类型
 transScale, //调式 & 调 => 顺阶音调
 transScaleDegree, //调式 & 调 => 顺阶和弦
-transFifthsCircle, // 五度圈[]
+generateFifthCircle, // 五度圈[]
 
 transBoard, // 二维指板数组
 transChordTaps, // 和弦指板位置
@@ -77,3 +77,10 @@ getModeRangeTaps, // 获取指板某范围内某调式音阶
 getTapsOnBoard, // 根据指位获取Taps
 ...
 ```
+
+# TODO
+## 划分层级
+1. 必须要 keyboard		「taps」
+2. 必须要 12 个音名		 「degrees」
+3. 使用音名Note进行计算   「notes」
+4. 直接计算音高Tone		 「tones」

@@ -57,7 +57,7 @@ const pointsToSounds = (soundList: Point[][], split?: boolean) => {
 	// 转换为数组合成数据
 	soundList.forEach((sound, index) => {
 		sound.forEach((point, soundIndex) => {
-			const key = `${point.toneSchema.note}${point.toneSchema.level}`
+			const key = `${point.note}${point.level}`
 			const offset = split ? (3 + soundIndex) % 4 : 0 // 分解：point音按序十六分开始播放，扫弦：同时开始
 			const value = [index * 4 + offset, index * 4 + 3 + offset]
 			if (soundsMap.has(key)) {

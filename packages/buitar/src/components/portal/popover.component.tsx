@@ -10,6 +10,7 @@ interface PopoverProps extends Partial<PopperOptions> {
 	children: React.ReactNode
 	appendToBody?: boolean
 	containerClass?: string
+	hoverable?: boolean
 }
 
 export const Popover: React.FC<PopoverProps> = ({
@@ -17,6 +18,7 @@ export const Popover: React.FC<PopoverProps> = ({
 	children,
 	appendToBody = true,
 	containerClass,
+	hoverable,
 	...popperOptions
 }) => {
 	const isHover = useIsHoverable()
@@ -54,7 +56,7 @@ export const Popover: React.FC<PopoverProps> = ({
 			<div
 				ref={triggerRef}
 				onClick={handleTogglePopover}
-				onMouseEnter={() => isHover && setIsVisible(true)}
+				onMouseEnter={() => isHover && hoverable && setIsVisible(true)}
 			>
 				{trigger}
 			</div>

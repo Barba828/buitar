@@ -1,5 +1,5 @@
 import { FC, useState, memo } from 'react'
-import { ModeType, ToneSchema, transFifthsCircle } from '@buitar/to-guitar'
+import { ModeType, ToneSchema, generateFifthCircle } from '@buitar/to-guitar'
 import classnames from 'classnames'
 
 import styles from './fifths-circle.module.scss'
@@ -21,8 +21,8 @@ const angle = [
 	(-Math.PI * 2) / 3,
 ]
 
-const OUTER_TONES = transFifthsCircle('C')
-const INNER_TONES = transFifthsCircle('A')
+const OUTER_TONES = generateFifthCircle('C')
+const INNER_TONES = generateFifthCircle('A')
 
 export type FifthCircleProps = {
 	/**
@@ -116,13 +116,12 @@ export const FifthsCircle: FC<FifthCircleProps> = memo(({
 						className={styles.arc}
 						checked={checked - 12}
 						onClick={(index: number) => {
-							index += 12
-							if(index === checked) {
+							if(index + 12 === checked) {
 								setChecked(-1)
 								onClick?.({ mode: 'minor'})
 								return
 							}
-							setChecked(index)
+							setChecked(index + 12)
 							onClick?.({ tone: INNER_TONES[index], mode: 'minor' })
 						}}
 					></Arc>

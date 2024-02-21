@@ -154,7 +154,7 @@ export class TonePlayer extends Tone.Sampler {
 	}
 
 	private transPoint = (point: Point): Tone.Unit.Frequency => {
-		return `${point.toneSchema.note}${point.toneSchema.level}`
+		return `${point.note}${point.level}`
 	}
 }
 

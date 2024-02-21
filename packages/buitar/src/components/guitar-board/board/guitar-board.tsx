@@ -1,19 +1,21 @@
 import { FC, useCallback, useEffect, useMemo, useRef } from 'react'
-import type { Point, ToneSchema } from '@buitar/to-guitar'
+import type { Point } from '@buitar/to-guitar'
 import { useBoardContext } from '../board-provider'
-import { getBoardOptionsTone } from '../utils'
-import { GuitarBoardSetting } from '@/pages/settings/config/controller.type'
+import { getPointNoteBySetting } from '../utils'
 import { useBoardTouch, useGuitarKeyDown } from '@/utils/hooks/use-board-event'
 import { useDebounce } from '@/utils/hooks/use-debouce'
 import { Icon } from '@/components'
+import { useIsTouch } from '@/utils/hooks/use-device'
+
 import cx from 'classnames'
 import styles from './guitar-board.module.scss'
 import fretStyles from './guitar-board-fret.module.scss'
-import { useIsTouch } from '@/utils/hooks/use-device'
 
 interface GuitarBoardProps {
 	/**渲染吉他品数范围 */
 	range?: [number, number]
+	/**渲染吉他品数范围 */
+	autoScroll?: boolean
 	/**
 	 * 选中指位 callback
 	 * @param points
@@ -32,12 +34,13 @@ const FRET_DOT = [, , '·', , '·', , '·', , '·', , , '··', , , , '·']
 
 export const GuitarBoard: FC<GuitarBoardProps> = ({
 	range = [1, 16],
+	autoScroll = true,
 	onCheckedPoints,
 	onChangePart,
 }) => {
 	const {
 		guitarBoardOption: { keyboard, baseFret },
-		boardSettings: { hasTag, numTag, isStickyZero = true },
+		boardSettings: { isStickyZero = true },
 		boardTheme,
 		taps,
 		emphasis,
@@ -46,6 +49,8 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	} = useBoardContext()
 	const boardRange = range[0] < 1 ? [1, range[1]] : range
 	const scrollRef = useRef<HTMLDivElement>(null)
+	const gradeRef = useRef<HTMLUListElement>(null)
+	const scrollToGrade = useRef<number>(0)
 	const BoardBtnComponent = boardTheme === 'default' ? BoardButtonOriginal : BoardButton
 	const isTouchDevice = useIsTouch()
 
@@ -71,6 +76,7 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 		if (key.length && boardList) {
 			if (key.length && boardList && isTouchDevice) {
 				const point = boardList[Number(key)]
+				console.log('%c Point ', 'color:white; background:rgb(57, 167, 150);border-radius: 2px', point)
 				onCheckedPoints?.([point])
 			}
 		}
@@ -89,24 +95,41 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	// 滚轮事件监听
 	// useBoardWheel(scrollRef.current) // 水平滚动与触摸板逻辑冲突
 
-	// 非touchable设备：指位停留 30 ms以上 => play & checked
+	// 非touchable设备：指位停留 30 ms以上(for拖拽多选) => play & checked
 	const debouceEmphasis = useDebounce(emphasis, 30)
 	useEffect(() => {
 		if (debouceEmphasis.length <= 0 || !boardList) {
 			return
 		}
 		const points = debouceEmphasis.map((index) => boardList[Number(index)])
-		console.log(
-			'%c Points ',
-			'color:white; background:rgb(57, 167, 150);border-radius: 2px',
-			points
-		)
+		console.log('%c Points ', 'color:white; background:rgb(57, 167, 150);border-radius: 2px', points)
 		onCheckedPoints?.(points)
 	}, [debouceEmphasis])
 
+	// 监听按键切换区域
 	useEffect(() => {
 		onChangePart?.(part)
 	}, [part])
+
+	// 监听指位改变
+	useEffect(() => {
+		if (!taps.length) {
+			return
+		}
+
+		// 最低品改变，则滚动到指位的最低品（除0品外）
+		const fisrtTapGrade = taps.filter((tap) => tap.grade !== 0).sort((a, b) => a.grade - b.grade)[0].grade
+		if (fisrtTapGrade !== scrollToGrade.current) {
+			const gradeWidth = gradeRef.current?.clientWidth
+			if (gradeWidth && autoScroll) {
+				scrollRef.current?.scrollTo({
+					left: (fisrtTapGrade - 2) * gradeWidth,
+					behavior: 'smooth',
+				})
+			}
+			scrollToGrade.current = fisrtTapGrade
+		}
+	}, [taps])
 
 	/**
 	 * 播放所有弦音
@@ -122,18 +145,11 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	const board = exchangeBoardArray(keyboard)
 
 	const boardView = board.slice(boardRange[0], boardRange[1] + 1).map((frets, fretIndex) => {
-		const fretsView = frets
-			.reverse()
-			.map((point, stringIndex) => <BoardBtnComponent key={stringIndex} point={point} />)
+		const fretsView = frets.reverse().map((point, stringIndex) => <BoardBtnComponent key={stringIndex} point={point} />)
 
-		const dotsView =
-			boardTheme === 'default' ? (
-				<BoardDotsOriginal index={fretIndex + boardRange[0]} />
-			) : (
-				<BoardDots index={fretIndex + boardRange[0]} />
-			)
+		const dotsView = <BoardDots index={fretIndex + boardRange[0]} fretDot={boardTheme !== 'default'} />
 		return (
-			<ul className={cx(styles.frets)} key={fretIndex}>
+			<ul ref={gradeRef} className={cx(styles.frets)} key={fretIndex}>
 				{fretsView}
 				{dotsView}
 			</ul>
@@ -141,18 +157,11 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	})
 
 	const zeroView = board.slice(0, 1).map((frets, fretIndex) => {
-		const fretsView = frets
-			.reverse()
-			.map((point, stringIndex) => (
-				<BoardBtnComponent key={stringIndex} point={point} visible={true} stringVisible={false} />
-			))
+		const fretsView = frets.reverse().map((point, stringIndex) => <BoardBtnComponent key={stringIndex} point={point} />)
 
-		// 存在数字标记才显示播放按钮
-		const playButton = hasTag && numTag && (
-			<div
-				onClick={handlePlayArpeggio}
-				className={cx('primary-button', styles['frets-dot'], styles['point'])}
-			>
+		// 播放按钮
+		const playButton = (
+			<div onClick={handlePlayArpeggio} className={cx('primary-button', styles['frets-dot'], styles['point'])}>
 				<Icon name="icon-eighth-note" color="#fff8" size={16} />
 			</div>
 		)
@@ -182,19 +191,43 @@ export const GuitarBoard: FC<GuitarBoardProps> = ({
 	)
 }
 
+/**
+ * 风格化 keyboard button
+ */
 const BoardButton = ({
 	point,
 	itemClassName,
-	visible = false,
-	stringVisible = true,
 }: {
 	point: Point
 	itemClassName?: string
-	/** 按钮默认可见 */
-	visible?: boolean
-	/** 弦默认可见 */
-	stringVisible?: boolean
 } & GuitarBoardProps) => {
+	const {
+		key,
+		element,
+		baseCls,
+		status: { hidden },
+	} = useBoardBtnContent(point)
+
+	const cls = cx(baseCls, fretStyles['point'], hidden && fretStyles['empty-point'], itemClassName)
+	const toneNode = (
+		<div className={cls} key={key} data-key={key}>
+			{element}
+		</div>
+	)
+	const stringLine = point.grade !== 0 && <div className={fretStyles['point-string']}></div>
+
+	return (
+		<li className={cx(fretStyles['fret-point'], 'flex-center')}>
+			{toneNode}
+			{stringLine}
+		</li>
+	)
+}
+
+/**
+ * 按钮形式 keyboard button
+ */
+const BoardButtonOriginal = ({ point, itemClassName }: { point: Point; itemClassName?: string } & GuitarBoardProps) => {
 	const {
 		key,
 		element,
@@ -204,132 +237,51 @@ const BoardButton = ({
 
 	const cls = cx(
 		baseCls,
-		fretStyles['point'],
-		hidden && !visible && fretStyles['empty-point'],
-		itemClassName
-	)
-	const toneNode = (
-		<div className={cls} key={key} data-key={key}>
-			{element}
-		</div>
-	)
-	const stringLine = stringVisible && <div className={fretStyles['point-string']}></div>
-
-	return (
-		<li className={cx(fretStyles['fret-point'], 'flex-center')}>
-			{toneNode}
-			{stringLine}
-		</li>
-	)
-}
-const BoardDots = ({ index }: { index: number }) => {
-	const {
-		boardSettings: { hasTag, numTag },
-	} = useBoardContext()
-
-	if (!hasTag) {
-		return <></>
-	}
-
-	const dotsArr = [...Array(FRET_DOT[index - 1]?.length || 0)] // 当前标记点个数
-	return numTag ? (
-		<li className={cx('flex-center', fretStyles['fret-num-dots'], styles['frets-dot'])}>{index}</li>
-	) : (
-		<div className={cx('flex-center', fretStyles['fret-dots'])}>
-			{dotsArr.map((_, index) => (
-				<div className={fretStyles['fret-dots-item']} key={index}></div>
-			))}
-		</div>
-	)
-}
-
-const BoardButtonOriginal = ({
-	point,
-	itemClassName,
-}: { point: Point; itemClassName?: string } & GuitarBoardProps) => {
-	const { boardSettings, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
-	const { hasLevel, isNote } = boardSettings
-
-	// key
-	const key = `${point.index}`
-	// 交互反馈强调的point (active)
-	const emphasised = emphasis.includes(key)
-	// 固定的point
-	const fixed = !!fixedTaps.find((tap) => tap.index === point.index)
-	// 固定最高亮的point
-	const highFixed = !!highFixedTaps.find((tap) => tap.index === point.index)
-	// 被点击的point
-	const tapped = !!taps.find((tap) => tap.index === point.index)
-	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
-	const tone = getBoardOptionsTone(
-		point.toneSchema,
-		boardSettings,
-		!tapped && !fixed && !emphasised
-	)
-	// 显示八度音高
-	const level = tone && getLevel(point.toneSchema, boardSettings)
-
-	const cls = cx(
-		'primary-button',
-		!tone && styles['empty-point'], // 隐藏半音
-		!isNote && hasLevel && point.toneSchema.level //处理数字显示时八度音高
-			? point.toneSchema.level > 3
-				? styles['interval-point-reverse']
-				: styles['interval-point']
-			: null,
-		emphasised && styles['emphasised-point'], // 被强调的point
-		fixed && styles['fixed-point'], // 被固定高亮的point
-		tapped && styles['tapped-point'], // 被点击的point
-		highFixed && styles['high-fixed-point'], // 被点击的point
-		styles['point'],
+		hidden && styles['empty-point'], // 隐藏半音
 		itemClassName
 	)
 
 	return (
 		<li className={cls} key={key} data-key={key}>
-			{tone}
-			{level}
+			{element}
 		</li>
-	)
-}
-const BoardDotsOriginal = ({ index }: { index: number }) => {
-	const {
-		boardSettings: { hasTag, numTag },
-	} = useBoardContext()
-
-	if (!hasTag) {
-		return <></>
-	}
-
-	return (
-		<div className={cx('primary-button', styles['frets-dot'])}>
-			{numTag ? (
-				<div className={styles['frets-dot-num']}>{index}</div>
-			) : (
-				<>
-					{FRET_DOT[index - 1]}
-					<span className={styles['frets-dot-text']}>{index}</span>
-				</>
-			)}
-		</div>
 	)
 }
 
 /**
- * 数字显示下的八度音高UI
- * @param toneSchema
- * @param boardSettings
+ * 品记点位
  */
-const getLevel = (toneSchema: ToneSchema, boardSettings: GuitarBoardSetting) => {
-	if (!boardSettings.hasLevel || !toneSchema.level) {
-		return null
-	}
-	const { level } = toneSchema
-	if (boardSettings.isNote) {
-		return <span className={styles.level}>{level}</span>
-	}
+const BoardDots = ({ index, fretDot }: { index: number; fretDot?: boolean }) => {
+	const {
+		boardSettings: { numTag },
+	} = useBoardContext()
+
+	const dotsArr = [...Array(FRET_DOT[index - 1]?.length || 0)] // 当前标记点个数
 	return (
-		<span className={styles['level-dot']}>{new Array(Math.abs(level - 3)).fill('·').join('')}</span>
+		<>
+			<li className={cx('primary-button', styles['frets-dot'])}>
+				{numTag ? (
+					<div className={styles['frets-dot-num']}>{index}</div>
+				) : (
+					<>
+						{FRET_DOT[index - 1]}
+						<span className={styles['frets-dot-text']}>{index}</span>
+					</>
+				)}
+
+				{dotsArr.map((_, index) => (
+					<div className={fretStyles['fret-dots-item']} key={index}></div>
+				))}
+			</li>
+			{/* 绝对布局居中品记 */}
+			{fretDot && (
+				<li className={cx('flex-center', fretStyles['fret-dots'])}>
+					{dotsArr.map((_, index) => (
+						<div className={fretStyles['fret-dots-item']} key={index}></div>
+					))}
+				</li>
+			)}
+		</>
 	)
 }
 
@@ -340,7 +292,6 @@ const getLevel = (toneSchema: ToneSchema, boardSettings: GuitarBoardSetting) => 
  */
 const useBoardBtnContent = (point: Point) => {
 	const { boardSettings, taps, fixedTaps, highFixedTaps, emphasis } = useBoardContext()
-	const { hasLevel, isNote } = boardSettings
 
 	// key
 	const key = `${point.index}`
@@ -352,12 +303,10 @@ const useBoardBtnContent = (point: Point) => {
 	const highFixed = !!highFixedTaps.find((tap) => tap.index === point.index)
 	// 被点击的point
 	const tapped = !!taps.find((tap) => tap.index === point.index)
+	// 可见的point
+	const active = fixed || emphasised || highFixed || tapped
 	// 显示音调文本(非固定&非强调&非选择的指位才忽视半音显示)
-	const tone = getBoardOptionsTone(point.toneSchema, boardSettings, false)
-	// 显示八度音高
-	const level = tone && getLevel(point.toneSchema, boardSettings)
-
-	const hidden = !(fixed || emphasised || highFixed || tapped)
+	const { note, interval, visible } = getPointNoteBySetting(point, boardSettings, active)
 
 	const userCls = highFixed
 		? styles['high-fixed-point']
@@ -370,24 +319,15 @@ const useBoardBtnContent = (point: Point) => {
 		: ''
 
 	return {
-		baseCls: cx(
-			userCls,
-			'primary-button',
-			styles['point'],
-			!isNote && hasLevel && point.toneSchema.level //处理数字显示时八度音高
-				? point.toneSchema.level > 3
-					? styles['interval-point-reverse']
-					: styles['interval-point']
-				: null
-		),
+		baseCls: cx(userCls, 'primary-button', styles['point']),
 		element: (
 			<>
-				{tone}
-				{level}
+				<span className={styles.note}>{note}</span>
+				{interval && <span className={styles.interval}>{interval}</span>}
 			</>
 		),
 		status: {
-			hidden,
+			hidden: !visible,
 			highFixed,
 			emphasised,
 			tapped,

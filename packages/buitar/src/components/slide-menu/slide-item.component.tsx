@@ -1,4 +1,4 @@
-import { useCallback, useState, memo } from 'react'
+import { useCallback, useState, memo, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Icon, Modal, toast } from '@/components'
 import { routeConfig } from '@/pages/router'
@@ -53,6 +53,24 @@ export const SlideMenu = memo(() => {
 			refStyle.height = ''
 		},
 	})
+
+	// 移动端切换页面自动收起
+	useEffect(() => {
+		if(!isMobile){
+			return
+		}
+		const handleVisibilityChange = () => {
+			setExtend(false)
+			const refStyle = (touchRef.current as HTMLDivElement).style
+			refStyle.transition = ''
+			refStyle.height = ''
+		};
+
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+		return () => {
+		  document.removeEventListener('visibilitychange', handleVisibilityChange);
+		};
+	  }, []);
 
 	const toggleExtend = useCallback(() => {
 		setExtend(!extend)
