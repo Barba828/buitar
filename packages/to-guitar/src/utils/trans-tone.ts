@@ -14,7 +14,6 @@ import type {
 	NoteFalling,
 	IntervalFalling,
 	Pitch,
-	ModeType,
 	NoteBasic,
 	IntervalBasic,
 } from '../interface'

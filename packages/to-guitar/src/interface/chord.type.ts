@@ -1,4 +1,4 @@
-import type { IntervalAll, Note, NoteAll, Pitch, Point, ToneSchema } from './tone.type'
+import type { IntervalAll, NoteAll, Pitch, Point } from './tone.type'
 
 export type ChordType = {
 	/**
