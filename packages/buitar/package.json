@@ -32,6 +32,7 @@
 	},
 	"dependencies": {
 		"@buitar/abc-editor": "workspace:*",
+		"@buitar/svg-chord": "workspace:*",
 		"@buitar/to-guitar": "workspace:*",
 		"@buitar/tone-player": "workspace:*",
 		"@popperjs/core": "^2.11.8",

@@ -1,3 +1,4 @@
+import React from 'react'
 import { forwardRef, useMemo } from 'react'
 
 export type SvgChordPoint = {
@@ -51,10 +52,7 @@ export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) =>
 	// 最大品，大于5品，则需要偏移指板图
 	const maxFret = points.reduce((max, point) => Math.max(max, point.fret), -Infinity)
 	// 最小品（0品以上），用于判断大横按
-	const minFret = points.reduce(
-		(min, point) => (point.fret > 0 ? Math.min(min, point.fret) : min),
-		Infinity
-	)
+	const minFret = points.reduce((min, point) => (point.fret > 0 ? Math.min(min, point.fret) : min), Infinity)
 	// 指板图偏移位置
 	const offsetFret = maxFret > FINGER_NUMS ? minFret - 1 : 0
 
@@ -263,13 +261,7 @@ export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) =>
 	}, [size, color, title]) // size color title都需要触发重渲染
 
 	return (
-		<svg
-			ref={ref}
-			width={size}
-			height={size + titleHeight}
-			xmlns="http://www.w3.org/2000/svg"
-			version="1.1"
-		>
+		<svg ref={ref} width={size} height={size + titleHeight} xmlns="http://www.w3.org/2000/svg" version="1.1">
 			{drawLines}
 			{drawTone()}
 			{drawBarre()}
@@ -279,3 +271,5 @@ export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) =>
 		</svg>
 	)
 })
+
+export default SvgChord

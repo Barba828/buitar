@@ -1,5 +1,5 @@
 import { Point } from '@buitar/to-guitar'
-import { SvgChordPoint } from './svg-chord'
+import { SvgChordPoint } from '@buitar/svg-chord'
 
 /**
  * ToGuitar.Point => SvgChord.Point

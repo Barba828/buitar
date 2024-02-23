@@ -1,6 +1,6 @@
 {
 	"name": "@buitar/to-guitar",
-	"version": "0.0.13",
+	"version": "0.0.14",
 	"description": "guitar chord js lib",
 	"main": "dist/index.esm.js",
 	"types": "dist/index.d.ts",
