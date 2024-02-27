@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-"jsx": "react",
+    "jsx": "react",
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -11,14 +11,19 @@
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
+    // "isolatedModules": true,
+    // "noEmit": true,
 
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    // "declarationDir": "dist",
+    "outFile": "dist/index.d.ts"
   },
   "include": ["src"]
 }
