@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { HTMLProps } from 'react'
 import { forwardRef, useMemo } from 'react'
 
 export type SvgChordPoint = {
@@ -11,7 +11,7 @@ export type SvgChordPoint = {
 	color?: string
 }
 
-export interface SvgChordProps {
+export interface SvgChordProps extends HTMLProps<SVGSVGElement> {
 	/**
 	 * 按钮数组，数组长度表示弦数
 	 */
@@ -37,12 +37,13 @@ export interface SvgChordProps {
 const FINGER_NUMS = 5
 
 export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) => {
-	const { size = 300, color = 'white', points, concise, title } = props
+	const { size = 300, color = 'white', points, concise, title, ...attrs } = props
 	const radius = size * 0.05
 	const width = size * 0.7
 	const stringDistance = width / (points.length - 1) // 两根弦之间距离
 	const fretDistance = width / FINGER_NUMS // 两品之间距离
-	const titleHeight = title ? size * 0.1 : 0
+	const hasTitle = !concise && title
+	const titleHeight = hasTitle ? size * 0.1 : 0
 	const padding = (size - width) >> 1 // 内边距
 	const paddingY = padding + titleHeight
 	const fontSize = size / 12
@@ -194,7 +195,7 @@ export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) =>
 	 * 和弦标题
 	 */
 	const drawTitle = () => {
-		if (concise || !title) {
+		if (!hasTitle) {
 			return
 		}
 		return (
@@ -261,7 +262,7 @@ export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) =>
 	}, [size, color, title]) // size color title都需要触发重渲染
 
 	return (
-		<svg ref={ref} width={size} height={size + titleHeight} xmlns="http://www.w3.org/2000/svg" version="1.1">
+		<svg {...attrs as any} ref={ref} width={size} height={size + titleHeight} xmlns="http://www.w3.org/2000/svg" version="1.1">
 			{drawLines}
 			{drawTone()}
 			{drawBarre()}
