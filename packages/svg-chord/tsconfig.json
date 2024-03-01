@@ -11,8 +11,8 @@
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    // "isolatedModules": true,
-    // "noEmit": true,
+    "isolatedModules": true,
+    "noEmit": true,
 
     /* Linting */
     "strict": true,
@@ -20,10 +20,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "emitDeclarationOnly": true,
+    // "emitDeclarationOnly": true,
     "declaration": true,
-    // "declarationDir": "dist",
-    "outFile": "dist/index.d.ts"
+    "declarationDir": "dist",
+    // "outFile": "dist/index.d.ts"
   },
-  "include": ["src"]
+  "include": ["src", "lib"]
 }

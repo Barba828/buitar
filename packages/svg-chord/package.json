@@ -9,16 +9,17 @@
   "module": "./dist/svg-chord.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    "types": "./index.d.ts",
+    "types": "./dist/index.d.ts",
     "import": "./dist/svg-chord.js",
     "require": "./dist/svg-chord.umd.cjs"
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc"
+    "build": "tsc && vite build"
   },
   "devDependencies": {
     "typescript": "^5.3.3",
-    "vite": "^5.0.10"
+    "vite": "^5.0.10",
+    "vite-plugin-dts": "^3.7.3"
   }
 }
