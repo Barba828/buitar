@@ -1,23 +1,19 @@
-FROM ubuntu:latest
+FROM alpine:latest
 
-RUN apt-get update && \
-    apt-get install -y curl git nginx && \
-    curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
-    apt-get install -y nodejs
-
-RUN npm install -g pnpm
+RUN apk update && \
+    apk add --no-cache nodejs npm curl nginx && \
+    npm install -g npm@latest pnpm && \
+    rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
 COPY . .
 
-COPY dockerfile/nginx.conf /etc/nginx/
+COPY dockerfile/nginx.conf /etc/nginx/nginx.conf
 
-RUN pnpm install --no-frozen-lockfile
+RUN pnpm install --no-frozen-lockfile && \
+    pnpm build
 
-RUN pnpm build
-
-EXPOSE 8282 8283 5173
+EXPOSE 8282 8283
 
 CMD ["nginx", "-g", "daemon off;"]
-
