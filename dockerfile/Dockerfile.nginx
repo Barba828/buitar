@@ -1,0 +1,23 @@
+FROM ubuntu:latest
+
+RUN apt-get update && \
+    apt-get install -y curl git nginx && \
+    curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install -y nodejs
+
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+COPY . .
+
+COPY dockerfile/nginx.conf /etc/nginx/
+
+RUN pnpm install --no-frozen-lockfile
+
+RUN pnpm build
+
+EXPOSE 8282 8283 5173
+
+CMD ["nginx", "-g", "daemon off;"]
+
