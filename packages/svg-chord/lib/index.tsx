@@ -42,8 +42,7 @@ export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) =>
 	const width = size * 0.7
 	const stringDistance = width / (points.length - 1) // 两根弦之间距离
 	const fretDistance = width / FINGER_NUMS // 两品之间距离
-	const hasTitle = !concise && title
-	const titleHeight = hasTitle ? size * 0.1 : 0
+	const titleHeight = size * 0.1
 	const padding = (size - width) >> 1 // 内边距
 	const paddingY = padding + titleHeight
 	const fontSize = size / 12
@@ -195,9 +194,6 @@ export const SvgChord = forwardRef<SVGSVGElement, SvgChordProps>((props, ref) =>
 	 * 和弦标题
 	 */
 	const drawTitle = () => {
-		if (!hasTitle) {
-			return
-		}
 		return (
 			<text
 				x="50%"
