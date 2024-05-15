@@ -1,5 +1,5 @@
 import React, { FC, Fragment, HTMLProps, useMemo } from 'react'
-import type { SvgChordPoint } from './svg-chord'
+import type { SvgChordPoint } from './type'
 
 export interface SvgTablatureProps extends HTMLProps<SVGSVGElement> {
 	/**

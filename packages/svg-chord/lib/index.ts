@@ -1,2 +1,3 @@
-export { SvgChord } from './SvgChord'
-export { SvgTablature } from './SvgTablature'
+export * from './SvgChord'
+export * from './SvgTablature'
+export * from './type'

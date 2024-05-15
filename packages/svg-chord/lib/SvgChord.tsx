@@ -1,6 +1,6 @@
 import React, { HTMLProps } from 'react'
 import { forwardRef, useMemo } from 'react'
-import type { SvgChordPoint } from './svg-chord'
+import type { SvgChordPoint } from './type'
 
 export interface SvgChordProps extends HTMLProps<SVGSVGElement> {
 	/**
