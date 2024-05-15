@@ -54,10 +54,15 @@ export const SvgTablature: FC<SvgTablatureProps> = ({
 			.filter((point) => point.fret > -1)
 			.map((point) => point.fret)
 			.sort((a, b) => a - b)
-		return [grades[0] || 0, grades[grades.length - 1] || 12]
-	}, [range])
+		// start 最高不超过12品
+		const start = Math.min(Math.max(grades[0] - 1 || 0, 0), 12)
+		// end 最低不低于start + 4品，最高不超过16品
+		const end = Math.min(Math.max((grades[grades.length - 1]) || 0, start + 4), 16)
+		return [start, end]
+	}, [range, points])
+
 	const gradeNums = useMemo(() => endGrade - startGrade + 1, [startGrade, endGrade])
-	const gradeWidth = size * 0.8 // 品丝宽度
+	const gradeWidth = size * 0.84 // 品丝宽度
 	const itemX = gradeWidth / (strings - 1) // 两弦之间距离
 	const itemY = itemX * 1.6 // 两品之间距离
 	const dotSize = itemX * 0.8 // 按钮尺寸
@@ -113,7 +118,7 @@ export const SvgTablature: FC<SvgTablatureProps> = ({
 			lines.push(line)
 		}
 		return lines
-	}, [size, color]) // size color都需要触发重渲染
+	}, [size, color, horizontal, gradeNums]) // size color都需要触发重渲染
 
 	const drawPoints = useMemo(() => {
 		return points
@@ -151,7 +156,7 @@ export const SvgTablature: FC<SvgTablatureProps> = ({
 					</Fragment>
 				)
 			})
-	}, [points, color, fontColor, startGrade])
+	}, [points, color, fontColor, startGrade, horizontal])
 
 	const drawTitle = useMemo(() => {
 		let x = size / 2
@@ -172,7 +177,7 @@ export const SvgTablature: FC<SvgTablatureProps> = ({
 				{title}
 			</text>
 		)
-	}, [title])
+	}, [title, horizontal])
 
 	const sizeObj = useMemo(
 		() =>
@@ -185,7 +190,7 @@ export const SvgTablature: FC<SvgTablatureProps> = ({
 						width: size,
 						height: sizeY,
 				  },
-		[]
+		[sizeY, size, horizontal]
 	)
 
 	return (
