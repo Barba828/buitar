@@ -123,7 +123,7 @@ export default defineConfig({
 	server: {
 		port: 8282,
 		host: '0.0.0.0',
-		open: '/',
+		open: false,
 	},
 	optimizeDeps: {
 		include: ['react', 'react-dom'],
