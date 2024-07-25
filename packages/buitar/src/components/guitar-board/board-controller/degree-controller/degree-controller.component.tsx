@@ -274,7 +274,7 @@ export const DegreeChordController: FC<ControllerListProps<any>> = () => {
 
 	useEffect(() => {
 		const soundList = chords.map((item) => {
-			return transChordTaps(item.chord.map((pitch) => guitarBoardOption.notes![pitch % 12]), guitarBoardOption)[0].chordTaps
+			return transChordTaps(item.chord.map((pitch) => guitarBoardOption.notesOnC![pitch % 12]), guitarBoardOption)[0].chordTaps
 		})
 		setSoundList(soundList)
 	}, [guitarBoardOption.chords])
